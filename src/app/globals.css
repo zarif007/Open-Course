@@ -17,11 +17,13 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100;
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, hsla(239, 90%, 49%, 1) 0%, hsla(169, 100%, 49%, 1) 70%);
+  -webkit-background-clip: text; /* For Safari */
+  -webkit-text-fill-color: transparent; /* For Safari */
+  background-clip: text;
+  text-fill-color: transparent;
 }
