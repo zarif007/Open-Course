@@ -1,20 +1,20 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
+import { cn } from "@/lib/utils";
+import { cva, VariantProps } from "class-variance-authority";
 
 export const headingVariants = cva(
-  'text-black dark:text-white text-center font-extrabold leading-tight tracking-tighter',
+  "text-gray-950 dark:text-slate-50 text-center font-extrabold leading-tight tracking-tighter",
   {
     variants: {
       size: {
-        default: 'text-4xl md:text-5xl lg:text-6xl',
-        lg: 'text-4xl md:text-5xl lg:text-7xl',
-        sm: 'text-2xl md:text-3xl lg:text-4xl',
+        default: "text-4xl md:text-5xl lg:text-6xl",
+        lg: "text-4xl md:text-5xl lg:text-7xl",
+        sm: "text-2xl md:text-3xl lg:text-4xl",
       },
     },
     defaultVariants: {
-      size: 'default',
+      size: "default",
     },
   }
 );

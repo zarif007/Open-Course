@@ -2,33 +2,37 @@
 import React from "react";
 import { Button } from "./ui/Button";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 
 const NavBar = () => {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { theme, setTheme } = useTheme();
   return (
     <nav className="bg-slate-100 dark:bg-gray-950 fixed w-full z-20 top-0 left-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="https://flowbite.com/" className="flex items-center">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8 mr-3"
-            alt="Flowbite Logo"
+          <Image
+            src={theme === "dark" ? "/dark-logo.png" : "/light-logo.png"}
+            priority
+            quality={100}
+            height="100"
+            width="100"
+            alt="logo"
+            className="h-20 w-20"
           />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-slate-100">
-            OpenCourse
-          </span>
         </a>
         <div className="flex md:order-2">
           {isSignedIn ? (
-            <div className="flex items-center justify-center space-x-2">
+            <div className="flex items-center justify-center space-x-2 mx-1">
               <img
                 src={user.profileImageUrl}
                 alt="profile image"
                 className="h-12 w-12 rounded-full border-2 p-[2px] border-blue-700"
               />
-              <SignOutButton>
+              {/* <SignOutButton>
                 <Button variant="general">Sign Out</Button>
-              </SignOutButton>
+              </SignOutButton> */}
             </div>
           ) : (
             <SignInButton mode="modal">

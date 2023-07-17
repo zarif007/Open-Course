@@ -7,7 +7,7 @@ import { CssBaseline } from "@nextui-org/react";
 
 const ClientProviders = ({ children }: { children: any }) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <NextUIProvider>
         <Head>{CssBaseline.flush()}</Head>
         {children}
