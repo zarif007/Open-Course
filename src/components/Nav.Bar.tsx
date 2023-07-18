@@ -4,25 +4,46 @@ import { Button } from "./ui/Button";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { PiSunDuotone } from "react-icons/pi";
+import { PiMoonStarsDuotone } from "react-icons/pi";
+import Link from "next/link";
 
 const NavBar = () => {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const styles = {
+    icon: `h-8 w-8`,
+  };
+  const { isSignedIn, user, isLoaded } = useUser();
   const { theme, setTheme } = useTheme();
   return (
     <nav className="bg-slate-100 dark:bg-gray-950 fixed w-full z-20 top-0 left-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" className="flex items-center">
-          <Image
-            src={theme === "dark" ? "/dark-logo.png" : "/light-logo.png"}
-            priority
-            quality={100}
-            height="100"
-            width="100"
-            alt="logo"
-            className="h-20 w-20"
-          />
-        </a>
-        <div className="flex md:order-2">
+        {theme ? (
+          <Link href="/" className="flex items-center">
+            <Image
+              src={theme === "dark" ? "/dark-logo.png" : "/light-logo.png"}
+              priority
+              quality={100}
+              height="100"
+              width="100"
+              alt="logo"
+              className="h-20 w-20"
+            />
+          </Link>
+        ) : (
+          <div className="h-20 w-20"></div>
+        )}
+        <div className="flex md:order-2 items-center justify-center space-x-2">
+          <div
+            onClick={() =>
+              theme === "dark" ? setTheme("light") : setTheme("dark")
+            }
+          >
+            {theme === "dark" ? (
+              <PiSunDuotone className={styles.icon} />
+            ) : (
+              theme && <PiMoonStarsDuotone className={styles.icon} />
+            )}
+          </div>
           {isSignedIn ? (
             <div className="flex items-center justify-center space-x-2 mx-1">
               <img
@@ -35,9 +56,11 @@ const NavBar = () => {
               </SignOutButton> */}
             </div>
           ) : (
-            <SignInButton mode="modal">
-              <Button variant="general">Sign In</Button>
-            </SignInButton>
+            isLoaded && (
+              <SignInButton mode="modal">
+                <Button variant="general">Sign In</Button>
+              </SignInButton>
+            )
           )}
           <button
             data-collapse-toggle="navbar-sticky"
