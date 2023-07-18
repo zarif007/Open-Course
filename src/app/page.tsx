@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 export default function Home() {
   const { setTheme } = useTheme();
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden my-8 md:my-24">
+    <main className="relative h-screen flex items-center justify-center overflow-x-hidden my-4 md:my-12">
       <div className="container pt-12 max-w-7xl w-full  h-full">
         <div className="h-full gap-6 flex flex-col justify-center items-center">
           <LargeHeading size="lg" className="three-d text-center ">
@@ -30,7 +30,9 @@ export default function Home() {
           <div className="flex space-x-4 flex-wrap justify-center items-center">
             <Link
               href="/dashboard"
-              className={`${buttonVariants({ variant: "bigButton" })} mt-4`}
+              className={`${buttonVariants({
+                variant: "bigButton",
+              })} mt-4 bg-[#0c10ed]`}
             >
               <span className="font-semibold">Create</span>
             </Link>
@@ -38,7 +40,7 @@ export default function Home() {
               href="/documentation"
               className={`${buttonVariants({
                 variant: "bigButton",
-              })} mt-4`}
+              })} mt-4 bg-[#00facc]`}
             >
               <span className="font-semibold">Enroll</span>
             </Link>
