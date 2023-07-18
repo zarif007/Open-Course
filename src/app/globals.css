@@ -14,3 +14,7 @@ body {
   background-clip: text;
   text-fill-color: transparent;
 }
+
+.gradient-bg {
+  background: linear-gradient(45deg, hsla(239, 90%, 49%, 1) 0%, hsla(169, 100%, 49%, 1) 70%);
+}

@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 
 export const headingVariants = cva(
-  "text-gray-950 dark:text-slate-50 text-center font-extrabold leading-tight tracking-tighter",
+  "text-gray-700 dark:text-slate-50 text-center font-extrabold leading-tight tracking-tighter",
   {
     variants: {
       size: {
         default: "text-4xl md:text-5xl lg:text-6xl",
-        lg: "text-4xl md:text-5xl lg:text-7xl",
+        lg: "text-5xl md:text-6xl lg:text-7xl",
         sm: "text-2xl md:text-3xl lg:text-4xl",
       },
     },
