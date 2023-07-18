@@ -44,7 +44,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <Image
+          {/* <Image
             priority
             className="md:h-96 md:w-96 h-72 w-72 rounded"
             quality={100}
@@ -53,7 +53,7 @@ export default function Home() {
             alt="banner"
             height="50"
             width="50"
-          />
+          /> */}
         </div>
       </div>
     </main>
