@@ -2,7 +2,7 @@ import React from "react";
 
 const NotifyBar = ({ text }: { text: string }) => {
   return (
-    <div className="mx-2 rounded-full gradient-bg p-[1px] text-center my-6 text-gray-800 font-semibold w-full max-w-3xl">
+    <div className="mx-2 rounded-full gradient-bg p-[1px] text-center mb-4 text-gray-300 font-semibold w-full max-w-3xl">
       {text}
     </div>
   );

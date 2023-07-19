@@ -18,9 +18,9 @@ const buttonVariants = cva(
         ghost:
           "bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent",
         link: "bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-black dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent",
-        bigButton: "py-6 px-8 bg-[#3f5efb] text-slate-100 text-xl font-bold",
+        bigButton: "py-6 px-8 bg-blue-700 text-slate-100 text-xl font-bold",
         bigButtonOutline:
-          "py-6 px-8 border-2 border-[#3f5efb] text-slate-600 dark:text-slate-100 text-xl font-bold",
+          "py-6 px-8 border-2 border-blue-700 text-slate-600 dark:text-slate-100 text-xl font-bold",
         general:
           "text-white bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-700 dark:hover:bg-blue-900 dark:focus:ring-blue-800",
         generalOutline:

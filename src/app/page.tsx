@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import NotifyBar from "@/components/ui/Notify.Bar";
+import CourseRotation from "@/components/CourseRotation";
+import TextAppearAnimation from "@/components/ui/TextAppearAnimation";
 
 export default function Home() {
   const { setTheme } = useTheme();
@@ -14,26 +16,22 @@ export default function Home() {
         <div className="h-full gap-6 flex flex-col justify-center items-center">
           <NotifyBar text="🤖 Create Courses with the Power of AI 🤖" />
           <LargeHeading size="lg" className="three-d text-center ">
-            <span className="">Join Any Course</span>
-          </LargeHeading>
-
-          <LargeHeading size="sm">
-            All for <span className="gradient-text">Free</span>
-          </LargeHeading>
-          <LargeHeading size="lg">
+            <span className="gradient-text">Join any Course</span> <br />
+            <TextAppearAnimation text="All for Free" />
             <div
               style={{
-                borderTop: "2px dashed #64748b",
+                borderTop: "2px dashed #1d4ed8",
                 margin: "12px 0",
               }}
             />
-            Curate, Create & Share
+            <span className="gradient-text">Curate, Create & Share</span> <br />
           </LargeHeading>
 
           {/* <Paragraph className="mx-auto">
             Define Schema, Select data type, Click generate, Get API endpoint{" "}
             <br />
           </Paragraph> */}
+          <CourseRotation />
           <div className="flex space-x-4 flex-wrap justify-center items-center">
             <Link
               href="/dashboard"

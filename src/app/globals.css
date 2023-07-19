@@ -8,7 +8,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(45deg, hsla(239, 90%, 49%, 1) 0%, hsla(169, 100%, 49%, 1) 70%);
+  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%);
   -webkit-background-clip: text; /* For Safari */
   -webkit-text-fill-color: transparent; /* For Safari */
   background-clip: text;
@@ -16,5 +16,5 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(45deg, hsla(239, 90%, 49%, 1) 0%, hsla(169, 100%, 49%, 1) 70%);
+  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%);
 }
