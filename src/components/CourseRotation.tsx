@@ -3,20 +3,19 @@ import React, { useEffect, useState } from "react";
 import LargeHeading from "./ui/LargeHeading";
 
 const CourseRotation = () => {
-  const [counter, setCounter] = useState<number>(0);
-
   const [currentCourseType, setCurrentCourseType] = useState(
-    courseTypes[counter]
+    courseTypes.length > 0 ? courseTypes[0] : null
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentCourseType(courseTypes[(counter + 1) % courseTypes.length]);
-      setCounter(counter + 1);
+      setCurrentCourseType(
+        courseTypes[Math.floor(Math.random() * courseTypes.length)]
+      );
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [counter]);
+  }, []);
   return <LargeHeading size="sm">{currentCourseType}</LargeHeading>;
 };
 

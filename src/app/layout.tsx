@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
         <ClientProviders>
           <body
-            className={`${inter.className} bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100 py-2`}
+            className={`${inter.className} bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100 py-2 h-full`}
           >
             <NavBar />
             {children}
