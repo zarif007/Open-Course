@@ -1,21 +1,23 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/Button";
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { PiSunDuotone } from "react-icons/pi";
 import { PiMoonStarsDuotone } from "react-icons/pi";
 import Link from "next/link";
+import AvatarDropdown from "./ui/Avatar.Dropdown";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { Button } from "./ui/Button";
 
 const NavBar = () => {
   const styles = {
     icon: `h-8 w-8`,
   };
-  const { isSignedIn, user, isLoaded } = useUser();
+
   const { theme, setTheme } = useTheme();
+  const { isSignedIn, user, isLoaded } = useUser();
   return (
-    <nav className="bg-slate-100 dark:bg-gray-950 fixed w-full z-20 top-0 left-0">
+    <nav className="bg-slate-100 dark:bg-gray-950 fixed w-full z-20 top-0 left-0 overflow-x-hidden">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {theme ? (
           <Link href="/" className="flex items-center">
@@ -44,17 +46,9 @@ const NavBar = () => {
               theme && <PiMoonStarsDuotone className={styles.icon} />
             )}
           </div>
+
           {isSignedIn ? (
-            <div className="flex items-center justify-center space-x-2 mx-1">
-              <img
-                src={user.profileImageUrl}
-                alt="profile image"
-                className="h-12 w-12 rounded-full border-2 p-[2px] border-blue-700"
-              />
-              {/* <SignOutButton>
-                <Button variant="general">Sign Out</Button>
-              </SignOutButton> */}
-            </div>
+            <AvatarDropdown />
           ) : (
             isLoaded && (
               <SignInButton mode="modal">
