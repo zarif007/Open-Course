@@ -20,17 +20,17 @@ const NavBar = () => {
         {theme ? (
           <Link href="/" className="flex items-center">
             <Image
-              src={theme === "dark" ? "/dark-logo.png" : "/light-logo.png"}
+              src={theme === "dark" ? "/dark.png" : "/light.png"}
               priority
               quality={100}
               height="100"
               width="100"
               alt="logo"
-              className="h-20 w-20"
+              className="h-16 w-16"
             />
           </Link>
         ) : (
-          <div className="h-20 w-20"></div>
+          <div className="h-16 w-16"></div>
         )}
         <div className="flex md:order-2 items-center justify-center space-x-2">
           <div
