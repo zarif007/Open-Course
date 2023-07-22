@@ -1,6 +1,8 @@
 import { courseTypes } from "@/utils/courseTypes";
 import React, { useEffect, useState } from "react";
 import LargeHeading from "./ui/LargeHeading";
+import TypewriterComponent from "typewriter-effect";
+import Typewriter from "react-ts-typewriter";
 
 const CourseRotation = () => {
   const [currentCourseType, setCurrentCourseType] = useState(
@@ -16,7 +18,11 @@ const CourseRotation = () => {
 
     return () => clearInterval(interval);
   }, []);
-  return <LargeHeading size="sm">{currentCourseType}</LargeHeading>;
+  return (
+    <LargeHeading size="sm" className="truncate">
+      <Typewriter text={courseTypes} delay={1000} />
+    </LargeHeading>
+  );
 };
 
 export default CourseRotation;
