@@ -11,7 +11,7 @@ import { Button } from "./ui/Button";
 
 const NavBar = () => {
   const styles = {
-    icon: `h-8 w-8`,
+    icon: `h-8 w-8 cursor-pointer`,
   };
 
   const { theme, setTheme } = useTheme();

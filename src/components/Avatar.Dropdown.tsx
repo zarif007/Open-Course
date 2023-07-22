@@ -31,7 +31,7 @@ const AvatarDropdown = () => {
             </div>
           )}
         </MenubarTrigger>
-        <MenubarContent className="border-2 border-slate-200 dark:border-gray-800 rounded">
+        <MenubarContent className="bg-slate-100 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 rounded">
           <MenubarItem className={styles.menuBarItems}>New Tab</MenubarItem>
           <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
           <MenubarItem className={styles.menuBarItems}>Share</MenubarItem>
