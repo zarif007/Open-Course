@@ -5,7 +5,7 @@ import Image from "next/image";
 import { PiSunDuotone } from "react-icons/pi";
 import { PiMoonStarsDuotone } from "react-icons/pi";
 import Link from "next/link";
-import AvatarDropdown from "./ui/Avatar.Dropdown";
+import AvatarDropdown from "./Avatar.Dropdown";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/Button";
 
