@@ -6,9 +6,11 @@ import CourseTopicsSidebar from "./CourseTopics.Sidebar";
 const CourseTopics = ({
   showCourseTopics,
   setShowCourseTopics,
+  mode,
 }: {
   showCourseTopics: boolean;
   setShowCourseTopics: React.Dispatch<React.SetStateAction<boolean>>;
+  mode: 'creation' | 'edit' | 'view';
 }) => {
   const styles = {
     icon: `w-10 h-10 text-gray-900 dark:text-slate-100 ${
@@ -24,9 +26,9 @@ const CourseTopics = ({
         <MdOutlineMenuOpen className={styles.icon} />
       </div>
       <div className="flex md:hidden ml-2 lg:ml-6 justify-start fixed cursor-pointer">
-        <CourseTopicsSheet />
+        <CourseTopicsSheet mode={mode} />
       </div>
-      {showCourseTopics && <CourseTopicsSidebar />}
+      {showCourseTopics && <CourseTopicsSidebar mode={mode} />}
     </React.Fragment>
   );
 };

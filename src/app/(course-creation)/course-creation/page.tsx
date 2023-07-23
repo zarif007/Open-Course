@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import CourseTopics from './../../../components/CourseTopics';
+import CourseTopics from '@/components/CourseTopics';
+import CourseTopicCreation from "@/components/CourseTopicCreation";
+
+const MODE = 'creation';
 
 const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
@@ -10,7 +13,7 @@ const CourseCreation = () => {
       
       <div className="flex">
         {/* Left */}
-        <CourseTopics showCourseTopics={showCourseTopics} setShowCourseTopics={setShowCourseTopics} />
+        <CourseTopics showCourseTopics={showCourseTopics} setShowCourseTopics={setShowCourseTopics} mode={MODE} />
 
         {/* Right */}
         <div
@@ -18,15 +21,7 @@ const CourseCreation = () => {
             showCourseTopics ? "w-full md:w-9/12" : "w-full"
           }  ml-auto rounded mt-6`}
         >
-          <div className="w-full max-w-5xl mx-auto">
-            <div className="m-3">
-            {Array(100)
-              .fill(0)
-              .map((elm, index) => (
-                <p key={index}>{elm}</p>
-              ))}
-            </div>
-          </div>
+          <CourseTopicCreation />
         </div>
       </div>
     </section>

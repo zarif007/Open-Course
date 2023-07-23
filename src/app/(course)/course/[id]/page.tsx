@@ -1,12 +1,15 @@
 "use client";
+import CourseContents from "@/components/CourseContents";
 import CourseTopics from "@/components/CourseTopics";
 import React, { useState } from "react";
 
 interface PageParams {
-    params: {
-      id: string;
-    };
-  }
+  params: {
+    id: string;
+  };
+}
+
+const MODE = 'view';
 
 const Course = ({ params }: PageParams) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
@@ -15,7 +18,11 @@ const Course = ({ params }: PageParams) => {
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       <div className="flex">
         {/* Left */}
-        <CourseTopics showCourseTopics={showCourseTopics} setShowCourseTopics={setShowCourseTopics} />
+        <CourseTopics
+          showCourseTopics={showCourseTopics}
+          setShowCourseTopics={setShowCourseTopics}
+          mode={MODE}
+        />
 
         {/* Right */}
         <div
@@ -23,15 +30,7 @@ const Course = ({ params }: PageParams) => {
             showCourseTopics ? "w-full md:w-9/12" : "w-full"
           }  ml-auto rounded mt-6`}
         >
-          <div className="w-full max-w-5xl mx-auto">
-            <div className="m-3">
-            {Array(100)
-              .fill(0)
-              .map((elm, index) => (
-                <p key={index}>{elm}</p>
-              ))}
-            </div>
-          </div>
+          <CourseContents />
         </div>
       </div>
     </section>

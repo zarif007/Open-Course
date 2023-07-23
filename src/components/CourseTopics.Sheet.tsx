@@ -2,20 +2,21 @@ import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import CourseTopic from "./CourseTopic";
-import CircleProgressBar from "./CircleProgress.Bar";
 import Paragraph from "./ui/Paragraph";
+import CourseProgressBar from "./CourseProgress.Bar";
 
-const CourseTopicsSheet = () => {
+const CourseTopicsSheet = ({ mode }: { mode: 'creation' | 'edit' | 'view' }) => {
   return (
     <Sheet>
       <SheetTrigger>
         <MdOutlineMenuOpen className="w-10 h-10 text-gray-900 dark:text-slate-100" />
       </SheetTrigger>
       <SheetContent
-        className="bg-slate-100 dark:bg-gray-950 border-2 border-slate-300 dark:border-gray-800 p-0 min-h-screen overflow-y-auto"
+        className="bg-slate-100 dark:bg-gray-950 border-2 border-slate-300 dark:border-gray-800 p-0 h-full overflow-y-auto"
         side="left"
       >
-        <div className="overflow-y-auto h-[80vh] mt-12">
+        <div className={`overflow-y-auto ${mode === 'view' ? 'h-[80vh]' : 'h-[88vh]'} mt-12`}>
+          <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
           {Array(15)
             .fill(0)
             .map((elm, index) => (
@@ -27,10 +28,9 @@ const CourseTopicsSheet = () => {
               />
             ))}
         </div>
-        <div className="border-2 border-slate-300 dark:border-gray-800 p-2 m-2 rounded-md flex items-center justify-center space-x-2">
-          <CircleProgressBar value={0.66} />
-          <Paragraph className="font-semibold">6/9</Paragraph>
-        </div>
+        {
+          mode === 'view' && <CourseProgressBar completed={6} outOf={9} styles="p-2 m-2" />
+        }
       </SheetContent>
     </Sheet>
   );
