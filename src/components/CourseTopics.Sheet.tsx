@@ -4,8 +4,9 @@ import { MdOutlineMenuOpen } from "react-icons/md";
 import CourseTopic from "./CourseTopic";
 import Paragraph from "./ui/Paragraph";
 import CourseProgressBar from "./CourseProgress.Bar";
+import { ICourseTopic } from "@/types/courseTopic";
 
-const CourseTopicsSheet = ({ mode }: { mode: 'creation' | 'edit' | 'view' }) => {
+const CourseTopicsSheet = ({ courseTopics, setCurrentCourseTopic, mode }: { courseTopics: ICourseTopic[], setCurrentCourseTopic: React.Dispatch<React.SetStateAction<ICourseTopic>> , mode: 'creation' | 'edit' | 'view' }) => {
   return (
     <Sheet>
       <SheetTrigger>
@@ -17,16 +18,15 @@ const CourseTopicsSheet = ({ mode }: { mode: 'creation' | 'edit' | 'view' }) => 
       >
         <div className={`overflow-y-auto ${mode === 'view' ? 'h-[80vh]' : 'h-[88vh]'} mt-12`}>
           <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
-          {Array(15)
-            .fill(0)
-            .map((elm, index) => (
-              <CourseTopic
-                key={index}
-                index={index + 1}
-                title="Https fundamentals Https fundamentals Https fundamentals Https fundamentals"
-                description="Https fundamentals"
-              />
-            ))}
+          {
+          courseTopics.map((courseTopic: ICourseTopic, index: number) => {
+            return (
+              <div key={index} onClick={() => setCurrentCourseTopic(courseTopic)}>
+                <CourseTopic  index={index + 1} title={courseTopic.title} description="hi how are you?" mode={mode} />
+              </div>
+            )
+          })
+        }
         </div>
         {
           mode === 'view' && <CourseProgressBar completed={6} outOf={9} styles="p-2 m-2" />

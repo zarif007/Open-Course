@@ -2,14 +2,19 @@ import React from "react";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import CourseTopicsSheet from "./CourseTopics.Sheet";
 import CourseTopicsSidebar from "./CourseTopics.Sidebar";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const CourseTopics = ({
+  courseTopics,
   showCourseTopics,
   setShowCourseTopics,
+  setCurrentCourseTopic,
   mode,
 }: {
+  courseTopics: ICourseTopic[],
   showCourseTopics: boolean;
   setShowCourseTopics: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentCourseTopic: React.Dispatch<React.SetStateAction<ICourseTopic>>;
   mode: 'creation' | 'edit' | 'view';
 }) => {
   const styles = {
@@ -26,9 +31,9 @@ const CourseTopics = ({
         <MdOutlineMenuOpen className={styles.icon} />
       </div>
       <div className="flex md:hidden ml-2 lg:ml-6 justify-start fixed cursor-pointer">
-        <CourseTopicsSheet mode={mode} />
+        <CourseTopicsSheet courseTopics={courseTopics} setCurrentCourseTopic={setCurrentCourseTopic} mode={mode} />
       </div>
-      {showCourseTopics && <CourseTopicsSidebar mode={mode} />}
+      {showCourseTopics && <CourseTopicsSidebar courseTopics={courseTopics} setCurrentCourseTopic={setCurrentCourseTopic} mode={mode} />}
     </React.Fragment>
   );
 };
