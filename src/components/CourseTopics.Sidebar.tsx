@@ -7,7 +7,7 @@ import Paragraph from "./ui/Paragraph";
 
 const CourseTopicsSidebar = () => {
   return (
-    <div className={`hidden md:inline w-3/12 fixed rounded mt-8`}>
+    <div className={`hidden md:inline w-3/12 fixed rounded mt-8 min-h-screen`}>
       <div className="overflow-y-auto h-[70vh] m-4 ml-0 lg:ml-4">
         {Array(15)
           .fill(0)

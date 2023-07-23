@@ -20,9 +20,11 @@ const CourseTopic = ({
     <section className="m-2 border-2 border-slate-300 dark:border-gray-800 hover:border-blue-700 hover:dark:border-blue-700  bg-slate-100 dark:bg-gray-950 px-4 md:px-6 py-2 rounded cursor-pointer">
       <div className="flex items-center">
         <div>
-          <Paragraph className="truncate-text-1-line">
-            {`${index}. `} <span className="font-bold">{title}</span>{" "}
-          </Paragraph>
+          <TooltipComponent content={title}>
+            <Paragraph className="truncate-text-1-line text-start">
+              {`${index}. `} <span className="font-bold">{title}</span>{" "}
+            </Paragraph>
+          </TooltipComponent>
           <Paragraph size="sm" className="truncate-text-1-line">
             {description}
           </Paragraph>

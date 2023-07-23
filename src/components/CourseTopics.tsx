@@ -16,7 +16,7 @@ const CourseTopics = ({
     }`,
   };
   return (
-    <div>
+    <React.Fragment>
       <div
         className="hidden md:flex ml-2 lg:ml-6 justify-start fixed cursor-pointer"
         onClick={() => setShowCourseTopics(!showCourseTopics)}
@@ -27,7 +27,7 @@ const CourseTopics = ({
         <CourseTopicsSheet />
       </div>
       {showCourseTopics && <CourseTopicsSidebar />}
-    </div>
+    </React.Fragment>
   );
 };
 

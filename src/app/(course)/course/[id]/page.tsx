@@ -1,13 +1,18 @@
 "use client";
+import CourseTopics from "@/components/CourseTopics";
 import React, { useState } from "react";
-import CourseTopics from './../../../components/CourseTopics';
 
-const CourseCreation = () => {
+interface PageParams {
+    params: {
+      id: string;
+    };
+  }
+
+const Course = ({ params }: PageParams) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      
       <div className="flex">
         {/* Left */}
         <CourseTopics showCourseTopics={showCourseTopics} setShowCourseTopics={setShowCourseTopics} />
@@ -33,4 +38,4 @@ const CourseCreation = () => {
   );
 };
 
-export default CourseCreation;
+export default Course;

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Create Course | Open Course",
+  title: "Course Details | Open Course",
   description: "Curate, Create & Share",
 };
 
