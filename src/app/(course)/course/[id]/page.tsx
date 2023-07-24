@@ -15,6 +15,12 @@ const MODE = 'view';
 const Course = ({ params }: PageParams) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
   const [courseTopics] = useState<ICourseTopic[]>([]);
+  const [currentCourseTopic, setCurrentCourseTopic] = useState<ICourseTopic>({
+    id: '',
+    title: '',
+    description: '',
+    url: ''
+  })
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       <div className="flex">
@@ -23,6 +29,7 @@ const Course = ({ params }: PageParams) => {
           courseTopics={courseTopics}
           showCourseTopics={showCourseTopics}
           setShowCourseTopics={setShowCourseTopics}
+          setCurrentCourseTopic={setCurrentCourseTopic}
           mode={MODE}
         />
 
