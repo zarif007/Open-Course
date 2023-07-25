@@ -16,8 +16,12 @@ const CourseTopicCreationTabs = ({
   return (
     <Tabs defaultValue="create" className="w-full mx-auto px-4">
       <TabsList>
-        <TabsTrigger value="create">Create</TabsTrigger>
-        <TabsTrigger value="preview">Preview</TabsTrigger>
+        <TabsTrigger className="font-semibold" value="create">
+          Create
+        </TabsTrigger>
+        <TabsTrigger className="font-semibold" value="preview">
+          Preview
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="create">
         <CourseTopicCreationForm

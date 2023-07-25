@@ -15,11 +15,10 @@ const CourseTopicCreationForm = ({
   courseTopic: ICourseTopic;
   setCourseTopic: React.Dispatch<React.SetStateAction<ICourseTopic>>;
 }) => {
-  const topicCreationSchema: ZodType<ICourseTopic> = z
-    .object({
-      title: z.string().min(2).max(50),
-      url: z.string().url({ message: "Invalid url" }),
-    })
+  const topicCreationSchema: ZodType<ICourseTopic> = z.object({
+    title: z.string().min(2).max(50),
+    url: z.string().url({ message: "Invalid url" }),
+  });
   const {
     register,
     handleSubmit,
@@ -30,18 +29,20 @@ const CourseTopicCreationForm = ({
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     title: "",
     url: "",
-    id: '',
-    description: ''
+    id: "",
+    description: "",
   });
 
   useEffect(() => {
     setDefaultValue(courseTopic);
-  }, [courseTopic])
+    reset(courseTopic);
+  }, [courseTopic]);
 
   const onSubmit = (data: ICourseTopic) => {
-    submitData(data); 
-    reset(); 
-    setCourseTopic({ title: "", url: "" }); 
+    submitData(data);
+    reset();
+    setCourseTopic({ title: "", url: "" });
+    setDefaultValue({ title: "", url: "" });
   };
 
   return (
@@ -57,7 +58,9 @@ const CourseTopicCreationForm = ({
           type="text"
           placeholder="How to train your Dragon Part-4565"
           {...register("title")}
-          onChange={(e) => setCourseTopic({ ...courseTopic, title: e.target.value })}
+          onChange={(e) =>
+            setCourseTopic({ ...courseTopic, title: e.target.value })
+          }
           defaultValue={defaultValue.title}
           required
         />
@@ -71,7 +74,9 @@ const CourseTopicCreationForm = ({
           type="url"
           placeholder="https://www.youtube.com/watch?v=Tx0ntUobTu8"
           {...register("url")}
-          onChange={(e) => setCourseTopic({ ...courseTopic, url: e.target.value })}
+          onChange={(e) =>
+            setCourseTopic({ ...courseTopic, url: e.target.value })
+          }
           defaultValue={defaultValue.url}
           required
         />
@@ -84,18 +89,16 @@ const CourseTopicCreationForm = ({
           variant="general"
           className="dark:bg-slate-100 dark:text-gray-900"
         >
-         Submit
+          Submit
         </Button>
       </div>
     </form>
   );
 };
 
-const ErrorMessage = ({text}: {text: string | undefined}) => {
-    if(!text) return null
-  return (
-    <div className="text-red-600 font-sm font-semibold">{text}</div>
-  );
-}
+const ErrorMessage = ({ text }: { text: string | undefined }) => {
+  if (!text) return null;
+  return <div className="text-red-600 font-sm font-semibold">{text}</div>;
+};
 
 export default CourseTopicCreationForm;

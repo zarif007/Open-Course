@@ -8,13 +8,14 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
     "loading" | "available" | "unavailable"
   >("available");
   return (
-    <div className="mx-auto" style={{ width: "100%", height: "100vh" }}>
+    <div className="mx-auto mx-4" style={{ width: "100%", height: "100vh" }}>
       <LargeHeading size="sm">{courseTopic.title}</LargeHeading>
       {urlStatus === "loading" ? (
         <p>Loading...</p>
       ) : urlStatus === "available" ? (
         <iframe
           src={courseTopic.url}
+          className="rounded"
           width="100%"
           height="100%"
           title="Embedded Website"

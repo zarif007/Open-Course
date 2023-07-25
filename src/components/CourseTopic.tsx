@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Paragraph from "./ui/Paragraph";
-import { FcAddRow, FcApproval, FcLock } from "react-icons/fc";
+import { FcAddRow, FcApproval, FcLock, FcSettings } from "react-icons/fc";
 import TooltipComponent from "./TooltipComponent";
 import { ICourseTopic } from "@/types/courseTopic";
 
@@ -44,8 +44,8 @@ const CourseTopic = ({
             </TooltipComponent>
           )
         ) : (
-          <TooltipComponent content="Done">
-            <FcAddRow className={styles.icon} />
+          <TooltipComponent content="Settings">
+            <FcSettings className={styles.icon} />
           </TooltipComponent>
         )}
       </div>
