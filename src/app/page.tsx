@@ -5,6 +5,7 @@ import Link from "next/link";
 import NotifyBar from "@/components/ui/Notify.Bar";
 import CourseRotation from "@/components/CourseRotation";
 import SocialMediaLogoBar from "@/components/SocialMediaLogo.Bar";
+import TextAppearAnimation from "@/components/ui/TextAppearAnimation";
 
 export default function Home() {
   return (
@@ -15,10 +16,10 @@ export default function Home() {
           <NotifyBar text="🤖 Create Courses with the Power of AI 🤖" />
           <LargeHeading size="lg" className="three-d text-center ">
             <span className="gradient-text">Join any Course</span> <br />
-            All for Free
+            <TextAppearAnimation text="All for Free" />
             <div
               style={{
-                borderTop: "2px dashed #1d4ed8",
+                borderTop: "2px dashed #f97316",
                 margin: "12px 0",
               }}
             />

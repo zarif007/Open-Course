@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import * as React from "react";
 
 const buttonVariants = cva(
-  "active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-blue-900 disabled:pointer-events-none dark:focus:ring-offset-black",
+  "active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-800 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-orange-900 disabled:pointer-events-none dark:focus:ring-offset-black",
   {
     variants: {
       variant: {
@@ -18,17 +18,17 @@ const buttonVariants = cva(
         ghost:
           "bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent",
         link: "bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-black dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent",
-        bigButton: "py-6 px-8 bg-blue-700 text-slate-100 text-xl font-bold",
+        bigButton: "py-6 px-8 bg-orange-500 text-slate-100 text-xl font-bold",
         bigButtonOutline:
-          "py-6 px-8 border-2 border-blue-700 text-slate-600 dark:text-slate-100 text-xl font-bold",
+          "py-6 px-8 border-2 border-orange-500 text-slate-600 dark:text-slate-100 text-xl font-bold",
         general:
           "text-slate-100 bg-gray-800 hover:bg-gray-950 focus:ring-2 focus:outline-none focus:ring-gray-900 dark:focus:ring-slate-300  font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-slate-100 dark:text-gray-900 dark:hover:bg-slate-300 dark:focus:ring-slate-300",
         generalOutline:
-          "text-white border-2 border-blue-700 hover:border-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-blue-700 dark:hover:border-blue-800 dark:focus:ring-blue-800",
+          "text-white border-2 border-orange-500 hover:border-orange-800 focus:ring-2 focus:outline-none focus:ring-orange-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-orange-500 dark:hover:border-orange-800 dark:focus:ring-orange-800",
         generalBlue:
-          "text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800",
+          "text-white bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:outline-none focus:ring-orange-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-orange-500 dark:hover:bg-orange-800 dark:focus:ring-orange-800",
         generalOutlineBlue:
-          "text-white border-2 border-blue-700 hover:border-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-blue-700 dark:hover:border-blue-800 dark:focus:ring-blue-800",
+          "text-white border-2 border-orange-500 hover:border-orange-800 focus:ring-2 focus:outline-none focus:ring-orange-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-orange-500 dark:hover:border-orange-800 dark:focus:ring-orange-800",
       },
       size: {
         default: "h-10 py-2 px-4",

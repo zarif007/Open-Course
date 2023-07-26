@@ -4,6 +4,7 @@ import LargeHeading from "./ui/LargeHeading";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopicCreationTabs from "./CourseTopicCreation.Tabs";
 import shortid from "shortid";
+import { toast } from "./ui/Toast";
 
 const CourseTopicCreation = ({
   currentCourseTopic,
@@ -23,6 +24,11 @@ const CourseTopicCreation = ({
     );
     console.log(filteredCourseTopics);
     setCourseTopics([...filteredCourseTopics, data]);
+    toast({
+      title: "Success",
+      message: "Topic Added Successfully",
+      type: "success",
+    });
   };
   return (
     <section className="mx-2">

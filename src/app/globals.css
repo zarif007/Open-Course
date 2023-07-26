@@ -8,7 +8,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%);
+  background: linear-gradient(to right, #ffaf00, #ff9900, #f59e0b, #ff8c00, #ff7d0a, #f97316, #ff6633);
   -webkit-background-clip: text; /* For Safari */
   -webkit-text-fill-color: transparent; /* For Safari */
   background-clip: text;
@@ -16,9 +16,10 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%);
+  background: linear-gradient(to right, #ffaf00, #ff9900, #f59e0b, #ff8c00, #ff7d0a, #f97316, #ff6633);
 }
 
+/* linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%) */
 .truncate-text-1-line {
   display: -webkit-box;
   -webkit-line-clamp: 1;

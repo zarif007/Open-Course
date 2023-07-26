@@ -11,7 +11,7 @@ import {
 
 const SocialMediaLogoBar = () => {
   const styles = {
-    icon: "h-12 w-12 text-blue-500",
+    icon: "h-12 w-12 text-orange-500",
   };
   return (
     <div className="flex space-x-3">

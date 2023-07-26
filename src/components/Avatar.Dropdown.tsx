@@ -26,7 +26,7 @@ const AvatarDropdown = () => {
               <img
                 src={user.profileImageUrl}
                 alt="profile image"
-                className="h-12 w-12 rounded-full border-2 p-[2px] border-blue-700"
+                className="h-12 w-12 rounded-full border-2 p-[2px] border-orange-500"
               />
             </div>
           )}
