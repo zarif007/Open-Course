@@ -3,6 +3,7 @@ import LargeHeading from "./ui/LargeHeading";
 
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopicCreationTabs from "./CourseTopicCreation.Tabs";
+import shortid from "shortid";
 
 const CourseTopicCreation = ({
   currentCourseTopic,
@@ -16,7 +17,12 @@ const CourseTopicCreation = ({
   setCourseTopics: React.Dispatch<React.SetStateAction<ICourseTopic[]>>;
 }) => {
   const submitData = (data: ICourseTopic) => {
-    setCourseTopics([...courseTopics, data]);
+    data.id = data.id !== "" ? data.id : shortid.generate();
+    const filteredCourseTopics = courseTopics.filter(
+      (courseTopic) => courseTopic.id !== data.id
+    );
+    console.log(filteredCourseTopics);
+    setCourseTopics([...filteredCourseTopics, data]);
   };
   return (
     <section className="mx-2">

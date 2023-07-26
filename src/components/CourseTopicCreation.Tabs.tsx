@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopicCreationForm from "./CourseTopicCreation.Form";
 import CourseContent from "./CourseContent";
+import { MdPreview } from "react-icons/md";
+import { IoIosCreate } from "react-icons/io";
 
 const CourseTopicCreationTabs = ({
   currentCourseTopic,
@@ -17,9 +19,11 @@ const CourseTopicCreationTabs = ({
     <Tabs defaultValue="create" className="w-full mx-auto px-4">
       <TabsList>
         <TabsTrigger className="font-semibold" value="create">
+          <IoIosCreate />
           Create
         </TabsTrigger>
         <TabsTrigger className="font-semibold" value="preview">
+          <MdPreview />
           Preview
         </TabsTrigger>
       </TabsList>

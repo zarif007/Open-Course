@@ -5,6 +5,7 @@ import { z, ZodType } from "zod";
 import { ICourseTopic } from "@/types/courseTopic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import shortid from "shortid";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -38,11 +39,15 @@ const CourseTopicCreationForm = ({
     reset(courseTopic);
   }, [courseTopic]);
 
+  const resetCourseTopic = () => {
+    setCourseTopic({ title: "", url: "", description: "", id: "" });
+    setDefaultValue({ title: "", url: "", description: "", id: "" });
+  };
+
   const onSubmit = (data: ICourseTopic) => {
     submitData(data);
     reset();
-    setCourseTopic({ title: "", url: "" });
-    setDefaultValue({ title: "", url: "" });
+    resetCourseTopic();
   };
 
   return (
@@ -89,8 +94,18 @@ const CourseTopicCreationForm = ({
           variant="general"
           className="dark:bg-slate-100 dark:text-gray-900"
         >
-          Submit
+          {courseTopic.id !== "" ? "Edit" : "Submit"}
         </Button>
+        {courseTopic.id !== "" && (
+          <Button
+            type="button"
+            variant="general"
+            className="dark:bg-slate-100 dark:text-gray-900"
+            onClick={resetCourseTopic}
+          >
+            Add Another
+          </Button>
+        )}
       </div>
     </form>
   );

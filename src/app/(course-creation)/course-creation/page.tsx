@@ -10,7 +10,7 @@ const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[]>([
     {
-      id: "01",
+      id: "",
       title: "Example101",
       url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
       description: "Just another example",
