@@ -1,7 +1,8 @@
 const url = require('url');
 
 function extractIdFromUrl(inputUrl: string) {
-  const parsedUrl = new URL(inputUrl);
+  try {
+    const parsedUrl = new URL(inputUrl);
 
   // Extract the ID from the URL based on the platform
   let id = '';
@@ -104,6 +105,9 @@ function extractIdFromUrl(inputUrl: string) {
   }
 
   return url;
+  } catch (error) {
+    return '';
+  }
 }
 
 function createEmbeddableUrls(inputUrl: string) {

@@ -10,16 +10,6 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
     "loading" | "available" | "unavailable"
   >("available");
 
-  // const RenderUrl = () => {
-  //   try { 
-  //     return (
-        
-  //     )
-  //   } catch (error) {
-  //     return <p>Nooo</p>
-  //   }
-  // }
-
   return (
     <div className="mx-auto " style={{ width: "100%", height: "60vh" }}>
       <LargeHeading

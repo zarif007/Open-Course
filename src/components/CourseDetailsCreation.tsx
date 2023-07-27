@@ -17,7 +17,7 @@ const CourseDetailsCreation = () => {
             defaultValue="New course on Dragon 🐉"
             className="my-1 h-10 text-lg bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md"
           /> */}
-          <Input className="h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0" defaultValue="My Dragon 🐉" />
+          <Input className="h-16 md:h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0" defaultValue="Dragon Training 🐉" />
         </div>
         <div className="w-full flex flex-col">
           <label htmlFor="text" className="font-bold">

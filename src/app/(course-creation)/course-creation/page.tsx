@@ -25,7 +25,7 @@ const CourseCreation = () => {
   });
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      <CourseDetailsCreation />
+      
       <div className="flex">
         {/* Left */}
         <CourseTopics
@@ -42,6 +42,7 @@ const CourseCreation = () => {
             showCourseTopics ? "w-full md:w-9/12" : "w-full"
           }  ml-auto rounded mt-6`}
         >
+          <CourseDetailsCreation />
           <CourseTopicCreation
             currentCourseTopic={currentCourseTopic}
             setCurrentCourseTopic={setCurrentCourseTopic}
