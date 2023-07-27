@@ -17,16 +17,18 @@ const CourseTopicCreation = ({
   courseTopics: ICourseTopic[];
   setCourseTopics: React.Dispatch<React.SetStateAction<ICourseTopic[]>>;
 }) => {
-  const submitData = (data: ICourseTopic) => {
-    data.id = data.id !== "" ? data.id : shortid.generate();
+  const submitData = async (data: ICourseTopic) => {
     const filteredCourseTopics = courseTopics.filter(
       (courseTopic) => courseTopic.id !== data.id
     );
-    console.log(filteredCourseTopics);
     setCourseTopics([...filteredCourseTopics, data]);
     toast({
       title: "Success",
-      message: "Topic Added Successfully",
+      message: `Topic ${
+        filteredCourseTopics.length !== courseTopics.length
+          ? "Updated"
+          : "Added"
+      } Successfully`,
       type: "success",
     });
   };

@@ -17,7 +17,7 @@ const CourseTopicCreationTabs = ({
 }) => {
   return (
     <Tabs defaultValue="create" className="w-full mx-auto px-4">
-      <TabsList>
+      <TabsList className="">
         <TabsTrigger className="font-semibold" value="create">
           <IoIosCreate />
           Create

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import CourseTopics from "@/components/CourseTopics";
 import CourseTopicCreation from "@/components/CourseTopicCreation";
 import { ICourseTopic } from "@/types/courseTopic";
+import CourseDetailsCreation from "@/components/CourseDetailsCreation";
 
 const MODE = "creation";
 
@@ -24,6 +25,7 @@ const CourseCreation = () => {
   });
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
+      <CourseDetailsCreation />
       <div className="flex">
         {/* Left */}
         <CourseTopics

@@ -45,7 +45,7 @@ const CourseTopicCreationForm = ({
   };
 
   const onSubmit = (data: ICourseTopic) => {
-    submitData(data);
+    submitData({ ...data, id: courseTopic.id !== '' ? courseTopic.id : shortid.generate() });
     reset();
     resetCourseTopic();
   };
