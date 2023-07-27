@@ -21,7 +21,9 @@ const CourseTopic = ({
   };
 
   return (
-    <section className="m-2 border-2 border-slate-300 dark:border-gray-800 hover:border-orange-500 hover:dark:border-orange-500  bg-slate-100 dark:bg-gray-950 px-4 md:px-6 py-2 rounded cursor-pointer">
+    <section
+      className={`m-2 border-2 border-slate-300 dark:border-gray-800 hover:border-orange-500 hover:dark:border-orange-500  bg-slate-100 dark:bg-gray-950 px-4 md:px-6 py-2 rounded cursor-pointer`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <TooltipComponent content={title}>

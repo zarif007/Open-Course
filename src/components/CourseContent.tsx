@@ -1,6 +1,7 @@
 import { ICourseTopic } from "@/types/courseTopic";
 import React, { useEffect, useState } from "react";
 import LargeHeading from "./ui/LargeHeading";
+import Embed from "react-embed";
 
 function isYouTubeURL(url: string) {
   const youtubeRegex =
@@ -61,7 +62,7 @@ function getYouTubeVideoID(url: string) {
 function getEmbeddableLink(url: string) {
   const domain = new URL(url).hostname.toLowerCase().slice(4);
 
-  console.log(domain)
+  console.log(domain);
   switch (domain) {
     case "youtube.com":
     case "u.be":
@@ -103,15 +104,7 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
       {urlStatus === "loading" ? (
         <p>Loading...</p>
       ) : urlStatus === "available" ? (
-        <iframe
-          src={getEmbeddableLink(courseTopic.url)}
-          className="rounded"
-          width="100%"
-          height="100%"
-          title="Embedded Website"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        <Embed url={courseTopic.url} />
       ) : (
         <p>{courseTopic.url}</p>
       )}
