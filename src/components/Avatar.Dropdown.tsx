@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/Menu.Bar";
 
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
 const AvatarDropdown = () => {
   const styles = {
     menuBarItems:
@@ -23,11 +24,10 @@ const AvatarDropdown = () => {
         <MenubarTrigger>
           {user && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
-              <img
-                src={user.profileImageUrl}
-                alt="profile image"
-                className="h-12 w-12 rounded-full border-2 p-[2px] border-orange-500"
-              />
+              <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-orange-500">
+                <AvatarImage src={user.profileImageUrl} />
+                <AvatarFallback>DP</AvatarFallback>
+              </Avatar>
             </div>
           )}
         </MenubarTrigger>

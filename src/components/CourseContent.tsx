@@ -23,7 +23,7 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
       ) : urlStatus === "available" ? (
         <iframe
             src={createEmbeddableUrls(courseTopic.url)}
-            className="border-[3px] border-orange-500 rounded"
+            className="border-[3px] border-orange-500 rounded "
             width="100%"
             height="100%"
             title="Embedded Website"
