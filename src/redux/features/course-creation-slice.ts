@@ -13,14 +13,14 @@ const initialState = {
   value: {
     courseTopics: [
       {
-        id: "",
+        id: 0,
         title: "Example101",
         url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
         description: "Just another example",
       },
     ],
     currentCourseTopic: {
-      id: "",
+      id: -1,
       title: "",
       description: "",
       url: "",

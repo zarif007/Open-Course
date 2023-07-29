@@ -1,6 +1,6 @@
 "use client";
 import CourseContents from "@/components/CourseContents";
-import CourseTopics from "@/components/CourseTopics";
+import CourseTopics from "@/components/CourseTopics.Bar";
 import { ICourseTopic } from "@/types/courseTopic";
 import React, { useState } from "react";
 

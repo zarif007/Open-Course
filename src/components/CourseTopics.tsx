@@ -1,39 +1,34 @@
-import React from "react";
-import { MdOutlineMenuOpen } from "react-icons/md";
-import CourseTopicsSheet from "./CourseTopics.Sheet";
-import CourseTopicsSidebar from "./CourseTopics.Sidebar";
-import { ICourseTopic } from "@/types/courseTopic";
+"use client";
 
-const CourseTopics = ({
-  courseTopics,
-  showCourseTopics,
-  setShowCourseTopics,
-  setCurrentCourseTopic,
-  mode,
-}: {
-  courseTopics: ICourseTopic[],
-  showCourseTopics: boolean;
-  setShowCourseTopics: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentCourseTopic: React.Dispatch<React.SetStateAction<ICourseTopic>>;
-  mode: 'creation' | 'edit' | 'view';
-}) => {
-  const styles = {
-    icon: `w-10 h-10 text-gray-900 dark:text-slate-100 ${
-      !showCourseTopics && "rotate-180"
-    }`,
-  };
+import React from "react";
+import Paragraph from "./ui/Paragraph";
+import { ICourseTopic } from "@/types/courseTopic";
+import CourseTopic from "./CourseTopic";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { setCurrentCourseTopic } from "@/redux/features/course-creation-slice";
+import { useDispatch } from "react-redux";
+
+const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
+  const courseTopics = useAppSelector(
+    (state) => state.courseCreationReducer.value.courseTopics
+  );
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <React.Fragment>
-      <div
-        className="hidden md:flex ml-2 lg:ml-6 justify-start fixed cursor-pointer"
-        onClick={() => setShowCourseTopics(!showCourseTopics)}
-      >
-        <MdOutlineMenuOpen className={styles.icon} />
-      </div>
-      <div className="flex md:hidden ml-2 lg:ml-6 justify-start fixed cursor-pointer">
-        <CourseTopicsSheet courseTopics={courseTopics} setCurrentCourseTopic={setCurrentCourseTopic} mode={mode} />
-      </div>
-      {showCourseTopics && <CourseTopicsSidebar courseTopics={courseTopics} setCurrentCourseTopic={setCurrentCourseTopic} mode={mode} />}
+      <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
+      {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
+        return (
+          <div
+            key={index}
+            onClick={() => dispatch(setCurrentCourseTopic(courseTopic))}
+          >
+            <CourseTopic
+              courseTopic={courseTopic}
+              mode={mode}
+            />
+          </div>
+        );
+      })}
     </React.Fragment>
   );
 };

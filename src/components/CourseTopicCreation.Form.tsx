@@ -6,16 +6,24 @@ import { ICourseTopic } from "@/types/courseTopic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import shortid from "shortid";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setCurrentCourseTopic } from "@/redux/features/course-creation-slice";
 
 const CourseTopicCreationForm = ({
   submitData,
-  courseTopic,
-  setCourseTopic,
 }: {
   submitData: (data: ICourseTopic) => void;
-  courseTopic: ICourseTopic;
-  setCourseTopic: React.Dispatch<React.SetStateAction<ICourseTopic>>;
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const currentCourseTopic = useAppSelector(
+    (state) => state.courseCreationReducer.value.currentCourseTopic
+  );
+  const courseTopics = useAppSelector(
+    (state) => state.courseCreationReducer.value.courseTopics
+  );
+
   const topicCreationSchema: ZodType<ICourseTopic> = z.object({
     title: z.string().min(2).max(50),
     url: z.string().url({ message: "Invalid url" }),
@@ -30,24 +38,29 @@ const CourseTopicCreationForm = ({
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     title: "",
     url: "",
-    id: "",
+    id: -1,
     description: "",
   });
 
   useEffect(() => {
-    setDefaultValue(courseTopic);
-    reset(courseTopic);
-  }, [courseTopic]);
+    setDefaultValue(currentCourseTopic);
+    reset(currentCourseTopic);
+  }, [currentCourseTopic, reset]);
 
   const resetCourseTopic = () => {
-    setCourseTopic({ title: "", url: "", description: "", id: "" });
-    setDefaultValue({ title: "", url: "", description: "", id: "" });
+    dispatch(
+      setCurrentCourseTopic({ title: "", url: "", description: "", id: -1 })
+    );
+    setDefaultValue({ title: "", url: "", description: "", id: -1 });
   };
 
   const onSubmit = (data: ICourseTopic) => {
     submitData({
       ...data,
-      id: courseTopic.id !== "" ? courseTopic.id : shortid.generate(),
+      id:
+        currentCourseTopic.id && currentCourseTopic.id > 0
+          ? currentCourseTopic.id
+          : courseTopics.length + 1,
     });
     reset();
     resetCourseTopic();
@@ -67,7 +80,12 @@ const CourseTopicCreationForm = ({
           placeholder="How to train your Dragon Part-4565"
           {...register("title")}
           onChange={(e) =>
-            setCourseTopic({ ...courseTopic, title: e.target.value })
+            dispatch(
+              setCurrentCourseTopic({
+                ...currentCourseTopic,
+                title: e.target.value,
+              })
+            )
           }
           defaultValue={defaultValue.title}
           required
@@ -83,7 +101,12 @@ const CourseTopicCreationForm = ({
           placeholder="https://www.youtube.com/watch?v=Tx0ntUobTu8"
           {...register("url")}
           onChange={(e) =>
-            setCourseTopic({ ...courseTopic, url: e.target.value })
+            dispatch(
+              setCurrentCourseTopic({
+                ...currentCourseTopic,
+                url: e.target.value,
+              })
+            )
           }
           defaultValue={defaultValue.url}
           required
@@ -97,9 +120,11 @@ const CourseTopicCreationForm = ({
           variant="general"
           className="dark:bg-slate-100 dark:text-gray-900"
         >
-          {courseTopic.id !== "" ? "Edit" : "Submit"}
+          {currentCourseTopic.id && currentCourseTopic.id > 0
+            ? "Update"
+            : "Submit"}
         </Button>
-        {courseTopic.id !== "" && (
+        {currentCourseTopic.id && currentCourseTopic.id > 0 ? (
           <Button
             type="button"
             variant="general"
@@ -108,6 +133,8 @@ const CourseTopicCreationForm = ({
           >
             Add Another
           </Button>
+        ) : (
+          <></>
         )}
       </div>
     </form>

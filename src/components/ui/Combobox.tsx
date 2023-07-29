@@ -30,7 +30,7 @@ export function Combobox({ title, list, currentValues, setCurrentValues }: { tit
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between bg-gray-950 dark:bg-slate-100"
         >
           {value
             ? value
