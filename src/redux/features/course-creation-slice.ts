@@ -1,23 +1,27 @@
+import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IInitialState {
-    value: {
-        courseTopics: ICourseTopic[];
-        currentCourseTopic: ICourseTopic;
-    }
+  value: {
+    course: ICourse;
+    currentCourseTopic: ICourseTopic;
+  };
 }
 
 const initialState = {
   value: {
-    courseTopics: [
-      {
-        id: 0,
-        title: "Example101",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
-        description: "Just another example",
-      },
-    ],
+    course: {
+      title: "Dragon Training 🐉",
+      topics: [
+        {
+          id: 0,
+          title: "Example101",
+          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+          description: "Just another example",
+        },
+      ],
+    },
     currentCourseTopic: {
       id: -1,
       title: "",
@@ -31,14 +35,18 @@ export const courseCreation = createSlice({
   name: "courseCreation",
   initialState,
   reducers: {
-    setCourseTopics: (state, action: PayloadAction<ICourseTopic[]>) => {
-      state.value.courseTopics = action.payload;
+    setCourseForCreation: (state, action: PayloadAction<ICourse>) => {
+      state.value.course = action.payload;
     },
-    setCurrentCourseTopic: (state, action: PayloadAction<ICourseTopic>) => {
+    setCurrentCourseTopicForCreation: (
+      state,
+      action: PayloadAction<ICourseTopic>
+    ) => {
       state.value.currentCourseTopic = action.payload;
     },
-  }
+  },
 });
 
-export const { setCourseTopics, setCurrentCourseTopic } = courseCreation.actions;
+export const { setCourseForCreation, setCurrentCourseTopicForCreation } =
+  courseCreation.actions;
 export default courseCreation.reducer;

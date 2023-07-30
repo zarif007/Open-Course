@@ -1,8 +1,9 @@
 "use client";
 import CourseContents from "@/components/CourseContents";
+import CourseContentsTabs from "@/components/CourseContents.Tabs";
 import CourseDetails from "@/components/CourseDetails";
 import CourseTopics from "@/components/CourseTopics.Bar";
-import { setCourse } from "@/redux/features/course-view-slice";
+import { setCourseForView, setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 import { AppDispatch } from "@/redux/store";
 import { ICourse } from "@/types/course";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
@@ -30,7 +31,8 @@ const Course = ({ params }: PageParams) => {
       return data.data as ICourse;
     },
     onSuccess: (data) => {
-      dispatch(setCourse(data));
+      dispatch(setCourseForView(data));
+      dispatch(setCurrentCourseTopicForView(data.topics[0]))
     },
     onError: (error) => {
       console.log("error", error);
@@ -57,7 +59,7 @@ const Course = ({ params }: PageParams) => {
             }  ml-auto rounded mt-6`}
           >
             <CourseDetails />
-            <CourseContents />
+            <CourseContentsTabs />
           </div>
         </div>
       )}

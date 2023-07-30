@@ -4,11 +4,53 @@ import React, { useState } from "react";
 import CourseTopicsBar from "@/components/CourseTopics.Bar";
 import CourseTopicCreation from "@/components/CourseTopicCreation";
 import CourseDetailsCreation from "@/components/CourseDetailsCreation";
+import { useAppSelector } from "@/redux/store";
+import { Button } from "@/components/ui/Button";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { toast } from "@/components/ui/Toast";
+import { useRouter } from "next/navigation";
 
 const MODE = "creation";
 
 const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
+
+  const course = useAppSelector((state) => state.courseCreationReducer.value.course);
+
+  const { user } = useUser();
+
+  const router = useRouter();
+
+  const handleSubmit = async () => {
+    const courseData = {
+      ...course,
+      topics: course.topics.filter((topic) => topic.id !== 0),
+      creator: {
+        id: user?.id,
+        fullName: user?.fullName,
+        imageUrl: user?.imageUrl,
+        email: user?.emailAddresses[0].emailAddress,
+      },
+    }
+    try {
+      const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData)
+      toast({
+        title: "Course Created",
+        type: "success",
+        message: "Course Created Successfully",
+      })
+      router.push(`course/${data.data.id}`)
+    } catch (error) {
+      toast({
+        title: "Error",
+        type: "error",
+        message: "Something went wrong, Try again later",
+      })
+    } 
+  }
+
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       <div className="flex">
@@ -26,6 +68,13 @@ const CourseCreation = () => {
           }  ml-auto rounded mt-6`}
         >
           <CourseDetailsCreation />
+
+          <div className="flex justify-center md:justify-end p-3 md:p-6">
+            <Button variant="general" className="px-12 py-6 w-full md:w-fit mx-0" onClick={handleSubmit}>
+              Done Creating Course?
+            </Button>
+          </div>
+
           <CourseTopicCreation />
         </div>
       </div>

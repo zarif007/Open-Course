@@ -19,7 +19,8 @@ const CourseTopic = ({
   };
 
   const currentCourseTopic = useAppSelector(
-    (state) => state.courseCreationReducer.value.currentCourseTopic
+    (state) => mode === 'view' ? state.courseViewReducer.value.currentCourseTopic
+    : state.courseCreationReducer.value.currentCourseTopic
   );
 
   return (
@@ -35,7 +36,7 @@ const CourseTopic = ({
         <div>
           <TooltipComponent content={courseTopic.title}>
             <Paragraph className="truncate-text-1-line text-start">
-              {`${courseTopic.id}. `} <span className="font-bold">{courseTopic.title}</span>{" "}
+              <span className="font-bold">{courseTopic.title}</span>{" "}
             </Paragraph>
           </TooltipComponent>
           <Paragraph size="sm" className="truncate-text-1-line">

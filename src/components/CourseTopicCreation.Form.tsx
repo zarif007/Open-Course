@@ -5,10 +5,9 @@ import { z, ZodType } from "zod";
 import { ICourseTopic } from "@/types/courseTopic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import shortid from "shortid";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setCurrentCourseTopic } from "@/redux/features/course-creation-slice";
+import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -20,8 +19,8 @@ const CourseTopicCreationForm = ({
   const currentCourseTopic = useAppSelector(
     (state) => state.courseCreationReducer.value.currentCourseTopic
   );
-  const courseTopics = useAppSelector(
-    (state) => state.courseCreationReducer.value.courseTopics
+  const course = useAppSelector(
+    (state) => state.courseCreationReducer.value.course
   );
 
   const topicCreationSchema: ZodType<ICourseTopic> = z.object({
@@ -50,7 +49,7 @@ const CourseTopicCreationForm = ({
 
   const resetCourseTopic = () => {
     dispatch(
-      setCurrentCourseTopic({ title: "", url: "", description: "", id: -1 })
+      setCurrentCourseTopicForCreation({ title: "", url: "", description: "", id: -1 })
     );
     setDefaultValue({ title: "", url: "", description: "", id: -1 });
   };
@@ -61,7 +60,7 @@ const CourseTopicCreationForm = ({
       id:
         currentCourseTopic.id && currentCourseTopic.id > 0
           ? currentCourseTopic.id
-          : (courseTopics && courseTopics.length > 0) ? (courseTopics[courseTopics.length - 1]?.id || 0) + 1 : 1,
+          : (course.topics && course.topics.length > 0) ? (course.topics[course.topics.length - 1]?.id || 0) + 1 : 1,
     });
     reset();
     resetCourseTopic();
@@ -82,7 +81,7 @@ const CourseTopicCreationForm = ({
           {...register("title")}
           onChange={(e) =>
             dispatch(
-              setCurrentCourseTopic({
+              setCurrentCourseTopicForCreation({
                 ...currentCourseTopic,
                 title: e.target.value,
               })
@@ -103,7 +102,7 @@ const CourseTopicCreationForm = ({
           {...register("url")}
           onChange={(e) =>
             dispatch(
-              setCurrentCourseTopic({
+              setCurrentCourseTopicForCreation({
                 ...currentCourseTopic,
                 url: e.target.value,
               })

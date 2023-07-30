@@ -5,22 +5,23 @@ import Paragraph from "./ui/Paragraph";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopic from "./CourseTopic";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { setCurrentCourseTopic } from "@/redux/features/course-creation-slice";
 import { useDispatch } from "react-redux";
+import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
+import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
-  const courseTopics = useAppSelector(
-    (state) => state.courseCreationReducer.value.courseTopics
+  const course = useAppSelector(
+    (state) => mode === "view" ? state.courseViewReducer.value.course: state.courseCreationReducer.value.course
   );
   const dispatch = useDispatch<AppDispatch>();
   return (
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
-      {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
+      {course.topics.map((courseTopic: ICourseTopic, index: number) => {
         return (
           <div
             key={index}
-            onClick={() => dispatch(setCurrentCourseTopic(courseTopic))}
+            onClick={() => dispatch(mode === 'view' ? setCurrentCourseTopicForView(courseTopic) : setCurrentCourseTopicForCreation(courseTopic))}
           >
             <CourseTopic
               courseTopic={courseTopic}
