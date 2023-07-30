@@ -10,7 +10,7 @@ const CourseDetailsCreation = () => {
   const submitData = () => {
     const course = {
       title: courseTitle,
-      courseTypes: selectedCourseTypes,
+      categories: selectedCourseTypes,
       courseTopics: courseTopics.filter(courseTopic => courseTopic.id !== 0),
     }
     console.log(course)

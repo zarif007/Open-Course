@@ -1,7 +1,6 @@
 "use client";
 import CourseContents from "@/components/CourseContents";
 import CourseTopics from "@/components/CourseTopics.Bar";
-import { ICourseTopic } from "@/types/courseTopic";
 import React, { useState } from "react";
 
 interface PageParams {
@@ -14,22 +13,13 @@ const MODE = 'view';
 
 const Course = ({ params }: PageParams) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
-  const [courseTopics] = useState<ICourseTopic[]>([]);
-  const [currentCourseTopic, setCurrentCourseTopic] = useState<ICourseTopic>({
-    id: '',
-    title: '',
-    description: '',
-    url: ''
-  })
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       <div className="flex">
         {/* Left */}
         <CourseTopics
-          courseTopics={courseTopics}
           showCourseTopics={showCourseTopics}
           setShowCourseTopics={setShowCourseTopics}
-          setCurrentCourseTopic={setCurrentCourseTopic}
           mode={MODE}
         />
 
