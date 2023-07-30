@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import courseCreationReducer from "./features/course-creation-slice";
+import courseViewReducer from './features/course-view-slice'
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     courseCreationReducer,
+    courseViewReducer
   },
 });
 

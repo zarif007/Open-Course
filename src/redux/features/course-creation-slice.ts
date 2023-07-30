@@ -5,7 +5,6 @@ export interface IInitialState {
     value: {
         courseTopics: ICourseTopic[];
         currentCourseTopic: ICourseTopic;
-        mode: "creation" | "edit" | "view";
     }
 }
 
@@ -25,7 +24,6 @@ const initialState = {
       description: "",
       url: "",
     },
-    mode: "creation"
   },
 } as IInitialState;
 

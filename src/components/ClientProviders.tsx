@@ -5,16 +5,20 @@ import { NextUIProvider } from "@nextui-org/react";
 import Head from "next/head";
 import { CssBaseline } from "@nextui-org/react";
 import ReduxProvider from "@/redux/Provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 const ClientProviders = ({ children }: { children: any }) => {
   return (
     <ReduxProvider>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <NextUIProvider>
-          <Head>{CssBaseline.flush()}</Head>
-          {children}
-        </NextUIProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <NextUIProvider>
+            <Head>{CssBaseline.flush()}</Head>
+            {children}
+          </NextUIProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </ReduxProvider>
   );
 };

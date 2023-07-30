@@ -22,7 +22,7 @@ const CourseDetailsCreationForm = ({
             Name of the Course
           </label>
           <Input
-            className="h-16 md:h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0"
+            className={`h-16 md:h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0`}
             defaultValue={courseTitle}
             onChange={(e) => setCourseTitle(e.target.value)}
           />

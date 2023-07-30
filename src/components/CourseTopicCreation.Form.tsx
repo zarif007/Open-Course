@@ -28,6 +28,7 @@ const CourseTopicCreationForm = ({
     title: z.string().min(2).max(50),
     url: z.string().url({ message: "Invalid url" }),
   });
+
   const {
     register,
     handleSubmit,
@@ -60,7 +61,7 @@ const CourseTopicCreationForm = ({
       id:
         currentCourseTopic.id && currentCourseTopic.id > 0
           ? currentCourseTopic.id
-          : courseTopics.length + 1,
+          : (courseTopics && courseTopics.length > 0) ? (courseTopics[courseTopics.length - 1]?.id || 0) + 1 : 1,
     });
     reset();
     resetCourseTopic();
