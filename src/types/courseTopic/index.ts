@@ -1,6 +1,11 @@
 export interface ICourseTopic {
-    id?: number;
-    title: string;
-    url: string;
-    description?: string;
+    id?: number | string;
+    topicID?: number;
+    versions: [
+        {
+            title: string;
+            url: string;
+            description?: string;
+        }
+    ]
 }

@@ -14,9 +14,14 @@ const initialState = {
     course: {},
     currentCourseTopic: {
       id: -1,
-      title: "",
-      description: "",
-      url: "",
+      topicID: -1,
+      versions: [
+        {
+          title: "",
+          description: "",
+          url: "",
+        }
+      ]
     },
   },
 } as IInitialState;

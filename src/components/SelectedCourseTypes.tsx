@@ -10,7 +10,7 @@ const SelectedCourseTypes = ({
       {selectedCourseTypes.map((selectedCourseType, index) => (
         <div
           key={index}
-          className="w-fit p-1 m-1 text-xs font-semibold bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md"
+          className="w-fit p-1 m-1 ml-0 text-xs font-semibold bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md"
         >
           {selectedCourseType}
         </div>

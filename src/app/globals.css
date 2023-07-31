@@ -7,6 +7,10 @@ body {
   @apply bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100;
 }
 
+.tw-gradient-text {
+  @apply bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 bg-clip-text text-transparent
+}
+
 .gradient-text {
   background: linear-gradient(to right, #ffaf00, #ff9900, #f59e0b, #ff8c00, #ff7d0a, #f97316, #ff6633);
   -webkit-background-clip: text; /* For Safari */

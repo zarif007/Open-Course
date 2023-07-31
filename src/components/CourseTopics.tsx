@@ -24,6 +24,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
             onClick={() => dispatch(mode === 'view' ? setCurrentCourseTopicForView(courseTopic) : setCurrentCourseTopicForCreation(courseTopic))}
           >
             <CourseTopic
+              index={index}
               courseTopic={courseTopic}
               mode={mode}
             />

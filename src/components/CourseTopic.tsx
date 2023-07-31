@@ -8,9 +8,11 @@ import { useAppSelector } from "@/redux/store";
 import { ICourseTopic } from '@/types/courseTopic';
 
 const CourseTopic = ({
+  index,
   courseTopic,
   mode,
 }: {
+  index: number;
   courseTopic: ICourseTopic;
   mode: "creation" | "edit" | "view";
 }) => {
@@ -26,7 +28,7 @@ const CourseTopic = ({
   return (
     <section
       className={`m-2 border-2 ${
-        courseTopic.id === currentCourseTopic.id
+        courseTopic.topicID === currentCourseTopic.topicID
           ? "dark:border-orange-500 border-orange-500"
           : "border-slate-300 dark:border-gray-800"
       } bg-slate-100 dark:bg-gray-950 px-4 md:px-6 py-2 rounded cursor-pointer
@@ -34,9 +36,9 @@ const CourseTopic = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <TooltipComponent content={courseTopic.title}>
+          <TooltipComponent content={courseTopic.versions[courseTopic.versions.length - 1].title}>
             <Paragraph className="truncate-text-1-line text-start">
-              <span className="font-bold">{courseTopic.title}</span>{" "}
+              {courseTopic.topicID}. <span className="font-bold">{courseTopic.versions[courseTopic.versions.length - 1].title}</span>{" "}
             </Paragraph>
           </TooltipComponent>
           <Paragraph size="sm" className="truncate-text-1-line">
@@ -45,7 +47,7 @@ const CourseTopic = ({
           </Paragraph>
         </div>
         {mode === "view" ? (
-          (courseTopic.id && courseTopic.id > 7) ? (
+          (courseTopic.topicID && courseTopic.topicID > 7) ? (
             <TooltipComponent content="Locked">
               <FcLock className={styles.icon} />
             </TooltipComponent>

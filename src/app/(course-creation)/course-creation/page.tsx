@@ -17,6 +17,8 @@ const MODE = "creation";
 const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const course = useAppSelector((state) => state.courseCreationReducer.value.course);
 
   const { user } = useUser();
@@ -24,6 +26,10 @@ const CourseCreation = () => {
   const router = useRouter();
 
   const handleSubmit = async () => {
+    if(isLoading) return;
+
+    setIsLoading(true);
+
     const courseData = {
       ...course,
       topics: course.topics.filter((topic) => topic.id !== 0),
@@ -48,7 +54,9 @@ const CourseCreation = () => {
         type: "error",
         message: "Something went wrong, Try again later",
       })
-    } 
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -69,13 +77,13 @@ const CourseCreation = () => {
         >
           <CourseDetailsCreation />
 
-          <div className="flex justify-center md:justify-end p-3 md:p-6">
-            <Button variant="general" className="px-12 py-6 w-full md:w-fit mx-0" onClick={handleSubmit}>
+          <CourseTopicCreation />
+
+          <div className="flex justify-center p-3 md:p-6">
+            <Button variant="general" className="px-12 py-6 w-full md:w-[75%] mx-0" onClick={handleSubmit} isLoading={isLoading}>
               Done Creating Course?
             </Button>
           </div>
-
-          <CourseTopicCreation />
         </div>
       </div>
     </section>

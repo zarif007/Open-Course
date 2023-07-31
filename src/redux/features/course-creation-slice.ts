@@ -16,17 +16,27 @@ const initialState = {
       topics: [
         {
           id: 0,
-          title: "Example101",
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
-          description: "Just another example",
+          topicID: 0,
+          versions: [
+            {
+              title: "Example101",
+              url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+              description: "Just another example",
+            }
+          ]
         },
       ],
     },
     currentCourseTopic: {
       id: -1,
-      title: "",
-      description: "",
-      url: "",
+      topicID: -1,
+      versions: [
+        {
+          title: "",
+          description: "",
+          url: "",
+        }
+      ],
     },
   },
 } as IInitialState;

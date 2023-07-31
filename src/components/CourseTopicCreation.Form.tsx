@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
+import { Textarea } from "./ui/Textarea";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -23,9 +24,10 @@ const CourseTopicCreationForm = ({
     (state) => state.courseCreationReducer.value.course
   );
 
-  const topicCreationSchema: ZodType<ICourseTopic> = z.object({
+  const topicCreationSchema: ZodType<{ title: string; url: string; description: string }> = z.object({
     title: z.string().min(2).max(50),
     url: z.string().url({ message: "Invalid url" }),
+    description: z.string().min(0).max(500),
   });
 
   const {
@@ -33,34 +35,40 @@ const CourseTopicCreationForm = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ICourseTopic>({ resolver: zodResolver(topicCreationSchema) });
+  } = useForm<{ title: string; url: string; description: string }>({ resolver: zodResolver(topicCreationSchema) });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
-    title: "",
-    url: "",
-    id: -1,
-    description: "",
+    versions: [
+      {
+        title: "",
+        url: "",
+        description: "",
+      }
+    ],
+    topicID: -1,
   });
 
   useEffect(() => {
     setDefaultValue(currentCourseTopic);
-    reset(currentCourseTopic);
+    reset(currentCourseTopic.versions[0]);
   }, [currentCourseTopic, reset]);
 
   const resetCourseTopic = () => {
     dispatch(
-      setCurrentCourseTopicForCreation({ title: "", url: "", description: "", id: -1 })
+      setCurrentCourseTopicForCreation({ versions: [{ title: "", url: "", description: "" }], topicID: -1 })
     );
-    setDefaultValue({ title: "", url: "", description: "", id: -1 });
+    setDefaultValue({ versions: [{ title: "", url: "", description: "" }], topicID: -1 });
   };
 
-  const onSubmit = (data: ICourseTopic) => {
+  const onSubmit = (data: { title: string; url: string, description: string }) => {
     submitData({
-      ...data,
-      id:
-        currentCourseTopic.id && currentCourseTopic.id > 0
-          ? currentCourseTopic.id
-          : (course.topics && course.topics.length > 0) ? (course.topics[course.topics.length - 1]?.id || 0) + 1 : 1,
+      versions: [
+        data,
+      ],
+      topicID:
+        currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+          ? currentCourseTopic.topicID
+          : (course.topics && course.topics.length > 0) ? (course.topics[course.topics.length - 1]?.topicID || 0) + 1 : 1,
     });
     reset();
     resetCourseTopic();
@@ -83,15 +91,21 @@ const CourseTopicCreationForm = ({
             dispatch(
               setCurrentCourseTopicForCreation({
                 ...currentCourseTopic,
-                title: e.target.value,
+                versions: [
+                  {
+                    ...currentCourseTopic.versions[0],
+                    title: e.target.value,
+                  }
+                ]
               })
             )
           }
-          defaultValue={defaultValue.title}
+          defaultValue={defaultValue.versions[0].title}
           required
         />
         <ErrorMessage text={errors.title?.message} />
       </div>
+
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <label htmlFor="url" className="font-bold">
           Link (YT / Blog URL)
@@ -104,13 +118,26 @@ const CourseTopicCreationForm = ({
             dispatch(
               setCurrentCourseTopicForCreation({
                 ...currentCourseTopic,
-                url: e.target.value,
+                versions: [
+                  {
+                    ...currentCourseTopic.versions[0],
+                    url: e.target.value,
+                  }
+                ]
               })
             )
           }
-          defaultValue={defaultValue.url}
+          defaultValue={defaultValue.versions[0].url}
           required
         />
+        <ErrorMessage text={errors.url?.message} />
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <label htmlFor="url" className="font-bold">
+          Description (Optional)
+        </label>
+        <Textarea {...register("description")} defaultValue="" placeholder="Huh!! I don't know" className="text-sm font-semibold" />
         <ErrorMessage text={errors.url?.message} />
       </div>
 
@@ -120,11 +147,11 @@ const CourseTopicCreationForm = ({
           variant="general"
           className="dark:bg-slate-100 dark:text-gray-900"
         >
-          {currentCourseTopic.id && currentCourseTopic.id > 0
+          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
             ? "Update"
             : "Submit"}
         </Button>
-        {currentCourseTopic.id && currentCourseTopic.id > 0 ? (
+        {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
           <Button
             type="button"
             variant="general"

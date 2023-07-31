@@ -14,7 +14,7 @@ const CourseTopicCreationTabs = ({
 }) => {
   const currentCourseTopic = useAppSelector((state) => state.courseCreationReducer.value.currentCourseTopic);
   return (
-    <Tabs defaultValue="create" className="w-full mx-auto px-4">
+    <Tabs defaultValue="create" className="w-full mx-auto px-2 md:px-4">
       <TabsList className="">
         <TabsTrigger className="font-semibold" value="create">
           <IoIosCreate />

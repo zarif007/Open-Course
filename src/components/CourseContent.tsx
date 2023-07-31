@@ -14,15 +14,15 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
     <div className="mx-auto " style={{ width: "100%", height: "60vh" }}>
       <LargeHeading
         size="sm"
-        onClick={() => console.log(createEmbeddableUrls(courseTopic.url))}
+        onClick={() => console.log(createEmbeddableUrls(courseTopic.versions[courseTopic.versions.length - 1].url))}
       >
-        {courseTopic.title}
+        {courseTopic.versions[courseTopic.versions.length - 1].title}
       </LargeHeading>
       {urlStatus === "loading" ? (
         <p>Loading...</p>
       ) : urlStatus === "available" ? (
         <iframe
-            src={createEmbeddableUrls(courseTopic.url)}
+            src={createEmbeddableUrls(courseTopic.versions[courseTopic.versions.length - 1].url)}
             className="border-[3px] border-orange-500 rounded "
             width="100%"
             height="100%"
@@ -31,7 +31,7 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
             allowFullScreen
           />
       ) : (
-        <p>{courseTopic.url}</p>
+        <p>{courseTopic.versions[courseTopic.versions.length - 1].url}</p>
       )}
     </div>
   );

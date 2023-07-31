@@ -13,19 +13,20 @@ const CourseTopicCreation = () => {
   const course = useAppSelector((state) => state.courseCreationReducer.value.course);
 
   const compare = (a: ICourseTopic, b: ICourseTopic) => {
-    if (typeof a.id === "number" && typeof b.id === "number") {
-      return a.id - b.id;
+    if (typeof a.topicID === "number" && typeof b.topicID === "number") {
+      return a.topicID - b.topicID;
     }
-    if (!a.id) return 1;
-    if (!b.id) return -1;
-    if (typeof a.id === "number") return -1;
+    if (!a.topicID) return 1;
+    if (!b.topicID) return -1;
+    if (typeof a.topicID === "number") return -1;
     return 1;
   }
   
   const submitData = async (data: ICourseTopic) => {
     const filteredCourseTopics = course.topics.filter(
-      (courseTopic) => courseTopic.id !== data.id
+      (courseTopic) => courseTopic.topicID !== data.topicID
     );
+    console.log(data)
     dispatch(setCourseForCreation({ ...course, topics: [...filteredCourseTopics, data].sort(compare) }));
     toast({
       title: "Success",
