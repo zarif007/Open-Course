@@ -10,40 +10,29 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
   const courseName = searchParams.get("courseName");
   const creator = searchParams.get("creator");
   const topics = searchParams.get("topics");
+  const imgUrl = searchParams.get("imgUrl");
   try {
     return new ImageResponse(
       (
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#fff",
-            fontSize: 32,
-            fontWeight: 600,
-          }}
-        >
-          <svg
-            width="75"
-            viewBox="0 0 75 65"
-            fill="#000"
-            style={{ margin: "0 75px" }}
-          >
-            <path d="M37.59.25l36.95 64H.64l36.95-64z"></path>
-          </svg>
-          <div style={{ marginTop: 40, fontSize: 60, fontWeight: 1000 }}>
-            {courseName}
+        <div tw="flex flex-col w-full h-full items-center justify-center bg-gray-950 border-2 border-slate-100">
+          <div tw=" flex w-full">
+            <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
+              <h2 tw="flex flex-col text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 text-left text-slate-100">
+                <span tw="text-6xl truncate max-w-[80%]">{courseName}</span>
+                <span tw="text-rose-600">by {creator}</span>
+                <span tw="truncate text-sm">{topics}</span>
+
+              </h2>
+              <div tw="mt-8 flex md:mt-0">
+                <img src={imgUrl || ''} alt="ff" tw="h-40 w-40 rounded" />
+              </div>
+            </div>
           </div>
-          <p>By {creator}</p>
-          <p>{topics}</p>
         </div>
       ),
       {
         width: 1200,
-        height: 600,
+        height: 300,
       }
     );
   } catch {

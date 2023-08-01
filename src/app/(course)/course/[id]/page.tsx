@@ -32,7 +32,6 @@ const Course = ({ params }: PageParams) => {
     },
     onSuccess: (data) => {
       dispatch(setCourseForView(data));
-      console.log('og', data)
       dispatch(setCurrentCourseTopicForView(data.topics[0]))
     },
     onError: (error) => {

@@ -2,10 +2,11 @@
 
 import React from "react";
 import Paragraph from "./ui/Paragraph";
-import { FcApproval, FcLock, FcSettings } from "react-icons/fc";
+import { FcApproval, FcLock, FcSettings, FcSportsMode } from "react-icons/fc";
 import TooltipComponent from "./TooltipComponent";
 import { useAppSelector } from "@/redux/store";
 import { ICourseTopic } from '@/types/courseTopic';
+import { getFavicon } from "@/utils/getFavicon";
 
 const CourseTopic = ({
   index,
@@ -18,10 +19,6 @@ const CourseTopic = ({
 }) => {
   const styles = {
     icon: "w-8 h-8",
-  };
-
-  const getFavicon = (url: string): string => {
-    return `https://www.google.com/s2/favicons?domain=${url}&sz=128`;
   };
 
   const faviconURL = getFavicon(courseTopic.versions[0].url);
@@ -53,6 +50,7 @@ const CourseTopic = ({
           </Paragraph>
         </div>
         {mode === "view" ? (
+          courseTopic.topicID === currentCourseTopic.topicID ? <FcSportsMode className={styles.icon} /> : 
           (courseTopic.topicID && courseTopic.topicID > 7) ? (
             <TooltipComponent content="Locked">
               <FcLock className={styles.icon} />

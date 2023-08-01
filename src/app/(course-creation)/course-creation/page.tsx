@@ -42,9 +42,7 @@ const CourseCreation = () => {
         imageUrl: user?.imageUrl,
         email: user?.emailAddresses[0].emailAddress,
       },
-      banner: `dsad`,
     };
-    console.log(course.banner)
     try {
       const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData);
       toast({
