@@ -20,6 +20,12 @@ const CourseTopic = ({
     icon: "w-8 h-8",
   };
 
+  const getFavicon = (url: string): string => {
+    return `https://www.google.com/s2/favicons?domain=${url}&sz=128`;
+  };
+
+  const faviconURL = getFavicon(courseTopic.versions[0].url);
+
   const currentCourseTopic = useAppSelector(
     (state) => mode === 'view' ? state.courseViewReducer.value.currentCourseTopic
     : state.courseCreationReducer.value.currentCourseTopic
@@ -43,7 +49,7 @@ const CourseTopic = ({
           </TooltipComponent>
           <Paragraph size="sm" className="truncate-text-1-line">
             {/* {courseTopic.description} */}
-            Another description
+            <img src={faviconURL} className="h-7 w-7" alt="og" />
           </Paragraph>
         </div>
         {mode === "view" ? (
