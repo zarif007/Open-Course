@@ -29,10 +29,10 @@ const CourseTopic = ({
     <section
       className={`m-2 border-2 ${
         courseTopic.topicID === currentCourseTopic.topicID
-          ? "dark:border-orange-500 border-orange-500"
+          ? "dark:border-rose-500 border-rose-500"
           : "border-slate-300 dark:border-gray-800"
       } bg-slate-100 dark:bg-gray-950 px-4 md:px-6 py-2 rounded cursor-pointer
-      hover:border-orange-500 hover:dark:border-orange-500`}
+      hover:border-rose-500 hover:dark:border-rose-500`}
     >
       <div className="flex items-center justify-between">
         <div>

@@ -56,7 +56,7 @@ export function toast(opts: ToastOpts) {
         visible={visible}
         className={cn({
           'bg-red-600 text-white': type === 'error',
-          'bg-slate-100 dark:bg-gray-950 border-2 border-orange-500 text-gray-900 dark:text-white': type === 'success',
+          'bg-slate-100 dark:bg-gray-950 border-2 border-rose-500 text-gray-900 dark:text-white': type === 'success',
         })}
       >
         <Toast.Title>{title}</Toast.Title>

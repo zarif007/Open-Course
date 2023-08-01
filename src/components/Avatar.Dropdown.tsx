@@ -24,7 +24,7 @@ const AvatarDropdown = () => {
         <MenubarTrigger>
           {user && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
-              <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-orange-500">
+              <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
                 <AvatarImage className="rounded-full" src={user.profileImageUrl} />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>

@@ -18,9 +18,9 @@ export default function Home() {
             <span className="tw-gradient-text">Join any Course</span> <br />
             <TextAppearAnimation text="All for Free" />
             <div
-              className="shadow-[7px_18px_67px_64px_rgba(202,_54,_80,_0.18)]"
+              className=""
               style={{
-                borderTop: "2px dashed #f97316",
+                borderTop: "2px dashed #f43f5e",
                 margin: "12px 0",
               }}
             />

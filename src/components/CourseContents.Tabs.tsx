@@ -9,7 +9,7 @@ const CourseContentsTabs = () => {
     const currentCourseTopic = useAppSelector((state) => state.courseViewReducer.value.currentCourseTopic);
     const course = useAppSelector((state) => state.courseViewReducer.value.course)
   return (
-    <Tabs defaultValue="content" className="w-full mx-auto px-6">
+    <Tabs defaultValue="content" className="w-full mx-auto px-2 md:px-6">
       <TabsList className="">
         <TabsTrigger className="font-semibold flex items-center space-x-1" value="content">
           <AiOutlineFolderView className="w-5 h-5" />

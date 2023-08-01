@@ -79,7 +79,7 @@ const CourseCreation = () => {
 
           <CourseTopicCreation />
 
-          <div className="flex justify-center p-3 md:p-6">
+          <div className="flex justify-center p-3 md:p-6 mt-12 md:mt-20">
             <Button variant="general" className="px-12 py-6 w-full md:w-[75%] mx-0" onClick={handleSubmit} isLoading={isLoading}>
               Done Creating Course?
             </Button>

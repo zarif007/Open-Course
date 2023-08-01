@@ -8,7 +8,7 @@ body {
 }
 
 .tw-gradient-text {
-  @apply bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 bg-clip-text text-transparent
+  @apply bg-gradient-to-r from-pink-600 via-rose-500 to-red-500 bg-clip-text text-transparent
 }
 
 .gradient-text {

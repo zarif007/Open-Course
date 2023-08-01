@@ -12,7 +12,7 @@ const CourseDetails = () => {
       <LargeHeading className="text-start">{course.title}</LargeHeading>
       <div className="flex space-x-2 items-center">
         <Paragraph className="font-bold text-md">By</Paragraph>
-        <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-orange-500">
+        <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
           <AvatarImage className="rounded-full" src={course.creator.imageUrl} />
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>

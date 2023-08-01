@@ -11,7 +11,7 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
   >("available");
 
   return (
-    <div className="mx-auto " style={{ width: "100%", height: "60vh" }}>
+    <div className="mx-auto w-[100%] h-[45vh] md:h-[60vh]" >
       <LargeHeading
         size="sm"
         onClick={() => console.log(createEmbeddableUrls(courseTopic.versions[courseTopic.versions.length - 1].url))}
@@ -23,7 +23,7 @@ const CourseContent = ({ courseTopic }: { courseTopic: ICourseTopic }) => {
       ) : urlStatus === "available" ? (
         <iframe
             src={createEmbeddableUrls(courseTopic.versions[courseTopic.versions.length - 1].url)}
-            className="border-[3px] border-orange-500 rounded "
+            className="border-[3px] border-rose-500 rounded "
             width="100%"
             height="100%"
             title="Embedded Website"
