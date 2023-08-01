@@ -11,6 +11,7 @@ import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
+import { ICourse } from "@/types/course";
 
 const MODE = "creation";
 
@@ -28,11 +29,11 @@ const CourseCreation = () => {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (isLoading) return;
+    if (isLoading || !user?.fullName) return;
 
     setIsLoading(true);
 
-    const courseData = {
+    const courseData: ICourse = {
       ...course,
       topics: course.topics.filter((topic) => topic.id !== 0),
       creator: {
@@ -41,9 +42,9 @@ const CourseCreation = () => {
         imageUrl: user?.imageUrl,
         email: user?.emailAddresses[0].emailAddress,
       },
-      banner: `https://open-course.vercel.app/api/generateBanner?courseName=${course.title}&creator=${course.creator.fullName}
-      &topics=${course.topics.join('')}`,
+      banner: `dsad`,
     };
+    console.log(course.banner)
     try {
       const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData);
       toast({

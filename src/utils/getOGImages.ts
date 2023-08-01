@@ -1,5 +1,5 @@
 import axios from "axios";
-import cheerio from "cheerio";
+
 
 async function fetchOGImage(url: string) {
   try {
@@ -13,9 +13,7 @@ async function fetchOGImage(url: string) {
 }
 
 function fetchImage(html: any) {
-  const $ = cheerio.load(html);
-  const ogImage = $('meta[property="og:image"]').attr("content");
-  return ogImage || null;
+  
 }
 
 async function getOGImage(url: string) {

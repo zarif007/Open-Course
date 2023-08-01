@@ -29,10 +29,10 @@ const Course = ({ params }: PageParams) => {
     queryFn: async () => {
       const { data } = await axios.get(`${v1MainEndpoint}/course/${params.id}`);
       return data.data as ICourse;
-      console.log('og', data.data.banner)
     },
     onSuccess: (data) => {
       dispatch(setCourseForView(data));
+      console.log('og', data)
       dispatch(setCurrentCourseTopicForView(data.topics[0]))
     },
     onError: (error) => {
