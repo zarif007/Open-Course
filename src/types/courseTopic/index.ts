@@ -6,6 +6,7 @@ export interface ICourseTopic {
             title: string;
             url: string;
             description?: string;
+            duration: number;
         }
     ]
 }

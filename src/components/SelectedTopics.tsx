@@ -1,22 +1,22 @@
 import React from "react";
 
-const SelectedCourseTypes = ({
-  selectedCourseTypes,
+const SelectedTopics = ({
+  selectedTopics,
 }: {
-  selectedCourseTypes: string[];
+  selectedTopics: string[];
 }) => {
   return (
     <div className="flex my-2 flex-wrap">
-      {selectedCourseTypes.map((selectedCourseType, index) => (
+      {selectedTopics.map((selectedTopic, index) => (
         <div
           key={index}
           className="w-fit p-1 m-1 ml-0 text-xs font-semibold bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md"
         >
-          {selectedCourseType}
+          {selectedTopic}
         </div>
       ))}
     </div>
   );
 };
 
-export default SelectedCourseTypes;
+export default SelectedTopics;

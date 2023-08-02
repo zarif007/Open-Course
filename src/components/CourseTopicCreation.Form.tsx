@@ -24,10 +24,11 @@ const CourseTopicCreationForm = ({
     (state) => state.courseCreationReducer.value.course
   );
 
-  const topicCreationSchema: ZodType<{ title: string; url: string; description: string }> = z.object({
+  const topicCreationSchema: ZodType<{ title: string; url: string; description: string, duration: number }> = z.object({
     title: z.string().min(2).max(50),
     url: z.string().url({ message: "Invalid url" }),
     description: z.string().min(0).max(500),
+    duration: z.number().min(0).max(10000),
   });
 
   const {
@@ -35,7 +36,7 @@ const CourseTopicCreationForm = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<{ title: string; url: string; description: string }>({ resolver: zodResolver(topicCreationSchema) });
+  } = useForm<{ title: string; url: string; description: string, duration: number }>({ resolver: zodResolver(topicCreationSchema) });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
@@ -43,6 +44,7 @@ const CourseTopicCreationForm = ({
         title: "",
         url: "",
         description: "",
+        duration: 0,
       }
     ],
     topicID: -1,
@@ -55,12 +57,12 @@ const CourseTopicCreationForm = ({
 
   const resetCourseTopic = () => {
     dispatch(
-      setCurrentCourseTopicForCreation({ versions: [{ title: "", url: "", description: "" }], topicID: -1 })
+      setCurrentCourseTopicForCreation({ versions: [{ title: "", url: "", description: "", duration: 0 }], topicID: -1 })
     );
-    setDefaultValue({ versions: [{ title: "", url: "", description: "" }], topicID: -1 });
+    setDefaultValue({ versions: [{ title: "", url: "", description: "", duration: 0 }], topicID: -1 });
   };
 
-  const onSubmit = (data: { title: string; url: string, description: string }) => {
+  const onSubmit = (data: { title: string; url: string, description: string, duration: number }) => {
     submitData({
       versions: [
         data,
@@ -131,6 +133,33 @@ const CourseTopicCreationForm = ({
           required
         />
         <ErrorMessage text={errors.url?.message} />
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <label htmlFor="number" className="font-bold">
+          Approx. Duration in minute (ex. 10)
+        </label>
+        <Input
+          type="number"
+          placeholder="NOT 10m or 10.34"
+          {...register("duration", { valueAsNumber: true })}
+          onChange={(e) =>
+            dispatch(
+              setCurrentCourseTopicForCreation({
+                ...currentCourseTopic,
+                versions: [
+                  {
+                    ...currentCourseTopic.versions[0],
+                    duration: isNaN(+e.target.value) ? 0 : +e.target.value,
+                  }
+                ]
+              })
+            )
+          }
+          defaultValue={defaultValue.versions[0].duration}
+          required
+        />
+        <ErrorMessage text={errors.duration?.message} />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">

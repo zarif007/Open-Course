@@ -20,6 +20,7 @@ const initialState = {
           title: "",
           description: "",
           url: "",
+          duration: 10,
         }
       ]
     },

@@ -3,7 +3,7 @@ import LargeHeading from './ui/LargeHeading'
 import { useAppSelector } from '@/redux/store'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/Avatar'
 import Paragraph from './ui/Paragraph'
-import SelectedCourseTypes from './SelectedCourseTypes'
+import SelectedTopics from './SelectedTopics'
 
 const CourseDetails = () => {
   const course = useAppSelector((state) => state.courseViewReducer.value.course)
@@ -20,7 +20,7 @@ const CourseDetails = () => {
         </Avatar>
         <Paragraph className="font-bold text-md">{course.creator.fullName}</Paragraph>
       </div>
-      <SelectedCourseTypes selectedCourseTypes={course.categories} />
+      <SelectedTopics selectedTopics={course.categories} />
     </div>
   )
 }

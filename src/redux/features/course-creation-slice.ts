@@ -22,6 +22,7 @@ const initialState = {
               title: "Example101",
               url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
               description: "Just another example",
+              duration: 10,
             }
           ]
         },
@@ -35,6 +36,7 @@ const initialState = {
           title: "",
           description: "",
           url: "",
+          duration: 0,
         }
       ],
     },

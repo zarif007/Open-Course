@@ -44,10 +44,12 @@ const CourseTopic = ({
               {courseTopic.topicID}. <span className="font-bold">{courseTopic.versions[courseTopic.versions.length - 1].title}</span>{" "}
             </Paragraph>
           </TooltipComponent>
-          <Paragraph size="sm" className="truncate-text-1-line">
-            {/* {courseTopic.description} */}
+          <div className="flex space-x-2">
             <img src={faviconURL} className="h-7 w-7" alt="og" />
-          </Paragraph>
+            <Paragraph size="sm" className="truncate-text-1-line font-semibold">
+              {courseTopic.versions[courseTopic.versions.length - 1].duration}m
+            </Paragraph>
+          </div>
         </div>
         {mode === "view" ? (
           courseTopic.topicID === currentCourseTopic.topicID ? <FcSportsMode className={styles.icon} /> : 
