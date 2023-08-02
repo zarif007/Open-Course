@@ -19,9 +19,26 @@ const CourseDetailsCreation = () => {
         setSelectedLanguages={setSelectedLanguages}
       />
 
-      <SelectedTopics selectedTopics={selectedCourseTypes} mode="creation" setSelectedTopics={setSelectedCourseTypes} />
-      <SelectedTopics selectedTopics={selectedLevels} mode="creation" setSelectedTopics={setSelectedLevels} />
-      <SelectedTopics selectedTopics={selectedLanguages} mode="creation" setSelectedTopics={setSelectedLanguages} />
+      <div className="flex flex-wrap">
+        {
+          selectedCourseTypes.length > 0 && <div className="m-1">
+            <label className="font-semibold">Categoris</label>
+            <SelectedTopics selectedTopics={selectedCourseTypes} mode="creation" setSelectedTopics={setSelectedCourseTypes} />
+          </div>
+        }
+        {
+          selectedLevels.length > 0 && <div className="m-1">
+            <label className="font-semibold">Levels</label>
+            <SelectedTopics selectedTopics={selectedLevels} mode="creation" setSelectedTopics={setSelectedLevels} />
+          </div>
+        }
+        {
+          selectedLanguages.length > 0 && <div className="m-1">
+            <label className="font-semibold">languages</label>
+            <SelectedTopics selectedTopics={selectedLanguages} mode="creation" setSelectedTopics={setSelectedLanguages} />
+          </div>
+        }
+      </div>
     </div>
   );
 };

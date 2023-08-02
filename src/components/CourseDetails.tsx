@@ -20,7 +20,22 @@ const CourseDetails = () => {
         </Avatar>
         <Paragraph className="font-bold text-md">{course.creator.fullName}</Paragraph>
       </div>
-      <SelectedTopics selectedTopics={course.categories} mode="view" />
+
+      <div className="flex space-x-3 flex-wrap">
+        <div className="my-1">
+          <label className="font-semibold">Categoris</label>
+          <SelectedTopics selectedTopics={course.categories} mode="view" />
+        </div>
+        <div className="my-1">
+          <label className="font-semibold">Levels</label>
+          <SelectedTopics selectedTopics={course.levels} mode="view" />
+        </div>
+        <div className="my-1">
+          <label className="font-semibold">languages</label>
+          <SelectedTopics selectedTopics={course.languages} mode="view" />
+        </div>
+      </div>
+
     </div>
   )
 }
