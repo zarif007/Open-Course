@@ -19,9 +19,9 @@ const CourseDetailsCreation = () => {
         setSelectedLanguages={setSelectedLanguages}
       />
 
-      <SelectedTopics selectedTopics={selectedCourseTypes} />
-      <SelectedTopics selectedTopics={selectedLevels} />
-      <SelectedTopics selectedTopics={selectedLanguages} />
+      <SelectedTopics selectedTopics={selectedCourseTypes} mode="creation" setSelectedTopics={setSelectedCourseTypes} />
+      <SelectedTopics selectedTopics={selectedLevels} mode="creation" setSelectedTopics={setSelectedLevels} />
+      <SelectedTopics selectedTopics={selectedLanguages} mode="creation" setSelectedTopics={setSelectedLanguages} />
     </div>
   );
 };

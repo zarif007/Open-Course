@@ -20,7 +20,7 @@ const CourseDetails = () => {
         </Avatar>
         <Paragraph className="font-bold text-md">{course.creator.fullName}</Paragraph>
       </div>
-      <SelectedTopics selectedTopics={course.categories} />
+      <SelectedTopics selectedTopics={course.categories} mode="view" />
     </div>
   )
 }

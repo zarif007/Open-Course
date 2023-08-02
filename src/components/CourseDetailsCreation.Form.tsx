@@ -51,7 +51,7 @@ const CourseDetailsCreationForm = ({
 
         <div className="flex flex-col w-full">
           <label htmlFor="text" className="font-bold">
-            Level 
+            Description 
           </label>
           <Textarea placeholder="About this Course" className="" />
         </div>
