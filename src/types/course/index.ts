@@ -8,7 +8,7 @@ export interface ICourse {
   type: "gn" | "org";
   version: number;
   enabled: boolean;
-  creator: IUser;
+  creator: IUser | string;
   contributors: IUser[] | [];
   enrolledUsers: IUser[] | [];
   categories: string[];

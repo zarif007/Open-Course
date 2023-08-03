@@ -1,4 +1,5 @@
 "use client";
+
 import { buttonVariants } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import SocialMediaLogoBar from "@/components/SocialMediaLogo.Bar";
 import TextAppearAnimation from "@/components/ui/TextAppearAnimation";
 
 export default function Home() {
+
   return (
     <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 md:mb-12 ">
       <div className="container pt-12 max-w-7xl w-full  h-full ">

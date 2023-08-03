@@ -2,6 +2,7 @@
 import CourseContents from "@/components/CourseContents";
 import CourseContentsTabs from "@/components/CourseContents.Tabs";
 import CourseDetails from "@/components/CourseDetails";
+import CourseLandingPage from "@/components/CourseLanding.Page";
 import CourseTopics from "@/components/CourseTopics.Bar";
 import { setCourseForView, setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 import { AppDispatch } from "@/redux/store";
@@ -39,12 +40,14 @@ const Course = ({ params }: PageParams) => {
     },
   });
 
+  const isEnrolled = false;
+
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex">
+        isEnrolled ? <div className="flex">
           {/* Left */}
           <CourseTopics
             showCourseTopics={showCourseTopics}
@@ -58,10 +61,9 @@ const Course = ({ params }: PageParams) => {
               showCourseTopics ? "w-full md:w-9/12" : "w-full"
             }  ml-auto rounded mt-6`}
           >
-            <CourseDetails />
             <CourseContentsTabs />
           </div>
-        </div>
+        </div> : <CourseLandingPage />
       )}
     </section>
   );

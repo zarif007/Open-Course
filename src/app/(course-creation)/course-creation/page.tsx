@@ -36,12 +36,7 @@ const CourseCreation = () => {
     const courseData: ICourse = {
       ...course,
       topics: course.topics.filter((topic) => topic.id !== 0),
-      creator: {
-        id: user?.id,
-        fullName: user?.fullName,
-        imageUrl: user?.imageUrl,
-        email: user?.emailAddresses[0].emailAddress,
-      },
+      creator: user?.id,
     };
     try {
       const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData);
