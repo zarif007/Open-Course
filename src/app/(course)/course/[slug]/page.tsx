@@ -43,6 +43,7 @@ const Course = ({ params }: PageParams) => {
 
   const isEnrolled = true;
 
+  
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       {isLoading ? (
