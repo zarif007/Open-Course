@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSearchParams, useRouter  } from 'next/navigation'
+import canBeParsedToInt from "@/utils/canBeParsedToInt";
 
 interface PageParams {
   params: {
@@ -21,9 +23,21 @@ interface PageParams {
 
 const MODE = "view";
 
+const ifItIsCompleted = (topicId: number): boolean => {
+  // check from the finishedId array
+  return false;
+}
+
 const Course = ({ params }: PageParams) => {
+
   const [showCourseTopics, setShowCourseTopics] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
+
+  const searchParams = useSearchParams()
+
+  const router = useRouter();
+ 
+  const topicId = searchParams?.get('topicId')
 
   const { isLoading } = useQuery({
     queryKey: ["course", params.slug],
@@ -32,7 +46,11 @@ const Course = ({ params }: PageParams) => {
       return data.data as ICourse;
     },
     onSuccess: (data) => {
-      console.log(data)
+      if(!topicId || !canBeParsedToInt(topicId) || ifItIsCompleted(parseInt(topicId))) {
+        // fetch last state
+        router.push(`/course/${params.slug}?topicId=0`)
+        console.log('ok')
+      }
       dispatch(setCourseForView(data));
       dispatch(setCurrentCourseTopicForView(data.topics[0]))
     },
@@ -41,7 +59,7 @@ const Course = ({ params }: PageParams) => {
     },
   });
 
-  const isEnrolled = true;
+  const isEnrolled = false;
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">

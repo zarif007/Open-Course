@@ -38,10 +38,10 @@ const CourseDetails = () => {
         !isLoading ? <div className="flex space-x-2 items-center">
         <Paragraph className="font-bold text-md">By</Paragraph>
         <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
-          <AvatarImage className="rounded-full" src={data.imageUrl} />
+          <AvatarImage className="rounded-full" src={data?.imageUrl} />
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>
-        <Paragraph className="font-bold text-md">{data.firstName}</Paragraph>
+        <Paragraph className="font-bold text-md">{data?.firstName}</Paragraph>
       </div> : <p>loadig...</p> 
       }
 
