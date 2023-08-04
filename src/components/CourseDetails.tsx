@@ -8,6 +8,7 @@ import Paragraph from './ui/Paragraph'
 import SelectedTopics from './SelectedTopics'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { nextApi } from '@/utils/apiEndpoints'
 
 const CourseDetails = () => {
   const course = useAppSelector((state) => state.courseViewReducer.value.course)
@@ -16,7 +17,7 @@ const CourseDetails = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["creator"],
     queryFn: async () => {
-      const { data } = await axios.get(`https://open-course.vercel.app/api/getUserInfo?userId=${course.creator}`)
+      const { data } = await axios.get(`${nextApi}/getUserInfo?userId=${course.creator}`)
       return data.user;
     },
     onSuccess: (data) => {

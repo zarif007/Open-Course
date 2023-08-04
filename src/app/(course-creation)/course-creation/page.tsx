@@ -12,6 +12,7 @@ import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";
+import createSlug from "@/utils/createSlug";
 
 const MODE = "creation";
 
@@ -35,9 +36,11 @@ const CourseCreation = () => {
 
     const courseData: ICourse = {
       ...course,
+      slug: course.slug ? course.slug : createSlug(course.title),
       topics: course.topics.filter((topic) => topic.id !== 0),
       creator: user?.id,
     };
+
     try {
       const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData);
       toast({
@@ -45,7 +48,7 @@ const CourseCreation = () => {
         type: "success",
         message: "Course Created Successfully",
       });
-      router.push(`course/${data.data.id}`);
+      router.push(`course/${data.data.slug}`);
     } catch (error) {
       toast({
         title: "Error",

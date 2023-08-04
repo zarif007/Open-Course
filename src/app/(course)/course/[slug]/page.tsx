@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 
 interface PageParams {
   params: {
-    id: string;
+    slug: string;
   };
 }
 
@@ -26,12 +26,13 @@ const Course = ({ params }: PageParams) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { isLoading } = useQuery({
-    queryKey: ["course", params.id],
+    queryKey: ["course", params.slug],
     queryFn: async () => {
-      const { data } = await axios.get(`${v1MainEndpoint}/course/${params.id}`);
+      const { data } = await axios.get(`${v1MainEndpoint}/course/bySlug/${params.slug}`);
       return data.data as ICourse;
     },
     onSuccess: (data) => {
+      console.log(data)
       dispatch(setCourseForView(data));
       dispatch(setCurrentCourseTopicForView(data.topics[0]))
     },
@@ -40,7 +41,7 @@ const Course = ({ params }: PageParams) => {
     },
   });
 
-  const isEnrolled = false;
+  const isEnrolled = true;
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">

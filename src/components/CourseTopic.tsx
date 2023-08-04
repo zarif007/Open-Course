@@ -44,7 +44,7 @@ const CourseTopic = ({
               {courseTopic.topicID}. <span className="font-bold">{courseTopic.versions[courseTopic.versions.length - 1].title}</span>{" "}
             </Paragraph>
           </TooltipComponent>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 items-center">
             <img src={faviconURL} className="h-7 w-7" alt="og" />
             <Paragraph size="sm" className="truncate-text-1-line font-semibold">
               {courseTopic.versions[courseTopic.versions.length - 1].duration}m
@@ -52,7 +52,7 @@ const CourseTopic = ({
           </div>
         </div>
         {mode === "view" ? (
-          courseTopic.topicID === currentCourseTopic.topicID ? <FcSportsMode className={styles.icon} /> : 
+          courseTopic.topicID === currentCourseTopic.topicID ? <FcSportsMode className={styles.icon}  /> : 
           (courseTopic.topicID && courseTopic.topicID > 7) ? (
             <TooltipComponent content="Locked">
               <FcLock className={styles.icon} />

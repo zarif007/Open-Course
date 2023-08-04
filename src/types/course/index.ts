@@ -16,6 +16,7 @@ export interface ICourse {
   languages: string[];
   description: string;
   banner?: string;
+  slug: string;
   topics: ICourseTopic[];
   tags: string[];
   createdAt?: Date;
