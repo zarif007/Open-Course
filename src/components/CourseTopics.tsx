@@ -8,12 +8,23 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
+import { useRouter } from "next/navigation";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
+
   const course = useAppSelector(
     (state) => mode === "view" ? state.courseViewReducer.value.course: state.courseCreationReducer.value.course
   );
+
   const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter()
+
+  const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
+    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`)
+    dispatch(setCurrentCourseTopicForView(courseTopic))
+  }
+
   return (
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
@@ -21,7 +32,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
         return (
           <div
             key={index}
-            onClick={() => dispatch(mode === 'view' ? setCurrentCourseTopicForView(courseTopic) : setCurrentCourseTopicForCreation(courseTopic))}
+            onClick={() => mode === "view" ? redirectToCurrentCourseTopic(courseTopic) : dispatch(setCurrentCourseTopicForCreation(courseTopic))}
           >
             <CourseTopic
               index={index}

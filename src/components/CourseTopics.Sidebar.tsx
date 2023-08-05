@@ -21,7 +21,7 @@ const CourseTopicsSidebar = ({
         <CourseTopics mode={mode} />
       </div>
       {mode === "view" && (
-        <div className="p-2 m-4 mx-6">
+        <div className="p-2 m-4 mx-4">
           <CourseProgressBar completed={6} outOf={11} styles="" />
         </div>
       )}

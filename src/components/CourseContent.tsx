@@ -10,7 +10,7 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   >("available");
 
   return (
-    <div className="mx-auto w-[100%] h-[45vh] md:h-[70vh]">
+    <div className="mx-auto w-[100%] h-[45vh] md:h-[80vh]">
       <LargeHeading
         size="sm"
         onClick={() =>

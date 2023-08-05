@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useRouter  } from 'next/navigation'
 import canBeParsedToInt from "@/utils/canBeParsedToInt";
+import { useUser } from "@clerk/nextjs";
 
 interface PageParams {
   params: {
@@ -23,15 +24,21 @@ interface PageParams {
 
 const MODE = "view";
 
-const ifItIsCompleted = (topicId: number): boolean => {
+const isValid = (topicId: number, finishedTopics: string[], length: number): boolean => {
   // check from the finishedId array
-  return false;
+
+  return topicId <= length
 }
 
 const Course = ({ params }: PageParams) => {
 
   const [showCourseTopics, setShowCourseTopics] = useState(true);
+
+  const [isEnrolled, setIsEnrolled] = useState<'yes' | 'no' | 'loading'>('loading');
+
   const dispatch = useDispatch<AppDispatch>();
+
+  const { user } = useUser()
 
   const searchParams = useSearchParams()
 
@@ -42,31 +49,55 @@ const Course = ({ params }: PageParams) => {
   const { isLoading } = useQuery({
     queryKey: ["course", params.slug],
     queryFn: async () => {
+      
       const { data } = await axios.get(`${v1MainEndpoint}/course/bySlug/${params.slug}`);
-      return data.data as ICourse;
-    },
-    onSuccess: (data) => {
-      if(!topicId || !canBeParsedToInt(topicId) || ifItIsCompleted(parseInt(topicId))) {
-        // fetch last state
-        router.push(`/course/${params.slug}?topicId=0`)
-        console.log('ok')
+      
+      const enrollState = await axios.get(`${v1MainEndpoint}/enrollState?user=${user?.id}&course=${data.data.id}`);
+
+      return {
+        course: data.data as ICourse,
+        enrollState: enrollState.data,
       }
-      dispatch(setCourseForView(data));
-      dispatch(setCurrentCourseTopicForView(data.topics[0]))
+    },
+
+    enabled: !!user?.id,
+
+    onSuccess: (data) => {
+      const { course, enrollState } = data;
+      if(!enrollState.data) {
+        router.push(`/course/${params.slug}`)
+
+        setIsEnrolled('no')
+      } else if(!topicId || !canBeParsedToInt(topicId) || !isValid(
+        parseInt(topicId), enrollState.finishedTopics, course.topics.length)) {
+        
+        // update in enroll state db
+        router.push(`/course/${params.slug}?topicId=${enrollState.data.currentTopic.topicID}`)
+        dispatch(setCurrentCourseTopicForView(course.topics[enrollState.data.currentTopic.topicID - 1]))
+
+        setIsEnrolled('yes')
+      } else {
+        // update in enroll state db
+        dispatch(setCurrentCourseTopicForView(course.topics[parseInt(topicId) - 1]))
+
+        setIsEnrolled('yes')
+      }
+
+      dispatch(setCourseForView(course));
     },
     onError: (error) => {
       console.log("error", error);
     },
   });
 
-  const isEnrolled = false;
-
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {isLoading ? (
-        <div>Loading...</div>
+      {(isLoading || isEnrolled === 'loading') ? (
+        <div className="flex items-center justify-center">
+          <span className="loading loading-infinity loading-lg"></span>
+        </div>
       ) : (
-        isEnrolled ? <div className="flex">
+        isEnrolled === 'yes' ? <div className="flex">
           {/* Left */}
           <CourseTopics
             showCourseTopics={showCourseTopics}

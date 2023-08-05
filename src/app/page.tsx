@@ -11,8 +11,8 @@ import TextAppearAnimation from "@/components/ui/TextAppearAnimation";
 export default function Home() {
 
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 md:mb-12 ">
-      <div className="container my-auto max-w-7xl w-full  h-full ">
+    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 md:mb-12 my-12">
+      <div className="container my-auto max-w-7xl w-full h-full ">
         <div className="h-full gap-6 flex flex-col justify-center items-center ">
           <SocialMediaLogoBar />
           <NotifyBar text="🤖 Create Courses with the Power of AI 🤖" />

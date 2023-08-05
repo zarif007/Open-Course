@@ -42,19 +42,21 @@ const CourseDetails = () => {
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>
         <Paragraph className="font-bold text-md">{data?.firstName}</Paragraph>
-      </div> : <p>loadig...</p> 
+      </div> : <div className="flex items-center ">
+        <span className="loading loading-infinity loading-lg"></span>
+      </div> 
       }
 
-      <div className="flex space-x-3 flex-wrap">
-        <div className="my-1">
-          <label className="font-semibold">Categoris</label>
+      <div className="flex flex-wrap">
+        <div className="m-1">
+          <label className="font-semibold">Categories</label>
           <SelectedTopics selectedTopics={course.categories} mode="view" />
         </div>
-        <div className="my-1">
+        <div className="m-1">
           <label className="font-semibold">Levels</label>
           <SelectedTopics selectedTopics={course.levels} mode="view" />
         </div>
-        <div className="my-1">
+        <div className="m-1">
           <label className="font-semibold">languages</label>
           <SelectedTopics selectedTopics={course.languages} mode="view" />
         </div>
