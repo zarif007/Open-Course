@@ -1,11 +1,13 @@
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
+import { IEnrollState } from "@/types/enrollState";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface IInitialState {
   value: {
     course: ICourse;
     currentCourseTopic: ICourseTopic;
+    enrollState: IEnrollState;
   };
 }
 
@@ -24,6 +26,7 @@ const initialState = {
         }
       ]
     },
+    enrollState: {},
   },
 } as IInitialState;
 
@@ -37,8 +40,11 @@ export const courseView = createSlice({
     setCurrentCourseTopicForView: (state, action: PayloadAction<ICourseTopic>) => {
       state.value.currentCourseTopic = action.payload;
     },
+    setEnrollState: (state, action: PayloadAction<IEnrollState>) => {
+      state.value.enrollState = action.payload;
+    },
   },
 });
 
-export const { setCourseForView, setCurrentCourseTopicForView } = courseView.actions;
+export const { setCourseForView, setCurrentCourseTopicForView, setEnrollState } = courseView.actions;
 export default courseView.reducer;

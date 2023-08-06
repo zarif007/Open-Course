@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/redux/store";
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -25,9 +25,16 @@ const CourseLandingPage = () => {
 
   const { user } = useUser();
 
-  const router = useRouter()
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleEnrollment = async () => {
+
+    if(isLoading) return;
+
+    setIsLoading(true);
+
     try {
       const data = {
         course: course.id,
@@ -36,8 +43,6 @@ const CourseLandingPage = () => {
 
       await axios.post(`${v1MainEndpoint}/enrollState`, data);
 
-      
-      // router.replace(`/course/${course.slug}`)
       window.location.reload()
       router.push(`${course.slug}?topicId=1`)
 
@@ -52,6 +57,8 @@ const CourseLandingPage = () => {
         type: "error",
         message: `Try again later`,
       })
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -86,7 +93,7 @@ const CourseLandingPage = () => {
       </Accordion>
       <div className="fixed bottom-0 w-full max-w-5xl mx-auto" onClick={handleEnrollment}>
         <div className="m-4 md:mx-6 mt-8">
-          <Button className="w-full py-6 text-lg font-bold">Enroll</Button>
+          <Button className="w-full py-6 text-lg font-bold" isLoading={isLoading}>Enroll</Button>
         </div>
       </div>
     </div>

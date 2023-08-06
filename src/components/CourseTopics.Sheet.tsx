@@ -26,7 +26,7 @@ const CourseTopicsSheet = ({
           <CourseTopics mode={mode} />
         </div>
         {mode === "view" && (
-          <CourseProgressBar completed={6} outOf={9} styles="p-2 m-2" />
+          <CourseProgressBar styles="p-2 m-2" />
         )}
       </SheetContent>
     </Sheet>

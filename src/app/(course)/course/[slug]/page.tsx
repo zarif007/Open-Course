@@ -4,7 +4,7 @@ import CourseContentsTabs from "@/components/CourseContents.Tabs";
 import CourseDetails from "@/components/CourseDetails";
 import CourseLandingPage from "@/components/CourseLanding.Page";
 import CourseTopics from "@/components/CourseTopics.Bar";
-import { setCourseForView, setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
+import { setCourseForView, setCurrentCourseTopicForView, setEnrollState } from "@/redux/features/course-view-slice";
 import { AppDispatch } from "@/redux/store";
 import { ICourse } from "@/types/course";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
@@ -15,6 +15,9 @@ import { useDispatch } from "react-redux";
 import { useSearchParams, useRouter  } from 'next/navigation'
 import canBeParsedToInt from "@/utils/canBeParsedToInt";
 import { useUser } from "@clerk/nextjs";
+import { IEnrollState } from "@/types/enrollState";
+import { ICourseTopic } from "@/types/courseTopic";
+import { current } from "@reduxjs/toolkit";
 
 interface PageParams {
   params: {
@@ -24,10 +27,16 @@ interface PageParams {
 
 const MODE = "view";
 
-const isValid = (topicId: number, finishedTopics: string[], length: number): boolean => {
+const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
   // check from the finishedId array
 
-  return topicId <= length
+  // return finishedTopics.includes(topicId.toString())
+
+  const currentTopic = enrollState.currentTopic as ICourseTopic
+
+  console.log(topicId === currentTopic.topicID || enrollState.finishedTopics.includes(topicId.toString()))
+
+  return (topicId === currentTopic.topicID || enrollState.finishedTopics.includes(topicId.toString()))
 }
 
 const Course = ({ params }: PageParams) => {
@@ -69,20 +78,19 @@ const Course = ({ params }: PageParams) => {
 
         setIsEnrolled('no')
       } else if(!topicId || !canBeParsedToInt(topicId) || !isValid(
-        parseInt(topicId), enrollState.finishedTopics, course.topics.length)) {
+        parseInt(topicId), enrollState.data)) {
         
-        // update in enroll state db
         router.push(`/course/${params.slug}?topicId=${enrollState.data.currentTopic.topicID}`)
         dispatch(setCurrentCourseTopicForView(course.topics[enrollState.data.currentTopic.topicID - 1]))
-
+        
         setIsEnrolled('yes')
       } else {
-        // update in enroll state db
         dispatch(setCurrentCourseTopicForView(course.topics[parseInt(topicId) - 1]))
 
         setIsEnrolled('yes')
       }
 
+      dispatch(setEnrollState(enrollState.data));
       dispatch(setCourseForView(course));
     },
     onError: (error) => {

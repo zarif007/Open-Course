@@ -5,7 +5,7 @@ import Paragraph from "./ui/Paragraph";
 import { FcApproval, FcLock, FcSettings, FcSportsMode } from "react-icons/fc";
 import TooltipComponent from "./TooltipComponent";
 import { useAppSelector } from "@/redux/store";
-import { ICourseTopic } from '@/types/courseTopic';
+import { ICourseTopic } from "@/types/courseTopic";
 import { getFavicon } from "@/utils/getFavicon";
 
 const CourseTopic = ({
@@ -23,10 +23,20 @@ const CourseTopic = ({
 
   const faviconURL = getFavicon(courseTopic.versions[0].url);
 
-  const currentCourseTopic = useAppSelector(
-    (state) => mode === 'view' ? state.courseViewReducer.value.currentCourseTopic
-    : state.courseCreationReducer.value.currentCourseTopic
+  const currentCourseTopic = useAppSelector((state) =>
+    mode === "view"
+      ? state.courseViewReducer.value.currentCourseTopic
+      : state.courseCreationReducer.value.currentCourseTopic
   );
+
+  const enrollState = useAppSelector(
+    (state) => state.courseViewReducer.value.enrollState
+  );
+
+  const isValidTopic = (): boolean => {
+    const currentCourseTopic = courseTopic.topicID as number;
+    return enrollState.finishedTopics.includes(currentCourseTopic.toString());
+  };
 
   return (
     <section
@@ -39,9 +49,16 @@ const CourseTopic = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <TooltipComponent content={courseTopic.versions[courseTopic.versions.length - 1].title}>
+          <TooltipComponent
+            content={
+              courseTopic.versions[courseTopic.versions.length - 1].title
+            }
+          >
             <Paragraph className="truncate-text-1-line text-start">
-              {courseTopic.topicID}. <span className="font-bold">{courseTopic.versions[courseTopic.versions.length - 1].title}</span>{" "}
+              {courseTopic.topicID}.{" "}
+              <span className="font-bold">
+                {courseTopic.versions[courseTopic.versions.length - 1].title}
+              </span>{" "}
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
@@ -51,9 +68,13 @@ const CourseTopic = ({
             </Paragraph>
           </div>
         </div>
+
         {mode === "view" ? (
-          courseTopic.topicID === currentCourseTopic.topicID ? <FcSportsMode className={styles.icon}  /> : 
-          (courseTopic.topicID && courseTopic.topicID > 7) ? (
+          courseTopic.topicID === currentCourseTopic.topicID ? (
+            <TooltipComponent content="Going">
+              <FcSportsMode className={styles.icon} />
+            </TooltipComponent>
+          ) : !isValidTopic() ? (
             <TooltipComponent content="Locked">
               <FcLock className={styles.icon} />
             </TooltipComponent>
