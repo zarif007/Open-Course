@@ -5,6 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import ClientProviders from "@/components/ClientProviders";
 import NavBar from "@/components/Nav.Bar";
 import { Toaster } from '../components/ui/Toast';
+import { dark } from '@clerk/themes';
+import { useTheme } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +20,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{
+      baseTheme: dark
+    }}>
       <html lang="en">
         <ClientProviders>
           <body

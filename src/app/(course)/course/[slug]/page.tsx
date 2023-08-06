@@ -47,11 +47,12 @@ const Course = ({ params }: PageParams) => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const router = useRouter();
+
+
   const { user } = useUser()
 
   const searchParams = useSearchParams()
-
-  const router = useRouter();
  
   const topicId = searchParams?.get('topicId')
 
@@ -100,30 +101,30 @@ const Course = ({ params }: PageParams) => {
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {(isLoading || isEnrolled === 'loading') ? (
-        <div className="flex items-center justify-center">
-          <span className="loading loading-infinity loading-lg"></span>
-        </div>
-      ) : (
-        isEnrolled === 'yes' ? <div className="flex">
-          {/* Left */}
-          <CourseTopics
-            showCourseTopics={showCourseTopics}
-            setShowCourseTopics={setShowCourseTopics}
-            mode={MODE}
-          />
-
-          {/* Right */}
-          <div
-            className={`${
-              showCourseTopics ? "w-full md:w-9/12" : "w-full"
-            }  ml-auto rounded mt-6`}
-          >
-            <CourseContentsTabs />
+        {(isLoading || isEnrolled === 'loading') ? (
+          <div className="flex items-center justify-center">
+            <span className="loading loading-infinity loading-lg"></span>
           </div>
-        </div> : <CourseLandingPage />
-      )}
-    </section>
+        ) : (
+          isEnrolled === 'yes' ? <div className="flex">
+            {/* Left */}
+            <CourseTopics
+              showCourseTopics={showCourseTopics}
+              setShowCourseTopics={setShowCourseTopics}
+              mode={MODE}
+            />
+
+            {/* Right */}
+            <div
+              className={`${
+                showCourseTopics ? "w-full md:w-9/12" : "w-full"
+              }  ml-auto rounded mt-6`}
+            >
+              <CourseContentsTabs />
+            </div>
+          </div> : <CourseLandingPage />
+        )}
+      </section>
   );
 };
 

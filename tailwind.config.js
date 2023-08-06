@@ -32,5 +32,5 @@ module.exports = {
     //   cyanpro: "#00facc",
     // },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
