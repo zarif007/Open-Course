@@ -58,9 +58,9 @@ const CourseDetailsCreationForm = ({
 
   return (
     <React.Fragment>
-      {/* {
+      {
         show && <img src={generatedBanner} alt="ok" className="h-60" />
-      } */}
+      }
       <div
         className="flex items-center w-fit cursor-pointer"
         onClick={() => setShow(!show)}
