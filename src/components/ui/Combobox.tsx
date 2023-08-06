@@ -45,7 +45,7 @@ export function Combobox({ title, list, currentValues, setCurrentValues }: { tit
           <CommandGroup>
             {list.map((item, index) => (
               <CommandItem
-              className="cursor-pointer hover:bg-rose-500 p-0 py-2 font-semibold m-0"
+              className="cursor-pointer hover:bg-rose-500 dark:hover:bg-rose-500 p-0 py-2 font-semibold m-0"
                 key={index}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue)

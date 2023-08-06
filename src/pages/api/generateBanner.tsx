@@ -5,26 +5,42 @@ export const config = {
   runtime: "edge",
 };
 
+
+
 const handler: NextApiHandler = async (req: NextApiRequest) => {
+
+  const BebasNeueRegular = await fetch(
+    new URL("../../../public/BebasNeue-Regular.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
+
   const { searchParams } = new URL(req.url || "");
   const courseName = searchParams.get("courseName");
+
   const creator = searchParams.get("creator");
   const topics = searchParams.get("topics");
   const imgUrl = searchParams.get("imgUrl");
+
+  const theme = searchParams.get("theme");
   try {
     return new ImageResponse(
       (
-        <div tw="flex flex-col w-full h-full items-center justify-center bg-gray-950 border-2 border-slate-100">
-          <div tw=" flex w-full">
-            <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
-              <h2 tw="flex flex-col text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 text-left text-slate-100">
-                <span tw="text-6xl truncate max-w-[80%]">{courseName}</span>
-                <span tw="text-rose-600">by {creator}</span>
-                <span tw="truncate text-sm">{topics}</span>
+        <div tw={`h-full w-full flex items-start justify-start ${theme === 'dark' ? 'bg-[#121212]' : 'bg-slate-100'}
+          border-8 border-rose-500`}>
+          <div tw="flex items-start justify-start h-full">
+            <div tw="flex flex-col justify-center items-center px-20 w-full h-full text-center">
+              
+              <h1 tw={`text-[40px] ${theme === "dark" ? 'text-slate-100' : ''}`} style={{ fontWeight: 900 }}>Open Course</h1>
 
-              </h2>
-              <div tw="mt-8 flex md:mt-0">
-                <img src={imgUrl || ''} alt="ff" tw="h-40 w-40 rounded" />
+              <h1 tw="text-[60px] text-rose-500" style={{ fontWeight: 900 }}>{courseName}</h1>
+
+              <p tw={`text-[40px] ${theme === "dark" ? 'text-slate-100'  : ''} mx-auto text-center font-bold mb-0`}>
+                {topics}
+              </p>
+
+              <div tw="flex space-x-4 items-center justify-between mt-2">
+                <p tw="text-[50px] text-rose-500 mx-auto text-center font-bold mb-0">
+                  {creator}
+                </p>
               </div>
             </div>
           </div>
@@ -32,7 +48,15 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
       ),
       {
         width: 1200,
-        height: 300,
+        height: 600,
+        fonts: [
+          {
+            name: "Inter",
+            data: BebasNeueRegular,
+            style: "normal",
+            weight: 700,
+          },
+        ],
       }
     );
   } catch {
