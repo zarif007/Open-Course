@@ -58,22 +58,9 @@ const CourseDetailsCreationForm = ({
 
   return (
     <React.Fragment>
-      <Head>
-        <title>Course Creation</title>
-        <meta name="description" content="Checkout our cool page" key="desc" />
-        <meta property="og:title" content="Social Title for Cool Page" />
-        <meta
-          property="og:description"
-          content="And a social description for our cool page"
-        />
-        <meta
-          property="og:image"
-          content={generatedBanner}
-        />
-      </Head>
-      {
+      {/* {
         show && <img src={generatedBanner} alt="ok" className="h-60" />
-      }
+      } */}
       <div
         className="flex items-center w-fit cursor-pointer"
         onClick={() => setShow(!show)}
