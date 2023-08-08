@@ -9,6 +9,7 @@ import SelectedTopics from './SelectedTopics'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { nextApi } from '@/utils/apiEndpoints'
+import { formatSelectedLevels } from '@/utils/formatSelectedLevels'
 
 const CourseDetails = () => {
   const course = useAppSelector((state) => state.courseViewReducer.value.course)
@@ -52,7 +53,7 @@ const CourseDetails = () => {
         </div>
         <div className="m-1">
           <label className="font-semibold">Levels</label>
-          <SelectedTopics selectedTopics={course.levels} mode="view" />
+          <SelectedTopics selectedTopics={formatSelectedLevels(course.levels)} mode="view" />
         </div>
         <div className="m-1">
           <label className="font-semibold">languages</label>

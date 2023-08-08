@@ -8,11 +8,9 @@ import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "./ui/Textarea";
 import { languages } from "@/utils/languages";
 import { ChevronDown } from "lucide-react";
-import SelectedCourseTypes from "./SelectedTopics";
 import { Button } from "./ui/Button";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
-import Head from "next/head";
 import { nextApi } from "@/utils/apiEndpoints";
 
 const CourseDetailsCreationForm = ({
@@ -108,7 +106,7 @@ const CourseDetailsCreationForm = ({
                 </label>
                 <Combobox
                   title="Level"
-                  list={["🌱 Beginner", " 🚧 Intermediate", "🚀 Advance"]}
+                  list={["🌱 Beginner", "🚧 Intermediate", "🚀 Advance"]}
                   currentValues={selectedLevels}
                   setCurrentValues={setSelectedLevels}
                 />
