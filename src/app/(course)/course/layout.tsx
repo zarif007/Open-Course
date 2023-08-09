@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SignedIn, SignedOut } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
   title: "Course Details | Open Course",

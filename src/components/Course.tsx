@@ -8,21 +8,20 @@ import { useTheme } from "next-themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import SelectedTopics from "./SelectedTopics";
-
-import SimpleBar from "simplebar-react";
-import "simplebar-react/dist/simplebar.min.css";
-import SwiperComp from "./ui/SwiperComp";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
+import { Button } from "./ui/Button";
+import { PiChatsDuotone, PiRocketDuotone, PiRocketLaunchDuotone } from "react-icons/pi";
+import { useRouter } from "next/navigation";
+import Head from "next/head";
 
 const api = "http://localhost:3000/api";
 
 const Course = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
-  const generatedBanner = `${api}/generateBanner?courseName=${
-    course.title
-  }&theme=${theme}&
-  &topics=${course.categories ? course.categories.join("  ") : ""}`;
+  const router = useRouter()
+
+  
 
   const { data: creator, isLoading } = useQuery({
     queryKey: ["creator", course.creator],
@@ -35,8 +34,27 @@ const Course = ({ course }: { course: ICourse }) => {
     },
   });
 
+  const generatedBanner = `${api}/generateBanner?courseName=${
+    course.title
+  }&theme=${theme}&
+  &topics=${course.categories ? course.categories.join("  ") : ""}
+  &creator=${creator?.firstName}`;
+
   return (
     <div className="p-4">
+      <Head>
+        <title>{course.title}</title>
+        <meta name="description" content={course.description} key="desc" />
+        <meta property="og:title" content={course.title} />
+        <meta
+          property="og:description"
+          content={course.description}
+        />
+        <meta
+          property="og:image"
+          content={generatedBanner}
+        />
+      </Head>
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
@@ -59,54 +77,27 @@ const Course = ({ course }: { course: ICourse }) => {
 
           <SelectedTopics mode="view" selectedTopics={formatSelectedLevels(course.levels)} />
 
-          <SelectedTopics mode="view" selectedTopics={course.languages} />
+          <div
+            className="w-full max-w-5xl mx-auto"
+            style={{
+              borderTop: "2px dashed #f43f5e",
+            }}
+          />
 
-          <div className="flex items-center flex-wrap ">
-            <a className="text-rose-500 inline-flex items-center md:mb-2 lg:mb-0">
-              Learn More
-              <svg
-                className="w-4 h-4 ml-2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="M12 5l7 7-7 7"></path>
-              </svg>
-            </a>
-            <span className="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
-              <svg
-                className="w-4 h-4 mr-1"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                viewBox="0 0 24 24"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              1.2K
-            </span>
-            <span className="text-gray-500 inline-flex items-center leading-none text-sm">
-              <svg
-                className="w-4 h-4 mr-1"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                viewBox="0 0 24 24"
-              >
-                <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-              </svg>
-              6
-            </span>
+          <SelectedTopics mode="view" selectedTopics={course.languages} />
+          
+          <div className="flex justify-end text-gray-500 items-center space-x-2"> 
+            <div className="flex space-x-1 items-center">
+              <PiRocketLaunchDuotone className="w-6 h-6" />
+              <p className="font-semibold text-md">{course.enrolledUsers.length}</p>
+            </div>
+            <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">|</p>
+            <div className="flex space-x-1 items-center">
+              <PiChatsDuotone className="w-6 h-6" />
+              <p className="font-semibold text-md">{course.enrolledUsers.length}</p>
+            </div>
           </div>
+          <Button className="w-full mt-3" onClick={() => router.push(`course/${course.slug}`)}>Learn More</Button>
         </div>
       </div>
     </div>
