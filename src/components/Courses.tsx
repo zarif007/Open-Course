@@ -1,25 +1,27 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
-
-// import required modules
-import { Autoplay, FreeMode, Pagination } from "swiper/modules";
+import React from "react";
 import LargeHeading from "./ui/LargeHeading";
 import Course from "./Course";
-
-const getCount = () => {
-  return window.innerWidth > 1010 ? 3 : 2;
-};
+import SwiperComp from "./ui/SwiperComp";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { ICourse } from "@/types/course";
 
 const Courses = () => {
+  const { data: courses } = useQuery({
+    queryKey: ["course"],
+    queryFn: async () => {
+      
+      const { data } = await axios.get(`${v1MainEndpoint}/course`);
+
+      return data.data.map((course: ICourse, index: number) => {
+        return <Course course={course} key={index} />
+      })
+    },
+  })
+
   return (
     <main className="relative h-screen flex flex-col overflow-x-hidden w-full max-w-7xl mx-auto">
       <LargeHeading className="underline decoration-rose-500">
@@ -28,88 +30,8 @@ const Courses = () => {
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap -m-4"></div>
 
-        <div className="sm:hidden">
-          <Swiper
-            autoplay={true}
-            loop={true}
-            slidesPerView={1}
-            spaceBetween={30}
-            freeMode={true}
-            modules={[FreeMode, Autoplay]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-
-        <div className="hidden sm:inline md:hidden">
-          <Swiper
-            autoplay={true}
-            slidesPerView={2}
-            spaceBetween={30}
-            freeMode={true}
-            modules={[FreeMode, Autoplay]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-
-        <div className="hidden md:inline">
-          <Swiper
-            autoplay
-            speed={1000}
-            slidesPerView={3}
-            spaceBetween={30}
-            freeMode={true}
-            modules={[FreeMode, Autoplay]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Course />
-            </SwiperSlide>
-          </Swiper>
-        </div>
+        <SwiperComp comps={courses} slidesPerView={0} />
+        
       </div>
     </main>
   );

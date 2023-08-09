@@ -18,7 +18,7 @@ const SelectedTopics = (props: Props) => {
   }
   return (
     <div className="flex my-2 flex-wrap">
-      {props.selectedTopics.map((selectedTopic, index) => (
+      {props.selectedTopics && props.selectedTopics.map((selectedTopic, index) => (
         <div
           key={index}
           className="w-fit p-1 m-1 ml-0 text-xs font-semibold bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md flex space-x-2 items-center"

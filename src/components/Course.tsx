@@ -1,30 +1,66 @@
-import React from "react";
-import LargeHeading from "./ui/LargeHeading";
-import Paragraph from "./ui/Paragraph";
+"use client";
 
-const Course = () => {
+/* eslint-disable @next/next/no-img-element */
+import React from "react";
+import Paragraph from "./ui/Paragraph";
+import { ICourse } from "@/types/course";
+import { useTheme } from "next-themes";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import SelectedTopics from "./SelectedTopics";
+
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
+import SwiperComp from "./ui/SwiperComp";
+import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
+
+const api = "http://localhost:3000/api";
+
+const Course = ({ course }: { course: ICourse }) => {
+  const { theme } = useTheme();
+
+  const generatedBanner = `${api}/generateBanner?courseName=${
+    course.title
+  }&theme=${theme}&
+  &topics=${course.categories ? course.categories.join("  ") : ""}`;
+
+  const { data: creator, isLoading } = useQuery({
+    queryKey: ["creator", course.creator],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/getUserInfo?userId=user_2ShJZNoi0qrOTzvs5kQOiI05Y0z`
+      );
+
+      return data.user;
+    },
+  });
+
   return (
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
-          src="https://dummyimage.com/722x402"
+          src={generatedBanner}
           alt="blog"
         />
         <div className="p-6">
-          <h2 className="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">
-            CATEGORY
+          <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
+            By{" "}
+            <span className="text-rose-500">
+              {!isLoading && creator.firstName}
+            </span>
           </h2>
           <Paragraph
             size="default"
-            className="font-bold underline decoration-rose-500 truncate"
+            className="font-bold underline decoration-rose-500 decoration-2 truncate"
           >
-            Shooting Stars
+            {course.title}
           </Paragraph>
-          <p className="leading-relaxed mb-3">
-            Photo booth fam kinfolk cold-pressed sriracha leggings jianbing
-            microdosing tousled waistcoat.
-          </p>
+
+          <SelectedTopics mode="view" selectedTopics={formatSelectedLevels(course.levels)} />
+
+          <SelectedTopics mode="view" selectedTopics={course.languages} />
+
           <div className="flex items-center flex-wrap ">
             <a className="text-rose-500 inline-flex items-center md:mb-2 lg:mb-0">
               Learn More
