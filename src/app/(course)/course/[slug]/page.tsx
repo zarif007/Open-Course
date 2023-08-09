@@ -17,7 +17,7 @@ import canBeParsedToInt from "@/utils/canBeParsedToInt";
 import { useUser } from "@clerk/nextjs";
 import { IEnrollState } from "@/types/enrollState";
 import { ICourseTopic } from "@/types/courseTopic";
-import { current } from "@reduxjs/toolkit";
+import { Metadata } from "next";
 
 interface PageParams {
   params: {
@@ -27,10 +27,24 @@ interface PageParams {
 
 const MODE = "view";
 
-const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
-  // check from the finishedId array
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  
+  const { data } = await axios.get(`${v1MainEndpoint}/course/bySlug/${params.slug}`);
 
-  // return finishedTopics.includes(topicId.toString())
+  if(!data.data) {
+    return {
+      title: `Not found`,
+      description: `Not found`,
+    };
+  }
+  return {
+    title: `${data.data.title} | Open Course`,
+    description: `${data.data.description}`,
+  };
+  
+}
+
+const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
 
   const currentTopic = enrollState.currentTopic as ICourseTopic
 

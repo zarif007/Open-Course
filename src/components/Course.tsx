@@ -26,7 +26,7 @@ const Course = ({ course }: { course: ICourse }) => {
       const { data } = await axios.get(
         `api/getUserInfo?userId=${course.creator}`
       );
-
+      console.log(data.user)
       return data.user;
     },
   });
