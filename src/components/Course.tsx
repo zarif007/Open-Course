@@ -13,29 +13,25 @@ import { Button } from "./ui/Button";
 import { PiChatsDuotone, PiRocketDuotone, PiRocketLaunchDuotone } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
-import { nextApi } from "@/utils/apiEndpoints";
 
-const api = nextApi;
-// http://localhost:3000/api
+
 const Course = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
   const router = useRouter()
 
-  
-
   const { data: creator, isLoading } = useQuery({
     queryKey: ["creator", course.creator],
     queryFn: async () => {
       const { data } = await axios.get(
-        `${nextApi}/getUserInfo?userId=${course.creator}`
+        `api/getUserInfo?userId=${course.creator}`
       );
 
       return data.user;
     },
   });
 
-  const generatedBanner = `${api}/generateBanner?courseName=${
+  const generatedBanner = `api/generateBanner?courseName=${
     course.title
   }&theme=${theme}&
   &topics=${course.categories ? course.categories.join("  ") : ""}
