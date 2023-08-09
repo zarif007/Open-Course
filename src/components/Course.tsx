@@ -66,7 +66,7 @@ const Course = ({ course }: { course: ICourse }) => {
           <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
             By{" "}
             <span className="text-rose-500">
-              {!isLoading && creator.firstName}
+              {(!isLoading && creator.firstName) && creator.firstName}
             </span>
           </h2>
           <Paragraph
