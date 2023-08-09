@@ -34,7 +34,7 @@ const CourseDetailsCreation = () => {
           <div className="m-1">
             <label className="font-semibold">Levels</label>
             <SelectedTopics
-              selectedTopics={formatSelectedLevels(selectedLevels)}
+              selectedTopics={selectedLevels}
               mode="creation"
               setSelectedTopics={setSelectedLevels}
             />

@@ -11,27 +11,30 @@ import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice
 import { useRouter } from "next/navigation";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
-
-  const course = useAppSelector(
-    (state) => mode === "view" ? state.courseViewReducer.value.course: state.courseCreationReducer.value.course
+  const course = useAppSelector((state) =>
+    mode === "view"
+      ? state.courseViewReducer.value.course
+      : state.courseCreationReducer.value.course
   );
 
-  const enrollState = useAppSelector((state) => state.courseViewReducer.value.enrollState);
+  const enrollState = useAppSelector(
+    (state) => state.courseViewReducer.value.enrollState
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
-    if(!isValidTopic(courseTopic)) return
-    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`)
-    dispatch(setCurrentCourseTopicForView(courseTopic))
-  }
+    if (!isValidTopic(courseTopic)) return;
+    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`);
+    dispatch(setCurrentCourseTopicForView(courseTopic));
+  };
 
   const isValidTopic = (courseTopic: ICourseTopic): boolean => {
-    const currentCourseTopic = courseTopic.topicID as number;
-    return enrollState.finishedTopics.includes(currentCourseTopic.toString())
-  }
+    const topicId = courseTopic.topicID as number;
+    return enrollState.finishedTopics.includes(topicId.toString());
+  };
 
   return (
     <React.Fragment>
@@ -40,14 +43,13 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
         return (
           <div
             key={index}
-            onClick={() => mode === "view" ? redirectToCurrentCourseTopic(courseTopic) : 
-              dispatch(setCurrentCourseTopicForCreation(courseTopic))}
+            onClick={() =>
+              mode === "view"
+                ? redirectToCurrentCourseTopic(courseTopic)
+                : dispatch(setCurrentCourseTopicForCreation(courseTopic))
+            }
           >
-            <CourseTopic
-              index={index}
-              courseTopic={courseTopic}
-              mode={mode}
-            />
+            <CourseTopic index={index} courseTopic={courseTopic} mode={mode} />
           </div>
         );
       })}

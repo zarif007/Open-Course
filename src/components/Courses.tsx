@@ -16,20 +16,10 @@ import LargeHeading from "./ui/LargeHeading";
 import Course from "./Course";
 
 const getCount = () => {
-  return window.innerWidth > 1010 ? 3 : 2
-}
+  return window.innerWidth > 1010 ? 3 : 2;
+};
 
 const Courses = () => {
-
-  const [width, setWidth] = useState<number>(0)
-
-  useEffect(() => {
-    if(window !== undefined) setWidth(window.innerWidth)
-    console.log(width)
-  }, [window.innerWidth])
-
-
-
   return (
     <main className="relative h-screen flex flex-col overflow-x-hidden w-full max-w-7xl mx-auto">
       <LargeHeading className="underline decoration-rose-500">
@@ -37,22 +27,32 @@ const Courses = () => {
       </LargeHeading>
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap -m-4"></div>
-        
 
         <div className="sm:hidden">
           <Swiper
             autoplay={true}
+            loop={true}
             slidesPerView={1}
             spaceBetween={30}
             freeMode={true}
             modules={[FreeMode, Autoplay]}
             className="mySwiper"
           >
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
           </Swiper>
         </div>
 
@@ -65,28 +65,49 @@ const Courses = () => {
             modules={[FreeMode, Autoplay]}
             className="mySwiper"
           >
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
           </Swiper>
         </div>
 
         <div className="hidden md:inline">
           <Swiper
-            autoplay={true}
+            autoplay
+            speed={1000}
             slidesPerView={3}
             spaceBetween={30}
             freeMode={true}
             modules={[FreeMode, Autoplay]}
             className="mySwiper"
           >
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
-            <SwiperSlide><Course /></SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
+            <SwiperSlide>
+              <Course />
+            </SwiperSlide>
           </Swiper>
         </div>
       </div>

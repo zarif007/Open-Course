@@ -26,11 +26,12 @@ const IntroPage = () => {
         <blockquote className="bg-gray-100 dark:bg-gray-950">
           <Paragraph className="font-bold">
             A platform where users can{" "}
-            <span className="bg-rose-500 px-1">create courses</span> on a Topic by
-            collecting <span className="bg-rose-500 px-1">free contents</span>{" "}
-            from the internet and arranging them in a{" "}
-            <span className="bg-rose-500 px-1">sequential manner</span> to share with others {" "}
-            <span className="bg-rose-500 px-1">for free.</span>
+            <span className="bg-rose-500 px-1">create courses</span> on a Topic
+            by collecting{" "}
+            <span className="bg-rose-500 px-1">free contents</span> from the
+            internet and arranging them in a{" "}
+            <span className="bg-rose-500 px-1">sequential manner</span> to share
+            with others <span className="bg-rose-500 px-1">for free.</span>
           </Paragraph>
         </blockquote>
         <span className="inline-block h-1 w-10 rounded bg-rose-500 "></span>
@@ -56,7 +57,12 @@ const IntroPage = () => {
         />
       </div>
 
-      <Button variant="general" className="bg-rose-500 dark:bg-rose-500 mb-1 hover:bg-rose-500 dark:hover:bg-rose-500 focus:ring-offset-0 focus:ring-0">Watch a Video?</Button>
+      <Button
+        variant="general"
+        className="bg-rose-500 dark:bg-rose-500 mb-1 hover:bg-rose-500 dark:hover:bg-rose-500 focus:ring-offset-0 focus:ring-0"
+      >
+        Watch a Video?
+      </Button>
     </main>
   );
 };

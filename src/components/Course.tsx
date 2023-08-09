@@ -1,9 +1,11 @@
 import React from "react";
+import LargeHeading from "./ui/LargeHeading";
+import Paragraph from "./ui/Paragraph";
 
 const Course = () => {
   return (
     <div className="p-4">
-      <div className="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
           src="https://dummyimage.com/722x402"
@@ -13,15 +15,18 @@ const Course = () => {
           <h2 className="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">
             CATEGORY
           </h2>
-          <h1 className="title-font text-lg font-medium text-white mb-3">
+          <Paragraph
+            size="default"
+            className="font-bold underline decoration-rose-500 truncate"
+          >
             Shooting Stars
-          </h1>
+          </Paragraph>
           <p className="leading-relaxed mb-3">
             Photo booth fam kinfolk cold-pressed sriracha leggings jianbing
             microdosing tousled waistcoat.
           </p>
           <div className="flex items-center flex-wrap ">
-            <a className="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0">
+            <a className="text-rose-500 inline-flex items-center md:mb-2 lg:mb-0">
               Learn More
               <svg
                 className="w-4 h-4 ml-2"
