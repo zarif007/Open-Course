@@ -13,8 +13,9 @@ import { Button } from "./ui/Button";
 import { PiChatsDuotone, PiRocketDuotone, PiRocketLaunchDuotone } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import { nextApi } from "@/utils/apiEndpoints";
 
-const api = "http://localhost:3000/api";
+const api = nextApi;
 
 const Course = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
