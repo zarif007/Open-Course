@@ -16,7 +16,7 @@ import Head from "next/head";
 import { nextApi } from "@/utils/apiEndpoints";
 
 const api = nextApi;
-
+// http://localhost:3000/api
 const Course = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
@@ -28,7 +28,7 @@ const Course = ({ course }: { course: ICourse }) => {
     queryKey: ["creator", course.creator],
     queryFn: async () => {
       const { data } = await axios.get(
-        `http://localhost:3000/api/getUserInfo?userId=user_2ShJZNoi0qrOTzvs5kQOiI05Y0z`
+        `${nextApi}/getUserInfo?userId=${course.creator}`
       );
 
       return data.user;
