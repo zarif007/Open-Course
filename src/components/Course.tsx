@@ -12,7 +12,6 @@ import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { Button } from "./ui/Button";
 import {
   PiChatsDuotone,
-  PiRocketDuotone,
   PiRocketLaunchDuotone,
   PiShootingStarDuotone,
 } from "react-icons/pi";

@@ -1,8 +1,10 @@
 "use client";
+
 import { ICourseTopic } from "@/types/courseTopic";
 import React, { useEffect, useState } from "react";
 import LargeHeading from "./ui/LargeHeading";
 import createEmbeddableUrls from "@/utils/getEmbedableUrl";
+import isEmbeddable from "@/utils/isEmbeddable";
 
 function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   const [urlStatus, setUrlStatus] = useState<
