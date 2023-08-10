@@ -13,17 +13,16 @@ const Courses = () => {
   const { data: courses } = useQuery({
     queryKey: ["course"],
     queryFn: async () => {
-      
       const { data } = await axios.get(`${v1MainEndpoint}/course`);
 
       return data.data.map((course: ICourse, index: number) => {
-        return <Course course={course} key={index} />
-      })
+        return <Course course={course} key={index} />;
+      });
     },
-  })
+  });
 
   return (
-    <main className="relative h-screen flex flex-col overflow-x-hidden w-full max-w-7xl mx-auto">
+    <main className="relative min-h-screen flex flex-col overflow-x-hidden w-full max-w-7xl mx-auto">
       <LargeHeading className="underline decoration-rose-500">
         Courses
       </LargeHeading>
@@ -31,7 +30,6 @@ const Courses = () => {
         <div className="flex flex-wrap -m-4"></div>
 
         <SwiperComp comps={courses} slidesPerView={0} />
-        
       </div>
     </main>
   );
