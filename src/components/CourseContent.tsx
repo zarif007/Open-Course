@@ -14,6 +14,7 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   return (
     <div className="mx-auto w-[100%] h-[45vh] md:h-[80vh]">
       <LargeHeading
+        className=""
         size="sm"
         onClick={() =>
           console.log(
