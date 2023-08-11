@@ -8,12 +8,20 @@ function extractIdFromUrl(inputUrl: string) {
     let id = "";
 
     let url = inputUrl;
-    if (
-      parsedUrl.hostname.includes("youtube.com") ||
-      parsedUrl.hostname.includes("youtu.be")
+    if (parsedUrl.hostname.includes("youtu.be")) {
+      const videoIdMatch = parsedUrl.pathname.match(/^\/([a-zA-Z0-9_-]{11})/);
+  
+      if (videoIdMatch && videoIdMatch[1]) {
+          const id = videoIdMatch[1];
+          console.log(id);
+          url = `https://www.youtube.com/embed/${id}`;
+          console.log(url);
+      }
+    } else if (
+      parsedUrl.hostname.includes("youtube.com")
     ) {
       const videoIdMatch = parsedUrl.search.match(/[?&]v=([^&]+)/);
-      if (videoIdMatch && videoIdMatch[1]) {
+      if ((videoIdMatch && videoIdMatch[1])) {
         id = videoIdMatch[1];
         url = `https://www.youtube.com/embed/${id}`;
       }

@@ -1,18 +1,21 @@
 import { prisma } from "@/lib/db";
-import { clerkClient } from "@clerk/nextjs";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 
-const handler: NextApiHandler = async (req: NextApiRequest) => {
+const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { searchParams } = new URL(req.url || "");
     const userId = searchParams.get("userId") || '';
+
     const user = await prisma.user.findFirst({
         where: {
             externalId: userId,
         },
     })
-    return NextResponse.json({ user })
+    if (!user)
+      return res.statusCode = 500;
+
+    return NextResponse.json({ user: user.attributes })
 };
 
-export default handler;
+export const GET = handler

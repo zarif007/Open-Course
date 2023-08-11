@@ -16,19 +16,13 @@ const CourseDetails = () => {
     (state) => state.courseViewReducer.value.course
   );
 
-  const { data, isLoading } = useQuery({
+  const { data: creator, isLoading } = useQuery({
     queryKey: ["creator"],
     queryFn: async () => {
       const { data } = await axios.get(
-        `api/getUserInfo?userId=${course.creator}`
+        `/api/getUser?userId=${course.creator}`
       );
       return data.user;
-    },
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.log("error", error);
     },
   });
 
@@ -39,10 +33,10 @@ const CourseDetails = () => {
         <div className="flex space-x-2 items-center">
           <Paragraph className="font-bold text-md">By</Paragraph>
           <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
-            <AvatarImage className="rounded-full" src={data?.imageUrl} />
+            <AvatarImage className="rounded-full" src={creator?.image_url} />
             <AvatarFallback>DP</AvatarFallback>
           </Avatar>
-          <Paragraph className="font-bold text-md">{data?.firstName}</Paragraph>
+          <Paragraph className="font-bold text-md">{creator?.first_name}</Paragraph>
         </div>
       ) : (
         <div className="flex items-center ">

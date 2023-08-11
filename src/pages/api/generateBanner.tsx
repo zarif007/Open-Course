@@ -5,8 +5,6 @@ export const config = {
   runtime: "edge",
 };
 
-
-
 const handler: NextApiHandler = async (req: NextApiRequest) => {
 
   const BebasNeueRegular = await fetch(

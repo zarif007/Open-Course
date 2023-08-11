@@ -27,18 +27,17 @@ const Course = ({ course }: { course: ICourse }) => {
     queryKey: ["creator", course.creator],
     queryFn: async () => {
       const { data } = await axios.get(
-        `api/getUserInfo?userId=${course.creator}`
+        `/api/getUser?userId=${course.creator}`
       );
-      console.log(data.user);
       return data.user;
     },
   });
 
-  const generatedBanner = `api/generateBanner?courseName=${
+  const generatedBanner = `/api/generateBanner?courseName=${
     course.title
   }&theme=${theme}&
   &topics=${course.categories ? course.categories.join("  ") : ""}
-  &creator=${creator?.firstName}`;
+  &creator=${creator?.first_name}`;
 
   return (
     <div className="p-4">
@@ -49,12 +48,15 @@ const Course = ({ course }: { course: ICourse }) => {
           alt="blog"
         />
         <div className="p-6">
-          <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
+          {
+            isLoading ? <p>lopading</p> : 
+            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
             By{" "}
             <span className="text-rose-500">
-              {!isLoading && creator.firstName && creator.firstName}
+              {creator.first_name}
             </span>
           </h2>
+          }
           <Paragraph
             size="default"
             className="font-bold underline decoration-rose-500 decoration-2 truncate"
