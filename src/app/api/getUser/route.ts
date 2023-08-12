@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/db";
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
-const handler = async (req: Request, res: Response) => {
+const handler = async (req: Request) => {
   const { searchParams } = new URL(req.url || "");
   const userId = searchParams.get("userId") || "";
 

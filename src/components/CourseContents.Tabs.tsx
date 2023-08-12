@@ -85,8 +85,8 @@ const CourseContentsTabs = () => {
   return (
     <Tabs defaultValue="content" className="w-full mx-auto px-2 md:px-6">
       <LargeHeading
-        size="sm"
-        className="text-start underline decoration-rose-500 decoration-2"
+        size="lg"
+        className="mt-1 text-start underline decoration-rose-500 decoration-2"
       >
         {course.title}
       </LargeHeading>
@@ -107,9 +107,6 @@ const CourseContentsTabs = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="content">
-        <div className="flex justify-end">
-          <CourseContentFullscreenDialog courseTopic={currentCourseTopic} />
-        </div>
         <CourseContent courseTopic={currentCourseTopic} />
         <div className="mt-20 flex justify-end">
           {currentCourseTopic.topicID &&

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import LargeHeading from "./ui/LargeHeading";
 import createEmbeddableUrls from "@/utils/getEmbedableUrl";
 import isEmbeddable from "@/utils/isEmbeddable";
+import CourseContentFullscreenDialog from "./CourseContentFullscreen.Dialog";
 
 function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   const [urlStatus, setUrlStatus] = useState<
@@ -26,6 +27,11 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
       >
         {courseTopic.versions[courseTopic.versions.length - 1].title}
       </LargeHeading>
+      <div className="flex justify-end">
+        <CourseContentFullscreenDialog
+          url={courseTopic.versions[courseTopic.versions.length - 1].url}
+        />
+      </div>
       {urlStatus === "loading" ? (
         <p>Loading...</p>
       ) : urlStatus === "available" ? (

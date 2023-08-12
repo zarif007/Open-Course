@@ -5,8 +5,6 @@ import React from "react";
 import Paragraph from "./ui/Paragraph";
 import { ICourse } from "@/types/course";
 import { useTheme } from "next-themes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import SelectedTopics from "./SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { Button } from "./ui/Button";
@@ -16,22 +14,11 @@ import {
   PiShootingStarDuotone,
 } from "react-icons/pi";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
 
-const Course = ({ course }: { course: ICourse }) => {
+const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
   const { theme } = useTheme();
 
   const router = useRouter();
-
-  const { data: creator, isLoading } = useQuery({
-    queryKey: ["creator", course.creator],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `/api/getUser?userId=${course.creator}`
-      );
-      return data.user;
-    },
-  });
 
   const generatedBanner = `/api/generateBanner?courseName=${
     course.title
@@ -48,15 +35,9 @@ const Course = ({ course }: { course: ICourse }) => {
           alt="blog"
         />
         <div className="p-6">
-          {
-            isLoading ? <p>lopading</p> : 
-            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
-            By{" "}
-            <span className="text-rose-500">
-              {creator.first_name}
-            </span>
+          <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
+            By <span className="text-rose-500">{creator.first_name}</span>
           </h2>
-          }
           <Paragraph
             size="default"
             className="font-bold underline decoration-rose-500 decoration-2 truncate"
@@ -106,7 +87,7 @@ const Course = ({ course }: { course: ICourse }) => {
             className="w-full mt-3"
             onClick={() => router.push(`course/${course.slug}`)}
           >
-            Learn More
+            Enroll
           </Button>
         </div>
       </div>

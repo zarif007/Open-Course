@@ -18,7 +18,7 @@ const NavBar = () => {
   const { isSignedIn, user, isLoaded } = useUser();
   // console.log(user?.fullName, user?.emailAddresses[0].emailAddress, user?.id, user?.imageUrl)
   return (
-    <nav className="bg-slate-100 dark:bg-gray-950 fixed w-full z-20 top-0 left-0 overflow-x-hidden">
+    <nav className="backdrop-blur-sm bg-slate-100/75 dark:bg-gray-950/75 fixed w-full z-20 top-0 left-0 overflow-x-hidden">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {theme ? (
           <Link href="/" className="flex items-center">
