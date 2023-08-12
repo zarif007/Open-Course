@@ -14,6 +14,7 @@ import {
   PiShootingStarDuotone,
 } from "react-icons/pi";
 import { useRouter } from "next/navigation";
+import ContentLogoDurationBar from "./ContentLogoDuration.Bar";
 
 const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
   const { theme } = useTheme();
@@ -58,6 +59,8 @@ const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
           />
 
           <SelectedTopics mode="view" selectedTopics={course.languages} />
+
+          <ContentLogoDurationBar topics={course.topics} />
 
           <div className="flex justify-end text-gray-500 items-center space-x-2">
             <div className="flex space-x-1 items-center">
