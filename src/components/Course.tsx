@@ -62,7 +62,7 @@ const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
 
           <ContentLogoDurationBar topics={course.topics} />
 
-          <div className="flex justify-end text-gray-500 items-center space-x-2">
+          <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
             <div className="flex space-x-1 items-center">
               <PiShootingStarDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">4.5</p>

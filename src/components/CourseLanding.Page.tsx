@@ -17,6 +17,7 @@ import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "./ui/Toast";
 import { useRouter } from "next/navigation";
 import Router from 'next/router';
+import CourseRatings from "./CourseRatings";
 
 const CourseLandingPage = () => {
   const course = useAppSelector(
@@ -65,6 +66,7 @@ const CourseLandingPage = () => {
   return (
     <div className="max-w-5xl w-full mx-auto ">
       <CourseDetails />
+      <CourseRatings />
       <LargeHeading size="sm">Course Topics</LargeHeading>
       <Accordion type="single" collapsible>
         {course.topics.map((topic, index: number) => {
