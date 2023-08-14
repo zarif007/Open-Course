@@ -19,6 +19,8 @@ import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { useUser } from "@clerk/nextjs";
 import CourseContentFullscreenDialog from "./CourseContentFullscreen.Dialog";
+import Confetti from "./Confetti";
+import { toast } from "./ui/Toast";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -36,6 +38,7 @@ const CourseContentsTabs = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isExploding, setIsExploding] = useState<boolean>(false);
 
   const handleNextButton = async () => {
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
@@ -80,7 +83,14 @@ const CourseContentsTabs = () => {
     }
   };
 
-  const handleDoneButton = () => {};
+  const handleDoneButton = () => {
+    toast({
+      title: "Success",
+      message: `Course completed successfully`,
+      type: "success",
+    });
+    router.push("/");
+  };
 
   return (
     <Tabs defaultValue="content" className="w-full mx-auto px-2 md:px-6">
@@ -108,7 +118,7 @@ const CourseContentsTabs = () => {
       </TabsList>
       <TabsContent value="content">
         <CourseContent courseTopic={currentCourseTopic} />
-        <div className="mt-20 flex justify-end">
+        <div className="mt-24 flex justify-end">
           {currentCourseTopic.topicID &&
           currentCourseTopic.topicID < course.topics.length ? (
             <Button
