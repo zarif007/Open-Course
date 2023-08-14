@@ -29,7 +29,7 @@ const ProgressBar = ({ value, index }: { value: number; index: number }) => {
     <div className="flex space-x-2 items-center">
       <Paragraph className="font-semibold flex space-x-1 items-center">
         <span>{index}</span>
-        <PiStarDuotone className="text-rose-500" />
+        <PiStarDuotone className="" />
       </Paragraph>
       <Progress value={progress} className="md:w-[50%]" />
     </div>

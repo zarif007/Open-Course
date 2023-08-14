@@ -1,7 +1,6 @@
 "use client";
-import CourseContents from "@/components/CourseContents";
+
 import CourseContentsTabs from "@/components/CourseContents.Tabs";
-import CourseDetails from "@/components/CourseDetails";
 import CourseLandingPage from "@/components/CourseLanding.Page";
 import CourseTopics from "@/components/CourseTopics.Bar";
 import {
@@ -21,7 +20,6 @@ import canBeParsedToInt from "@/utils/canBeParsedToInt";
 import { useUser } from "@clerk/nextjs";
 import { IEnrollState } from "@/types/enrollState";
 import { ICourseTopic } from "@/types/courseTopic";
-import { Metadata } from "next";
 
 interface PageParams {
   params: {
