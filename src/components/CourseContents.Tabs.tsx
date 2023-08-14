@@ -38,7 +38,6 @@ const CourseContentsTabs = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isExploding, setIsExploding] = useState<boolean>(false);
 
   const handleNextButton = async () => {
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
@@ -89,7 +88,7 @@ const CourseContentsTabs = () => {
       message: `Course completed successfully`,
       type: "success",
     });
-    router.push("/");
+    router.push(`/course-completion/${course.slug}`);
   };
 
   return (
