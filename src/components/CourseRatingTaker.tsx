@@ -22,8 +22,6 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
 
   const { user } = useUser();
 
-  console.log(course);
-
   const customStyles = {
     itemShapes: StarDrawing,
     activeFillColor: "#f43f5e",
