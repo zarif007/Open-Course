@@ -15,8 +15,9 @@ import {
 } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 import ContentLogoDurationBar from "./ContentLogoDuration.Bar";
+import calculateAvgRating from "@/utils/calculateAvgRating";
 
-const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
+const CourseCard = ({ course, creator }: { course: ICourse; creator: any }) => {
   const { theme } = useTheme();
 
   const router = useRouter();
@@ -65,7 +66,12 @@ const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
             <div className="flex space-x-1 items-center">
               <PiShootingStarDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">4.5</p>
+              <p className="font-semibold text-md">
+                {calculateAvgRating(course.ratings ?? [])}
+                {" ("}
+                {(course.ratings ?? []).length}
+                {")"}
+              </p>
             </div>
             <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
               |
@@ -98,4 +104,4 @@ const Course = ({ course, creator }: { course: ICourse; creator: any }) => {
   );
 };
 
-export default Course;
+export default CourseCard;

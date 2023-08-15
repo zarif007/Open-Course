@@ -16,7 +16,7 @@ import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "./ui/Toast";
 import { useRouter } from "next/navigation";
-import Router from 'next/router';
+import Router from "next/router";
 import CourseRatings from "./CourseRatings";
 
 const CourseLandingPage = () => {
@@ -31,42 +31,41 @@ const CourseLandingPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleEnrollment = async () => {
-
-    if(isLoading) return;
+    if (isLoading) return;
 
     setIsLoading(true);
 
     try {
       const data = {
         course: course.id,
-        user: user?.id
-      }
+        user: user?.id,
+      };
 
       await axios.post(`${v1MainEndpoint}/enrollState`, data);
 
-      window.location.reload()
-      router.push(`${course.slug}?topicId=1`)
+      window.location.reload();
+      router.push(`${course.slug}?topicId=1`);
 
       toast({
         title: "Course Enrolled",
         type: "success",
         message: `${course.title} Enrolled Successfully`,
-      })
+      });
     } catch (error) {
       toast({
         title: "error",
         type: "error",
         message: `Try again later`,
-      })
+      });
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="max-w-5xl w-full mx-auto ">
       <CourseDetails />
-      <CourseRatings />
+      <CourseRatings ratings={course.ratings ?? []} />
       <LargeHeading size="sm">Course Topics</LargeHeading>
       <Accordion type="single" collapsible>
         {course.topics.map((topic, index: number) => {
@@ -74,7 +73,11 @@ const CourseLandingPage = () => {
             topic.versions[topic.versions.length - 1].url
           );
           return (
-            <AccordionItem value={index.toString()} key={index} className="m-4 px-4 md:mx-6">
+            <AccordionItem
+              value={index.toString()}
+              key={index}
+              className="m-4 px-4 md:mx-6"
+            >
               <AccordionTrigger>
                 {topic.versions[topic.versions.length - 1].title}
               </AccordionTrigger>
@@ -93,9 +96,17 @@ const CourseLandingPage = () => {
           );
         })}
       </Accordion>
-      <div className="fixed bottom-0 w-full max-w-5xl mx-auto" onClick={handleEnrollment}>
+      <div
+        className="fixed bottom-0 w-full max-w-5xl mx-auto"
+        onClick={handleEnrollment}
+      >
         <div className="m-4 md:mx-6 mt-8">
-          <Button className="w-full py-6 text-lg font-bold" isLoading={isLoading}>Enroll</Button>
+          <Button
+            className="w-full py-6 text-lg font-bold"
+            isLoading={isLoading}
+          >
+            Enroll
+          </Button>
         </div>
       </div>
     </div>

@@ -19,6 +19,12 @@ export interface ICourse {
   slug: string;
   topics: ICourseTopic[];
   tags: string[];
+  ratings?:
+    | {
+        user: string;
+        rating: number;
+      }[]
+    | [];
   createdAt?: Date;
   updatedAt?: Date;
   _v?: number;

@@ -39,42 +39,46 @@ const CourseContentsTabs = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const updateEnrollState = async (nextTopicId: number) => {
+    const { data } = await axios.get(
+      `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
+    );
+
+    const enrollState = data.data as IEnrollState;
+
+    const currentCourseTopicId = currentCourseTopic.topicID as number;
+
+    const state: IEnrollState = {
+      ...enrollState,
+      currentTopic: course.topics[nextTopicId - 1].id as string,
+      finishedTopics: enrollState.finishedTopics.includes(
+        currentCourseTopicId.toString()
+      )
+        ? enrollState.finishedTopics
+        : [...enrollState.finishedTopics, currentCourseTopicId.toString()],
+    };
+
+    const updatedEnrollState = await axios.put(
+      `${v1MainEndpoint}/enrollState`,
+      state
+    );
+
+    dispatch(setEnrollState(updatedEnrollState.data.data));
+
+    dispatch(setCurrentCourseTopicForView(course.topics[nextTopicId - 1]));
+  };
+
   const handleNextButton = async () => {
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
 
     setIsLoading(true);
 
     try {
-      const { data } = await axios.get(
-        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
-      );
+      const nextTopicId = (currentCourseTopic.topicID as number) + 1;
 
-      const enrollState = data.data as IEnrollState;
+      await updateEnrollState(nextTopicId);
 
-      const currentCourseTopicId = currentCourseTopic.topicID as number;
-
-      const state: IEnrollState = {
-        ...enrollState,
-        currentTopic: course.topics[currentCourseTopicId].id as string,
-        finishedTopics: enrollState.finishedTopics.includes(
-          currentCourseTopicId.toString()
-        )
-          ? enrollState.finishedTopics
-          : [...enrollState.finishedTopics, currentCourseTopicId.toString()],
-      };
-
-      const updatedEnrollState = await axios.put(
-        `${v1MainEndpoint}/enrollState`,
-        state
-      );
-
-      dispatch(setEnrollState(updatedEnrollState.data.data));
-
-      router.push(`/course/${course.slug}?topicId=${currentCourseTopicId + 1}`);
-
-      dispatch(
-        setCurrentCourseTopicForView(course.topics[currentCourseTopicId])
-      );
+      router.push(`/course/${course.slug}?topicId=${nextTopicId}`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -82,13 +86,27 @@ const CourseContentsTabs = () => {
     }
   };
 
-  const handleDoneButton = () => {
-    toast({
-      title: "Success",
-      message: `Course completed successfully`,
-      type: "success",
-    });
-    router.push(`/course-completion/${course.slug}`);
+  const handleDoneButton = async () => {
+    if (isLoading || !user || !course || !currentCourseTopic.id) return;
+
+    setIsLoading(true);
+
+    try {
+      const nextTopicId = 1;
+
+      await updateEnrollState(nextTopicId);
+
+      toast({
+        title: "Success",
+        message: `Course completed successfully`,
+        type: "success",
+      });
+      router.push(`/course-completion/${course.slug}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

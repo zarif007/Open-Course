@@ -2,7 +2,7 @@
 
 import React from "react";
 import LargeHeading from "./ui/LargeHeading";
-import Course from "./Course";
+import CourseCard from "./Course.Card";
 import SwiperComp from "./ui/SwiperComp";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -23,7 +23,7 @@ const Courses = () => {
 
       return data.data.map(async (course: ICourse, index: number) => {
         return (
-          <Course
+          <CourseCard
             course={course}
             key={index}
             creator={await creatorInfo(course.creator as string)}
