@@ -58,7 +58,7 @@ const SwiperSlideComp = ({
       spaceBetween={30}
       freeMode={true}
       loop={true}
-      speed={500}
+      speed={250}
       modules={[FreeMode, Autoplay]}
       className="mySwiper"
     >
