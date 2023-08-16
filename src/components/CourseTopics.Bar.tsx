@@ -10,7 +10,7 @@ const CourseTopicsBar = ({
 }: {
   showCourseTopics: boolean;
   setShowCourseTopics: React.Dispatch<React.SetStateAction<boolean>>;
-  mode: 'creation' | 'edit' | 'view';
+  mode: "creation" | "edit" | "view";
 }) => {
   const styles = {
     icon: `w-10 h-10 text-gray-900 dark:text-slate-100 ${
@@ -20,7 +20,7 @@ const CourseTopicsBar = ({
   return (
     <React.Fragment>
       <div
-        className="hidden md:flex ml-2 lg:ml-6 justify-start fixed cursor-pointer"
+        className="hidden md:flex ml-2 lg:ml-5 justify-start fixed cursor-pointer"
         onClick={() => setShowCourseTopics(!showCourseTopics)}
       >
         <MdOutlineMenuOpen className={styles.icon} />

@@ -51,6 +51,7 @@ const SwiperSlideComp = ({
   comps: React.ReactNode[];
 }) => {
   if (!comps) return;
+  console.log(comps);
   return (
     <Swiper
       autoplay={true}

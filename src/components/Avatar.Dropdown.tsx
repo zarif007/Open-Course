@@ -25,7 +25,10 @@ const AvatarDropdown = () => {
           {user && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
               <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
-                <AvatarImage className="rounded-full" src={user.profileImageUrl} />
+                <AvatarImage
+                  className="rounded-full"
+                  src={user.profileImageUrl}
+                />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>
             </div>
@@ -35,8 +38,8 @@ const AvatarDropdown = () => {
           {/* <MenubarItem className={styles.menuBarItems}>
             <UserProfile />
           </MenubarItem> */}
-          <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
-          <MenubarItem className={styles.menuBarItems}>Share</MenubarItem>
+          {/* <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
+          <MenubarItem className={styles.menuBarItems}>Share</MenubarItem> */}
           <MenubarSeparator />
           <MenubarItem className={`${styles.menuBarItems} text-red-500`}>
             <SignOutButton>Sign Out</SignOutButton>

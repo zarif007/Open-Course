@@ -1,12 +1,14 @@
-import React from 'react'
-import SocialMediaLogoBar from './SocialMediaLogo.Bar'
-import NotifyBar from './Notify.Bar'
-import LargeHeading from './ui/LargeHeading'
-import TextAppearAnimation from './ui/TextAppearAnimation'
-import CourseRotation from './CourseRotation'
-import Link from 'next/link'
-import { buttonVariants } from './ui/Button'
-import Image from 'next/image'
+"use client";
+
+import React from "react";
+import SocialMediaLogoBar from "./SocialMediaLogo.Bar";
+import NotifyBar from "./Notify.Bar";
+import LargeHeading from "./ui/LargeHeading";
+import TextAppearAnimation from "./ui/TextAppearAnimation";
+import CourseRotation from "./CourseRotation";
+import Link from "next/link";
+import { buttonVariants } from "./ui/Button";
+import Image from "next/image";
 
 const LandingPage = () => {
   return (
@@ -25,7 +27,8 @@ const LandingPage = () => {
                 margin: "12px 0",
               }}
             />
-            <span className="tw-gradient-text">Curate, Create & Share</span> <br />
+            <span className="tw-gradient-text">Curate, Create & Share</span>{" "}
+            <br />
           </LargeHeading>
           <CourseRotation />
           <div className="flex space-x-4 flex-wrap justify-center items-center">
@@ -49,7 +52,7 @@ const LandingPage = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

@@ -6,13 +6,15 @@ import ClientProviders from "@/components/ClientProviders";
 import NavBar from "@/components/Nav.Bar";
 import { Toaster } from "../components/ui/Toast";
 import { dark } from "@clerk/themes";
-import { useTheme } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Open Course",
   description: "Curate, Create & Share",
+  openGraph: {
+    images: "/dark-logo.png",
+  },
 };
 
 export default function RootLayout({
