@@ -12,7 +12,7 @@ export default function Home() {
       <HorizontalLine />
       <IntroPage />
       <HorizontalLine />
-      {/* <Courses /> */}
+      <Courses />
     </div>
   );
 }

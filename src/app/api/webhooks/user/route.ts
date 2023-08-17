@@ -8,43 +8,63 @@ import { Webhook, WebhookRequiredHeaders } from "svix";
 const webhookSecret = process.env.WEBHOOK_SECRET || "";
 
 async function handler(request: Request) {
-  const payload = await request.json();
-  const headersList = headers();
-  const heads = {
-    "svix-id": headersList.get("svix-id"),
-    "svix-timestamp": headersList.get("svix-timestamp"),
-    "svix-signature": headersList.get("svix-signature"),
-  };
-  const wh = new Webhook(webhookSecret);
-  let evt: Event | null = null;
-
   try {
-    evt = wh.verify(
-      JSON.stringify(payload),
-      heads as IncomingHttpHeaders & WebhookRequiredHeaders
-    ) as Event;
-  } catch (err) {
-    console.error((err as Error).message);
-    return NextResponse.json({}, { status: 400 });
-  }
+    const payload = await request.json();
+    const headersList = headers();
+    const heads = {
+      "svix-id": headersList.get("svix-id"),
+      "svix-timestamp": headersList.get("svix-timestamp"),
+      "svix-signature": headersList.get("svix-signature"),
+    };
 
-  const eventType: EventType = evt.type;
-  if (eventType === "user.created" || eventType === "user.updated") {
-    const { id, ...attributes } = evt.data;
+    const wh = new Webhook(webhookSecret);
+    let evt: Event | null = null;
 
-    const ok = await axios.post('http://localhost:5000/api/v1/user/', {
-      externalId: id as string,
-      attributes,
-    })
-    console.log('ok', ok)
-    await prisma.user.upsert({
-      where: { externalId: id as string },
-      create: {
+    try {
+      evt = wh.verify(
+        JSON.stringify(payload),
+        heads as IncomingHttpHeaders & WebhookRequiredHeaders
+      ) as Event;
+    } catch (err) {
+      console.error((err as Error).message);
+      return NextResponse.json({}, { status: 400 });
+    }
+
+    const eventType: EventType = evt.type;
+
+    if (eventType === "user.created" || eventType === "user.updated") {
+      const { id, ...attributes } = evt.data;
+
+      const user = {
         externalId: id as string,
         attributes,
-      },
-      update: { attributes },
-    });
+      };
+
+      try {
+        // Make Axios POST request
+        await axios.post('http://localhost:5000/api/v1/user/', user);
+
+        // Upsert the user data using Prisma
+        await prisma.user.upsert({
+          where: { externalId: id as string },
+          create: {
+            externalId: id as string,
+            attributes,
+          },
+          update: { attributes },
+        });
+
+        return NextResponse.json({ success: true });
+      } catch (axiosError) {
+        console.error('Axios POST error:', axiosError);
+        return NextResponse.json({ success: false }, { status: 500 });
+      }
+    }
+
+    return NextResponse.json({ success: false }, { status: 400 });
+  } catch (error) {
+    console.error('Handler error:', error);
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }
 
@@ -55,7 +75,6 @@ type Event = {
   object: "event";
   type: EventType;
 };
-
 
 export const GET = handler;
 export const POST = handler;
