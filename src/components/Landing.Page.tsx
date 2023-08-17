@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import SocialMediaLogoBar from "./SocialMediaLogo.Bar";
 import NotifyBar from "./Notify.Bar";

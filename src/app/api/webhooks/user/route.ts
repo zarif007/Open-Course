@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import axios from "axios";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -31,6 +32,11 @@ async function handler(request: Request) {
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, ...attributes } = evt.data;
 
+    const ok = await axios.post('http://localhost:5000/api/v1/user/', {
+      externalId: id as string,
+      attributes,
+    })
+    console.log('ok', ok)
     await prisma.user.upsert({
       where: { externalId: id as string },
       create: {
