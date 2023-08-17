@@ -51,7 +51,6 @@ const SwiperSlideComp = ({
   comps: React.ReactNode[];
 }) => {
   if (!comps) return;
-  console.log(comps);
   return (
     <Swiper
       autoplay={true}
@@ -59,7 +58,7 @@ const SwiperSlideComp = ({
       spaceBetween={30}
       freeMode={true}
       loop={true}
-      speed={250}
+      speed={500}
       modules={[FreeMode, Autoplay]}
       className="mySwiper"
     >
