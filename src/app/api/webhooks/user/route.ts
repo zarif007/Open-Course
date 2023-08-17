@@ -42,7 +42,7 @@ async function handler(request: Request) {
 
       try {
         // Make Axios POST request
-        await axios.post('http://localhost:5000/api/v1/user/', user);
+        await axios.post("http://localhost:5000/api/v1/user/", user);
 
         // Upsert the user data using Prisma
         await prisma.user.upsert({
@@ -56,14 +56,14 @@ async function handler(request: Request) {
 
         return NextResponse.json({ success: true });
       } catch (axiosError) {
-        console.error('Axios POST error:', axiosError);
+        console.error("Axios POST error:", axiosError);
         return NextResponse.json({ success: false }, { status: 500 });
       }
     }
 
     return NextResponse.json({ success: false }, { status: 400 });
   } catch (error) {
-    console.error('Handler error:', error);
+    console.error("Handler error:", error);
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
