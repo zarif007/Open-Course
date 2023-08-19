@@ -48,7 +48,6 @@
     "next-themes": "^0.2.1",
     "npm": "^9.8.1",
     "postcss": "8.4.26",
-    "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-confetti-explosion": "^2.1.2",
@@ -72,6 +71,7 @@
   "devDependencies": {
     "@types/favico.js": "^0.0.29",
     "@types/shortid": "^0.0.29",
-    "daisyui": "^3.5.1"
+    "daisyui": "^3.5.1",
+    "prisma": "^5.1.1"
   }
 }

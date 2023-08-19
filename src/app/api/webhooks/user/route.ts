@@ -1,6 +1,4 @@
 import { prisma } from "@/lib/db";
-import printSomething from "@/utils/printSomething";
-import axios from "axios";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -36,9 +34,8 @@ async function handler(request: Request) {
     if (eventType === "user.created" || eventType === "user.updated") {
       const { id, ...attributes } = evt.data;
 
-      printSomething('opppp')
       // Upsert the user data using Prisma
-      const user = await prisma.user.upsert({
+      await prisma.user.upsert({
         where: { externalId: id as string },
         create: {
           externalId: id as string,
@@ -47,7 +44,7 @@ async function handler(request: Request) {
         update: { attributes },
       });
 
-      return NextResponse.json({ success: true, data: user }, { status: 400 });
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     return NextResponse.json({ success: false }, { status: 400 });

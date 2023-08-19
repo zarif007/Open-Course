@@ -83,6 +83,7 @@ const CourseDetailsCreationForm = ({
           <Input
             className={`h-16 md:h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0`}
             defaultValue={course.title}
+            placeholder="Course Name"
             onChange={(e) =>
               dispatch(
                 setCourseForCreation({ ...course, title: e.target.value })
