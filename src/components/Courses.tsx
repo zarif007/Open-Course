@@ -21,12 +21,15 @@ const Courses = () => {
     queryFn: async () => {
       const { data } = await axios.get(`${v1MainEndpoint}/course`);
 
+      console.log(data.data.map((course: ICourse, index: number) => {
+        return course;
+      }))
+      
       return data.data.map(async (course: ICourse, index: number) => {
         return (
           <CourseCard
             course={course}
             key={index}
-            creator={await creatorInfo(course.creator as string)}
           />
         );
       });

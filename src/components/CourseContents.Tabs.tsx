@@ -112,8 +112,8 @@ const CourseContentsTabs = () => {
   return (
     <Tabs defaultValue="content" className="w-full mx-auto px-2 md:px-6">
       <LargeHeading
-        size="lg"
-        className="mt-1 text-start underline decoration-rose-500 decoration-2"
+        size="sm"
+        className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
       >
         {course.title}
       </LargeHeading>

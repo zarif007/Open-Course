@@ -6,43 +6,27 @@ import { useAppSelector } from "@/redux/store";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
 import Paragraph from "./ui/Paragraph";
 import SelectedTopics from "./SelectedTopics";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { nextApi } from "@/utils/apiEndpoints";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
+import { IUser } from "@/types/user";
 
 const CourseDetails = () => {
   const course = useAppSelector(
     (state) => state.courseViewReducer.value.course
   );
 
-  const { data: creator, isLoading } = useQuery({
-    queryKey: ["creator"],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `/api/getUser?userId=${course.creator}`
-      );
-      return data.user;
-    },
-  });
+  const creator = course.creator as IUser;
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
       <LargeHeading className="text-start">{course.title}</LargeHeading>
-      {!isLoading ? (
-        <div className="flex space-x-2 items-center">
+      <div className="flex space-x-2 items-center">
           <Paragraph className="font-bold text-md">By</Paragraph>
           <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
-            <AvatarImage className="rounded-full" src={creator?.image_url} />
+            <AvatarImage className="rounded-full" src={creator.attributes.image_url} />
             <AvatarFallback>DP</AvatarFallback>
           </Avatar>
-          <Paragraph className="font-bold text-md">{creator?.first_name}</Paragraph>
+          <Paragraph className="font-bold text-md">{creator.attributes.first_name}</Paragraph>
         </div>
-      ) : (
-        <div className="flex items-center ">
-          <span className="loading loading-infinity loading-lg"></span>
-        </div>
-      )}
 
       <div className="flex flex-wrap">
         <div className="m-1">

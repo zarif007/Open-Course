@@ -9,7 +9,7 @@ const CourseDetailsCreation = () => {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   return (
-    <div className="border-2 border-slate-300 dark:border-gray-800 rounded my-4 m-3 md:m-6 p-4">
+    <div className="bg-slate-200 dark:bg-gray-900 rounded my-4 m-3 md:m-6 p-4">
       <CourseDetailsCreationForm
         selectedCourseTypes={selectedCourseTypes}
         setSelectedCourseTypes={setSelectedCourseTypes}

@@ -16,17 +16,20 @@ import {
 import { useRouter } from "next/navigation";
 import ContentLogoDurationBar from "./ContentLogoDuration.Bar";
 import calculateAvgRating from "@/utils/calculateAvgRating";
+import { IUser } from "@/types/user";
 
-const CourseCard = ({ course, creator }: { course: ICourse; creator: any }) => {
+const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
   const router = useRouter();
+
+  const creator = course.creator as IUser;
 
   const generatedBanner = `/api/generateBanner?courseName=${
     course.title
   }&theme=${theme}&
   &topics=${course.categories ? course.categories.join("  ") : ""}
-  &creator=${creator?.first_name}`;
+  &creator=${creator.attributes?.first_name ?? ''}`;
 
   return (
     <div className="p-4">
@@ -38,7 +41,7 @@ const CourseCard = ({ course, creator }: { course: ICourse; creator: any }) => {
         />
         <div className="p-6">
           <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
-            By <span className="text-rose-500">{creator.first_name}</span>
+            By <span className="text-rose-500">{creator.attributes.first_name ?? ''}</span>
           </h2>
           <Paragraph
             size="default"
