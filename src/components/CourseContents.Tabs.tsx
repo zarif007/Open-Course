@@ -69,7 +69,7 @@ const CourseContentsTabs = () => {
   };
 
   const handleNextButton = async () => {
-    if (isLoading || !user || !course || !(currentCourseTopic.id ?? currentCourseTopic._id)) return;
+    if (isLoading || !user || !course || !currentCourseTopic.id) return;
 
     setIsLoading(true);
 
@@ -87,8 +87,8 @@ const CourseContentsTabs = () => {
   };
 
   const handleDoneButton = async () => {
-    console.log(isLoading , !user , !course , !(currentCourseTopic.id ?? currentCourseTopic._id))
-    if (isLoading || !user || !course || !(currentCourseTopic.id ?? currentCourseTopic._id)) return;
+    console.log(isLoading , !user , !course , !currentCourseTopic.id)
+    if (isLoading || !user || !course || !currentCourseTopic.id) return;
 
     setIsLoading(true);
 

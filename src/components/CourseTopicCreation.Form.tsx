@@ -9,6 +9,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "./ui/Textarea";
+import ErrorMessage from "./ui/ErrorMessage";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -197,9 +198,5 @@ const CourseTopicCreationForm = ({
   );
 };
 
-const ErrorMessage = ({ text }: { text: string | undefined }) => {
-  if (!text) return null;
-  return <div className="text-red-600 font-sm font-semibold">{text}</div>;
-};
 
 export default CourseTopicCreationForm;

@@ -10,7 +10,7 @@ import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { Button } from "./ui/Button";
 import {
   PiChatsDuotone,
-  PiRocketLaunchDuotone,
+  PiUsersThreeDuotone,
   PiShootingStarDuotone,
 } from "react-icons/pi";
 import { useRouter } from "next/navigation";
@@ -80,7 +80,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               |
             </p>
             <div className="flex space-x-1 items-center">
-              <PiRocketLaunchDuotone className="w-6 h-6" />
+              <PiUsersThreeDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">
                 {course.enrolledUsers.length}
               </p>

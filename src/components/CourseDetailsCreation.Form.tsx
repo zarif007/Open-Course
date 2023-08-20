@@ -97,9 +97,20 @@ const CourseDetailsCreationForm = ({
               <Textarea placeholder="About this Course" className="focus-visible:ring-0`" />
             </div>
             <div className="w-full flex flex-wrap">
+            <div className="mr-1 flex flex-col my-1">
+                <label htmlFor="text" className="font-bold">
+                  Category (Max. 3)
+                </label>
+                <Combobox
+                  title="Category"
+                  list={courseTypes}
+                  currentValues={selectedCourseTypes}
+                  setCurrentValues={setSelectedCourseTypes}
+                />
+              </div>
               <div className="mr-1 flex flex-col my-1">
                 <label htmlFor="text" className="font-bold">
-                  Level
+                  Level (Max. 3)
                 </label>
                 <Combobox
                   title="Level"
@@ -111,25 +122,13 @@ const CourseDetailsCreationForm = ({
 
               <div className="mr-1 flex flex-col my-1">
                 <label htmlFor="text" className="font-bold">
-                  Language
+                  Language (Max. 3)
                 </label>
                 <Combobox
                   title="Language"
                   list={languages}
                   currentValues={selectedLanguages}
                   setCurrentValues={setSelectedLanguages}
-                />
-              </div>
-
-              <div className="mr-1 flex flex-col my-1">
-                <label htmlFor="text" className="font-bold">
-                  Course Category (Max. 3)
-                </label>
-                <Combobox
-                  title="Category"
-                  list={courseTypes}
-                  currentValues={selectedCourseTypes}
-                  setCurrentValues={setSelectedCourseTypes}
                 />
               </div>
             </div>

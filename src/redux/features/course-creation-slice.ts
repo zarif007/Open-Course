@@ -12,7 +12,7 @@ export interface IInitialState {
 const initialState = {
   value: {
     course: {
-      title: "Course Name 🐉",
+      title: "New Course 🐉",
       topics: [
         {
           id: 0,

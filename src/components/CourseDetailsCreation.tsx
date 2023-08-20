@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CourseDetailsCreationForm from "./CourseDetailsCreation.Form";
 import SelectedTopics from "./SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
+import ErrorMessage from "./ui/ErrorMessage";
 
 const CourseDetailsCreation = () => {
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
