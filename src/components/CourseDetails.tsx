@@ -8,6 +8,7 @@ import Paragraph from "./ui/Paragraph";
 import SelectedTopics from "./SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { IUser } from "@/types/user";
+import ContentLogoDurationBar from '@/components/ContentLogoDuration.Bar'
 
 const CourseDetails = () => {
   const course = useAppSelector(
@@ -44,6 +45,9 @@ const CourseDetails = () => {
           <label className="font-semibold">languages</label>
           <SelectedTopics selectedTopics={course.languages} mode="view" />
         </div>
+      </div>
+      <div className="md:w-[50%]">
+        <ContentLogoDurationBar topics={course.topics} />
       </div>
     </div>
   );

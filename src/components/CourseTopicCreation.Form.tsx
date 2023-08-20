@@ -106,7 +106,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].title}
           required
         />
-        <ErrorMessage text={errors.title?.message} />
+        <ErrorMessage text={errors.title?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -133,7 +133,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].url}
           required
         />
-        <ErrorMessage text={errors.url?.message} />
+        <ErrorMessage text={errors.url?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -160,7 +160,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].duration}
           required
         />
-        <ErrorMessage text={errors.duration?.message} />
+        <ErrorMessage text={errors.duration?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -168,7 +168,7 @@ const CourseTopicCreationForm = ({
           Description (Optional)
         </label>
         <Textarea {...register("description")} defaultValue="" placeholder="Huh!! I don't know" className="text-sm font-semibold" />
-        <ErrorMessage text={errors.url?.message} />
+        <ErrorMessage text={errors.url?.message} className="" />
       </div>
 
       <div className="flex space-x-2 justify-start">
