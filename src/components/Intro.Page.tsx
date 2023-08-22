@@ -59,7 +59,7 @@ const IntroPage = () => {
       </div>
 
       <Button
-        variant="general"
+        variant="generalRose"
         className="bg-rose-500 dark:bg-rose-500 mb-1 hover:bg-rose-500 dark:hover:bg-rose-500 focus:ring-offset-0 focus:ring-0"
       >
         Watch a Video?

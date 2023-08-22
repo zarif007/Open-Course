@@ -9,11 +9,9 @@ import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { ICourse } from "@/types/course";
 import CourseSkeleton from "./Skeletons/Course.Skeleton";
+import { Button, buttonVariants } from "./ui/Button";
+import Link from "next/link";
 
-const creatorInfo = async (creatorId: string) => {
-  const { data } = await axios.get(`/api/getUser?userId=${creatorId}`);
-  return data.user;
-};
 
 const Courses = () => {
   const { data: courses, isLoading } = useQuery({
@@ -21,10 +19,6 @@ const Courses = () => {
     queryFn: async () => {
       const { data } = await axios.get(`${v1MainEndpoint}/course`);
 
-      console.log(data.data.map((course: ICourse, index: number) => {
-        return course;
-      }))
-      
       return data.data.map(async (course: ICourse, index: number) => {
         return (
           <CourseCard
@@ -37,7 +31,7 @@ const Courses = () => {
   });
 
   return (
-    <main className="relative min-h-screen flex flex-col overflow-x-hidden w-full max-w-7xl mx-auto">
+    <main className="relative min-h-screen flex flex-col items-center justify-center overflow-x-hidden w-full max-w-7xl mx-auto">
       <LargeHeading className="underline decoration-rose-500">
         Courses
       </LargeHeading>
@@ -53,6 +47,13 @@ const Courses = () => {
           <SwiperComp comps={courses} slidesPerView={0} />
         )}
       </div>
+
+      <Link
+        href="/courses"
+        className={`${buttonVariants({ variant: "generalRose" })} bg-rose-500 dark:bg-rose-500 mb-1 hover:bg-rose-500 dark:hover:bg-rose-500 focus:ring-offset-0 focus:ring-0`}
+      >
+        More Courses?
+      </Link>
     </main>
   );
 };
