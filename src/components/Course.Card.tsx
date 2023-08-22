@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import ContentLogoDurationBar from "./ContentLogoDuration.Bar";
 import calculateAvgRating from "@/utils/calculateAvgRating";
 import { IUser } from "@/types/user";
+import BlurredImage from "./ui/BlurredImage";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
@@ -29,19 +30,27 @@ const CourseCard = ({ course }: { course: ICourse }) => {
     course.title
   }&theme=${theme}&
   &topics=${course.categories ? course.categories.join("  ") : ""}
-  &creator=${creator.attributes?.first_name ?? ''}`;
+  &creator=${creator.attributes?.first_name ?? ""}`;
 
   return (
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
-        <img
+        {/* <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
           src={generatedBanner}
           alt="blog"
+        /> */}
+        <BlurredImage
+          src={generatedBanner}
+          alt="blog"
+          className="lg:h-48 md:h-36 w-full object-cover object-center"
         />
         <div className="p-6">
           <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
-            By <span className="text-rose-500">{creator.attributes.first_name ?? ''}</span>
+            By{" "}
+            <span className="text-rose-500">
+              {creator.attributes.first_name ?? ""}
+            </span>
           </h2>
           <Paragraph
             size="default"

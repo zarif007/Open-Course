@@ -5,6 +5,7 @@ export default authMiddleware({
     "/api/webhooks/user",
     "/api/getUser",
     "/api/generateBanner",
+    "/courses",
   ],
 });
 
