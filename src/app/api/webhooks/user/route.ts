@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/db";
-import axios from "axios";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -35,30 +34,17 @@ async function handler(request: Request) {
     if (eventType === "user.created" || eventType === "user.updated") {
       const { id, ...attributes } = evt.data;
 
-      const user = {
-        externalId: id as string,
-        attributes,
-      };
+      // Upsert the user data using Prisma
+      await prisma.user.upsert({
+        where: { externalId: id as string },
+        create: {
+          externalId: id as string,
+          attributes,
+        },
+        update: { attributes },
+      });
 
-      try {
-        // Make Axios POST request
-        await axios.post("http://localhost:5000/api/v1/user/", user);
-
-        // Upsert the user data using Prisma
-        await prisma.user.upsert({
-          where: { externalId: id as string },
-          create: {
-            externalId: id as string,
-            attributes,
-          },
-          update: { attributes },
-        });
-
-        return NextResponse.json({ success: true });
-      } catch (axiosError) {
-        console.error("Axios POST error:", axiosError);
-        return NextResponse.json({ success: false }, { status: 500 });
-      }
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     return NextResponse.json({ success: false }, { status: 400 });

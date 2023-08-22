@@ -56,9 +56,6 @@ const CourseDetailsCreationForm = ({
 
   return (
     <React.Fragment>
-      {/* {
-        show && <img src={generatedBanner} alt="ok" className="h-60" />
-      } */}
       <div
         className="flex items-center w-fit cursor-pointer"
         onClick={() => setShow(!show)}
@@ -81,7 +78,7 @@ const CourseDetailsCreationForm = ({
             Name of the Course
           </label>
           <Input
-            className={`h-16 md:h-20 border-0 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0 p-0`}
+            className={`h-16 md:h-20 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0`}
             defaultValue={course.title}
             onChange={(e) =>
               dispatch(
@@ -97,12 +94,23 @@ const CourseDetailsCreationForm = ({
               <label htmlFor="text" className="font-bold">
                 Description
               </label>
-              <Textarea placeholder="About this Course" className="" />
+              <Textarea placeholder="About this Course" className="focus-visible:ring-0`" />
             </div>
             <div className="w-full flex flex-wrap">
+            <div className="mr-1 flex flex-col my-1">
+                <label htmlFor="text" className="font-bold">
+                  Category (Max. 3)
+                </label>
+                <Combobox
+                  title="Category"
+                  list={courseTypes}
+                  currentValues={selectedCourseTypes}
+                  setCurrentValues={setSelectedCourseTypes}
+                />
+              </div>
               <div className="mr-1 flex flex-col my-1">
                 <label htmlFor="text" className="font-bold">
-                  Level
+                  Level (Max. 3)
                 </label>
                 <Combobox
                   title="Level"
@@ -114,25 +122,13 @@ const CourseDetailsCreationForm = ({
 
               <div className="mr-1 flex flex-col my-1">
                 <label htmlFor="text" className="font-bold">
-                  Language
+                  Language (Max. 3)
                 </label>
                 <Combobox
                   title="Language"
                   list={languages}
                   currentValues={selectedLanguages}
                   setCurrentValues={setSelectedLanguages}
-                />
-              </div>
-
-              <div className="mr-1 flex flex-col my-1">
-                <label htmlFor="text" className="font-bold">
-                  Course Category (Max. 3)
-                </label>
-                <Combobox
-                  title="Category"
-                  list={courseTypes}
-                  currentValues={selectedCourseTypes}
-                  setCurrentValues={setSelectedCourseTypes}
                 />
               </div>
             </div>

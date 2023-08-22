@@ -1,5 +1,6 @@
 export interface ICourseTopic {
     id?: number | string;
+    _id?: string;
     topicID?: number;
     versions: [
         {

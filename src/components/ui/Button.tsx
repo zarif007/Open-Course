@@ -25,9 +25,9 @@ const buttonVariants = cva(
           "text-slate-100 bg-gray-800 hover:bg-gray-950 focus:ring-2 focus:outline-none focus:ring-gray-900 dark:focus:ring-slate-300  font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-slate-100 dark:text-gray-900 dark:hover:bg-slate-300 dark:focus:ring-slate-300",
         generalOutline:
           "text-white border-2 border-rose-500 hover:border-rose-800 focus:ring-2 focus:outline-none focus:ring-rose-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-rose-500 dark:hover:border-rose-800 dark:focus:ring-rose-800",
-        generalBlue:
-          "text-white bg-rose-500 hover:bg-rose-800 focus:ring-2 focus:outline-none focus:ring-rose-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-rose-500 dark:hover:bg-rose-800 dark:focus:ring-rose-800",
-        generalOutlineBlue:
+        generalRose:
+          "bg-rose-500 text-slate-100 dark:text-gray-950 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:bg-rose-500",
+        generalOutlineRose:
           "text-white border-2 border-rose-500 hover:border-rose-800 focus:ring-2 focus:outline-none focus:ring-rose-300 font-medium rounded-md text-sm px-8 py-2 font-semibold text-center mr-3 md:mr-0 dark:border-rose-500 dark:hover:border-rose-800 dark:focus:ring-rose-800",
       },
       size: {

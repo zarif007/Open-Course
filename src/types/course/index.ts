@@ -9,8 +9,8 @@ export interface ICourse {
   version: number;
   enabled: boolean;
   creator: IUser | string;
-  contributors: IUser[] | [];
-  enrolledUsers: IUser[] | [];
+  contributors: IUser[] | string[];
+  enrolledUsers: IUser[] | string[];
   categories: string[];
   levels: string[];
   languages: string[];

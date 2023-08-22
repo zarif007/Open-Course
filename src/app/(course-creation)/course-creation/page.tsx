@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import CourseTopicsBar from "@/components/CourseTopics.Bar";
 import CourseTopicCreation from "@/components/CourseTopicCreation";
 import CourseDetailsCreation from "@/components/CourseDetailsCreation";
@@ -13,6 +13,7 @@ import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";
 import createSlug from "@/utils/createSlug";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 const MODE = "creation";
 
@@ -20,6 +21,8 @@ const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [error, setError] = useState<string>('');
 
   const course = useAppSelector(
     (state) => state.courseCreationReducer.value.course
@@ -29,8 +32,35 @@ const CourseCreation = () => {
 
   const router = useRouter();
 
+  const validateCourseDetails = (): boolean => {
+    if (!course.title) {
+      setError("Title is required");
+      return false;
+    }
+    if(course.categories.length === 0) {
+      setError("Must add at least one Category");
+      return false;
+    }
+    if(course.levels.length === 0) {
+      setError("Must add at least one Level");
+      return false;
+    }
+    if(course.languages.length === 0) {
+      setError("Must add at least one Languages");
+      return false;
+    }
+    if(course.topics.length === 1) {
+      setError("Must add at least one Course Topic");
+      return false;
+    }
+
+    return true
+  }
+
   const handleSubmit = async () => {
     if (isLoading || !user?.fullName) return;
+
+    if(!validateCourseDetails()) return;
 
     setIsLoading(true);
 
@@ -79,6 +109,8 @@ const CourseCreation = () => {
           <CourseDetailsCreation />
 
           <CourseTopicCreation />
+
+          <ErrorMessage text={error} className="font-bold flex items-center justify-center text-xl" />
 
           <div className="flex justify-center p-3 md:p-6 mt-12 md:mt-20">
             <Button

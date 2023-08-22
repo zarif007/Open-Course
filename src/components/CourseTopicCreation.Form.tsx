@@ -9,6 +9,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "./ui/Textarea";
+import ErrorMessage from "./ui/ErrorMessage";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -105,7 +106,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].title}
           required
         />
-        <ErrorMessage text={errors.title?.message} />
+        <ErrorMessage text={errors.title?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -132,7 +133,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].url}
           required
         />
-        <ErrorMessage text={errors.url?.message} />
+        <ErrorMessage text={errors.url?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -159,7 +160,7 @@ const CourseTopicCreationForm = ({
           defaultValue={defaultValue.versions[0].duration}
           required
         />
-        <ErrorMessage text={errors.duration?.message} />
+        <ErrorMessage text={errors.duration?.message} className="" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -167,7 +168,7 @@ const CourseTopicCreationForm = ({
           Description (Optional)
         </label>
         <Textarea {...register("description")} defaultValue="" placeholder="Huh!! I don't know" className="text-sm font-semibold" />
-        <ErrorMessage text={errors.url?.message} />
+        <ErrorMessage text={errors.url?.message} className="" />
       </div>
 
       <div className="flex space-x-2 justify-start">
@@ -197,9 +198,5 @@ const CourseTopicCreationForm = ({
   );
 };
 
-const ErrorMessage = ({ text }: { text: string | undefined }) => {
-  if (!text) return null;
-  return <div className="text-red-600 font-sm font-semibold">{text}</div>;
-};
 
 export default CourseTopicCreationForm;

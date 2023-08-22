@@ -12,7 +12,7 @@ export interface IInitialState {
 const initialState = {
   value: {
     course: {
-      title: "Dragon Training 🐉",
+      title: "New Course 🐉",
       topics: [
         {
           id: 0,
