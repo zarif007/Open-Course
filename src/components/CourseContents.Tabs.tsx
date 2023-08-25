@@ -136,7 +136,7 @@ const CourseContentsTabs = () => {
       </TabsList>
       <TabsContent value="content">
         <CourseContent courseTopic={currentCourseTopic} />
-        <div className="mt-24 flex justify-end">
+        <div className="mt-36 flex justify-end">
           {currentCourseTopic.topicID &&
           currentCourseTopic.topicID < course.topics.length ? (
             <Button

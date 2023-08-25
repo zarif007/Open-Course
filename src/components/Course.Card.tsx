@@ -35,11 +35,6 @@ const CourseCard = ({ course }: { course: ICourse }) => {
   return (
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
-        {/* <img
-          className="lg:h-48 md:h-36 w-full object-cover object-center"
-          src={generatedBanner}
-          alt="blog"
-        /> */}
         <BlurredImage
           src={generatedBanner}
           alt="blog"

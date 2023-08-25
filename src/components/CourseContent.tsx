@@ -6,11 +6,16 @@ import LargeHeading from "./ui/LargeHeading";
 import createEmbeddableUrls from "@/utils/getEmbedableUrl";
 import isEmbeddable from "@/utils/isEmbeddable";
 import CourseContentFullscreenDialog from "./CourseContentFullscreen.Dialog";
+import CourseUrl from './CourseUrl'
+import { FiLink } from "react-icons/fi";
+import { MdOutlinePersonalVideo } from "react-icons/md";
 
 function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   const [urlStatus, setUrlStatus] = useState<
     "loading" | "available" | "unavailable"
   >("available");
+
+  const [showUrl, setShowUrl] = useState<boolean>(false)
 
   return (
     <div className="mx-auto w-[100%] h-[45vh] md:h-[80vh]">
@@ -27,15 +32,24 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
       >
         {courseTopic.versions[courseTopic.versions.length - 1].title}
       </LargeHeading>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end space-x-8">
+        <div onClick={() => setShowUrl(!showUrl)}>
+          {
+            !showUrl ? <div className="flex space-x-1 items-center cursor-pointer">
+            <FiLink /> 
+            <p>Link</p> 
+          </div> : <div className="flex space-x-1 items-center cursor-pointer">
+            <MdOutlinePersonalVideo /> 
+            <p>Content</p> 
+          </div>
+          }
+        </div>
         <CourseContentFullscreenDialog
           url={courseTopic.versions[courseTopic.versions.length - 1].url}
         />
       </div>
-      {urlStatus === "loading" ? (
-        <p>Loading...</p>
-      ) : urlStatus === "available" ? (
-        <iframe
+      {
+        !showUrl ? <iframe
           src={createEmbeddableUrls(
             courseTopic.versions[courseTopic.versions.length - 1].url
           )}
@@ -45,10 +59,8 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
           title="Embedded Website"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-        />
-      ) : (
-        <p>{courseTopic.versions[courseTopic.versions.length - 1].url}</p>
-      )}
+        /> : <CourseUrl url={courseTopic.versions[courseTopic.versions.length - 1].url} />
+      }
     </div>
   );
 }
