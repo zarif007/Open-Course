@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from "react";
 import {
@@ -40,8 +40,8 @@ const AvatarDropdown = () => {
           {/* <MenubarItem className={styles.menuBarItems}>
             <UserProfile />
           </MenubarItem> */}
-          {/* <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
-          <MenubarItem className={styles.menuBarItems}>Share</MenubarItem> */}
+          <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
+          <MenubarItem className={styles.menuBarItems}>Share</MenubarItem>
           <MenubarSeparator />
           <MenubarItem className={`${styles.menuBarItems} text-red-500`}>
             <SignOutButton>Sign Out</SignOutButton>

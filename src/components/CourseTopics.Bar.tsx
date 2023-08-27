@@ -20,12 +20,12 @@ const CourseTopicsBar = ({
   return (
     <React.Fragment>
       <div
-        className="hidden md:flex ml-2 lg:ml-5 justify-start fixed cursor-pointer"
+        className="hidden md:flex ml-1 lg:ml-5 justify-start fixed cursor-pointer"
         onClick={() => setShowCourseTopics(!showCourseTopics)}
       >
         <MdOutlineMenuOpen className={styles.icon} />
       </div>
-      <div className="flex md:hidden ml-2 lg:ml-6 justify-start fixed cursor-pointer">
+      <div className="flex md:hidden ml-1 lg:ml-6 justify-start fixed cursor-pointer">
         <CourseTopicsSheet mode={mode} />
       </div>
       {showCourseTopics && <CourseTopicsSidebar mode={mode} />}

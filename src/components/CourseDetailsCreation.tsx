@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import CourseDetailsCreationForm from "./CourseDetailsCreation.Form";
 import SelectedTopics from "./SelectedTopics";
-import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import ErrorMessage from "./ui/ErrorMessage";
 
 const CourseDetailsCreation = () => {
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
@@ -10,7 +8,7 @@ const CourseDetailsCreation = () => {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   return (
-    <div className="bg-slate-200 dark:bg-gray-900 rounded my-4 m-3 md:m-6 p-4">
+    <div className="bg-slate-200 dark:bg-gray-900 rounded my-4 m-2 md:m-6 p-4">
       <CourseDetailsCreationForm
         selectedCourseTypes={selectedCourseTypes}
         setSelectedCourseTypes={setSelectedCourseTypes}

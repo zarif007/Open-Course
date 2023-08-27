@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import { AiOutlineFolderView } from "react-icons/ai";
 import { TbMessageQuestion } from "react-icons/tb";
 import CourseContent from "./CourseContent";
 import { AppDispatch, useAppSelector } from "@/redux/store";
@@ -18,9 +17,9 @@ import { IEnrollState } from "@/types/enrollState";
 import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { useUser } from "@clerk/nextjs";
-import CourseContentFullscreenDialog from "./CourseContentFullscreen.Dialog";
-import Confetti from "./Confetti";
 import { toast } from "./ui/Toast";
+import { BiSolidUpvote } from "react-icons/bi";
+import { MdOutlineVideoLibrary } from "react-icons/md";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -87,7 +86,7 @@ const CourseContentsTabs = () => {
   };
 
   const handleDoneButton = async () => {
-    console.log(isLoading , !user , !course , !currentCourseTopic.id)
+    console.log(isLoading, !user, !course, !currentCourseTopic.id);
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
 
     setIsLoading(true);
@@ -123,7 +122,7 @@ const CourseContentsTabs = () => {
           className="font-semibold flex items-center space-x-1"
           value="content"
         >
-          <AiOutlineFolderView className="w-5 h-5" />
+          <MdOutlineVideoLibrary className="w-5 h-5" />
           <span>Content</span>
         </TabsTrigger>
         <TabsTrigger
@@ -133,10 +132,17 @@ const CourseContentsTabs = () => {
           <TbMessageQuestion className="w-5 h-5" />
           <span>Discuss</span>
         </TabsTrigger>
+        <TabsTrigger
+          className="font-semibold flex items-center space-x-1"
+          value="ask"
+        >
+          <BiSolidUpvote className="w-5 h-5" />
+          <span>Ask</span>
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="content">
         <CourseContent courseTopic={currentCourseTopic} />
-        <div className="mt-36 flex justify-end">
+        <div className="mt-28 flex justify-end">
           {currentCourseTopic.topicID &&
           currentCourseTopic.topicID < course.topics.length ? (
             <Button
@@ -158,6 +164,7 @@ const CourseContentsTabs = () => {
         </div>
       </TabsContent>
       <TabsContent value="discuss"></TabsContent>
+      <TabsContent value="ask"></TabsContent>
     </Tabs>
   );
 };

@@ -36,7 +36,7 @@ const CourseDetailsCreationForm = ({
 
   const [show, setShow] = useState<boolean>(true);
 
-  const { user } = useUser()
+  const { user } = useUser();
 
   const { theme } = useTheme();
 
@@ -51,8 +51,12 @@ const CourseDetailsCreationForm = ({
     );
   }, [selectedCourseTypes, selectedLevels, selectedLanguages]);
 
-  const generatedBanner = `${nextApi}/generateBanner?courseName=${course.title}&theme=${theme}&
-  &topics=${course.categories ? course.categories.join('  ') : ''}&creator=${user?.firstName}&imgUrl=${user?.imageUrl}`;
+  const generatedBanner = `${nextApi}/generateBanner?courseName=${
+    course.title
+  }&theme=${theme}&
+  &topics=${course.categories ? course.categories.join("  ") : ""}&creator=${
+    user?.firstName
+  }&imgUrl=${user?.imageUrl}`;
 
   return (
     <React.Fragment>
@@ -94,10 +98,13 @@ const CourseDetailsCreationForm = ({
               <label htmlFor="text" className="font-bold">
                 Description
               </label>
-              <Textarea placeholder="About this Course" className="focus-visible:ring-0`" />
+              <Textarea
+                placeholder="About this Course"
+                className="focus-visible:ring-0`"
+              />
             </div>
             <div className="w-full flex flex-wrap">
-            <div className="mr-1 flex flex-col my-1">
+              <div className="mr-1 flex flex-col my-1">
                 <label htmlFor="text" className="font-bold">
                   Category (Max. 3)
                 </label>
