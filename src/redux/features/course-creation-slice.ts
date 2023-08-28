@@ -13,6 +13,9 @@ const initialState = {
   value: {
     course: {
       title: "New Course 🐉",
+      categories: [],
+      levels: [],
+      languages: [],
       topics: [
         {
           id: 0,
@@ -23,8 +26,8 @@ const initialState = {
               url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
               description: "Just another example",
               duration: 10,
-            }
-          ]
+            },
+          ],
         },
       ],
     },
@@ -37,7 +40,7 @@ const initialState = {
           description: "",
           url: "",
           duration: 0,
-        }
+        },
       ],
     },
   },

@@ -4,7 +4,7 @@ import React, { useState, useTransition } from "react";
 import CourseTopicsBar from "@/components/CourseTopics.Bar";
 import CourseTopicCreation from "@/components/CourseTopicCreation";
 import CourseDetailsCreation from "@/components/CourseDetailsCreation";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";
 import createSlug from "@/utils/createSlug";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { useDispatch } from "react-redux";
 
 const MODE = "creation";
 
@@ -22,7 +23,9 @@ const CourseCreation = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const course = useAppSelector(
     (state) => state.courseCreationReducer.value.course
@@ -37,30 +40,30 @@ const CourseCreation = () => {
       setError("Title is required");
       return false;
     }
-    if(course.categories.length === 0) {
+    if (course.categories.length === 0) {
       setError("Must add at least one Category");
       return false;
     }
-    if(course.levels.length === 0) {
+    if (course.levels.length === 0) {
       setError("Must add at least one Level");
       return false;
     }
-    if(course.languages.length === 0) {
+    if (course.languages.length === 0) {
       setError("Must add at least one Languages");
       return false;
     }
-    if(course.topics.length === 1) {
+    if (course.topics.length === 1) {
       setError("Must add at least one Course Topic");
       return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = async () => {
     if (isLoading || !user?.fullName) return;
 
-    if(!validateCourseDetails()) return;
+    if (!validateCourseDetails()) return;
 
     setIsLoading(true);
 
@@ -78,7 +81,7 @@ const CourseCreation = () => {
         type: "success",
         message: "Course Created Successfully",
       });
-      router.push(`course/${data.data.slug}`);
+      router.push(`course-landing/${data.data.slug}`);
     } catch (error) {
       toast({
         title: "Error",
@@ -110,7 +113,10 @@ const CourseCreation = () => {
 
           <CourseTopicCreation />
 
-          <ErrorMessage text={error} className="font-bold flex items-center justify-center text-xl" />
+          <ErrorMessage
+            text={error}
+            className="font-bold flex items-center justify-center text-xl"
+          />
 
           <div className="flex justify-center p-3 md:p-6 mt-12 md:mt-20">
             <Button

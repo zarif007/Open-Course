@@ -8,7 +8,7 @@ import {
   setCurrentCourseTopicForView,
   setEnrollState,
 } from "@/redux/features/course-view-slice";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { ICourse } from "@/types/course";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { useQuery } from "@tanstack/react-query";
@@ -55,20 +55,28 @@ const Course = ({ params }: PageParams) => {
 
   const topicId = searchParams?.get("topicId");
 
+  const course = useAppSelector(
+    (state) => state.courseViewReducer.value.course
+  );
+
   const { isLoading } = useQuery({
     queryKey: ["course", params.slug],
     queryFn: async () => {
-      const { data } = await axios.get(
+      const { data: courseData } = await axios.get(
         `${v1MainEndpoint}/course/bySlug/${params.slug}`
       );
 
-      const enrollState = await axios.get(
-        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${data.data.id}`
+      const course = courseData.data;
+
+      const { data: enrollStateData } = await axios.get(
+        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
       );
 
+      const enrollState = enrollStateData.data;
+
       return {
-        course: data.data as ICourse,
-        enrollState: enrollState.data,
+        course: course as ICourse,
+        enrollState: enrollState,
       };
     },
 
@@ -76,21 +84,21 @@ const Course = ({ params }: PageParams) => {
 
     onSuccess: (data) => {
       const { course, enrollState } = data;
-      if (!enrollState.data) {
+      if (!enrollState) {
         router.push(`/course/${params.slug}`);
 
         setIsEnrolled("no");
       } else if (
         !topicId ||
         !canBeParsedToInt(topicId) ||
-        !isValid(parseInt(topicId), enrollState.data)
+        !isValid(parseInt(topicId), enrollState)
       ) {
         router.push(
-          `/course/${params.slug}?topicId=${enrollState.data.currentTopic.topicID}`
+          `/course/${params.slug}?topicId=${enrollState.currentTopic.topicID}`
         );
         dispatch(
           setCurrentCourseTopicForView(
-            course.topics[enrollState.data.currentTopic.topicID - 1]
+            course.topics[enrollState.currentTopic.topicID - 1]
           )
         );
 
@@ -103,7 +111,7 @@ const Course = ({ params }: PageParams) => {
         setIsEnrolled("yes");
       }
 
-      dispatch(setEnrollState(enrollState.data));
+      dispatch(setEnrollState(enrollState));
       dispatch(setCourseForView(course));
     },
     onError: (error) => {
@@ -136,7 +144,7 @@ const Course = ({ params }: PageParams) => {
           </div>
         </div>
       ) : (
-        <CourseLandingPage />
+        <CourseLandingPage course={course} />
       )}
     </section>
   );

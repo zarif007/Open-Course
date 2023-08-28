@@ -18,6 +18,8 @@ import ContentLogoDurationBar from "./ContentLogoDuration.Bar";
 import calculateAvgRating from "@/utils/calculateAvgRating";
 import { IUser } from "@/types/user";
 import BlurredImage from "./ui/BlurredImage";
+import formatDate from "@/utils/formatDate";
+import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
@@ -41,12 +43,17 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           className="lg:h-48 md:h-36 w-full object-cover object-center"
         />
         <div className="p-6">
-          <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
-            By{" "}
-            <span className="text-rose-500">
-              {creator.attributes.first_name ?? ""}
-            </span>
-          </h2>
+          <div className="flex justify-between items-center">
+            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
+              By{" "}
+              <span className="text-rose-500">
+                {creator.attributes.first_name ?? ""}
+              </span>
+            </h2>
+            <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
+              {formatDate(getLastUpdatedTopicDate(course.topics))}
+            </p>
+          </div>
           <Paragraph
             size="default"
             className="font-bold underline decoration-rose-500 decoration-2 truncate"
@@ -101,7 +108,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
           <Button
             className="w-full mt-3"
-            onClick={() => router.push(`course/${course.slug}`)}
+            onClick={() => router.push(`course-landing/${course.slug}`)}
           >
             Enroll
           </Button>

@@ -22,12 +22,12 @@ export function Combobox({
   title,
   list,
   currentValues,
-  setCurrentValues,
+  setCurrentValuesFunction,
 }: {
   title: string;
   list: string[];
   currentValues: string[];
-  setCurrentValues: React.Dispatch<React.SetStateAction<string[]>>;
+  setCurrentValuesFunction: (values: string[]) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -60,7 +60,7 @@ export function Combobox({
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   currentValues.length <= 2 &&
-                    setCurrentValues([
+                    setCurrentValuesFunction([
                       ...currentValues.filter((item) => item !== currentValue),
                       currentValue,
                     ]);

@@ -1,5 +1,6 @@
-import { useAppSelector } from "@/redux/store";
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -18,17 +19,31 @@ import { toast } from "./ui/Toast";
 import { useRouter } from "next/navigation";
 import Router from "next/router";
 import CourseRatings from "./CourseRatings";
+import { ICourse } from "@/types/course";
 
-const CourseLandingPage = () => {
-  const course = useAppSelector(
-    (state) => state.courseViewReducer.value.course
-  );
-
+const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const { user } = useUser();
 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isEnrolled, setIsEnrolled] = useState<string>("loading");
+
+  useEffect(() => {
+    if (!course.title || !user) return;
+    const getEnrollState = async () => {
+      const { data: enrollStateData } = await axios.get(
+        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
+      );
+
+      const enrollState = enrollStateData.data;
+      console.log(enrollState);
+      if (!enrollState) setIsEnrolled("no");
+      else setIsEnrolled("yes");
+    };
+    getEnrollState();
+  }, [course, user]);
 
   const handleEnrollment = async () => {
     if (isLoading) return;
@@ -43,8 +58,8 @@ const CourseLandingPage = () => {
 
       await axios.post(`${v1MainEndpoint}/enrollState`, data);
 
-      window.location.reload();
-      router.push(`${course.slug}?topicId=1`);
+      // window.location.reload();
+      router.push(`/course/${course.slug}?topicId=1`);
 
       toast({
         title: "Course Enrolled",
@@ -64,7 +79,7 @@ const CourseLandingPage = () => {
 
   return (
     <div className="max-w-5xl w-full mx-auto ">
-      <CourseDetails />
+      <CourseDetails course={course} />
       <CourseRatings ratings={course.ratings ?? []} />
       <LargeHeading size="sm">Course Topics</LargeHeading>
       <Accordion type="single" collapsible>
@@ -96,19 +111,25 @@ const CourseLandingPage = () => {
           );
         })}
       </Accordion>
-      <div
-        className="fixed bottom-0 w-full max-w-5xl mx-auto"
-        onClick={handleEnrollment}
-      >
-        <div className="m-4 md:mx-6 mt-8">
-          <Button
-            className="w-full py-6 text-lg font-bold"
-            isLoading={isLoading}
-          >
-            Enroll
-          </Button>
+      {isEnrolled !== "loading" && (
+        <div
+          className="fixed bottom-0 w-full max-w-5xl mx-auto"
+          onClick={() =>
+            isEnrolled === "yes"
+              ? router.push(`/course/${course.slug}`)
+              : handleEnrollment()
+          }
+        >
+          <div className="m-4 md:mx-6 mt-8">
+            <Button
+              className="w-full py-6 text-lg font-bold"
+              isLoading={isLoading}
+            >
+              {isEnrolled === "yes" ? "Back to Course" : "Enroll"}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

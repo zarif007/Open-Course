@@ -11,9 +11,9 @@ export interface ICourse {
   creator: IUser | string;
   contributors: IUser[] | string[];
   enrolledUsers: IUser[] | string[];
-  categories: string[];
-  levels: string[];
-  languages: string[];
+  categories: string[] | [];
+  levels: string[] | [];
+  languages: string[] | [];
   description: string;
   banner?: string;
   slug: string;

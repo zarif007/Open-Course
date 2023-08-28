@@ -12,22 +12,9 @@ import { Button } from "./ui/Button";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { nextApi } from "@/utils/apiEndpoints";
+import { ICourse } from "@/types/course";
 
-const CourseDetailsCreationForm = ({
-  selectedCourseTypes,
-  setSelectedCourseTypes,
-  selectedLevels,
-  setSelectedLevels,
-  selectedLanguages,
-  setSelectedLanguages,
-}: {
-  selectedCourseTypes: string[];
-  setSelectedCourseTypes: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedLevels: string[];
-  setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedLanguages: string[];
-  setSelectedLanguages: React.Dispatch<React.SetStateAction<string[]>>;
-}) => {
+const CourseDetailsCreationForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const course = useAppSelector(
@@ -40,23 +27,35 @@ const CourseDetailsCreationForm = ({
 
   const { theme } = useTheme();
 
-  useEffect(() => {
-    dispatch(
-      setCourseForCreation({
-        ...course,
-        categories: selectedCourseTypes,
-        levels: selectedLevels,
-        languages: selectedLanguages,
-      })
-    );
-  }, [selectedCourseTypes, selectedLevels, selectedLanguages]);
+  const updateCourse = (course: ICourse) => {
+    dispatch(setCourseForCreation(course));
+  };
 
-  const generatedBanner = `${nextApi}/generateBanner?courseName=${
-    course.title
-  }&theme=${theme}&
-  &topics=${course.categories ? course.categories.join("  ") : ""}&creator=${
-    user?.firstName
-  }&imgUrl=${user?.imageUrl}`;
+  const setSelectedCourseTypes = (categories: string[]) => {
+    updateCourse({
+      ...course,
+      categories,
+    });
+  };
+  const setSelectedLevels = (levels: string[]) => {
+    updateCourse({
+      ...course,
+      levels,
+    });
+  };
+  const setSelectedLanguages = (languages: string[]) => {
+    updateCourse({
+      ...course,
+      languages,
+    });
+  };
+
+  // const generatedBanner = `${nextApi}/generateBanner?courseName=${
+  //   course.title
+  // }&theme=${theme}&
+  // &topics=${course.categories ? course.categories.join("  ") : ""}&creator=${
+  //   user?.firstName
+  // }&imgUrl=${user?.imageUrl}`;
 
   return (
     <React.Fragment>
@@ -93,7 +92,7 @@ const CourseDetailsCreationForm = ({
         </div>
 
         {show && (
-          <>
+          <React.Fragment>
             <div className="flex flex-col w-full">
               <label htmlFor="text" className="font-bold">
                 Description
@@ -111,8 +110,8 @@ const CourseDetailsCreationForm = ({
                 <Combobox
                   title="Category"
                   list={courseTypes}
-                  currentValues={selectedCourseTypes}
-                  setCurrentValues={setSelectedCourseTypes}
+                  currentValues={course.categories}
+                  setCurrentValuesFunction={setSelectedCourseTypes}
                 />
               </div>
               <div className="mr-1 flex flex-col my-1">
@@ -122,8 +121,8 @@ const CourseDetailsCreationForm = ({
                 <Combobox
                   title="Level"
                   list={["🌱 Beginner", "🚧 Intermediate", "🚀 Advance"]}
-                  currentValues={selectedLevels}
-                  setCurrentValues={setSelectedLevels}
+                  currentValues={course.levels}
+                  setCurrentValuesFunction={setSelectedLevels}
                 />
               </div>
 
@@ -134,12 +133,12 @@ const CourseDetailsCreationForm = ({
                 <Combobox
                   title="Language"
                   list={languages}
-                  currentValues={selectedLanguages}
-                  setCurrentValues={setSelectedLanguages}
+                  currentValues={course.languages}
+                  setCurrentValuesFunction={setSelectedLanguages}
                 />
               </div>
             </div>
-          </>
+          </React.Fragment>
         )}
       </form>
     </React.Fragment>
