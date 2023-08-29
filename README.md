@@ -4,6 +4,17 @@ title: OpenCourse - Your Learning Journey Starts Here
 
 ![logo](https://i.ibb.co/Lp8Gg38/Open-Course-3.png)
 
+## Index
+
+1. [Introduction](#opencourse)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Deployment](#deployment)
+5. [Getting Started](#getting-started)
+5. [Contributing](#contributing)
+7. [License](#license)
+7. [Acknowledgments](#acknowledgments)
+
 # OpenCourse
 
 OpenCourse is an innovative online learning platform built with cutting-edge technologies. It empowers users to create, share, and explore courses on a wide range of topics using free content from the internet. Whether you're a learner looking to acquire new skills or an expert wanting to share your knowledge, OpenCourse has something for you.
