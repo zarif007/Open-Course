@@ -6,6 +6,7 @@ import ClientProviders from "@/components/ClientProviders";
 import NavBar from "@/components/Nav.Bar";
 import { Toaster } from "../components/ui/Toast";
 import { dark } from "@clerk/themes";
+import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const user = await currentUser();
+  // if (!user) redirect("");
+  // const { data } = await axios.get(`${v1MainEndpoint}/user/byExternalId/${user?.id}`);
+  // console.log(data.data)
   return (
     <ClerkProvider
       appearance={{
