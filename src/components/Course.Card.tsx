@@ -75,7 +75,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
 
           <SelectedTopics mode="view" selectedTopics={course.languages} />
 
-          <ContentLogoDurationBar topics={course.topics} />
+          <ContentLogoDurationBar topics={course.topics} withDuration={true} />
 
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
             <div className="flex space-x-1 items-center">

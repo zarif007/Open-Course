@@ -6,7 +6,7 @@ import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { currentUser } from "@clerk/nextjs";
 import axios from "axios";
 import { redirect } from "next/navigation";
-import Link from 'next/link'
+import Link from "next/link";
 import React from "react";
 
 interface PageParams {
@@ -41,7 +41,9 @@ const CourseCompletion = async ({ params }: PageParams) => {
           <span>Back to the Course</span>
         </Button>
       </Link>
-      <LargeHeading className="text-rose-500">Congratulation 🎉</LargeHeading>
+      <LargeHeading className="text-rose-500 dark:text-rose-500">
+        Congratulation 🎉
+      </LargeHeading>
       <LargeHeading size="sm">on the Completion of</LargeHeading>
       <LargeHeading className="underline decoration-rose-500 decoration-4">
         {course.title}

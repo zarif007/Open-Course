@@ -16,7 +16,9 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
-      <LargeHeading className="text-center">{course.title}</LargeHeading>
+      <LargeHeading className="text-center underline decoration-rose-500 decoration-4">
+        {course.title}
+      </LargeHeading>
       <div className="flex space-x-2 items-center mx-auto">
         <Paragraph className="font-bold text-md">By</Paragraph>
         <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
@@ -49,7 +51,7 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
         </div>
       </div>
       <div className="md:w-[50%] mx-auto">
-        <ContentLogoDurationBar topics={course.topics} />
+        <ContentLogoDurationBar topics={course.topics} withDuration={false} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import ReduxProvider from "@/redux/Provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
-const ClientProviders = ({ children }: { children: any }) => {
+const ClientProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <ReduxProvider>
       <QueryClientProvider client={queryClient}>

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import { Webhook, WebhookRequiredHeaders } from "svix";
 
