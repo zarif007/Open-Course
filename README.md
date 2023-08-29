@@ -2,7 +2,7 @@
 title: OpenCourse - Your Learning Journey Starts Here
 ---
 
-![logo](https://i.ibb.co/Lp8Gg38/Open-Course-3.png)
+![logo](https://i.ibb.co/j6qYsnz/Open-Course-3-1.jpg)
 
 ## Index
 
@@ -11,9 +11,7 @@ title: OpenCourse - Your Learning Journey Starts Here
 3. [Technologies Used](#technologies-used)
 4. [Deployment](#deployment)
 5. [Getting Started](#getting-started)
-5. [Contributing](#contributing)
-7. [License](#license)
-7. [Acknowledgments](#acknowledgments)
+6. [License](#license)
 
 # OpenCourse
 
