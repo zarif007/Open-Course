@@ -23,6 +23,7 @@ import { ICourse } from "@/types/course";
 
 const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const { user } = useUser();
+  console.log(course)
 
   const router = useRouter();
 
