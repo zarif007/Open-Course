@@ -42,6 +42,12 @@ OpenCourse is built with a stack of cutting-edge technologies:
   
 - [Shadcn UI](https://shadcn-ui.com/) for a sleek and responsive UI.
 
+## Deployment
+
+OpenCourse is deployed on [Vercel](https://vercel.com/), a cloud platform for serverless deployment and hosting. You can access the live version of OpenCourse at [open-course.vercel.app](https://your-vercel-app-url.com).
+
+Feel free to explore the platform, create courses, enroll in exciting courses, and embark on your learning journey!
+
 ## Getting Started
 
 To run OpenCourse locally, follow these steps:
