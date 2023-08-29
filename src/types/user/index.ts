@@ -3,12 +3,12 @@ interface VerificationStatus {
   attempts: number | null;
   strategy: string;
   expire_at: number | null;
-};
+}
 
 interface LinkedAccount {
   id: string;
   type: string;
-};
+}
 
 interface EmailAddress {
   id: string;
@@ -17,7 +17,7 @@ interface EmailAddress {
   linked_to: LinkedAccount[];
   verification: VerificationStatus;
   email_address: string;
-};
+}
 
 interface UserAttributes {
   username: string | null;
@@ -28,12 +28,13 @@ interface UserAttributes {
   updated_at: number;
   external_id: string | null;
   email_addresses: EmailAddress[];
-};
+}
 
 export interface IUser {
   id?: string;
   _id?: string;
   externalId: string;
   attributes: UserAttributes;
-  role?: 'super_admin' | 'admin' | 'user' | 'pro_User';
-};
+  role?: "super_admin" | "admin" | "user" | "pro_User";
+  preferences?: string[];
+}

@@ -32,21 +32,21 @@ async function handler(request: Request) {
 
     const eventType: EventType = evt.type;
 
-    if (eventType === "user.created" || eventType === "user.updated") {
-      const { id, ...attributes } = evt.data;
+    // if (eventType === "user.created" || eventType === "user.updated") {
+    //   const { id, ...attributes } = evt.data;
 
-      // Upsert the user data using Prisma
-      await prisma.user.upsert({
-        where: { externalId: id as string },
-        create: {
-          externalId: id as string,
-          attributes,
-        },
-        update: { attributes },
-      });
+    //   // Upsert the user data using Prisma
+    //   await prisma.user.upsert({
+    //     where: { externalId: id as string },
+    //     create: {
+    //       externalId: id as string,
+    //       attributes,
+    //     },
+    //     update: { attributes },
+    //   });
 
-      return NextResponse.json({ success: true }, { status: 200 });
-    }
+    //   return NextResponse.json({ success: true }, { status: 200 });
+    // }
 
     return NextResponse.json({ success: false }, { status: 400 });
   } catch (error) {

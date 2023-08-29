@@ -23,11 +23,13 @@ export function Combobox({
   list,
   currentValues,
   setCurrentValuesFunction,
+  limit,
 }: {
   title: string;
   list: string[];
   currentValues: string[];
   setCurrentValuesFunction: (values: string[]) => void;
+  limit: number;
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -59,7 +61,7 @@ export function Combobox({
                 key={index}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
-                  currentValues.length <= 2 &&
+                  currentValues.length < limit &&
                     setCurrentValuesFunction([
                       ...currentValues.filter((item) => item !== currentValue),
                       currentValue,

@@ -108,6 +108,7 @@ const CourseDetailsCreationForm = () => {
                   Category (Max. 3)
                 </label>
                 <Combobox
+                  limit={3}
                   title="Category"
                   list={courseTypes}
                   currentValues={course.categories}
@@ -119,6 +120,7 @@ const CourseDetailsCreationForm = () => {
                   Level (Max. 3)
                 </label>
                 <Combobox
+                  limit={3}
                   title="Level"
                   list={["🌱 Beginner", "🚧 Intermediate", "🚀 Advance"]}
                   currentValues={course.levels}
@@ -131,6 +133,7 @@ const CourseDetailsCreationForm = () => {
                   Language (Max. 3)
                 </label>
                 <Combobox
+                  limit={3}
                   title="Language"
                   list={languages}
                   currentValues={course.languages}
