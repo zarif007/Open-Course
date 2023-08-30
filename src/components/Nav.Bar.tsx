@@ -8,6 +8,7 @@ import Link from "next/link";
 import AvatarDropdown from "./Avatar.Dropdown";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/Button";
+import Paragraph from "./ui/Paragraph";
 
 const NavBar = () => {
   const styles = {
@@ -20,9 +21,9 @@ const NavBar = () => {
     <nav className="backdrop-blur-sm bg-slate-100/75 dark:bg-gray-950/75 fixed w-full z-20 top-0 left-0 overflow-x-hidden">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {theme ? (
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center space-x-1">
             <Image
-              src={theme === "dark" ? "/dark.png" : "/light.png"}
+              src={theme === "dark" ? "/dark1.png" : "/light1.png"}
               priority
               quality={100}
               height="100"
@@ -30,6 +31,9 @@ const NavBar = () => {
               alt="logo"
               className="h-16 w-16"
             />
+            <Paragraph className="px-2 font-semibold rounded bg-gray-950 text-slate-100 dark:text-gray-950 dark:bg-slate-100">
+              Beta
+            </Paragraph>
           </Link>
         ) : (
           <div className="h-16 w-16"></div>

@@ -23,7 +23,7 @@ const AvatarDropdown = () => {
   return (
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger className="bg-slate-100 dark:bg-gray-950">
+        <MenubarTrigger className="!bg-transparent">
           {user && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
               <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
