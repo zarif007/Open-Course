@@ -86,7 +86,6 @@ const CourseContentsTabs = () => {
   };
 
   const handleDoneButton = async () => {
-    console.log(isLoading, !user, !course, !currentCourseTopic.id);
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
 
     setIsLoading(true);

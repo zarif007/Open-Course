@@ -10,7 +10,9 @@ import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 
 const CourseTopicCreation = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const course = useAppSelector((state) => state.courseCreationReducer.value.course);
+  const course = useAppSelector(
+    (state) => state.courseCreationReducer.value.course
+  );
 
   const compare = (a: ICourseTopic, b: ICourseTopic) => {
     if (typeof a.topicID === "number" && typeof b.topicID === "number") {
@@ -20,14 +22,18 @@ const CourseTopicCreation = () => {
     if (!b.topicID) return -1;
     if (typeof a.topicID === "number") return -1;
     return 1;
-  }
-  
+  };
+
   const submitData = async (data: ICourseTopic) => {
     const filteredCourseTopics = course.topics.filter(
       (courseTopic) => courseTopic.topicID !== data.topicID
     );
-    console.log(data)
-    dispatch(setCourseForCreation({ ...course, topics: [...filteredCourseTopics, data].sort(compare) }));
+    dispatch(
+      setCourseForCreation({
+        ...course,
+        topics: [...filteredCourseTopics, data].sort(compare),
+      })
+    );
     toast({
       title: "Success",
       message: `Topic ${
@@ -42,9 +48,7 @@ const CourseTopicCreation = () => {
   return (
     <section className="mx-2">
       <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
-      <CourseTopicCreationTabs
-        submitData={submitData}
-      />
+      <CourseTopicCreationTabs submitData={submitData} />
     </section>
   );
 };

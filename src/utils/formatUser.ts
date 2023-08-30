@@ -1,7 +1,6 @@
 import { IUser } from "@/types/user";
 
 const formatUser = (clerkData: any): IUser => {
-  console.log(clerkData)
   const user: IUser = {
     externalId: clerkData.id,
     attributes: {

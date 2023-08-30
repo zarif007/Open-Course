@@ -23,7 +23,6 @@ import { ICourse } from "@/types/course";
 
 const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const { user } = useUser();
-  console.log(course)
 
   const router = useRouter();
 
@@ -39,7 +38,6 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
       );
 
       const enrollState = enrollStateData.data;
-      console.log(enrollState);
       if (!enrollState) setIsEnrolled("no");
       else setIsEnrolled("yes");
     };

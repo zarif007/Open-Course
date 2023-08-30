@@ -18,17 +18,7 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
 
   return (
     <div className={`mx-auto w-[100%] h-[45vh] md:h-[80vh]`}>
-      <LargeHeading
-        className=""
-        size="sm"
-        onClick={() =>
-          console.log(
-            createEmbeddableUrls(
-              courseTopic.versions[courseTopic.versions.length - 1].url
-            )
-          )
-        }
-      >
+      <LargeHeading className="" size="sm">
         {courseTopic.versions[courseTopic.versions.length - 1].title}
       </LargeHeading>
       <div className="flex items-center justify-end space-x-8">
