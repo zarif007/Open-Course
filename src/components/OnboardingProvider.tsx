@@ -37,7 +37,7 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false);
     };
 
-    if (signedInUser) return;
+    if (signedInUser && signedInUser.externalId === user.id) return;
     getUserInfo();
   }, [user, pathname, signedInUser]);
 

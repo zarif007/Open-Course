@@ -33,6 +33,10 @@ const CourseCreation = () => {
 
   const { user } = useUser();
 
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
   const router = useRouter();
 
   const validateCourseDetails = (): boolean => {
@@ -61,7 +65,8 @@ const CourseCreation = () => {
   };
 
   const handleSubmit = async () => {
-    if (isLoading || !user?.fullName) return;
+    console.log(signedInUser?.id);
+    if (isLoading || !user?.id || !signedInUser?.id) return;
 
     if (!validateCourseDetails()) return;
 
@@ -71,7 +76,7 @@ const CourseCreation = () => {
       ...course,
       slug: course.slug ? course.slug : createSlug(course.title),
       topics: course.topics.filter((topic) => topic.id !== 0),
-      creator: user?.id,
+      creator: signedInUser.id,
     };
 
     try {

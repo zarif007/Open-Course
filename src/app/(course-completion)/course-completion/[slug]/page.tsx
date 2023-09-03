@@ -15,13 +15,18 @@ interface PageParams {
   };
 }
 
-const CourseCompletion = async ({ params }: PageParams) => {
-  const slug = params.slug;
-
+const getCourse = async (slug: string) => {
   const { data: CourseData } = await axios.get(
     `${v1MainEndpoint}/course/bySlug/${slug}`
   );
-  const course = CourseData.data;
+  return CourseData.data;
+};
+
+const CourseCompletion = async ({ params }: PageParams) => {
+  const slug = params.slug;
+
+  const course = await getCourse(params.slug);
+
   if (!course) redirect("/404");
 
   const user = await currentUser();

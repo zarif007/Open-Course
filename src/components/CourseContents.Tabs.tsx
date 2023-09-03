@@ -67,6 +67,10 @@ const CourseContentsTabs = () => {
     dispatch(setCurrentCourseTopicForView(course.topics[nextTopicId - 1]));
   };
 
+  const checkValidity = () => {
+    return !(isLoading || !user || !course || !currentCourseTopic.id);
+  };
+
   const handleNextButton = async () => {
     if (isLoading || !user || !course || !currentCourseTopic.id) return;
 

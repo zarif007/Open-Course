@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Course Details | Open Course",
-  description: "Curate, Create & Share",
-};
-
 export default function RootLayout({
   children,
 }: {
