@@ -1,5 +1,3 @@
-"use client";
-
 import CourseContentsTabs from "@/components/CourseContents.Tabs";
 import CourseLandingPage from "@/components/CourseLanding.Page";
 import CourseTopics from "@/components/CourseTopics.Bar";
@@ -15,11 +13,14 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, redirect } from "next/navigation";
 import canBeParsedToInt from "@/utils/canBeParsedToInt";
-import { useUser } from "@clerk/nextjs";
+import { currentUser, useUser } from "@clerk/nextjs";
 import { IEnrollState } from "@/types/enrollState";
 import { ICourseTopic } from "@/types/courseTopic";
+import CourseGuard from "@/components/Course.Guard";
+import { Metadata } from "next";
+import { IUser } from "@/types/user";
 
 interface PageParams {
   params: {
@@ -27,126 +28,54 @@ interface PageParams {
   };
 }
 
-const MODE = "view";
-
-const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
-  const currentTopic = enrollState.currentTopic as ICourseTopic;
-
-  return (
-    topicId === currentTopic.topicID ||
-    enrollState.finishedTopics.includes(topicId.toString())
+const getCourse = async (slug: string) => {
+  const { data: courseData } = await axios.get(
+    `${v1MainEndpoint}/course/bySlug/${slug}`
   );
+
+  return courseData.data;
 };
 
-const Course = ({ params }: PageParams) => {
-  const [showCourseTopics, setShowCourseTopics] = useState(true);
+export const generateMetadata = async ({
+  params,
+}: PageParams): Promise<Metadata> => {
+  const course: ICourse | null = await getCourse(params.slug);
 
-  const [isEnrolled, setIsEnrolled] = useState<"yes" | "no" | "loading">(
-    "loading"
+  const creator = course?.creator as IUser;
+
+  const generatedBanner = `/api/generateBanner?courseName=${
+    course?.title
+  }&theme=dark&
+  &topics=${course?.categories ? course?.categories.join("  ") : ""}
+  &creator=${creator.attributes?.first_name}`;
+
+  return {
+    title: course?.title,
+    openGraph: {
+      title: course?.title,
+      description: course?.description,
+      images: [`${generatedBanner}`],
+    },
+  };
+};
+
+const Course = async ({ params }: PageParams) => {
+  const user = await currentUser();
+
+  const course = await getCourse(params.slug);
+
+  if (!course) redirect("/404");
+
+  const { data: enrollStateData } = await axios.get(
+    `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
   );
 
-  const dispatch = useDispatch<AppDispatch>();
+  const enrollState = enrollStateData.data;
 
-  const router = useRouter();
-
-  const { user } = useUser();
-
-  const searchParams = useSearchParams();
-
-  const topicId = searchParams?.get("topicId");
-
-  const course = useAppSelector(
-    (state) => state.courseViewReducer.value.course
-  );
-
-  const { isLoading } = useQuery({
-    queryKey: ["course", params.slug],
-    queryFn: async () => {
-      const { data: courseData } = await axios.get(
-        `${v1MainEndpoint}/course/bySlug/${params.slug}`
-      );
-
-      const course = courseData.data;
-
-      const { data: enrollStateData } = await axios.get(
-        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
-      );
-
-      const enrollState = enrollStateData.data;
-
-      return {
-        course: course as ICourse,
-        enrollState: enrollState,
-      };
-    },
-
-    enabled: !!user?.id,
-
-    onSuccess: (data) => {
-      const { course, enrollState } = data;
-      if (!enrollState) {
-        router.push(`/course/${params.slug}`);
-
-        setIsEnrolled("no");
-      } else if (
-        !topicId ||
-        !canBeParsedToInt(topicId) ||
-        !isValid(parseInt(topicId), enrollState)
-      ) {
-        router.push(
-          `/course/${params.slug}?topicId=${enrollState.currentTopic.topicID}`
-        );
-        dispatch(
-          setCurrentCourseTopicForView(
-            course.topics[enrollState.currentTopic.topicID - 1]
-          )
-        );
-
-        setIsEnrolled("yes");
-      } else {
-        dispatch(
-          setCurrentCourseTopicForView(course.topics[parseInt(topicId) - 1])
-        );
-
-        setIsEnrolled("yes");
-      }
-
-      dispatch(setEnrollState(enrollState));
-      dispatch(setCourseForView(course));
-    },
-    onError: (error) => {
-      console.log("error", error);
-    },
-  });
+  if (!enrollState) redirect(`/course-landing/${params.slug}`);
 
   return (
-    <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {isLoading || isEnrolled === "loading" ? (
-        <div className="flex items-center justify-center">
-          <span className="loading loading-infinity loading-lg"></span>
-        </div>
-      ) : isEnrolled === "yes" ? (
-        <div className="flex">
-          {/* Left */}
-          <CourseTopics
-            showCourseTopics={showCourseTopics}
-            setShowCourseTopics={setShowCourseTopics}
-            mode={MODE}
-          />
-
-          {/* Right */}
-          <div
-            className={`${
-              showCourseTopics ? "w-full md:w-9/12" : "w-full"
-            }  ml-auto rounded mt-6`}
-          >
-            <CourseContentsTabs />
-          </div>
-        </div>
-      ) : (
-        <CourseLandingPage course={course} />
-      )}
-    </section>
+    <CourseGuard course={course} enrollState={enrollState} slug={params.slug} />
   );
 };
 

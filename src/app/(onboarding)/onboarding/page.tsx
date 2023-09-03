@@ -56,7 +56,7 @@ const Onboarding = () => {
     setPreferences(preferences);
   };
   return (
-    <div className="w-full max-w-3xl mx-auto h-full flex flex-col">
+    <div className="w-full max-w-3xl mx-auto h-full flex flex-col px-4">
       <LargeHeading>
         <span className="underline decoration-rose-500 decoration-4">
           Thanks for
