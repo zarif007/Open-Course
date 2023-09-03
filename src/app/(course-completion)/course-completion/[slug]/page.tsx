@@ -8,6 +8,9 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React from "react";
+import { ICourse } from "@/types/course";
+import { IUser } from "@/types/user";
+import { Metadata } from "next";
 
 interface PageParams {
   params: {
@@ -22,10 +25,33 @@ const getCourse = async (slug: string) => {
   return CourseData.data;
 };
 
+export const generateMetadata = async ({
+  params,
+}: PageParams): Promise<Metadata> => {
+  const course: ICourse | null = await getCourse(params.slug);
+
+  const creator = course?.creator as IUser;
+
+  const generatedBanner = `/api/generateBanner?courseName=${
+    course?.title
+  }&theme=dark&
+  &topics=${course?.categories ? course?.categories.join("  ") : ""}
+  &creator=${creator.attributes?.first_name}`;
+
+  return {
+    title: `Complete-${course?.title}`,
+    openGraph: {
+      title: `Complete-${course?.title}`,
+      description: course?.description,
+      images: [`${generatedBanner}`],
+    },
+  };
+};
+
 const CourseCompletion = async ({ params }: PageParams) => {
   const slug = params.slug;
 
-  const course = await getCourse(params.slug);
+  const course = await getCourse(slug);
 
   if (!course) redirect("/404");
 

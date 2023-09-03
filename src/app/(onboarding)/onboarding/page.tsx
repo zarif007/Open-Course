@@ -55,6 +55,7 @@ const Onboarding = () => {
   const addPreferences = (preferences: string[]) => {
     setPreferences(preferences);
   };
+
   return (
     <div className="w-full max-w-3xl mx-auto h-full flex flex-col px-4">
       <LargeHeading>

@@ -12,7 +12,7 @@ import Paragraph from "./ui/Paragraph";
 import LargeHeading from "./ui/LargeHeading";
 import CourseDetails from "./CourseDetails";
 import { Button } from "./ui/Button";
-import { useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "./ui/Toast";
@@ -22,7 +22,7 @@ import CourseRatings from "./CourseRatings";
 import { ICourse } from "@/types/course";
 
 const CourseLandingPage = ({ course }: { course: ICourse }) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   const router = useRouter();
 
@@ -110,22 +110,28 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
           );
         })}
       </Accordion>
-      {isEnrolled !== "loading" && (
-        <div
-          className="fixed bottom-0 w-full max-w-5xl mx-auto"
-          onClick={() =>
-            isEnrolled === "yes"
-              ? router.push(`/course/${course.slug}`)
-              : handleEnrollment()
-          }
-        >
+      {isEnrolled !== "loading" && isLoaded && (
+        <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
-            <Button
-              className="w-full py-6 text-lg font-bold"
-              isLoading={isLoading}
-            >
-              {isEnrolled === "yes" ? "Back to Course" : "Enroll"}
-            </Button>
+            {!user ? (
+              <SignInButton mode="modal">
+                <Button className="w-full py-6 text-lg font-bold">
+                  Enroll
+                </Button>
+              </SignInButton>
+            ) : (
+              <Button
+                className="w-full py-6 text-lg font-bold"
+                isLoading={isLoading}
+                onClick={() =>
+                  isEnrolled === "yes"
+                    ? router.push(`/course/${course.slug}`)
+                    : handleEnrollment()
+                }
+              >
+                {isEnrolled === "yes" ? "Back to Course" : "Enroll"}
+              </Button>
+            )}
           </div>
         </div>
       )}

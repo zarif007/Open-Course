@@ -6,6 +6,7 @@ export default authMiddleware({
     "/api/getUser",
     "/api/generateBanner",
     "/courses",
+    "/course-landing/(.*)",
   ],
 });
 

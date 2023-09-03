@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Courses| Open Course",
+  title: "Courses | Open Course",
   description: "Curate, Create & Share",
 };
 
@@ -11,7 +11,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // offset navbar height
-  return <section className="py-32 h-full min-h-screen w-full max-w-7xl mx-auto flex flex-col">
-    {children}
-  </section>;
+  return (
+    <section className="py-32 h-full min-h-screen w-full max-w-7xl mx-auto flex flex-col">
+      {children}
+    </section>
+  );
 }
