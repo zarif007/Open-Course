@@ -24,7 +24,7 @@ export const generateMetadata = async ({
 
   const creator = course?.creator as IUser;
 
-  const generatedBanner = `/api/generateBanner?courseName=${
+  const generatedBanner = `https://open-course.vercel.app/api/generateBanner?courseName=${
     course?.title
   }&theme=dark&
   &topics=${course?.categories ? course?.categories.join("  ") : ""}
@@ -35,7 +35,7 @@ export const generateMetadata = async ({
     openGraph: {
       title: `Complete-${course?.title}`,
       description: course?.description,
-      images: [`${generatedBanner}`],
+      images: generatedBanner,
     },
   };
 };

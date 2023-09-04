@@ -69,11 +69,7 @@ const CourseGuard = ({
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {isLoading ? (
-        <div className="flex items-center justify-center">
-          <span className="loading loading-infinity loading-lg"></span>
-        </div>
-      ) : (
+      {!isLoading && (
         <div className="flex">
           {/* Left */}
           <CourseTopicsBar
