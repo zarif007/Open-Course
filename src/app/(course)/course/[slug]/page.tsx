@@ -1,6 +1,5 @@
-import CourseContentsTabs from "@/components/CourseContents.Tabs";
-import CourseLandingPage from "@/components/CourseLanding.Page";
-import CourseTopics from "@/components/CourseTopics.Bar";
+import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
+import CourseTopics from "@/components/course-topic/CourseTopics.Bar";
 import {
   setCourseForView,
   setCurrentCourseTopicForView,
@@ -18,7 +17,7 @@ import canBeParsedToInt from "@/utils/canBeParsedToInt";
 import { currentUser, useUser } from "@clerk/nextjs";
 import { IEnrollState } from "@/types/enrollState";
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseGuard from "@/components/Course.Guard";
+import CourseGuard from "@/components/course-details/Course.Guard";
 import { Metadata } from "next";
 import { IUser } from "@/types/user";
 

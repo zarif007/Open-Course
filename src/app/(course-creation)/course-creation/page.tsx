@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import CourseTopicsBar from "@/components/CourseTopics.Bar";
-import CourseTopicCreation from "@/components/CourseTopicCreation";
-import CourseDetailsCreation from "@/components/CourseDetailsCreation";
+import CourseTopicsBar from "@/components/course-topic/CourseTopics.Bar";
+import CourseTopicCreation from "@/components/course-topic/CourseTopicCreation";
+import CourseDetailsCreation from "@/components/course-details/CourseDetailsCreation";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/nextjs";

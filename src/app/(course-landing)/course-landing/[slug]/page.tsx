@@ -1,4 +1,4 @@
-import CourseLandingPage from "@/components/CourseLanding.Page";
+import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
 import { ICourse } from "@/types/course";
 import { IUser } from "@/types/user";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";

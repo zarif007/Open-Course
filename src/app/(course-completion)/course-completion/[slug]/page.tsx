@@ -1,4 +1,4 @@
-import CourseRatingTaker from "@/components/CourseRatingTaker";
+import CourseRatingTaker from "@/components/course-details/CourseRatingTaker";
 import { Button } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";

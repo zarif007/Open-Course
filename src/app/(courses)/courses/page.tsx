@@ -1,13 +1,13 @@
 "use client";
 
-import CourseCard from "@/components/Course.Card";
+import CourseCard from "@/components/course-cards/Course.Card";
 import { ICourse } from "@/types/course";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import CourseSkeleton from "@/components/Skeletons/Course.Skeleton";
+import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
 
 const LIMIT = 3;
 
@@ -44,25 +44,22 @@ const Courses = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-12">
-      {isFetchingNextPage ? (
+      {courses?.map((course: ICourse, index: number) => {
+        return courses.length === index + 1 ? (
+          <div ref={ref} key={course.id}>
+            <CourseCard course={course} />
+          </div>
+        ) : (
+          <CourseCard key={course.id} course={course} />
+        );
+      })}
+      {(isFetchingNextPage || !courses) && (
         <React.Fragment>
           {new Array(LIMIT).fill(0).map((_, index) => (
             <div key={index} className="px-3 pb-3">
-              <CourseSkeleton />
+              <CourseCardSkeleton />
             </div>
           ))}
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {courses?.map((course: ICourse, index: number) => {
-            return courses.length === index + 1 ? (
-              <div ref={ref} key={course.id}>
-                <CourseCard course={course} />
-              </div>
-            ) : (
-              <CourseCard key={course.id} course={course} />
-            );
-          })}
         </React.Fragment>
       )}
     </div>

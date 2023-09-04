@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import SelectedTopics from "@/components/SelectedTopics";
+import SelectedTopics from "@/components/course-details/SelectedTopics";
 import { Button } from "@/components/ui/Button";
 import { Combobox } from "@/components/ui/Combobox";
 import LargeHeading from "@/components/ui/LargeHeading";

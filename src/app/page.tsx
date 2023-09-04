@@ -1,9 +1,8 @@
 "use client";
 
-import Courses from "@/components/Courses";
-import IntroPage from "@/components/Intro.Page";
-import LandingPage from "@/components/Landing.Page";
-
+import CoursesLanding from "@/components/landing-page/Courses.Landing";
+import IntroPage from "@/components/landing-page/Intro.Page";
+import LandingPage from "@/components/landing-page/Landing.Page";
 
 export default function Home() {
   return (
@@ -13,7 +12,7 @@ export default function Home() {
       <HorizontalLine />
       <IntroPage />
       <HorizontalLine />
-      <Courses />
+      <CoursesLanding />
     </div>
   );
 }
