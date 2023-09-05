@@ -31,7 +31,10 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const [isEnrolled, setIsEnrolled] = useState<string>("loading");
 
   useEffect(() => {
-    if (!course.title || !user) return;
+    if (!course.title || !user) {
+      setIsEnrolled("no");
+      return;
+    }
     const getEnrollState = async () => {
       const { data: enrollStateData } = await axios.get(
         `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
@@ -114,7 +117,10 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
             {!user ? (
-              <SignInButton mode="modal">
+              <SignInButton
+                mode="modal"
+                redirectUrl={`/course-landing/${course.slug}`}
+              >
                 <Button className="w-full py-6 text-lg font-bold">
                   Enroll
                 </Button>
