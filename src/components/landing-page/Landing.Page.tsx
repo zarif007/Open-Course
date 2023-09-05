@@ -39,7 +39,7 @@ const LandingPage = () => {
               <span className="font-semibold">Create</span>
             </Link>
             <Link
-              href="/documentation"
+              href="/courses"
               className={`${buttonVariants({
                 variant: "bigButtonOutline",
               })} mt-4`}
