@@ -7,7 +7,7 @@ import { ICourse } from "@/types/course";
 import { useTheme } from "next-themes";
 import SelectedTopics from "../course-details/SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { Button } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
 import {
   PiChatsDuotone,
   PiUsersThreeDuotone,
@@ -21,6 +21,7 @@ import BlurredImage from "../ui/BlurredImage";
 import formatDate from "@/utils/formatDate";
 import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
 import courseDurationCalculator from "@/utils/courseDurationCalculator";
+import Link from "next/link";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
@@ -112,12 +113,12 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               </p>
             </div>
           </div>
-          <Button
-            className="w-full mt-3"
-            onClick={() => router.push(`course-landing/${course.slug}`)}
+          <Link
+            href={`course-landing/${course.slug}`}
+            className={`${buttonVariants({ variant: "default" })} w-full mt-3`}
           >
             Enroll
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

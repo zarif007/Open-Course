@@ -10,7 +10,7 @@ const ContentLogos = ({
   withDuration: boolean;
 }) => {
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center">
       {topics.slice(0, 6).map((topic, index) => (
         <img
           key={index}

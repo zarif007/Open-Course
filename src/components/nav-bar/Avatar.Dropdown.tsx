@@ -13,23 +13,27 @@ import {
 
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
+import { useAppSelector } from "@/redux/store";
+import Link from "next/link";
 const AvatarDropdown = () => {
   const styles = {
     menuBarItems:
       "cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold",
   };
-  const { user } = useUser();
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
 
   return (
     <Menubar>
       <MenubarMenu>
         <MenubarTrigger className="!bg-transparent">
-          {user && (
+          {signedInUser && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
               <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
                 <AvatarImage
                   className="rounded-full"
-                  src={user.profileImageUrl}
+                  src={signedInUser.attributes.image_url}
                 />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>
@@ -40,8 +44,15 @@ const AvatarDropdown = () => {
           {/* <MenubarItem className={styles.menuBarItems}>
             <UserProfile />
           </MenubarItem> */}
-          <MenubarItem className={styles.menuBarItems}>New Window</MenubarItem>
-          <MenubarItem className={styles.menuBarItems}>Share</MenubarItem>
+          <MenubarItem className={styles.menuBarItems}>
+            <Link
+              href={`/profile/${signedInUser?.userName}`}
+              className="text-gray-950 dark:text-slate-100"
+            >
+              {" "}
+              Profile ({signedInUser?.attributes.first_name})
+            </Link>
+          </MenubarItem>
           <MenubarSeparator />
           <MenubarItem className={`${styles.menuBarItems} text-red-500`}>
             <SignOutButton>Sign Out</SignOutButton>

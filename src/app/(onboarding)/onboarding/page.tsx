@@ -4,12 +4,15 @@
 import SelectedTopics from "@/components/course-details/SelectedTopics";
 import { Button } from "@/components/ui/Button";
 import { Combobox } from "@/components/ui/Combobox";
+import ErrorMessage from "@/components/ui/ErrorMessage";
+import { Input } from "@/components/ui/Input";
 import LargeHeading from "@/components/ui/LargeHeading";
 import Paragraph from "@/components/ui/Paragraph";
 import { toast } from "@/components/ui/Toast";
 import { IUser } from "@/types/user";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { courseTypes } from "@/utils/courseTypes";
+import createSlug from "@/utils/createSlug";
 import formatUser from "@/utils/formatUser";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -19,17 +22,33 @@ import React, { useState } from "react";
 const Onboarding = () => {
   const [preferences, setPreferences] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const { user } = useUser();
-  const router = useRouter();
 
   const handleSubmit = async () => {
     if (!user || isLoading) return;
+
+    setError("");
+    if (preferences.length === 0) {
+      setError("You must select at least one preference");
+      return;
+    }
+
+    const { data } = await axios.get(
+      `${v1MainEndpoint}/user/byExternalId/${user.id}`
+    );
 
     setIsLoading(true);
     const userInfo: IUser = {
       ...formatUser(user),
       preferences,
+      userName:
+        data.data.userName !== ""
+          ? data.data.userName
+          : createSlug(user?.firstName || ""),
     };
+
+    console.log(userInfo);
 
     try {
       await axios.post(`${v1MainEndpoint}/user`, userInfo);
@@ -95,6 +114,7 @@ const Onboarding = () => {
           />
         </div>
       </div>
+      <ErrorMessage text={error} className="mb-4" />
       <Button onClick={handleSubmit} isLoading={isLoading}>
         Complete?
       </Button>

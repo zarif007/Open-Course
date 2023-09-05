@@ -6,7 +6,6 @@ export const config = {
 };
 
 const handler: NextApiHandler = async (req: NextApiRequest) => {
-
   const BebasNeueRegular = await fetch(
     new URL("../../../public/BebasNeue-Regular.ttf", import.meta.url)
   ).then((res) => res.arrayBuffer());
@@ -22,16 +21,30 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
   try {
     return new ImageResponse(
       (
-        <div tw={`h-full w-full flex items-start justify-start ${theme === 'dark' ? 'bg-[#121212]' : 'bg-slate-100'}
-          border-8 border-rose-500`}>
+        <div
+          tw={`h-full w-full flex items-start justify-start ${
+            theme === "dark" ? "bg-[#121212]" : "bg-slate-100"
+          }
+          border-8 border-rose-500 rounded`}
+        >
           <div tw="flex items-start justify-start h-full">
             <div tw="flex flex-col justify-center items-center px-20 w-full h-full text-center">
-              
-              <h1 tw={`text-[40px] ${theme === "dark" ? 'text-slate-100' : ''}`} style={{ fontWeight: 900 }}>Open Course</h1>
+              <h1
+                tw={`text-[40px] ${theme === "dark" ? "text-slate-100" : ""}`}
+                style={{ fontWeight: 900 }}
+              >
+                Open Course
+              </h1>
 
-              <h1 tw="text-[60px] text-rose-500" style={{ fontWeight: 900 }}>{courseName}</h1>
+              <h1 tw="text-[60px] text-rose-500" style={{ fontWeight: 1200 }}>
+                {courseName}
+              </h1>
 
-              <p tw={`text-[40px] ${theme === "dark" ? 'text-slate-100'  : ''} mx-auto text-center font-bold mb-0`}>
+              <p
+                tw={`text-[60px] ${
+                  theme === "dark" ? "text-slate-100" : ""
+                } mx-auto text-center font-bold mb-0`}
+              >
                 {topics}
               </p>
 
@@ -45,8 +58,8 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
         </div>
       ),
       {
-        width: 1200,
-        height: 600,
+        width: 2000,
+        height: 1800,
         fonts: [
           {
             name: "Inter",

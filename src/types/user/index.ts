@@ -37,4 +37,5 @@ export interface IUser {
   attributes: UserAttributes;
   role?: "super_admin" | "admin" | "user" | "pro_User";
   preferences?: string[];
+  userName?: string;
 }
