@@ -58,8 +58,8 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
         </div>
       ),
       {
-        width: 2000,
-        height: 1000,
+        width: 1600,
+        height: 800,
         fonts: [
           {
             name: "Inter",

@@ -95,7 +95,7 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
               key={index}
               className="m-4 px-4 md:mx-6"
             >
-              <AccordionTrigger>
+              <AccordionTrigger className="text-start">
                 {topic.versions[topic.versions.length - 1].title}
               </AccordionTrigger>
               <AccordionContent>

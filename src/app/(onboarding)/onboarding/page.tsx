@@ -27,6 +27,7 @@ const Onboarding = () => {
 
   const handleSubmit = async () => {
     if (!user || isLoading) return;
+    console.log(user);
 
     setError("");
     if (preferences.length === 0) {
@@ -42,10 +43,9 @@ const Onboarding = () => {
     const userInfo: IUser = {
       ...formatUser(user),
       preferences,
-      userName:
-        data.data.userName !== ""
-          ? data.data.userName
-          : createSlug(user?.firstName || ""),
+      userName: data.data
+        ? data.data.userName
+        : createSlug(user?.fullName || ""),
     };
 
     console.log(userInfo);

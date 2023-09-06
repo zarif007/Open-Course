@@ -4,7 +4,7 @@ const createSlug = (inputString: string) => {
   const emojiRegex =
     /(?:[\u2700-\u27BF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|[\uD800-\uDBFF][\uDC00-\uDFFF])/g;
 
-  return inputString
+  const slug = inputString
     .toString() // Ensure the input is a string
     .replace(emojiRegex, "") // Remove emojis
     .trim() // Remove leading and trailing white spaces
@@ -13,6 +13,7 @@ const createSlug = (inputString: string) => {
     .replace(/\s+/g, "-") // Replace spaces with hyphens
     .replace(/--+/g, "-") // Replace consecutive hyphens with a single hyphen
     .concat(`-${nanoid(5)}`);
+  return slug;
 };
 
 export default createSlug;

@@ -31,9 +31,9 @@ export const generateMetadata = async ({
   &creator=${creator.attributes?.first_name}`;
 
   return {
-    title: `Complete-${course?.title}`,
+    title: `${course?.title}`,
     openGraph: {
-      title: `Complete-${course?.title}`,
+      title: `${course?.title}`,
       description: course?.description,
       images: generatedBanner,
     },
