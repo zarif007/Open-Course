@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 interface VerificationStatus {
   status: string;
   attempts: number | null;
@@ -38,4 +40,7 @@ export interface IUser {
   role?: "super_admin" | "admin" | "user" | "pro_User";
   preferences?: string[];
   userName?: string;
+  bio?: string;
 }
+
+export type IUserModel = Model<IUser, Record<string, unknown>>;

@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 export interface ICourseTopic {
   id?: number | string;
   _id?: string;
@@ -14,3 +16,5 @@ export interface ICourseTopic {
   updatedAt?: Date;
   _v?: number;
 }
+
+export type ICourseTopicModel = Model<ICourseTopic, Record<string, unknown>>;

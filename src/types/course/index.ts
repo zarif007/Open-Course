@@ -1,3 +1,4 @@
+import { Model, Types } from "mongoose";
 import { ICourseTopic } from "../courseTopic";
 import { IUser } from "../user";
 
@@ -17,8 +18,9 @@ export interface ICourse {
   description: string;
   banner?: string;
   slug: string;
-  topics: ICourseTopic[];
+  topics: ICourseTopic[] | Types.ObjectId[];
   tags: string[];
+  status: string;
   ratings?:
     | {
         user: string;
@@ -29,3 +31,5 @@ export interface ICourse {
   updatedAt?: Date;
   _v?: number;
 }
+
+export type ICourseModel = Model<ICourse, Record<string, unknown>>;

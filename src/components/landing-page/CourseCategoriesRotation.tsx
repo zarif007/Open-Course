@@ -1,7 +1,7 @@
-import { courseCategories } from "@/constants/courseCategories";
 import React, { useEffect, useState } from "react";
 import LargeHeading from "../ui/LargeHeading";
 import Typewriter from "react-ts-typewriter";
+import { courseCategories } from "@/constants/course";
 
 function shuffleArray(array: string[]) {
   const shuffledArray = array.slice();
