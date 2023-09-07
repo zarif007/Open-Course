@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../ui/Input";
 import { Combobox } from "../ui/Combobox";
-import { courseTypes } from "@/utils/courseTypes";
+import { courseCategories } from "@/constants/courseCategories";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "../ui/Textarea";
-import { languages } from "@/utils/languages";
+import { languages } from "@/constants/languages";
 import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useUser } from "@clerk/nextjs";
@@ -110,7 +110,7 @@ const CourseDetailsCreationForm = () => {
                 <Combobox
                   limit={3}
                   title="Category"
-                  list={courseTypes}
+                  list={courseCategories}
                   currentValues={course.categories}
                   setCurrentValuesFunction={setSelectedCourseTypes}
                 />

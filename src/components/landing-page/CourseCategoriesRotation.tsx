@@ -1,4 +1,4 @@
-import { courseTypes } from "@/utils/courseTypes";
+import { courseCategories } from "@/constants/courseCategories";
 import React, { useEffect, useState } from "react";
 import LargeHeading from "../ui/LargeHeading";
 import Typewriter from "react-ts-typewriter";
@@ -18,7 +18,7 @@ function shuffleArray(array: string[]) {
 const CourseCategoriesRotation = () => {
   return (
     <LargeHeading size="sm" className="truncate">
-      <Typewriter text={shuffleArray(courseTypes)} delay={1000} />
+      <Typewriter text={shuffleArray(courseCategories)} delay={1000} />
     </LargeHeading>
   );
 };

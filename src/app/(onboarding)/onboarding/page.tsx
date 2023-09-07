@@ -11,7 +11,7 @@ import Paragraph from "@/components/ui/Paragraph";
 import { toast } from "@/components/ui/Toast";
 import { IUser } from "@/types/user";
 import { v1MainEndpoint } from "@/utils/apiEndpoints";
-import { courseTypes } from "@/utils/courseTypes";
+import { courseCategories } from "@/constants/courseCategories";
 import createSlug from "@/utils/createSlug";
 import formatUser from "@/utils/formatUser";
 import { useUser } from "@clerk/nextjs";
@@ -101,7 +101,7 @@ const Onboarding = () => {
         </Paragraph>
         <Combobox
           title="Preferences"
-          list={courseTypes}
+          list={courseCategories}
           currentValues={preferences}
           setCurrentValuesFunction={addPreferences}
           limit={5}
