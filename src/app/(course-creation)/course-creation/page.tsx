@@ -15,6 +15,7 @@ import { ICourse } from "@/types/course";
 import createSlug from "@/utils/createSlug";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { useDispatch } from "react-redux";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const MODE = "creation";
 
@@ -75,7 +76,7 @@ const CourseCreation = () => {
     const courseData: ICourse = {
       ...course,
       slug: course.slug ? course.slug : createSlug(course.title),
-      topics: course.topics.filter((topic) => topic.id !== 0),
+      topics: course.topics.filter((topic) => topic.id !== 0) as ICourseTopic[],
       creator: signedInUser.id,
     };
 
