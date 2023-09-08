@@ -73,10 +73,12 @@ const CourseCreation = () => {
 
     setIsLoading(true);
 
+    const courseTopics = course.topics as ICourseTopic[];
+
     const courseData: ICourse = {
       ...course,
       slug: course.slug ? course.slug : createSlug(course.title),
-      topics: course.topics.filter((topic) => topic.id !== 0) as ICourseTopic[],
+      topics: courseTopics.filter((topic) => topic.id !== 0),
       creator: signedInUser.id,
     };
 
