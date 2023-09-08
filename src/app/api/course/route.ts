@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   connectToDB();
 
-  const courses = await Course.find({});
+  const courses = await Course.find({}).populate("topics").populate("creator");
 
-  return NextResponse.json({ courses });
+  return NextResponse.json({ data: courses });
 };
