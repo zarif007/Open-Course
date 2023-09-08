@@ -1,5 +1,5 @@
 import { IUser, IUserModel } from "@/types/user";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 export const UserSchema = new Schema<IUser, IUserModel>(
   {
@@ -36,4 +36,4 @@ export const UserSchema = new Schema<IUser, IUserModel>(
   }
 );
 
-export const User = model<IUser, IUserModel>("User", UserSchema);
+export const User = models.User || model<IUser, IUserModel>("User", UserSchema);

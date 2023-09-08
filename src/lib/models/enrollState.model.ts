@@ -1,5 +1,5 @@
 import { IEnrollState, IEnrollStateModel } from "@/types/enrollState";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const EnrollStateSchema = new Schema<IEnrollState, IEnrollStateModel>(
   {
@@ -29,7 +29,6 @@ const EnrollStateSchema = new Schema<IEnrollState, IEnrollStateModel>(
   }
 );
 
-export const EnrollState = model<IEnrollState, IEnrollStateModel>(
-  "EnrollState",
-  EnrollStateSchema
-);
+export const EnrollState =
+  models.EnrollState ||
+  model<IEnrollState, IEnrollStateModel>("EnrollState", EnrollStateSchema);

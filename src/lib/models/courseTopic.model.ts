@@ -1,5 +1,5 @@
 import { ICourseTopic, ICourseTopicModel } from "@/types/courseTopic";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
   {
@@ -36,7 +36,6 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
   }
 );
 
-export const CourseTopic = model<ICourseTopic, ICourseTopicModel>(
-  "CourseTopic",
-  CourseTopicSchema
-);
+export const CourseTopic =
+  models.CourseTopic ||
+  model<ICourseTopic, ICourseTopicModel>("CourseTopic", CourseTopicSchema);
