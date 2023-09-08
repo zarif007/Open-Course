@@ -5,9 +5,9 @@ import { ICourse } from "../course";
 export interface IEnrollState {
   id?: string;
   _id?: string;
-  course: Types.ObjectId | ICourse;
+  course: Types.ObjectId | ICourse | string;
   user: string;
-  currentTopic: Types.ObjectId | ICourseTopic;
+  currentTopic: Types.ObjectId | ICourseTopic | string;
   finishedTopics: string[];
   createdAt?: Date;
   updatedAt?: Date;

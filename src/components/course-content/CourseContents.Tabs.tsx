@@ -20,6 +20,7 @@ import { useUser } from "@clerk/nextjs";
 import { toast } from "../ui/Toast";
 import { BiSolidUpvote } from "react-icons/bi";
 import { MdOutlineVideoLibrary } from "react-icons/md";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -47,9 +48,11 @@ const CourseContentsTabs = () => {
 
     const currentCourseTopicId = currentCourseTopic.topicID as number;
 
+    const courseTopics = course.topics as ICourseTopic[];
+
     const state: IEnrollState = {
       ...enrollState,
-      currentTopic: course.topics[nextTopicId - 1].id as string,
+      currentTopic: courseTopics[nextTopicId - 1].id as string,
       finishedTopics: enrollState.finishedTopics.includes(
         currentCourseTopicId.toString()
       )
@@ -64,7 +67,7 @@ const CourseContentsTabs = () => {
 
     dispatch(setEnrollState(updatedEnrollState.data.data));
 
-    dispatch(setCurrentCourseTopicForView(course.topics[nextTopicId - 1]));
+    dispatch(setCurrentCourseTopicForView(courseTopics[nextTopicId - 1]));
   };
 
   const checkValidity = () => {

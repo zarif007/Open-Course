@@ -22,6 +22,7 @@ import formatDate from "@/utils/formatDate";
 import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
 import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
@@ -53,7 +54,9 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               </span>
             </h2>
             <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
-              {formatDate(getLastUpdatedTopicDate(course.topics))}
+              {formatDate(
+                getLastUpdatedTopicDate(course.topics as ICourseTopic[])
+              )}
             </p>
           </div>
           <Paragraph
@@ -78,9 +81,12 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           <SelectedTopics mode="view" selectedTopics={course.languages} />
 
           <div className="flex justify-between">
-            <ContentLogos topics={course.topics} withDuration={true} />
+            <ContentLogos
+              topics={course.topics as ICourseTopic[]}
+              withDuration={true}
+            />
             <p className="text-gray-500 font-semibold">
-              {courseDurationCalculator(course.topics)}
+              {courseDurationCalculator(course.topics as ICourseTopic[])}
             </p>
           </div>
 

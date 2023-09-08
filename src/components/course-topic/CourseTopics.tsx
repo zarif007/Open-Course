@@ -35,11 +35,12 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
     const topicId = courseTopic.topicID as number;
     return enrollState.finishedTopics.includes(topicId.toString());
   };
+  const courseTopics = course.topics as ICourseTopic[];
 
   return (
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
-      {course.topics.map((courseTopic: ICourseTopic, index: number) => {
+      {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
         return (
           <div
             key={index}

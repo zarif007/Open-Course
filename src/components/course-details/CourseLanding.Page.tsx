@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import Router from "next/router";
 import CourseRatings from "./CourseRatings";
 import { ICourse } from "@/types/course";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const { user, isLoaded } = useUser();
@@ -79,13 +80,15 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
     }
   };
 
+  const courseTopics = course.topics as ICourseTopic[];
+
   return (
     <div className="max-w-5xl w-full mx-auto ">
       <CourseDetails course={course} />
       <CourseRatings ratings={course.ratings ?? []} />
       <LargeHeading size="sm">Course Topics</LargeHeading>
       <Accordion type="single" collapsible>
-        {course.topics.map((topic, index: number) => {
+        {courseTopics.map((topic, index: number) => {
           const faviconURL = getFavicon(
             topic.versions[topic.versions.length - 1].url
           );

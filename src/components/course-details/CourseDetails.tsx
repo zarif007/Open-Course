@@ -9,6 +9,7 @@ import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { IUser } from "@/types/user";
 import ContentLogos from "@/components/course-content/ContentLogos";
 import { ICourse } from "@/types/course";
+import { ICourseTopic } from "@/types/courseTopic";
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -50,7 +51,10 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
         </div>
       </div>
       <div className="md:w-[50%] mx-auto">
-        <ContentLogos topics={course.topics} withDuration={false} />
+        <ContentLogos
+          topics={course.topics as ICourseTopic[]}
+          withDuration={false}
+        />
       </div>
     </div>
   );

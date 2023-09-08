@@ -25,7 +25,8 @@ const CourseTopicCreation = () => {
   };
 
   const submitData = async (data: ICourseTopic) => {
-    const filteredCourseTopics = course.topics.filter(
+    const courseTopics = course.topics as ICourseTopic[];
+    const filteredCourseTopics = courseTopics.filter(
       (courseTopic) => courseTopic.topicID !== data.topicID
     );
     dispatch(

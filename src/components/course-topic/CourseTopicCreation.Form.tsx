@@ -85,13 +85,15 @@ const CourseTopicCreationForm = ({
     description: string;
     duration: number;
   }) => {
+    const courseTopics = course.topics as ICourseTopic[];
+
     submitData({
       versions: [data],
       topicID:
         currentCourseTopic.topicID && currentCourseTopic.topicID > 0
           ? currentCourseTopic.topicID
-          : course.topics && course.topics.length > 0
-          ? (course.topics[course.topics.length - 1]?.topicID || 0) + 1
+          : courseTopics && courseTopics.length > 0
+          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
           : 1,
     });
     reset();

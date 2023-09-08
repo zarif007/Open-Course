@@ -47,6 +47,7 @@ const CourseGuard = ({
   const router = useRouter();
 
   useEffect(() => {
+    const courseTopics = course.topics as ICourseTopic[];
     if (
       !topicId ||
       !canBeParsedToInt(topicId) ||
@@ -55,11 +56,11 @@ const CourseGuard = ({
       const currentTopic = enrollState.currentTopic as ICourseTopic;
       router.push(`/course/${slug}?topicId=${currentTopic.topicID}`);
       dispatch(
-        setCurrentCourseTopicForView(course.topics[currentTopic.topicID! - 1])
+        setCurrentCourseTopicForView(courseTopics[currentTopic.topicID! - 1])
       );
     } else {
       dispatch(
-        setCurrentCourseTopicForView(course.topics[parseInt(topicId) - 1])
+        setCurrentCourseTopicForView(courseTopics[parseInt(topicId) - 1])
       );
     }
     setIsLoading(false);
