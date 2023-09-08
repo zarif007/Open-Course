@@ -12,10 +12,10 @@ import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
 const LIMIT = 3;
 
 const getCourses = async (page: number) => {
-  // const { data } = await axios.get(
-  //   `api/course?page=${page}&limit=${LIMIT}`
-  // );
-  const { data } = await axios.get(`api/course`);
+  const { data } = await axios.get(
+    `${v1MainEndpoint}/course?page=${page}&limit=${LIMIT}`
+  );
+  // const { data } = await axios.get(`api/course`);
   return data.data;
 };
 

@@ -16,7 +16,7 @@ const CoursesLanding = () => {
   const { data: courses, isLoading } = useQuery({
     queryKey: ["course"],
     queryFn: async () => {
-      const { data } = await axios.get(`api/course?page=1&limit=10`);
+      const { data } = await axios.get(`${v1MainEndpoint}/course`);
 
       return data.data.map(async (course: ICourse, index: number) => {
         return <CourseCard course={course} key={index} />;

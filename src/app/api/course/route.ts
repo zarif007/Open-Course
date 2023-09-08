@@ -1,5 +1,5 @@
 import { connectToDB } from "@/lib/connectToMongoose";
-import { Course } from "@/lib/models/course.model";
+import Course from "@/lib/models/course.model";
 import { ICourse } from "@/types/course";
 import { NextRequest, NextResponse } from "next/server";
 
