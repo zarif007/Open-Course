@@ -8,6 +8,7 @@ export default authMiddleware({
     "/courses",
     "/course-landing/(.*)",
     "/api/course",
+    "/api/courses",
     "/api/user",
     "/api/courseTopic",
     "/api/enrollState",

@@ -9,13 +9,13 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
 
-const LIMIT = 3;
+const LIMIT = 6;
 
 const getCourses = async (page: number) => {
   // const { data } = await axios.get(
   //   `${v1MainEndpoint}/course?page=${page}&limit=${LIMIT}`
   // );
-  const { data } = await axios.get(`api/course`);
+  const { data } = await axios.get(`api/courses?page=${page}&limit=${LIMIT}`);
   return data.data;
 };
 
