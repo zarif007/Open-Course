@@ -11,6 +11,7 @@ export default authMiddleware({
     "/api/user",
     "/api/courseTopic",
     "/api/enrollState",
+    "/models/(.*)",
   ],
 });
 

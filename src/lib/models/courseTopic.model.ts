@@ -37,7 +37,7 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
 );
 
 const CourseTopic =
-  models.CourseTopic ??
+  models.CourseTopic ||
   model<ICourseTopic, ICourseTopicModel>("CourseTopic", CourseTopicSchema);
 
 export default CourseTopic;
