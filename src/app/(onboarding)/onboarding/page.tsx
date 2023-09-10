@@ -16,7 +16,6 @@ import createSlug from "@/utils/createSlug";
 import formatUser from "@/utils/formatUser";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Onboarding = () => {
@@ -27,19 +26,20 @@ const Onboarding = () => {
 
   const handleSubmit = async () => {
     if (!user || isLoading) return;
-    console.log(user);
 
     setError("");
+
     if (preferences.length === 0) {
       setError("You must select at least one preference");
       return;
     }
 
+    setIsLoading(true);
+
     const { data } = await axios.get(
       `${v1MainEndpoint}/user/byExternalId/${user.id}`
     );
 
-    setIsLoading(true);
     const userInfo: IUser = {
       ...formatUser(user),
       preferences,
@@ -47,8 +47,6 @@ const Onboarding = () => {
         ? data.data.userName
         : createSlug(user?.fullName || ""),
     };
-
-    console.log(userInfo);
 
     try {
       await axios.post(`${v1MainEndpoint}/user`, userInfo);

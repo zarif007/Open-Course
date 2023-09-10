@@ -2,7 +2,7 @@ import CourseRatingTaker from "@/components/course-details/CourseRatingTaker";
 import { Button } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint, v1MainEndpoint } from "@/utils/apiEndpoints";
 import { currentUser } from "@clerk/nextjs";
 import axios from "axios";
 import { redirect } from "next/navigation";
@@ -20,7 +20,7 @@ interface PageParams {
 
 const getCourse = async (slug: string) => {
   const { data: CourseData } = await axios.get(
-    `${v1MainEndpoint}/course/bySlug/${slug}`
+    `${nextApiEndPoint}/course/bySlug/${slug}`
   );
   return CourseData.data;
 };
@@ -66,12 +66,6 @@ const CourseCompletion = async ({ params }: PageParams) => {
 
   return (
     <main className="w-full max-w-5xl mx-auto h-full flex flex-col">
-      <Link href={`/course/${slug}`} className="flex justify-end mb-4">
-        <Button className="w-fit flex items-center space-x-2">
-          <PiArrowFatLinesLeftDuotone className="w-6 h-6" />
-          <span>Back to the Course</span>
-        </Button>
-      </Link>
       <LargeHeading className="text-rose-500 dark:text-rose-500">
         Congratulation 🎉
       </LargeHeading>
@@ -80,6 +74,12 @@ const CourseCompletion = async ({ params }: PageParams) => {
         {course.title}
       </LargeHeading>
       <CourseRatingTaker course={course} />
+      <Link href={`/course/${slug}`} className="mx-auto">
+        <Button className="w-fit flex items-center space-x-2 px-20">
+          <PiArrowFatLinesLeftDuotone className="w-6 h-6" />
+          <span>Back to the Course</span>
+        </Button>
+      </Link>
     </main>
   );
 };

@@ -7,11 +7,7 @@ export default authMiddleware({
     "/api/generateBanner",
     "/courses",
     "/course-landing/(.*)",
-    "/api/course",
-    "/api/courses",
-    "/api/user",
-    "/api/courseTopic",
-    "/api/enrollState",
+    "/api/(.*)",
     "/models/(.*)",
   ],
 });

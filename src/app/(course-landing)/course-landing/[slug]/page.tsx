@@ -1,7 +1,7 @@
 import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
 import { ICourse } from "@/types/course";
 import { IUser } from "@/types/user";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import { Metadata } from "next";
 import React from "react";
@@ -13,7 +13,7 @@ interface PageParams {
 }
 
 const getCourse = async (slug: string) => {
-  const { data } = await axios.get(`${v1MainEndpoint}/course/bySlug/${slug}`);
+  const { data } = await axios.get(`${nextApiEndPoint}/course/bySlug/${slug}`);
   return data.data;
 };
 

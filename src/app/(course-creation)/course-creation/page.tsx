@@ -83,7 +83,7 @@ const CourseCreation = () => {
     };
 
     try {
-      const { data } = await axios.post(`${v1MainEndpoint}/course`, courseData);
+      const { data } = await axios.post(`api/course`, courseData);
       toast({
         title: "Course Created",
         type: "success",

@@ -1,5 +1,5 @@
 import { ICourse } from "@/types/course";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint, v1MainEndpoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import React from "react";
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ interface PageParams {
 
 const getCourse = async (slug: string) => {
   const { data: courseData } = await axios.get(
-    `${v1MainEndpoint}/course/bySlug/${slug}`
+    `${nextApiEndPoint}/course/bySlug/${slug}`
   );
 
   return courseData.data;
