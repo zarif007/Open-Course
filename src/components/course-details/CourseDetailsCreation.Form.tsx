@@ -9,7 +9,6 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
-import { nextApi } from "@/utils/apiEndpoints";
 import { ICourse } from "@/types/course";
 import { courseCategories, courseLevels, languages } from "@/constants/course";
 
