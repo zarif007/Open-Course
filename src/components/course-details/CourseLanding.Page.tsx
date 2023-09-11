@@ -14,7 +14,7 @@ import CourseDetails from "./CourseDetails";
 import { Button } from "../ui/Button";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
 import Router from "next/router";
@@ -38,10 +38,12 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
     }
     const getEnrollState = async () => {
       const { data: enrollStateData } = await axios.get(
-        `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
+        `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
       );
 
       const enrollState = enrollStateData.data;
+      console.log(course);
+
       if (!enrollState) setIsEnrolled("no");
       else setIsEnrolled("yes");
     };
@@ -59,7 +61,7 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
         user: user?.id,
       };
 
-      await axios.post(`${v1MainEndpoint}/enrollState`, data);
+      const ak = await axios.post(`${nextApiEndPoint}/enrollState`, data);
 
       // window.location.reload();
       router.push(`/course/${course.slug}?topicId=1`);

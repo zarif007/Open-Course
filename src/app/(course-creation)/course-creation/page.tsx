@@ -8,7 +8,6 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";

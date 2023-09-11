@@ -15,7 +15,7 @@ import {
 import LargeHeading from "../ui/LargeHeading";
 import { IEnrollState } from "@/types/enrollState";
 import axios from "axios";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "../ui/Toast";
 import { BiSolidUpvote } from "react-icons/bi";
@@ -41,7 +41,7 @@ const CourseContentsTabs = () => {
 
   const updateEnrollState = async (nextTopicId: number) => {
     const { data } = await axios.get(
-      `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
+      `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
     );
 
     const enrollState = data.data as IEnrollState;
@@ -61,7 +61,7 @@ const CourseContentsTabs = () => {
     };
 
     const updatedEnrollState = await axios.put(
-      `${v1MainEndpoint}/enrollState`,
+      `${nextApiEndPoint}/enrollState`,
       state
     );
 

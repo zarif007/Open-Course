@@ -8,7 +8,6 @@ import { Toaster } from "../components/ui/Toast";
 import { dark } from "@clerk/themes";
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
 
 const inter = Inter({ subsets: ["latin"] });
 

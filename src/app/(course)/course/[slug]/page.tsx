@@ -1,5 +1,5 @@
 import { ICourse } from "@/types/course";
-import { nextApiEndPoint, v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import React from "react";
 import { redirect } from "next/navigation";
@@ -53,7 +53,7 @@ const Course = async ({ params }: PageParams) => {
   if (!course) redirect("/404");
 
   const { data: enrollStateData } = await axios.get(
-    `${v1MainEndpoint}/enrollState?user=${user?.id}&course=${course.id}`
+    `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
   );
 
   const enrollState = enrollStateData.data;

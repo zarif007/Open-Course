@@ -2,7 +2,7 @@ import CourseRatingTaker from "@/components/course-details/CourseRatingTaker";
 import { Button } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
-import { nextApiEndPoint, v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { currentUser } from "@clerk/nextjs";
 import axios from "axios";
 import { redirect } from "next/navigation";
@@ -59,9 +59,10 @@ const CourseCompletion = async ({ params }: PageParams) => {
   if (!user) redirect("");
 
   const { data: EnrollStateData } = await axios.get(
-    `${v1MainEndpoint}/enrollState/?user=${user?.id}&course=${course.id}`
+    `${nextApiEndPoint}/enrollState/?user=${user?.id}&course=${course.id}`
   );
   const enrollState = EnrollStateData.data;
+
   if (!enrollState) redirect(`/course/${slug}`);
 
   return (

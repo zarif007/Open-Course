@@ -13,8 +13,8 @@ export const GET = async (req: NextRequest) => {
   const user = req.nextUrl.searchParams.get("user");
   const course = req.nextUrl.searchParams.get("course");
 
-  const enrollState = await EnrollState.find({ user, course }).populate({
-    path: "topics",
+  const enrollState = await EnrollState.findOne({ user, course }).populate({
+    path: "currentTopic",
     model: CourseTopic,
   });
 
@@ -27,31 +27,30 @@ export const POST = async (req: NextRequest) => {
   const session = await startSession();
   try {
     session.startTransaction();
-
     const payload: IEnrollState = await req.json();
 
-    const course: ICourse | null = await Course.findById(payload.course, {
-      session,
-    });
+    const course = await Course.findById(payload.course).session(session);
 
     if (!course) {
-      await session.commitTransaction();
+      await session.abortTransaction();
       session.endSession();
       return NextResponse.json({ data: null });
     }
 
     const enrollState = await EnrollState.create(
-      {
-        ...payload,
-        currentTopic: course?.topics[0].id,
-      },
+      [
+        {
+          ...payload,
+          currentTopic: course?.topics[0]._id,
+        },
+      ],
       { session }
     );
 
-    const updatedCourse = await Course.updateOne(
+    await Course.updateOne(
       { _id: course?._id },
-      { $push: { enrolledUser: payload.user } },
-      { session }
+      { $push: { enrolledUsers: payload.user } },
+      { session, new: true }
     );
 
     await session.commitTransaction();

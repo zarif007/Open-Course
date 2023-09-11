@@ -2,7 +2,6 @@
 
 import CourseCard from "@/components/course-cards/Course.Card";
 import { ICourse } from "@/types/course";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -12,9 +11,6 @@ import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
 const LIMIT = 6;
 
 const getCourses = async (page: number) => {
-  // const { data } = await axios.get(
-  //   `${v1MainEndpoint}/course?page=${page}&limit=${LIMIT}`
-  // );
   const { data } = await axios.get(`api/courses?page=${page}&limit=${LIMIT}`);
   return data.data;
 };
