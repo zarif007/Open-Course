@@ -2,7 +2,7 @@
 
 import { setSignedInUser } from "@/redux/features/signed-In-user-slice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
     const getUserInfo = async () => {
       setIsLoading(true);
       const { data } = await axios.get(
-        `${v1MainEndpoint}/user/byExternalId/${user?.id}`
+        `${nextApiEndPoint}/user/byExternalId/${user?.id}`
       );
       if (!data.data) {
         router.push("/onboarding");

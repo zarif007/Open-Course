@@ -6,7 +6,6 @@ import CourseCard from "../course-cards/Course.Card";
 import SwiperComp from "../ui/SwiperComp";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
 import { ICourse } from "@/types/course";
 import CourseCardSkeleton from "../skeletons/CourseCard.Skeleton";
 import { Button, buttonVariants } from "../ui/Button";

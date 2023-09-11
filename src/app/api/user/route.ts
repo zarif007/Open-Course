@@ -7,5 +7,19 @@ export const GET = async (req: NextRequest) => {
 
   const users = await User.find({});
 
-  return NextResponse.json({ users });
+  return NextResponse.json({ data: users });
+};
+
+export const POST = async (req: NextRequest) => {
+  connectToDB();
+
+  const payload = await req.json();
+
+  const user = await User.findOneAndUpdate(
+    { externalId: payload.externalId },
+    payload,
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+
+  return NextResponse.json({ data: user });
 };

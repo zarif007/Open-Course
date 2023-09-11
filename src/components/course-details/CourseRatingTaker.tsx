@@ -7,7 +7,7 @@ import LargeHeading from "../ui/LargeHeading";
 import { ICourse } from "@/types/course";
 import { Button } from "../ui/Button";
 import axios from "axios";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import Paragraph from "../ui/Paragraph";
 import { useUser } from "@clerk/nextjs";
@@ -51,7 +51,7 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
         ],
       };
 
-      await axios.put(`${v1MainEndpoint}/course/${course.id}`, updated);
+      await axios.put(`${nextApiEndPoint}/course/${course.id}`, updated);
 
       toast({
         title: "Success",

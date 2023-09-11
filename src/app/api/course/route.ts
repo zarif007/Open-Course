@@ -5,11 +5,10 @@ import User from "@/lib/models/user.model";
 import { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   connectToDB();
 
   const payload = await req.json();
-  console.log(payload);
 
   const topicIds: Types.ObjectId[] = [];
 
@@ -19,20 +18,20 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     topicIds.push(new Types.ObjectId(res._id.toString()));
   }
 
-  const result = await Course.create({
+  const course = await Course.create({
     ...payload,
     topics: topicIds,
   });
 
-  await result.populate({
+  await course.populate({
     path: "topics",
     model: CourseTopic,
   });
 
-  await result.populate({
+  await course.populate({
     path: "creator",
     model: User,
   });
 
-  return NextResponse.json({ data: result });
+  return NextResponse.json({ data: course });
 };

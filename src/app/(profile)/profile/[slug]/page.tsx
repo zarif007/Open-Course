@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import LargeHeading from "@/components/ui/LargeHeading";
 import { IUser } from "@/types/user";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -14,7 +14,7 @@ interface PageParams {
 
 const Profile = async ({ params }: PageParams) => {
   const { data } = await axios.get(
-    `${v1MainEndpoint}/user/byUserName/${params.slug}`
+    `${nextApiEndPoint}/user/byUserName/${params.slug}`
   );
   const user: IUser | null = data.data;
 

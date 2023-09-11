@@ -5,13 +5,12 @@ import SelectedTopics from "@/components/course-details/SelectedTopics";
 import { Button } from "@/components/ui/Button";
 import { Combobox } from "@/components/ui/Combobox";
 import ErrorMessage from "@/components/ui/ErrorMessage";
-import { Input } from "@/components/ui/Input";
 import LargeHeading from "@/components/ui/LargeHeading";
 import Paragraph from "@/components/ui/Paragraph";
 import { toast } from "@/components/ui/Toast";
 import { courseCategories } from "@/constants/course";
 import { IUser } from "@/types/user";
-import { v1MainEndpoint } from "@/utils/apiEndpoints";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import createSlug from "@/utils/createSlug";
 import formatUser from "@/utils/formatUser";
 import { useUser } from "@clerk/nextjs";
@@ -37,7 +36,7 @@ const Onboarding = () => {
     setIsLoading(true);
 
     const { data } = await axios.get(
-      `${v1MainEndpoint}/user/byExternalId/${user.id}`
+      `${nextApiEndPoint}/user/byExternalId/${user.id}`
     );
 
     const userInfo: IUser = {
@@ -49,7 +48,7 @@ const Onboarding = () => {
     };
 
     try {
-      await axios.post(`${v1MainEndpoint}/user`, userInfo);
+      await axios.post(`${nextApiEndPoint}/user`, userInfo);
       // window.location.reload();
       // router.replace("/");
       toast({
@@ -74,7 +73,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto h-full flex flex-col px-4">
+    <div className="w-full max-w-5xl mx-auto h-full flex flex-col px-4">
       <LargeHeading>
         <span className="underline decoration-rose-500 decoration-4">
           Thanks for
@@ -82,13 +81,13 @@ const Onboarding = () => {
         <span className="text-rose-500 dark:text-rose-500">Joining</span>
       </LargeHeading>
       <LargeHeading size="sm">Complete your profile</LargeHeading>
-      <div className="mt-8 mx-auto flex space-x-3 rounded-xl bg-slate-300 dark:bg-gray-800 p-2">
+      <div className="mt-8 mx-auto flex space-x-3 rounded-xl bg-slate-300 dark:bg-gray-800 p-2 w-full max-w-3xl">
         <img src={user?.imageUrl} className="h-16 w-16 rounded-xl" alt="DP" />
         <div className="pr-2">
-          <p className="font-bold text-xl text-rose-500 dark:text-rose-500">
+          <p className="font-bold text-xl text-rose-500 dark:text-rose-500 truncate-text-1-line">
             {user?.fullName}
           </p>
-          <p className="font-semibold text-lg">
+          <p className="font-semibold text-lg truncate">
             {user?.emailAddresses[0].emailAddress}
           </p>
         </div>
