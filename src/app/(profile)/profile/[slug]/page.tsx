@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/alt-text */
+
 import LargeHeading from "@/components/ui/LargeHeading";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
+
 interface PageParams {
   params: {
     slug: string;

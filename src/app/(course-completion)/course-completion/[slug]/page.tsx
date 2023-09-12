@@ -1,5 +1,5 @@
 import CourseRatingTaker from "@/components/course-details/CourseRatingTaker";
-import { Button } from "@/components/ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
@@ -75,11 +75,14 @@ const CourseCompletion = async ({ params }: PageParams) => {
         {course.title}
       </LargeHeading>
       <CourseRatingTaker course={course} />
-      <Link href={`/course/${slug}`} className="mx-auto">
-        <Button className="w-fit flex items-center space-x-2 px-20">
-          <PiArrowFatLinesLeftDuotone className="w-6 h-6" />
-          <span>Back to the Course</span>
-        </Button>
+      <Link
+        href={`/course/${slug}`}
+        className={`${buttonVariants({
+          variant: "default",
+        })} mx-auto w-[80%] md:w-[50%] flex items-center space-x-2`}
+      >
+        <PiArrowFatLinesLeftDuotone className="w-6 h-6" />
+        <span>Back to the Course</span>
       </Link>
     </main>
   );

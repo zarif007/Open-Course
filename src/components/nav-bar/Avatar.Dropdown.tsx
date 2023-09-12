@@ -7,11 +7,10 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/Menu.Bar";
 
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { useAppSelector } from "@/redux/store";
 import Link from "next/link";

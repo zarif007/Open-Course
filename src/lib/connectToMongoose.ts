@@ -9,9 +9,7 @@ let cached = global.mongoose;
 if (!cached) cached = global.mongoose = { conn: null };
 
 export const connectToDB = async () => {
-  if (cached.conn) return cached.conn;
-
-  cached.conn = await mongoose.connect(MONGODB_URL);
+  if (!cached.conn) cached.conn = await mongoose.connect(MONGODB_URL);
 
   return cached.conn;
 };

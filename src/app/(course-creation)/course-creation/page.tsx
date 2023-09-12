@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import CourseTopicsBar from "@/components/course-topic/CourseTopics.Bar";
 import CourseTopicCreation from "@/components/course-topic/CourseTopicCreation";
 import CourseDetailsCreation from "@/components/course-details/CourseDetailsCreation";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -24,8 +24,6 @@ const CourseCreation = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [error, setError] = useState<string>("");
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const course = useAppSelector(
     (state) => state.courseCreationReducer.value.course
@@ -65,7 +63,6 @@ const CourseCreation = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(signedInUser?.id);
     if (isLoading || !user?.id || !signedInUser?.id) return;
 
     if (!validateCourseDetails()) return;

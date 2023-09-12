@@ -1,12 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import SelectedTopics from "@/components/course-details/SelectedTopics";
-import { Button } from "@/components/ui/Button";
-import { Combobox } from "@/components/ui/Combobox";
-import ErrorMessage from "@/components/ui/ErrorMessage";
+import dynamic from "next/dynamic";
+
+const SelectedTopics = dynamic(
+  () => import("@/components/course-details/SelectedTopics"),
+  {
+    ssr: false,
+  }
+);
+const ErrorMessage = dynamic(() => import("@/components/ui/ErrorMessage"), {
+  ssr: false,
+});
 import LargeHeading from "@/components/ui/LargeHeading";
 import Paragraph from "@/components/ui/Paragraph";
+import { Button } from "@/components/ui/Button";
+import { Combobox } from "@/components/ui/Combobox";
+
 import { toast } from "@/components/ui/Toast";
 import { courseCategories } from "@/constants/course";
 import { IUser } from "@/types/user";

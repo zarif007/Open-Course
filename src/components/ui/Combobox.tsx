@@ -18,6 +18,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/Popover";
 
+function capitalizeFirstLetter(string: string) {
+  const words = string.split(" ");
+  const capitalizedWords = words.map(function (word) {
+    const firstCharacter = word.charAt(0);
+    const isEmoji =
+      firstCharacter.charCodeAt(0) >= 127000 &&
+      firstCharacter.charCodeAt(0) <= 127743;
+    return isEmoji ? word : word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return capitalizedWords.join(" ");
+}
+
 export function Combobox({
   title,
   list,
@@ -60,11 +72,12 @@ export function Combobox({
                 className="cursor-pointer hover:bg-rose-500 dark:hover:bg-rose-500 p-0 py-2 font-semibold m-0"
                 key={index}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                  const selectedTopic = capitalizeFirstLetter(currentValue);
+                  setValue(selectedTopic === value ? "" : selectedTopic);
                   currentValues.length < limit &&
                     setCurrentValuesFunction([
-                      ...currentValues.filter((item) => item !== currentValue),
-                      currentValue,
+                      ...currentValues.filter((item) => item !== selectedTopic),
+                      selectedTopic,
                     ]);
                   setOpen(false);
                 }}
