@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React from "react";
 import LargeHeading from "../ui/LargeHeading";
 import Typewriter from "react-ts-typewriter";
 import { courseCategories } from "@/constants/course";

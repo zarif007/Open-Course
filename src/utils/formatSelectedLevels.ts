@@ -1,5 +1,4 @@
 export const formatSelectedLevels = (selectedLevels: string[]): string[] => {
-  console.log(selectedLevels);
   if (selectedLevels.length === 1) return selectedLevels;
   else if (selectedLevels.length === 2) {
     if (

@@ -7,15 +7,17 @@ import CourseCategoriesRotation from "./CourseCategoriesRotation";
 import Link from "next/link";
 import { buttonVariants } from "../ui/Button";
 import Image from "next/image";
+import StarOnGithub from "./StarOnGithub";
 
 const LandingPage = () => {
   return (
     <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 md:mb-12 my-12">
       <div className="container my-auto max-w-7xl w-full h-full ">
-        <div className="h-full gap-6 flex flex-col justify-center items-center ">
+        <div className="h-full gap-4 flex flex-col justify-center items-center ">
           <SocialMediaLogoBar />
           <NotifyBar text="🤖 Create Courses with the Power of AI 🤖" />
-          <LargeHeading size="lg" className="three-d text-center ">
+          <StarOnGithub />
+          <LargeHeading size="lg" className="three-d text-center">
             <span className="tw-gradient-text">Join any Course</span> <br />
             <TextAppearAnimation text="All for Free" />
             <div

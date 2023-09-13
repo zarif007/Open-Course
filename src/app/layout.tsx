@@ -1,13 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider, currentUser } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import ClientProviders from "@/components/providers/ClientProviders";
 import NavBar from "@/components/nav-bar/Nav.Bar";
 import { Toaster } from "../components/ui/Toast";
 import { dark } from "@clerk/themes";
-import axios from "axios";
-import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 

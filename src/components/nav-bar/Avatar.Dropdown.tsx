@@ -33,6 +33,7 @@ const AvatarDropdown = () => {
                 <AvatarImage
                   className="rounded-full"
                   src={signedInUser.attributes.image_url}
+                  alt="dp"
                 />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>
