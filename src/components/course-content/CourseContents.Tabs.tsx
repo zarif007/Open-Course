@@ -21,6 +21,7 @@ import { toast } from "../ui/Toast";
 import { BiSolidUpvote } from "react-icons/bi";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import { ICourseTopic } from "@/types/courseTopic";
+import CourseDiscuss from "./CourseDiscuss";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -68,10 +69,6 @@ const CourseContentsTabs = () => {
     dispatch(setEnrollState(updatedEnrollState.data.data));
 
     dispatch(setCurrentCourseTopicForView(courseTopics[nextTopicId - 1]));
-  };
-
-  const checkValidity = () => {
-    return !(isLoading || !user || !course || !currentCourseTopic.id);
   };
 
   const handleNextButton = async () => {
@@ -169,7 +166,9 @@ const CourseContentsTabs = () => {
           )}
         </div>
       </TabsContent>
-      <TabsContent value="discuss"></TabsContent>
+      <TabsContent value="discuss">
+        <CourseDiscuss />
+      </TabsContent>
       <TabsContent value="ask"></TabsContent>
     </Tabs>
   );
