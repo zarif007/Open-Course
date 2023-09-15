@@ -27,11 +27,13 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       required: [true, "Author is required"],
     },
     contributors: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
     enrolledUsers: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
     categories: {
@@ -96,6 +98,6 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
 // });
 
 const Course =
-  models.Course ?? model<ICourse, ICourseModel>("Course", CourseSchema);
+  models.Course || model<ICourse, ICourseModel>("Course", CourseSchema);
 
 export default Course;

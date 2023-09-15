@@ -9,9 +9,9 @@ export interface ICourse {
   type: "gn" | "org";
   version: number;
   enabled: boolean;
-  creator: IUser | string;
-  contributors: IUser[] | string[];
-  enrolledUsers: IUser[] | string[];
+  creator: IUser | Types.ObjectId;
+  contributors: IUser[] | Types.ObjectId[];
+  enrolledUsers: IUser[] | Types.ObjectId[];
   categories: string[] | [];
   levels: string[] | [];
   languages: string[] | [];
