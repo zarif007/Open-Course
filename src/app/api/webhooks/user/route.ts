@@ -26,7 +26,6 @@ async function handler(request: Request) {
         heads as IncomingHttpHeaders & WebhookRequiredHeaders
       ) as Event;
     } catch (err) {
-      console.error((err as Error).message);
       return NextResponse.json({}, { status: 400 });
     }
 
@@ -50,7 +49,6 @@ async function handler(request: Request) {
 
     return NextResponse.json({ success: false }, { status: 400 });
   } catch (error) {
-    console.error("Handler error:", error);
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

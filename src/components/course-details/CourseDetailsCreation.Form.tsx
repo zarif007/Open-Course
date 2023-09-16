@@ -79,7 +79,7 @@ const CourseDetailsCreationForm = () => {
             Name of the Course
           </label>
           <Input
-            className={`h-16 md:h-20 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold focus-visible:ring-0`}
+            className={`h-16 md:h-20 text-gray-950 dark:text-slate-100 text-4xl  md:text-6xl font-extrabold`}
             defaultValue={course.title}
             onChange={(e) =>
               dispatch(
@@ -96,8 +96,9 @@ const CourseDetailsCreationForm = () => {
                 Description
               </label>
               <Textarea
-                placeholder="About this Course"
-                className="focus-visible:ring-0`"
+                defaultValue=""
+                placeholder="About this course"
+                className="text-lg font-semibold"
               />
             </div>
             <div className="w-full flex flex-wrap">

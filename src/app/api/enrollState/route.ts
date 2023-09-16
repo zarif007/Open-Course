@@ -2,7 +2,6 @@ import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import { EnrollState } from "@/lib/models/enrollState.model";
-import { ICourse } from "@/types/course";
 import { IEnrollState } from "@/types/enrollState";
 import { startSession } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";

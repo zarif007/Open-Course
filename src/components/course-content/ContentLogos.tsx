@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ICourseTopic } from "@/types/courseTopic";
 import { getFavicon } from "@/utils/getFavicon";
 import React from "react";

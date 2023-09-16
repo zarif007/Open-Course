@@ -32,8 +32,7 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       default: [],
     },
     enrolledUsers: {
-      type: [Schema.Types.ObjectId],
-      ref: "User",
+      type: [String],
       default: [],
     },
     categories: {

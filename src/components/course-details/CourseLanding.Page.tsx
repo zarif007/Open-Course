@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -42,7 +43,6 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
       );
 
       const enrollState = enrollStateData.data;
-      console.log(course);
 
       if (!enrollState) setIsEnrolled("no");
       else setIsEnrolled("yes");
@@ -61,7 +61,7 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
         user: user?.id,
       };
 
-      const ak = await axios.post(`${nextApiEndPoint}/enrollState`, data);
+      await axios.post(`${nextApiEndPoint}/enrollState`, data);
 
       // window.location.reload();
       router.push(`/course/${course.slug}?topicId=1`);

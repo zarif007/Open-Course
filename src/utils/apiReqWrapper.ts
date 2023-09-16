@@ -8,7 +8,7 @@ const apiReqWrapper = async (
   try {
     await fn(req, res);
   } catch (error) {
-    console.log("error");
+    return error;
   }
 };
 

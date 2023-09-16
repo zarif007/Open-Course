@@ -11,7 +11,7 @@ export interface ICourse {
   enabled: boolean;
   creator: IUser | Types.ObjectId | string;
   contributors: IUser[] | Types.ObjectId[];
-  enrolledUsers: IUser[] | Types.ObjectId[];
+  enrolledUsers: IUser[] | string[];
   categories: string[] | [];
   levels: string[] | [];
   languages: string[] | [];

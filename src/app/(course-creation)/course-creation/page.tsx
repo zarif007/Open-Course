@@ -122,10 +122,10 @@ const CourseCreation = () => {
             className="font-bold flex items-center justify-center text-xl"
           />
 
-          <div className="flex justify-center p-3 md:p-6 mt-12 md:mt-20">
+          <div className="flex justify-center p-3 md:p-6 mt-20 md:mt-28">
             <Button
               variant="general"
-              className="px-12 py-6 w-full md:w-[75%] mx-0"
+              className="px-12 py-6 w-full mx-0"
               onClick={handleSubmit}
               isLoading={isLoading}
             >

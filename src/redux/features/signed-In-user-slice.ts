@@ -1,6 +1,3 @@
-import { ICourse } from "@/types/course";
-import { ICourseTopic } from "@/types/courseTopic";
-import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 

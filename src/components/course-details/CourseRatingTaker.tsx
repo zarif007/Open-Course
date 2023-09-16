@@ -59,7 +59,11 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
         type: "success",
       });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Error",
+        message: `Something `,
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }

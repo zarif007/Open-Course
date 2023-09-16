@@ -21,7 +21,7 @@ import { toast } from "../ui/Toast";
 import { BiSolidUpvote } from "react-icons/bi";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseDiscuss from "./CourseDiscuss";
+import CourseDiscuss from "../course-discuss/CourseDiscuss";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -83,7 +83,11 @@ const CourseContentsTabs = () => {
 
       router.push(`/course/${course.slug}?topicId=${nextTopicId}`);
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Error",
+        message: `Something `,
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +110,11 @@ const CourseContentsTabs = () => {
       });
       router.push(`/course-completion/${course.slug}`);
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Error",
+        message: `Something `,
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
