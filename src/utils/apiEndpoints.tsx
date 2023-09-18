@@ -5,3 +5,8 @@ export const nextApiEndPoint =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000/api"
     : "https://open-course.vercel.app/api";
+
+export const mainEndPoint =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://open-course.vercel.app";
