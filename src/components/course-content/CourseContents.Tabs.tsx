@@ -21,7 +21,7 @@ import { toast } from "../ui/Toast";
 import { BiSolidUpvote } from "react-icons/bi";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseDiscuss from "../course-discuss/CourseDiscuss";
+import CourseDiscussion from "../course-discussion/CourseDiscussion";
 
 const CourseContentsTabs = () => {
   const currentCourseTopic = useAppSelector(
@@ -175,7 +175,10 @@ const CourseContentsTabs = () => {
         </div>
       </TabsContent>
       <TabsContent value="discuss">
-        <CourseDiscuss />
+        <CourseDiscussion
+          courseId={course.id}
+          topicId={currentCourseTopic.id}
+        />
       </TabsContent>
       <TabsContent value="ask"></TabsContent>
     </Tabs>

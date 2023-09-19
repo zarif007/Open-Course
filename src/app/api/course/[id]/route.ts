@@ -9,6 +9,7 @@ interface PageParams {
     id: string;
   };
 }
+
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
   connectToDB();
 

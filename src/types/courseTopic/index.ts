@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 
 export interface ICourseTopic {
-  id?: number | string;
+  id?: string;
   _id?: string;
   topicID?: number;
   versions: [
