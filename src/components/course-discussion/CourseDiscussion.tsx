@@ -14,6 +14,8 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useQuery } from "@tanstack/react-query";
 import Discussions from "./Discussions";
 import DiscussionSkeleton from "../skeletons/Discussion.Skeleton";
+import { Textarea } from "../ui/Textarea";
+import { commentCreationSchema } from "@/validations/discussion";
 
 const CourseDiscussion = ({
   courseId,
@@ -25,15 +27,6 @@ const CourseDiscussion = ({
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
-
-  const commentCreationSchema: ZodType<{
-    comment: string;
-  }> = z.object({
-    comment: z
-      .string()
-      .min(2, { message: "Comment Can not be less then 2 characters" })
-      .max(1250, { message: "Comment Can not be more then 1250 characters" }),
-  });
 
   const {
     register,
@@ -71,10 +64,10 @@ const CourseDiscussion = ({
   return (
     <main>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <Textarea
           {...register("comment")}
           placeholder="Comment"
-          className="py-8 text-lg mb-4 mt-8"
+          className="text-lg mb-4 mt-8 font-semibold"
         />
         <ErrorMessage text={errors.comment?.message} />
         <div className="flex justify-end space-x-3 items-center">

@@ -7,6 +7,7 @@ interface PageParams {
     id: string;
   };
 }
+
 export const DELETE = async (req: NextRequest, { params }: PageParams) => {
   connectToDB();
 
@@ -14,4 +15,15 @@ export const DELETE = async (req: NextRequest, { params }: PageParams) => {
   await Discussion.findByIdAndDelete(id);
 
   return NextResponse.json({ data: null });
+};
+
+export const PUT = async (req: NextRequest, { params }: PageParams) => {
+  connectToDB();
+
+  const payload = await req.json();
+
+  const id = params.id;
+  const discuss = await Discussion.findByIdAndUpdate(id, payload);
+
+  return NextResponse.json({ data: discuss });
 };
