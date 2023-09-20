@@ -4,13 +4,19 @@ import {
   BsReplyAll,
   BsThreeDotsVertical,
 } from "react-icons/bs";
+import { FaFaceGrinBeam, FaReply } from "react-icons/fa6";
+import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 
 const DiscussDropdown = () => {
+  const styles = {
+    icon: `h-5 w-5 cursor-pointer`,
+  };
   return (
-    <div className="rounded bg-slate-300 dark:bg-gray-800 px-2 py-1 flex space-x-1">
-      <BsEmojiLaughing className="h-6 w-6 cursor-pointer" />
-      <BsReplyAll className="h-6 w-6 cursor-pointer" />
-      <BsThreeDotsVertical className="h-6 w-6 cursor-pointer" />
+    <div className="rounded bg-slate-300 dark:bg-gray-900 px-2 py-2 flex space-x-3 w-fit">
+      <FaFaceGrinBeam className={styles.icon} />
+      <FaReply className={styles.icon} />
+      <AiTwotoneEdit className={styles.icon} />
+      <AiTwotoneDelete className={styles.icon} />
     </div>
   );
 };
