@@ -8,6 +8,9 @@ import DiscussDropdown from "./Discuss.Dropdown";
 
 const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
+
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   const sender = discussion.sender as IUser;
 
   return (
@@ -16,6 +19,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       style={{ position: "relative" }}
+      className={`${isDeleting && "opacity-25"}`}
     >
       <div className="my-3 p-3 flex space-x-3">
         <img
@@ -32,10 +36,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
               {formatDate(discussion.updatedAt!)}
             </p>
           </div>
-          <p
-            className="text-md font-semibold"
-            style={{ wordWrap: "break-word" }}
-          >
+          <p className="text-md font-semibold white-space">
             {discussion.comment}
           </p>
         </div>
@@ -44,7 +45,12 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
         className={`flex justify-end ${!isHovering && "hidden"}`}
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        <DiscussDropdown />
+        {!isDeleting && (
+          <DiscussDropdown
+            discussion={discussion}
+            setIsDeleting={setIsDeleting}
+          />
+        )}
       </div>
     </div>
   );
