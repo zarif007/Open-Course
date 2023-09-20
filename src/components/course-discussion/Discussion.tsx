@@ -115,6 +115,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
       >
         {!isDeleting && (
           <DiscussDropdown
+            discussion={discussion}
             handleDelete={handleDelete}
             setEditingStatus={setEditingStatus}
           />

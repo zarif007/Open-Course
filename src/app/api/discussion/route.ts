@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
       path: "sender",
       model: User,
     })
-    .sort({ updatedAt: -1 });
+    .sort({ createdAt: -1 });
 
   return NextResponse.json({ data: discussions });
 };
