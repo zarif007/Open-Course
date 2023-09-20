@@ -44,7 +44,7 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <div>
     {
-      (user?.id && !signedInUser && isLoading) ? <MainLoading /> : children
+      (!signedInUser && isLoading) ? <MainLoading /> : children
     }
   </div>;
 };
