@@ -8,6 +8,7 @@ import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import MainLoading from "../skeletons/Main.Loading";
 
 const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
@@ -41,7 +42,11 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
     getUserInfo();
   }, [user, pathname, signedInUser]);
 
-  return <div>{children}</div>;
+  return <div>
+    {
+      (user?.id && !signedInUser && isLoading) ? <MainLoading /> : children
+    }
+  </div>;
 };
 
 export default OnboardingProvider;
