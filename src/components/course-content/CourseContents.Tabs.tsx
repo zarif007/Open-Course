@@ -177,7 +177,7 @@ const CourseContentsTabs = () => {
       <TabsContent value="discuss">
         <CourseDiscussion
           courseId={course.id}
-          topicId={currentCourseTopic.id}
+          topicId={currentCourseTopic.id as string}
         />
       </TabsContent>
       <TabsContent value="ask"></TabsContent>
