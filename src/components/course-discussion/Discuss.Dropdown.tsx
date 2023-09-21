@@ -19,7 +19,7 @@ const DiscussDropdown = ({
   setEditingStatus: React.Dispatch<
     React.SetStateAction<"no" | "editing" | "processing">
   >;
-  handleAddEmoji: (emoji: string) => Promise<void>;
+  handleAddEmoji: (emoji: string) => void;
 }) => {
   const { user, isLoaded } = useUser();
 

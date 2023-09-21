@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 const EmojiPickerDialog = ({
   handleAddEmoji,
 }: {
-  handleAddEmoji: (emoji: string) => Promise<void>;
+  handleAddEmoji: (emoji: string) => void;
 }) => {
   const { theme } = useTheme();
   const handleEmojiOnSelect = (emoji: any) => {

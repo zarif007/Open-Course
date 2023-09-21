@@ -11,6 +11,7 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import DiscussionEdit from "./Discussion.Edit";
 import { useAppSelector } from "@/redux/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUpdateDiscussionMutation } from "./queries/useUpdateDiscussion";
 
 const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -20,6 +21,8 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   const [editingStatus, setEditingStatus] = useState<
     "no" | "editing" | "processing"
   >("no");
+
+  const { mutate, isLoading, error } = useUpdateDiscussionMutation();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -35,37 +38,19 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   };
 
   const handleAddEmoji = async (emoji: string) => {
-    if (!signedInUser) return;
-    const reactions = discussion.reactions;
+    const reactions = discussion.reactions || {};
     const updatedDiscussion: IDiscussion = {
       ...discussion,
       reactions: {
         ...(reactions || {}),
         [emoji]: Array.isArray(reactions?.[emoji])
-          ? [...reactions[emoji], signedInUser.id!]
-          : [signedInUser.id!],
+          ? [...reactions[emoji], signedInUser?.id!]
+          : [signedInUser?.id!],
       },
     };
 
-    try {
-      await axios.put(
-        `${nextApiEndPoint}/discussion/${discussion.id}`,
-        updatedDiscussion
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    mutate(updatedDiscussion);
   };
-
-  // const useAddReactions = () => {
-  //   const queryClient = useQueryClient()
-  //   return useMutation(, {
-
-  //     onMutate: () => {},
-  //     onError: () => {},
-  //     onSettled: () => {}
-  //   })
-  // }
 
   return (
     <div
@@ -103,7 +88,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
               </p>
             )}
           </div>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 flex-wrap">
             {Object.keys(discussion.reactions || {}).map((key) => (
               <div
                 key={key}
