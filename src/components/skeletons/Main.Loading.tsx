@@ -4,7 +4,7 @@ import React from "react";
 const MainLoading = () => {
   return (
     <div className="w-full h-full min-h-screen flex items-center justify-center bg-black">
-      <div className="rounded py-4 px-8 bg-slate-100 dark:bg-[#121212]">
+      <div className="rounded py-4 px-8 bg-[#121212]">
         <Image
           src="/dark1.png"
           alt="logo"

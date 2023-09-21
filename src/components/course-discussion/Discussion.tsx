@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+
 import { IDiscussion } from "@/types/discussion";
 import { IUser } from "@/types/user";
 import formatDate from "@/utils/formatDate";
@@ -7,13 +8,9 @@ import React, { useState } from "react";
 import DiscussDropdown from "./Discuss.Dropdown";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { Textarea } from "../ui/Textarea";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { commentCreationSchema } from "@/validations/discussion";
-import ErrorMessage from "../ui/ErrorMessage";
+import DiscussionEdit from "./Discussion.Edit";
+import { useAppSelector } from "@/redux/store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -24,14 +21,9 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     "no" | "editing" | "processing"
   >("no");
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<{
-    comment: string;
-  }>({ resolver: zodResolver(commentCreationSchema) });
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
 
   const sender = discussion.sender as IUser;
 
@@ -42,16 +34,38 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     } catch (error) {}
   };
 
-  const handleEdit = async (data: { comment: string }) => {
+  const handleAddEmoji = async (emoji: string) => {
+    if (!signedInUser) return;
+    const reactions = discussion.reactions;
+    const updatedDiscussion: IDiscussion = {
+      ...discussion,
+      reactions: {
+        ...(reactions || {}),
+        [emoji]: Array.isArray(reactions?.[emoji])
+          ? [...reactions[emoji], signedInUser.id!]
+          : [signedInUser.id!],
+      },
+    };
+
     try {
-      setEditingStatus("processing");
-      await axios.put(`${nextApiEndPoint}/discussion/${discussion.id}`, {
-        ...discussion,
-        comment: data.comment,
-      });
-      setEditingStatus("no");
-    } catch (error) {}
+      await axios.put(
+        `${nextApiEndPoint}/discussion/${discussion.id}`,
+        updatedDiscussion
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // const useAddReactions = () => {
+  //   const queryClient = useQueryClient()
+  //   return useMutation(, {
+
+  //     onMutate: () => {},
+  //     onError: () => {},
+  //     onSettled: () => {}
+  //   })
+  // }
 
   return (
     <div
@@ -78,46 +92,47 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
           </div>
           <div className="w-full">
             {editingStatus !== "no" ? (
-              <form onSubmit={handleSubmit(handleEdit)}>
-                <Textarea
-                  {...register("comment")}
-                  className="text-md font-semibold white-space w-full"
-                  defaultValue={discussion.comment}
-                />
-                <ErrorMessage text={errors.comment?.message} />
-                <div className="flex justify-end space-x-2 mt-2">
-                  <Button
-                    variant="outline"
-                    type="reset"
-                    onClick={() => setEditingStatus("no")}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    isLoading={editingStatus === "processing"}
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </form>
+              <DiscussionEdit
+                discussion={discussion}
+                editingStatus={editingStatus}
+                setEditingStatus={setEditingStatus}
+              />
             ) : (
               <p className="text-md font-semibold white-space">
                 {discussion.comment}
               </p>
             )}
           </div>
+          <div className="flex space-x-2">
+            {Object.keys(discussion.reactions || {}).map((key) => (
+              <div
+                key={key}
+                className={`border rounded px-1 cursor-pointer
+                  flex space-x-1 items-center justify-center ${
+                    discussion.reactions[key].includes(signedInUser?.id!)
+                      ? "bg-rose-500 bg-opacity-25 border-rose-500"
+                      : "border-slate-300 dark:border-gray-800"
+                  }`}
+              >
+                <p>{key}</p>
+                <p className="font-semibold pr-1">
+                  {discussion.reactions[key].length}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div
-        className={`flex justify-end ${!isHovering && "hidden"}`}
+        className={`flex justify-end`}
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        {!isDeleting && (
+        {!isDeleting && isHovering && (
           <DiscussDropdown
             discussion={discussion}
             handleDelete={handleDelete}
             setEditingStatus={setEditingStatus}
+            handleAddEmoji={handleAddEmoji}
           />
         )}
       </div>

@@ -24,29 +24,32 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user?.id) return;
+
     const getUserInfo = async () => {
       setIsLoading(true);
-      const { data } = await axios.get(
-        `${nextApiEndPoint}/user/byExternalId/${user?.id}`
-      );
-      if (!data.data) {
-        router.push("/onboarding");
-        dispatch(setSignedInUser(null));
-      } else {
-        dispatch(setSignedInUser(data.data));
+      try {
+        const { data } = await axios.get(
+          `${nextApiEndPoint}/user/byExternalId/${user?.id}`
+        );
+        if (!data.data) {
+          router.push("/onboarding");
+          dispatch(setSignedInUser(null));
+        } else {
+          dispatch(setSignedInUser(data.data));
+        }
+      } catch (error) {
+        // Handle error
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
-    if (signedInUser && signedInUser.externalId === user.id) return;
-    getUserInfo();
-  }, [user, pathname, signedInUser]);
-
-  return <div>
-    {
-      (!signedInUser && isLoading) ? <MainLoading /> : children
+    if (!signedInUser || signedInUser.externalId !== user.id) {
+      getUserInfo();
     }
-  </div>;
+  }, [user, router, signedInUser, dispatch]);
+
+  return <div>{children}</div>;
 };
 
 export default OnboardingProvider;

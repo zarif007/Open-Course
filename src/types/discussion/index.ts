@@ -11,7 +11,9 @@ export interface IDiscussion {
   topic: ICourseTopic | string;
   comment: string;
   replies: IDiscussion[] | [] | Types.ObjectId[];
-  reactions: string[] | [];
+  reactions: {
+    [key: string]: string[];
+  };
   createdAt?: Date;
   updatedAt?: Date;
   _v?: number;

@@ -6,17 +6,20 @@ import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import { IDiscussion } from "@/types/discussion";
 import { useUser } from "@clerk/nextjs";
 import { IUser } from "@/types/user";
+import EmojiPickerDialog from "../ui/EmojiPicker.Dialog";
 
 const DiscussDropdown = ({
   discussion,
   handleDelete,
   setEditingStatus,
+  handleAddEmoji,
 }: {
   discussion: IDiscussion;
   handleDelete: () => Promise<void>;
   setEditingStatus: React.Dispatch<
     React.SetStateAction<"no" | "editing" | "processing">
   >;
+  handleAddEmoji: (emoji: string) => Promise<void>;
 }) => {
   const { user, isLoaded } = useUser();
 
@@ -28,10 +31,6 @@ const DiscussDropdown = ({
     icon: `h-5 w-5 cursor-pointer`,
   };
 
-  const isAbleToModify = (): boolean => {
-    return true;
-  };
-
   useEffect(() => {
     if (user && isLoaded) {
       const sender = discussion.sender as IUser;
@@ -41,12 +40,12 @@ const DiscussDropdown = ({
   }, [user, isLoaded]);
 
   return (
-    <React.Fragment>
+    <div className="flex space-x-2">
       {accessStatus !== "unauthorized" && (
         <div
           className={`rounded bg-slate-300 dark:bg-gray-900 px-2 py-2 flex space-x-3 w-fit`}
         >
-          <FaFaceGrinBeam className={styles.icon} />
+          <EmojiPickerDialog handleAddEmoji={handleAddEmoji} />
           <FaReply className={styles.icon} />
           {accessStatus === "can-modify" && (
             <div className="flex space-x-3 w-fit">
@@ -59,7 +58,7 @@ const DiscussDropdown = ({
           )}
         </div>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 

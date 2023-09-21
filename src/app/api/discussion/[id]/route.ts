@@ -23,7 +23,13 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
   const payload = await req.json();
 
   const id = params.id;
-  const discuss = await Discussion.findByIdAndUpdate(id, payload);
+  try {
+    const discuss = await Discussion.findByIdAndUpdate(id, payload, {
+      new: true,
+    });
 
-  return NextResponse.json({ data: discuss });
+    return NextResponse.json({ data: discuss });
+  } catch (error) {
+    return NextResponse.json({ data: null });
+  }
 };

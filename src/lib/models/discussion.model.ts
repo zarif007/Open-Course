@@ -28,8 +28,8 @@ const DiscussionSchema = new Schema<IDiscussion, IDiscussionModel>(
       default: [],
     },
     reactions: {
-      type: [String],
-      default: [],
+      type: Object,
+      default: {},
     },
   },
   {
