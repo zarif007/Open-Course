@@ -51,14 +51,14 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
   }, [course, user]);
 
   const handleEnrollment = async () => {
-    if (isLoading) return;
+    if (isLoading || !user?.id) return;
 
     setIsLoading(true);
 
     try {
       const data = {
         course: course.id,
-        user: user?.id,
+        user: user.id,
       };
 
       await axios.post(`${nextApiEndPoint}/enrollState`, data);

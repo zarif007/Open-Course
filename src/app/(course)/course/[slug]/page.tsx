@@ -15,11 +15,13 @@ interface PageParams {
 }
 
 const getCourse = async (slug: string) => {
-  const { data: courseData } = await axios.get(
-    `${nextApiEndPoint}/course/bySlug/${slug}`
-  );
+  const { data: course } = await (
+    await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
+      cache: "force-cache",
+    })
+  ).json();
 
-  return courseData.data;
+  return course;
 };
 
 export const generateMetadata = async ({
@@ -52,11 +54,12 @@ const Course = async ({ params }: PageParams) => {
 
   if (!course) redirect("/404");
 
-  const { data: enrollStateData } = await axios.get(
-    `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
-  );
-
-  const enrollState = enrollStateData.data;
+  const { data: enrollState } = await (
+    await fetch(
+      `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`,
+      { cache: "force-cache" }
+    )
+  ).json();
 
   if (!enrollState) redirect(`/course-landing/${params.slug}`);
 
