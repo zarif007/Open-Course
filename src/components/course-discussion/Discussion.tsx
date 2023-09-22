@@ -37,7 +37,9 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     try {
       setIsDeleting(true);
       await axios.delete(`${nextApiEndPoint}/discussion/${discussion.id}`);
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   };
 
   const handleAddEmoji = async (emoji: string) => {
@@ -45,7 +47,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     const updatedDiscussion: IDiscussion = {
       ...discussion,
       reactions: {
-        ...(reactions || {}),
+        ...reactions,
         [emoji]: Array.isArray(reactions?.[emoji])
           ? [...reactions[emoji], signedInUser?.id!]
           : [signedInUser?.id!],
