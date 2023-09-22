@@ -4,14 +4,12 @@
 import { IDiscussion } from "@/types/discussion";
 import { IUser } from "@/types/user";
 import formatDate from "@/utils/formatDate";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DiscussDropdown from "./Discuss.Dropdown";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import DiscussionEdit from "./Discussion.Edit";
 import { useAppSelector } from "@/redux/store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUpdateDiscussionMutation } from "./queries/useUpdateDiscussion";
 
 const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -22,11 +20,16 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     "no" | "editing" | "processing"
   >("no");
 
-  const { mutate, isLoading, error } = useUpdateDiscussionMutation();
-
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
+
+  const [currentDiscussion, setCurrentDiscussion] =
+    useState<IDiscussion>(discussion);
+
+  useEffect(() => {
+    setCurrentDiscussion(discussion);
+  }, [discussion]);
 
   const sender = discussion.sender as IUser;
 
@@ -49,12 +52,20 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
       },
     };
 
-    mutate(updatedDiscussion);
+    try {
+      setCurrentDiscussion(updatedDiscussion);
+      await axios.put(
+        `${nextApiEndPoint}/discussion/${discussion.id}`,
+        updatedDiscussion
+      );
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
     <div
-      key={discussion.id}
+      key={currentDiscussion.id}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       style={{ position: "relative" }}
@@ -72,36 +83,36 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
               {sender.attributes.last_name}
             </p>
             <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold">
-              {formatDate(discussion.updatedAt!)}
+              {formatDate(currentDiscussion.updatedAt!)}
             </p>
           </div>
           <div className="w-full">
             {editingStatus !== "no" ? (
               <DiscussionEdit
-                discussion={discussion}
+                discussion={currentDiscussion}
                 editingStatus={editingStatus}
                 setEditingStatus={setEditingStatus}
               />
             ) : (
               <p className="text-md font-semibold white-space">
-                {discussion.comment}
+                {currentDiscussion.comment}
               </p>
             )}
           </div>
           <div className="flex space-x-2 flex-wrap">
-            {Object.keys(discussion.reactions || {}).map((key) => (
+            {Object.keys(currentDiscussion.reactions || {}).map((key) => (
               <div
                 key={key}
                 className={`border rounded px-1 cursor-pointer
                   flex space-x-1 items-center justify-center ${
-                    discussion.reactions[key].includes(signedInUser?.id!)
+                    currentDiscussion.reactions[key].includes(signedInUser?.id!)
                       ? "bg-rose-500 bg-opacity-25 border-rose-500"
                       : "border-slate-300 dark:border-gray-800"
                   }`}
               >
                 <p>{key}</p>
                 <p className="font-semibold pr-1">
-                  {discussion.reactions[key].length}
+                  {currentDiscussion.reactions[key].length}
                 </p>
               </div>
             ))}
@@ -114,7 +125,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
       >
         {!isDeleting && isHovering && (
           <DiscussDropdown
-            discussion={discussion}
+            discussion={currentDiscussion}
             handleDelete={handleDelete}
             setEditingStatus={setEditingStatus}
             handleAddEmoji={handleAddEmoji}

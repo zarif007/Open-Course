@@ -27,6 +27,7 @@ const DiscussionEdit = ({
   } = useForm<{
     comment: string;
   }>({ resolver: zodResolver(commentCreationSchema) });
+
   const handleEdit = async (data: { comment: string }) => {
     try {
       setEditingStatus("processing");
@@ -37,6 +38,7 @@ const DiscussionEdit = ({
       setEditingStatus("no");
     } catch (error) {}
   };
+
   return (
     <form onSubmit={handleSubmit(handleEdit)}>
       <Textarea
