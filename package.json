@@ -44,6 +44,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "emoji-mart": "^5.5.2",
+    "emoji-picker-react": "^4.5.2",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
     "flowbite": "^1.8.1",
