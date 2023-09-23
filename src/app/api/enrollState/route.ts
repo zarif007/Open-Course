@@ -28,6 +28,17 @@ export const POST = async (req: NextRequest) => {
     session.startTransaction();
     const payload: IEnrollState = await req.json();
 
+    const alreadyExists = await EnrollState.findOne({
+      user: payload.user,
+      course: payload.course,
+    }).session(session);
+
+    if (alreadyExists) {
+      await session.abortTransaction();
+      session.endSession();
+      return NextResponse.json({ data: null });
+    }
+
     const course = await Course.findById(payload.course).session(session);
 
     if (!course) {

@@ -1,9 +1,12 @@
 import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
 import { ICourse } from "@/types/course";
+import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import { currentUser } from "@clerk/nextjs";
 import axios from "axios";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import React from "react";
 
 interface PageParams {
@@ -12,15 +15,38 @@ interface PageParams {
   };
 }
 
-const getCourse = async (slug: string) => {
-  const { data } = await axios.get(`${nextApiEndPoint}/course/bySlug/${slug}`);
-  return data.data;
+const getCourse = async (
+  slug: string,
+  userId: string | null
+): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
+  const data = await (
+    await fetch(
+      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userId=${userId}`,
+      {
+        cache: "no-store",
+      }
+    )
+  ).json();
+
+  return data;
 };
 
 export const generateMetadata = async ({
   params,
 }: PageParams): Promise<Metadata> => {
-  const course: ICourse | null = await getCourse(params.slug);
+  const { course } = await getCourse(params.slug, null);
+
+  if (!course) {
+    return {
+      title: "Open Course",
+      description: "Curate, Create & Share",
+      openGraph: {
+        title: "Open Course",
+        description: "Create & Enroll free courses",
+        images: "/whatisit-dark.png",
+      },
+    };
+  }
 
   const creator = course?.creator as IUser;
 
@@ -31,9 +57,9 @@ export const generateMetadata = async ({
   &creator=${creator.attributes?.first_name}`;
 
   return {
-    title: `${course?.title}`,
+    title: course?.title,
     openGraph: {
-      title: `${course?.title}`,
+      title: course?.title,
       description: course?.description,
       images: generatedBanner,
     },
@@ -41,8 +67,15 @@ export const generateMetadata = async ({
 };
 
 const CourseLanding = async ({ params }: PageParams) => {
-  const course = await getCourse(params.slug);
-  return <CourseLandingPage course={course} />;
+  const user = await currentUser();
+  const { course, enrollState } = await getCourse(
+    params.slug,
+    user?.id ?? null
+  );
+
+  if (!course) redirect("/404");
+
+  return <CourseLandingPage course={course} enrollState={enrollState} />;
 };
 
 export default CourseLanding;

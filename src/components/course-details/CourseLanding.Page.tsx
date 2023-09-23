@@ -22,8 +22,15 @@ import Router from "next/router";
 import CourseRatings from "./CourseRatings";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
+import { IEnrollState } from "@/types/enrollState";
 
-const CourseLandingPage = ({ course }: { course: ICourse }) => {
+const CourseLandingPage = ({
+  course,
+  enrollState,
+}: {
+  course: ICourse;
+  enrollState: IEnrollState | null;
+}) => {
   const { user, isLoaded } = useUser();
 
   const router = useRouter();
@@ -35,22 +42,12 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
   const [isEnrolled, setIsEnrolled] = useState<string>("loading");
 
   useEffect(() => {
-    if (!course.title || !user) {
+    if (!user || !enrollState) {
       setIsEnrolled("no");
-      return;
+    } else {
+      setIsEnrolled("yes");
     }
-    const getEnrollState = async () => {
-      const { data: enrollStateData } = await axios.get(
-        `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
-      );
-
-      const enrollState = enrollStateData.data;
-
-      if (!enrollState) setIsEnrolled("no");
-      else setIsEnrolled("yes");
-    };
-    getEnrollState();
-  }, [course, user]);
+  }, [course, user, enrollState]);
 
   const handleEnrollment = async () => {
     if (loadingStatus !== "free" || !user?.id) return;

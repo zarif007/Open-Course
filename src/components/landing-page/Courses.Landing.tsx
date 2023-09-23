@@ -10,14 +10,18 @@ import { ICourse } from "@/types/course";
 import CourseCardSkeleton from "../skeletons/CourseCard.Skeleton";
 import { Button, buttonVariants } from "../ui/Button";
 import Link from "next/link";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
 
 const CoursesLanding = () => {
   const { data: courses, isLoading } = useQuery({
-    queryKey: ["course"],
+    queryKey: ["course-LandingPage"],
     queryFn: async () => {
-      const { data } = await axios.get(`api/courses?page=1&limit=7`);
-
-      return data.data.map(async (course: ICourse, index: number) => {
+      const { data } = await (
+        await fetch(`${nextApiEndPoint}/courses?page=1&limit=7`, {
+          next: { revalidate: 3600 },
+        })
+      ).json();
+      return data.map(async (course: ICourse, index: number) => {
         return <CourseCard course={course} key={index} />;
       });
     },

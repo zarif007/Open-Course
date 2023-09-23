@@ -39,9 +39,11 @@ export const generateMetadata = async ({
   if (!course) {
     return {
       title: "Open Course",
+      description: "Curate, Create & Share",
       openGraph: {
         title: "Open Course",
         description: "Create & Enroll free courses",
+        images: "/whatisit-dark.png",
       },
     };
   }

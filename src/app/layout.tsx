@@ -13,7 +13,9 @@ export const metadata: Metadata = {
   title: "Open Course",
   description: "Curate, Create & Share",
   openGraph: {
-    images: "/dark-logo.png",
+    title: "Open Course",
+    description: "Create & Enroll free courses",
+    images: "/whatisit-dark.png",
   },
 };
 
