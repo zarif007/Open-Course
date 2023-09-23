@@ -41,36 +41,36 @@ const CourseDetailsCreation = () => {
       <CourseDetailsCreationForm />
 
       <div className="flex flex-wrap">
-        {course.categories && course.categories.length > 0 && (
-          <div className="m-1">
-            <label className="font-semibold">Categories</label>
-            <SelectedTopics
-              selectedTopics={course.categories}
-              mode="creation"
-              setSelectedTopics={setSelectedCourseTypes}
-            />
-          </div>
-        )}
-        {course.levels && course.levels.length > 0 && (
-          <div className="m-1">
-            <label className="font-semibold">Levels</label>
-            <SelectedTopics
-              selectedTopics={course.levels}
-              mode="creation"
-              setSelectedTopics={setSelectedLevels}
-            />
-          </div>
-        )}
-        {(course.languages && course.languages.length) > 0 && (
-          <div className="m-1">
-            <label className="font-semibold">languages</label>
-            <SelectedTopics
-              selectedTopics={course.languages}
-              mode="creation"
-              setSelectedTopics={setSelectedLanguages}
-            />
-          </div>
-        )}
+        {[
+          {
+            elements: course.categories,
+            label: "Categories",
+            setter: setSelectedCourseTypes,
+          },
+          {
+            elements: course.levels,
+            label: "Levels",
+            setter: setSelectedLevels,
+          },
+          {
+            elements: course.languages,
+            label: "Languages",
+            setter: setSelectedLanguages,
+          },
+        ].map((item) => (
+          <React.Fragment key={item.label}>
+            {item.elements.length > 0 && (
+              <div className="m-1">
+                <label className="font-semibold">{item.label}</label>
+                <SelectedTopics
+                  selectedTopics={item.elements}
+                  mode="creation"
+                  setSelectedTopics={item.setter}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

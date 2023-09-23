@@ -85,7 +85,7 @@ const CourseContentsTabs = () => {
     } catch (error) {
       toast({
         title: "Error",
-        message: `Something `,
+        message: `Something went wrong`,
         type: "error",
       });
     } finally {
@@ -112,7 +112,7 @@ const CourseContentsTabs = () => {
     } catch (error) {
       toast({
         title: "Error",
-        message: `Something `,
+        message: `Something went wrong`,
         type: "error",
       });
     } finally {

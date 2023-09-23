@@ -7,6 +7,7 @@ import { currentUser } from "@clerk/nextjs";
 import CourseGuard from "@/components/course-details/Course.Guard";
 import { Metadata } from "next";
 import { IUser } from "@/types/user";
+import { IEnrollState } from "@/types/enrollState";
 
 interface PageParams {
   params: {
@@ -14,20 +15,36 @@ interface PageParams {
   };
 }
 
-const getCourse = async (slug: string) => {
-  const { data: course } = await (
-    await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
-      cache: "force-cache",
-    })
+const getCourse = async (
+  slug: string,
+  userId: string | null
+): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
+  const data = await (
+    await fetch(
+      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userId=${userId}`,
+      {
+        cache: "no-store",
+      }
+    )
   ).json();
 
-  return course;
+  return data;
 };
 
 export const generateMetadata = async ({
   params,
 }: PageParams): Promise<Metadata> => {
-  const course: ICourse | null = await getCourse(params.slug);
+  const { course } = await getCourse(params.slug, null);
+
+  if (!course) {
+    return {
+      title: "Open Course",
+      openGraph: {
+        title: "Open Course",
+        description: "Create & Enroll free courses",
+      },
+    };
+  }
 
   const creator = course?.creator as IUser;
 
@@ -50,16 +67,13 @@ export const generateMetadata = async ({
 const Course = async ({ params }: PageParams) => {
   const user = await currentUser();
 
-  const course = await getCourse(params.slug);
+  if (!user?.id) redirect(`/course-landing/${params.slug}`);
+
+  const { course, enrollState } = await getCourse(params.slug, user?.id);
+
+  console.log(course, enrollState);
 
   if (!course) redirect("/404");
-
-  const { data: enrollState } = await (
-    await fetch(
-      `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`,
-      { cache: "force-cache" }
-    )
-  ).json();
 
   if (!enrollState) redirect(`/course-landing/${params.slug}`);
 

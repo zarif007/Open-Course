@@ -28,7 +28,9 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
 
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingStatus, setLoadingStatus] = useState<
+    "free" | "Processing" | "Redirecting"
+  >("free");
 
   const [isEnrolled, setIsEnrolled] = useState<string>("loading");
 
@@ -51,9 +53,9 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
   }, [course, user]);
 
   const handleEnrollment = async () => {
-    if (isLoading || !user?.id) return;
+    if (loadingStatus !== "free" || !user?.id) return;
 
-    setIsLoading(true);
+    setLoadingStatus("Processing");
 
     try {
       const data = {
@@ -65,7 +67,7 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
 
       // window.location.reload();
       router.push(`/course/${course.slug}?topicId=1`);
-
+      setLoadingStatus("Redirecting");
       toast({
         title: "Course Enrolled",
         type: "success",
@@ -77,12 +79,23 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
         type: "error",
         message: `Try again later`,
       });
-    } finally {
-      setIsLoading(false);
+      setLoadingStatus("free");
     }
   };
 
+  const handleBackToCourse = () => {
+    router.push(`/course/${course.slug}`);
+    setLoadingStatus("Redirecting");
+  };
+
   const courseTopics = course.topics as ICourseTopic[];
+
+  const buttonText =
+    loadingStatus === "free"
+      ? isEnrolled === "yes"
+        ? "Back to Course"
+        : "Enroll"
+      : loadingStatus;
 
   return (
     <div className="max-w-5xl w-full mx-auto ">
@@ -133,14 +146,14 @@ const CourseLandingPage = ({ course }: { course: ICourse }) => {
             ) : (
               <Button
                 className="w-full py-6 text-lg font-bold"
-                isLoading={isLoading}
+                isLoading={loadingStatus !== "free"}
                 onClick={() =>
                   isEnrolled === "yes"
-                    ? router.push(`/course/${course.slug}`)
+                    ? handleBackToCourse()
                     : handleEnrollment()
                 }
               >
-                {isEnrolled === "yes" ? "Back to Course" : "Enroll"}
+                {buttonText}
               </Button>
             )}
           </div>

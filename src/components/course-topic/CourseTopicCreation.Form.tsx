@@ -207,7 +207,7 @@ const CourseTopicCreationForm = ({
         >
           {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
             ? "Update"
-            : "Submit"}
+            : "Add"}
         </Button>
         {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
           <Button

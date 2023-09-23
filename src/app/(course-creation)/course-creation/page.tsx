@@ -21,7 +21,9 @@ const MODE = "creation";
 const CourseCreation = () => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingStatus, setLoadingStatus] = useState<
+    "free" | "Processing" | "Redirecting"
+  >("free");
 
   const [error, setError] = useState<string>("");
 
@@ -63,11 +65,11 @@ const CourseCreation = () => {
   };
 
   const handleSubmit = async () => {
-    if (isLoading || !user?.id || !signedInUser?.id) return;
+    if (loadingStatus !== "free" || !user?.id || !signedInUser?.id) return;
 
     if (!validateCourseDetails()) return;
 
-    setIsLoading(true);
+    setLoadingStatus("Processing");
 
     const courseTopics = course.topics as ICourseTopic[];
 
@@ -85,6 +87,7 @@ const CourseCreation = () => {
         type: "success",
         message: "Course Created Successfully",
       });
+      setLoadingStatus("Redirecting");
       router.push(`course-landing/${data.data.slug}`);
     } catch (error) {
       toast({
@@ -92,8 +95,7 @@ const CourseCreation = () => {
         type: "error",
         message: "Something went wrong, Try again later",
       });
-    } finally {
-      setIsLoading(false);
+      setLoadingStatus("free");
     }
   };
 
@@ -127,9 +129,11 @@ const CourseCreation = () => {
               variant="general"
               className="px-12 py-6 w-full mx-0"
               onClick={handleSubmit}
-              isLoading={isLoading}
+              isLoading={loadingStatus !== "free"}
             >
-              {isLoading ? "Creating..." : "Done Creating Course?"}
+              {loadingStatus !== "free"
+                ? loadingStatus
+                : "Done Creating Course?"}
             </Button>
           </div>
         </div>

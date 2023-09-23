@@ -14,7 +14,7 @@ type Props = {
 );
 
 const SelectedTopics = (props: Props) => {
-  const handleClick = (selectedTopic: string) => {
+  const handleRemove = (selectedTopic: string) => {
     if (props.mode === "creation") {
       props.setSelectedTopics(
         props.selectedTopics.filter((topic) => topic !== selectedTopic)
@@ -32,7 +32,7 @@ const SelectedTopics = (props: Props) => {
             <span>{selectedTopic}</span>
             {props.mode === "creation" && (
               <MdOutlineCancel
-                onClick={() => handleClick(selectedTopic)}
+                onClick={() => handleRemove(selectedTopic)}
                 className="cursor-pointer h-4 w-4 text-slate-300 dark:text-gray-800"
               />
             )}
