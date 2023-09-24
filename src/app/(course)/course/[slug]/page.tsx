@@ -7,7 +7,7 @@ import { currentUser } from "@clerk/nextjs";
 import CourseGuard from "@/components/course-details/Course.Guard";
 import { Metadata } from "next";
 import { IUser } from "@/types/user";
-import { IEnrollState } from "@/types/enrollState";
+import { revalidateTag } from "next/cache";
 
 interface PageParams {
   params: {
@@ -15,38 +15,22 @@ interface PageParams {
   };
 }
 
-const getCourse = async (
-  slug: string,
-  userId: string | null
-): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
-  const data = await (
-    await fetch(
-      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userId=${userId}`,
-      {
-        cache: "no-store",
-      }
-    )
+const getCourse = async (slug: string) => {
+  const { data: courseData } = await (
+    await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
+      next: {
+        revalidate: 600,
+      },
+    })
   ).json();
 
-  return data;
+  return courseData;
 };
 
 export const generateMetadata = async ({
   params,
 }: PageParams): Promise<Metadata> => {
-  const { course } = await getCourse(params.slug, null);
-
-  if (!course) {
-    return {
-      title: "Open Course",
-      description: "Curate, Create & Share",
-      openGraph: {
-        title: "Open Course",
-        description: "Create & Enroll free courses",
-        images: "/whatisit-dark.png",
-      },
-    };
-  }
+  const course: ICourse | null = await getCourse(params.slug);
 
   const creator = course?.creator as IUser;
 
@@ -67,21 +51,11 @@ export const generateMetadata = async ({
 };
 
 const Course = async ({ params }: PageParams) => {
-  const user = await currentUser();
-
-  if (!user?.id) redirect(`/course-landing/${params.slug}`);
-
-  const { course, enrollState } = await getCourse(params.slug, user?.id);
-
-  console.log(course, enrollState);
+  const course = await getCourse(params.slug);
 
   if (!course) redirect("/404");
 
-  if (!enrollState) redirect(`/course-landing/${params.slug}`);
-
-  return (
-    <CourseGuard course={course} enrollState={enrollState} slug={params.slug} />
-  );
+  return <CourseGuard course={course} slug={params.slug} />;
 };
 
 export default Course;

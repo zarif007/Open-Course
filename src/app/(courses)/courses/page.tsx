@@ -2,34 +2,18 @@
 
 import CourseCard from "@/components/course-cards/Course.Card";
 import { ICourse } from "@/types/course";
-import axios from "axios";
 import React, { useEffect } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
+import useGetInfiniteCourses from "@/hooks/queries/useGetInfiniteCourses";
 
 const LIMIT = 6;
-
-const getCourses = async (page: number) => {
-  const { data } = await axios.get(`api/courses?page=${page}&limit=${LIMIT}`);
-  return data.data;
-};
 
 const Courses = () => {
   const { ref, inView } = useInView();
 
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ["courses"],
-      async ({ pageParam = 1 }) => await getCourses(pageParam),
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage =
-            lastPage.length === LIMIT ? allPages.length + 1 : undefined;
-          return nextPage;
-        },
-      }
-    );
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useGetInfiniteCourses();
 
   useEffect(() => {
     if (inView && hasNextPage) {

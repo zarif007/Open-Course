@@ -15,6 +15,8 @@ import {
   setEnrollState,
 } from "@/redux/features/course-view-slice";
 import CourseContentsTabs from "../course-content/CourseContents.Tabs";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import { useUser } from "@clerk/nextjs";
 
 const MODE = "view";
 
@@ -26,15 +28,8 @@ const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
     enrollState.finishedTopics.includes(topicId.toString())
   );
 };
-const CourseGuard = ({
-  course,
-  enrollState,
-  slug,
-}: {
-  course: ICourse;
-  enrollState: IEnrollState;
-  slug: string;
-}) => {
+
+const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -46,27 +41,55 @@ const CourseGuard = ({
 
   const router = useRouter();
 
-  useEffect(() => {
-    const courseTopics = course.topics as ICourseTopic[];
-    if (
-      !topicId ||
-      !canBeParsedToInt(topicId) ||
-      !isValid(parseInt(topicId), enrollState)
-    ) {
-      const currentTopic = enrollState.currentTopic as ICourseTopic;
-      router.push(`/course/${slug}?topicId=${currentTopic.topicID}`);
-      dispatch(
-        setCurrentCourseTopicForView(courseTopics[currentTopic.topicID! - 1])
-      );
-    } else {
-      dispatch(
-        setCurrentCourseTopicForView(courseTopics[parseInt(topicId) - 1])
-      );
+  const { user } = useUser();
+
+  const actionBasedOnEnrollState = async () => {
+    try {
+      const { data: enrollState } = await (
+        await fetch(
+          `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
+        )
+      ).json();
+
+      if (!enrollState) {
+        router.push(`/course-landing/${slug}`);
+      } else {
+        const courseTopics = course.topics as ICourseTopic[];
+        if (
+          !topicId ||
+          !canBeParsedToInt(topicId) ||
+          !isValid(parseInt(topicId), enrollState)
+        ) {
+          const currentTopic = enrollState.currentTopic as ICourseTopic;
+          router.push(`/course/${slug}?topicId=${currentTopic.topicID}`);
+          dispatch(
+            setCurrentCourseTopicForView(
+              courseTopics[currentTopic.topicID! - 1]
+            )
+          );
+        } else {
+          dispatch(
+            setCurrentCourseTopicForView(courseTopics[parseInt(topicId) - 1])
+          );
+        }
+        setIsLoading(false);
+
+        dispatch(setEnrollState(enrollState));
+
+        dispatch(setCourseForView(course));
+      }
+    } catch {
+      router.push(`/course-landing/${slug}`);
     }
-    setIsLoading(false);
-    dispatch(setEnrollState(enrollState));
-    dispatch(setCourseForView(course));
-  }, [topicId, course, enrollState]);
+  };
+
+  useEffect(() => {
+    if (!user?.id) {
+      router.push(`/course-landing/${slug}`);
+    } else {
+      actionBasedOnEnrollState();
+    }
+  }, [topicId, course, user]);
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
