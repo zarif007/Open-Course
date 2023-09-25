@@ -15,6 +15,8 @@ const useGetInfiniteCourses = () => {
     ["courses"],
     async ({ pageParam = 1 }) => await getCourses(pageParam),
     {
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
       getNextPageParam: (lastPage, allPages) => {
         const nextPage =
           lastPage.length === LIMIT ? allPages.length + 1 : undefined;

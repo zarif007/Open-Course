@@ -15,7 +15,7 @@ const LandingPage = () => {
       <div className="container my-auto max-w-7xl w-full h-full ">
         <div className="h-full gap-4 flex flex-col justify-center items-center ">
           <SocialMediaLogoBar />
-          <NotifyBar text="🤖 Create Courses with the Power of AI 🤖" />
+          <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
           <StarOnGithub />
           <LargeHeading size="lg" className="three-d text-center">
             <span className="tw-gradient-text">Join any Course</span> <br />

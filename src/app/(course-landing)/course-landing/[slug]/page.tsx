@@ -4,7 +4,6 @@ import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { currentUser } from "@clerk/nextjs";
-import axios from "axios";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";

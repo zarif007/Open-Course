@@ -1,7 +1,4 @@
 import React from "react";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useQuery } from "@tanstack/react-query";
 import Discussions from "./Discussions";
 import DiscussionSkeleton from "../skeletons/Discussion.Skeleton";
 import DiscussionCreationForm from "./DiscussionCreation.Form";

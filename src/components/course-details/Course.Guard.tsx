@@ -17,6 +17,7 @@ import {
 import CourseContentsTabs from "../course-content/CourseContents.Tabs";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useUser } from "@clerk/nextjs";
+import CourseSkeleton from "../skeletons/Course.Skeleton";
 
 const MODE = "view";
 
@@ -93,7 +94,7 @@ const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {!isLoading && (
+      {!isLoading ? (
         <div className="flex">
           {/* Left */}
           <CourseTopicsBar
@@ -111,6 +112,8 @@ const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
             <CourseContentsTabs />
           </div>
         </div>
+      ) : (
+        <CourseSkeleton />
       )}
     </section>
   );

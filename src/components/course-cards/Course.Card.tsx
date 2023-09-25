@@ -121,7 +121,9 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
           <Link
             href={`course-landing/${course.slug}`}
-            className={`${buttonVariants({ variant: "default" })} w-full mt-3`}
+            className={`${buttonVariants({
+              variant: "default",
+            })} w-full mt-3 font-semibold`}
           >
             Enroll
           </Link>

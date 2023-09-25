@@ -58,10 +58,14 @@ const CourseCompletion = async ({ params }: PageParams) => {
   const user = await currentUser();
   if (!user) redirect("");
 
-  const { data: EnrollStateData } = await axios.get(
-    `${nextApiEndPoint}/enrollState/?user=${user?.id}&course=${course.id}`
-  );
-  const enrollState = EnrollStateData.data;
+  const { data: enrollState } = await (
+    await fetch(
+      `${nextApiEndPoint}/enrollState/?user=${user?.id}&course=${course.id}`,
+      {
+        cache: "force-cache",
+      }
+    )
+  ).json();
 
   if (!enrollState) redirect(`/course/${slug}`);
 
