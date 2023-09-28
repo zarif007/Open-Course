@@ -16,7 +16,6 @@ export const POST = async (req: NextRequest) => {
   const payload = await req.json();
 
   const user = await User.findOneAndUpdate(
-    { externalId: payload.externalId },
     payload,
     { upsert: true, new: true, setDefaultsOnInsert: true }
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaFaceGrinBeam, FaReply } from "react-icons/fa6";
+import { FaReply } from "react-icons/fa6";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import { IDiscussion } from "@/types/discussion";
 import { useUser } from "@clerk/nextjs";
