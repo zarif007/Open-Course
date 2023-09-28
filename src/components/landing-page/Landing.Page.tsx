@@ -11,11 +11,13 @@ import StarOnGithub from "./StarOnGithub";
 
 const LandingPage = () => {
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 md:mb-12 my-12">
+    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:mb-12 md:mt-12">
       <div className="container my-auto max-w-7xl w-full h-full ">
         <div className="h-full gap-4 flex flex-col justify-center items-center ">
           <SocialMediaLogoBar />
-          <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
+          <div className="w-full flex justify-center items-center px-2">
+            <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
+          </div>
           <StarOnGithub />
           <LargeHeading size="lg" className="three-d text-center">
             <span className="tw-gradient-text">Join any Course</span> <br />

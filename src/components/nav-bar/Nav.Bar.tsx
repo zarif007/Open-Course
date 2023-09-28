@@ -11,11 +11,14 @@ import { Button } from "../ui/Button";
 import Paragraph from "../ui/Paragraph";
 import routeElements from "@/constants/navBar";
 import ElementsDropdown from "./Elements.Dropdown";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const styles = {
     icon: `h-8 w-8 cursor-pointer`,
   };
+
+  const { data: session } = useSession();
 
   const { theme, setTheme } = useTheme();
   const { isSignedIn, user, isLoaded } = useUser();
@@ -40,7 +43,9 @@ const NavBar = () => {
         ) : (
           <div className="h-16 w-16"></div>
         )}
+
         <div className="flex md:order-2 items-center justify-center space-x-2">
+          {/* Theme */}
           <div
             onClick={() =>
               theme === "dark" ? setTheme("light") : setTheme("dark")
@@ -53,6 +58,12 @@ const NavBar = () => {
             )}
           </div>
 
+          {session ? (
+            <p onClick={() => signOut()}>{session.user?.name}</p>
+          ) : (
+            <Button onClick={() => signIn()}>login</Button>
+          )}
+
           {isSignedIn ? (
             <AvatarDropdown />
           ) : (
@@ -62,9 +73,12 @@ const NavBar = () => {
               </SignInButton>
             )
           )}
-          {/*  */}
+
+          {/* Elements in Mobile view */}
           <ElementsDropdown />
         </div>
+
+        {/* Elements */}
         <div
           className="mt-2 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
           id="navbar-cta"

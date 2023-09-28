@@ -21,19 +21,19 @@ const SwiperComp = ({
 }) => {
   return (
     <div>
-      <div className="sm:hidden">
+      <div className="md:hidden">
         <SwiperSlideComp
           slidesPerView={slidesPerView ? slidesPerView : 1}
           comps={comps}
         />
       </div>
-      <div className="hidden sm:inline md:hidden">
+      <div className="hidden md:inline lg:hidden">
         <SwiperSlideComp
           slidesPerView={slidesPerView ? slidesPerView : 2}
           comps={comps}
         />
       </div>
-      <div className="hidden md:inline">
+      <div className="hidden lg:inline">
         <SwiperSlideComp
           slidesPerView={slidesPerView ? slidesPerView : 3}
           comps={comps}
