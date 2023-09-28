@@ -3,13 +3,17 @@ import { Schema, model, models } from "mongoose";
 
 export const UserSchema = new Schema<IUser, IUserModel>(
   {
-    externalId: {
+    email: {
       type: String,
-      required: [true, "External ID is required"],
+      required: [true, "Email is required"],
     },
-    attributes: {
-      type: Object,
-      default: {},
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
+    image: {
+      type: String,
+      default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
     },
     role: {
       type: String,
