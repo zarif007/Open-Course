@@ -5,6 +5,7 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/connectToMongoose";
+import createSlug from "@/utils/createSlug";
 
 const handler = NextAuth({
   providers: [
@@ -19,10 +20,12 @@ const handler = NextAuth({
     },
     async signIn({ user }) {
       try {
-        const res = await axios.post(`${nextApiEndPoint}/user`, {
+        await axios.post(`${nextApiEndPoint}/user`, {
+          externalId: user.id,
           name: user.name,
           email: user.email,
           image: user.image,
+          userName: createSlug(user.name ?? ""),
         });
         return true;
       } catch (error) {
