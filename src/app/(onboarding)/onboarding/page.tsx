@@ -22,7 +22,6 @@ import { courseCategories } from "@/constants/course";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import createSlug from "@/utils/createSlug";
-import formatUser from "@/utils/formatUser";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import React, { useState } from "react";
@@ -33,50 +32,50 @@ const Onboarding = () => {
   const [error, setError] = useState<string>("");
   const { user } = useUser();
 
-  const handleSubmit = async () => {
-    if (!user || isLoading) return;
+  // const handleSubmit = async () => {
+  //   if (!user || isLoading) return;
 
-    setError("");
+  //   setError("");
 
-    if (preferences.length === 0) {
-      setError("You must select at least one preference");
-      return;
-    }
+  //   if (preferences.length === 0) {
+  //     setError("You must select at least one preference");
+  //     return;
+  //   }
 
-    setIsLoading(true);
+  //   setIsLoading(true);
 
-    const { data } = await axios.get(
-      `${nextApiEndPoint}/user/byExternalId/${user.id}`
-    );
+  //   const { data } = await axios.get(
+  //     `${nextApiEndPoint}/user/byExternalId/${user.id}`
+  //   );
 
-    const userInfo: IUser = {
-      ...formatUser(user),
-      preferences,
-      userName: data.data
-        ? data.data.userName
-        : createSlug(user?.fullName || ""),
-    };
+  //   const userInfo: IUser = {
+  //     ...formatUser(user),
+  //     preferences,
+  //     userName: data.data
+  //       ? data.data.userName
+  //       : createSlug(user?.fullName || ""),
+  //   };
 
-    try {
-      await axios.post(`${nextApiEndPoint}/user`, userInfo);
-      // window.location.reload();
-      // router.replace("/");
-      toast({
-        title: "Success",
-        message: `Profile Updated`,
-        type: "success",
-      });
-      window.history.back();
-    } catch (error) {
-      toast({
-        title: "Error",
-        message: `Something went wrong, try again!`,
-        type: "error",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     await axios.post(`${nextApiEndPoint}/user`, userInfo);
+  //     // window.location.reload();
+  //     // router.replace("/");
+  //     toast({
+  //       title: "Success",
+  //       message: `Profile Updated`,
+  //       type: "success",
+  //     });
+  //     window.history.back();
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       message: `Something went wrong, try again!`,
+  //       type: "error",
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const addPreferences = (preferences: string[]) => {
     setPreferences(preferences);
@@ -122,7 +121,7 @@ const Onboarding = () => {
         </div>
       </div>
       <ErrorMessage text={error} className="mb-4" />
-      <Button onClick={handleSubmit} isLoading={isLoading}>
+      <Button onClick={() => {}} isLoading={isLoading}>
         Complete?
       </Button>
     </div>
