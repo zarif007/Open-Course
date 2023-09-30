@@ -7,28 +7,26 @@ import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/connectToMongoose";
 
 const handler = NextAuth({
-    providers: [
-        GoogleProvider({
-          clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-        }),
-      ],
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+  ],
   callbacks: {
-    async signIn(user) {
+    async session({ session }) {
+      return session;
+    },
+    async signIn({ user }) {
       try {
-        // Make the axios request
-        connectToDB();
-        console.log(user)
-        await User.findOneAndUpdate(
-            user,
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-          );
-
-        // Assuming the request was successful, return true
+        const res = await axios.post(`${nextApiEndPoint}/user`, {
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        });
         return true;
       } catch (error) {
-        // Handle any errors and return false in case of failure
-        console.error(error);
+        console.log(error);
         return false;
       }
     },

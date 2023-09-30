@@ -14,11 +14,13 @@ export const POST = async (req: NextRequest) => {
   connectToDB();
 
   const payload = await req.json();
+  const isExists = await User.findOne({ email: payload.email });
 
-  const user = await User.findOneAndUpdate(
-    payload,
-    { upsert: true, new: true, setDefaultsOnInsert: true }
-  );
+  if (isExists) {
+    return NextResponse.json({ data: null });
+  }
+
+  const user = await User.create(payload);
 
   return NextResponse.json({ data: user });
 };
