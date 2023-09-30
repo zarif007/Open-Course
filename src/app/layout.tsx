@@ -7,7 +7,6 @@ import NavBar from "@/components/nav-bar/Nav.Bar";
 import { Toaster } from "../components/ui/Toast";
 import { dark } from "@clerk/themes";
 import { getServerSession } from "next-auth";
-import SessionProvider from "@/components/providers/SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

@@ -11,6 +11,7 @@ import Paragraph from "../ui/Paragraph";
 import routeElements from "@/constants/navBar";
 import ElementsDropdown from "./Elements.Dropdown";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Skeleton } from "../ui/Skeleton";
 
 const NavBar = () => {
   const styles = {
@@ -57,10 +58,14 @@ const NavBar = () => {
             )}
           </div>
 
-          {session.status !== "loading" && session.data?.user ? (
-            <AvatarDropdown />
+          {session.status !== "loading" ? (
+            session.data?.user ? (
+              <AvatarDropdown />
+            ) : (
+              <Button onClick={() => signIn()}>login</Button>
+            )
           ) : (
-            <Button onClick={() => signIn()}>login</Button>
+            <Skeleton className="rounded-full h-12 w-12" />
           )}
 
           {/* Elements in Mobile view */}

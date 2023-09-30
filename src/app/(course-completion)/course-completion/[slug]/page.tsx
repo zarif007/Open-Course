@@ -3,7 +3,6 @@ import { buttonVariants } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { currentUser } from "@clerk/nextjs";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import Link from "next/link";

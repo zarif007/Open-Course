@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "../ui/Textarea";
 import ErrorMessage from "../ui/ErrorMessage";
+import { topicCreationSchema } from "@/validations/topicCreation";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -24,18 +25,6 @@ const CourseTopicCreationForm = ({
   const course = useAppSelector(
     (state) => state.courseCreationReducer.value.course
   );
-
-  const topicCreationSchema: ZodType<{
-    title: string;
-    url: string;
-    description: string;
-    duration: number;
-  }> = z.object({
-    title: z.string().min(2).max(50),
-    url: z.string().url({ message: "Invalid url" }),
-    description: z.string().min(0).max(500),
-    duration: z.number().min(0).max(10000),
-  });
 
   const {
     register,
@@ -67,16 +56,12 @@ const CourseTopicCreationForm = ({
   }, [currentCourseTopic, reset]);
 
   const resetCourseTopic = () => {
-    dispatch(
-      setCurrentCourseTopicForCreation({
-        versions: [{ title: "", url: "", description: "", duration: 0 }],
-        topicID: -1,
-      })
-    );
-    setDefaultValue({
+    const resetValue: ICourseTopic = {
       versions: [{ title: "", url: "", description: "", duration: 0 }],
       topicID: -1,
-    });
+    };
+    dispatch(setCurrentCourseTopicForCreation(resetValue));
+    setDefaultValue(resetValue);
   };
 
   const onSubmit = (data: {

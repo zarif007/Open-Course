@@ -4,7 +4,6 @@ import { ICourse } from "@/types/course";
 import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
