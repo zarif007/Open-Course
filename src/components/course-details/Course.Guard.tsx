@@ -1,6 +1,6 @@
 "use client";
 
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,8 +16,8 @@ import {
 } from "@/redux/features/course-view-slice";
 import CourseContentsTabs from "../course-content/CourseContents.Tabs";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useUser } from "@clerk/nextjs";
 import CourseSkeleton from "../skeletons/Course.Skeleton";
+import { useSession } from "next-auth/react";
 
 const MODE = "view";
 
@@ -42,13 +42,13 @@ const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
 
   const router = useRouter();
 
-  const { user } = useUser();
+  const { data: session } = useSession();
 
   const actionBasedOnEnrollState = async () => {
     try {
       const { data: enrollState } = await (
         await fetch(
-          `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
+          `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
         )
       ).json();
 
@@ -85,12 +85,12 @@ const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
   };
 
   useEffect(() => {
-    if (!user?.id) {
+    if (!session?.user) {
       router.push(`/course-landing/${slug}`);
     } else {
       actionBasedOnEnrollState();
     }
-  }, [topicId, course, user]);
+  }, [topicId, course, session?.user]);
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">

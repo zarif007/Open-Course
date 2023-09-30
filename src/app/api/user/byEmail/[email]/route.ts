@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 interface PageParams {
   params: {
-    externalId: string;
+    email: string;
   };
 }
 
@@ -14,10 +14,10 @@ export const GET = async (
   { params }: PageParams,
   res: NextApiResponse
 ) => {
-  const externalId = params.externalId;
+  const email = params.email;
   connectToDB();
 
-  const user = await User.findOne({ externalId });
+  const user = await User.findOne({ email });
 
   return NextResponse.json({ data: user });
 };

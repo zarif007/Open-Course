@@ -13,16 +13,15 @@ import Paragraph from "../ui/Paragraph";
 import LargeHeading from "../ui/LargeHeading";
 import CourseDetails from "./CourseDetails";
 import { Button } from "../ui/Button";
-import { SignInButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
-import Router from "next/router";
 import CourseRatings from "./CourseRatings";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
+import { signIn, useSession } from "next-auth/react";
 
 const CourseLandingPage = ({
   course,
@@ -31,8 +30,6 @@ const CourseLandingPage = ({
   course: ICourse;
   enrollState: IEnrollState | null;
 }) => {
-  const { user, isLoaded } = useUser();
-
   const router = useRouter();
 
   const [loadingStatus, setLoadingStatus] = useState<
@@ -41,23 +38,25 @@ const CourseLandingPage = ({
 
   const [isEnrolled, setIsEnrolled] = useState<string>("loading");
 
+  const { data: session } = useSession();
+
   useEffect(() => {
-    if (!user || !enrollState) {
+    if (!session?.user || !enrollState) {
       setIsEnrolled("no");
     } else {
       setIsEnrolled("yes");
     }
-  }, [course, user, enrollState]);
+  }, [course, session?.user, enrollState]);
 
   const handleEnrollment = async () => {
-    if (loadingStatus !== "free" || !user?.id) return;
+    if (loadingStatus !== "free" || !session?.user?.email) return;
 
     setLoadingStatus("Processing");
 
     try {
       const data = {
         course: course.id,
-        user: user.id,
+        user: session?.user?.email,
       };
 
       await axios.post(`${nextApiEndPoint}/enrollState`, data);
@@ -128,18 +127,17 @@ const CourseLandingPage = ({
           );
         })}
       </Accordion>
-      {isEnrolled !== "loading" && isLoaded && (
+      {isEnrolled !== "loading" && (
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
-            {!user ? (
-              <SignInButton
-                mode="modal"
-                redirectUrl={`/course-landing/${course.slug}`}
+            {!session?.user ? (
+              <Button
+                className="w-full py-6 text-lg font-bold"
+                isLoading={loadingStatus !== "free"}
+                onClick={() => signIn()}
               >
-                <Button className="w-full py-6 text-lg font-bold">
-                  Enroll
-                </Button>
-              </SignInButton>
+                Enroll
+              </Button>
             ) : (
               <Button
                 className="w-full py-6 text-lg font-bold"

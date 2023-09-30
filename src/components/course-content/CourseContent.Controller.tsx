@@ -11,9 +11,9 @@ import {
 import { IEnrollState } from "@/types/enrollState";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useUser } from "@clerk/nextjs";
 import { toast } from "../ui/Toast";
 import { ICourseTopic } from "@/types/courseTopic";
+import { useSession } from "next-auth/react";
 
 const CourseContentController = () => {
   const currentCourseTopic = useAppSelector(
@@ -26,7 +26,7 @@ const CourseContentController = () => {
 
   const router = useRouter();
 
-  const { user } = useUser();
+  const { data: session } = useSession();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,7 +34,7 @@ const CourseContentController = () => {
 
   const updateEnrollState = async (nextTopicId: number) => {
     const { data } = await axios.get(
-      `${nextApiEndPoint}/enrollState?user=${user?.id}&course=${course.id}`
+      `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
     );
 
     const enrollState = data.data as IEnrollState;
@@ -64,7 +64,8 @@ const CourseContentController = () => {
   };
 
   const handleNextButton = async () => {
-    if (isLoading || !user || !course || !currentCourseTopic.id) return;
+    if (isLoading || !session?.user || !course || !currentCourseTopic.id)
+      return;
 
     setIsLoading(true);
 
@@ -86,7 +87,8 @@ const CourseContentController = () => {
   };
 
   const handleDoneButton = async () => {
-    if (isLoading || !user || !course || !currentCourseTopic.id) return;
+    if (isLoading || !session?.user || !course || !currentCourseTopic.id)
+      return;
 
     setIsLoading(true);
 

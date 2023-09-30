@@ -3,15 +3,14 @@
 import { setSignedInUser } from "@/redux/features/signed-In-user-slice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import MainLoading from "../skeletons/Main.Loading";
+import { useSession } from "next-auth/react";
 
 const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -20,16 +19,19 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
+  const { data: session } = useSession();
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!session?.user?.email) return;
 
     const getUserInfo = async () => {
       setIsLoading(true);
+      // create endpoint
       try {
         const { data } = await axios.get(
-          `${nextApiEndPoint}/user/byExternalId/${user?.id}`
+          `${nextApiEndPoint}/user/byEmail/${session?.user?.email}`
         );
         if (!data.data) {
           router.push("/onboarding");
@@ -44,10 +46,10 @@ const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    if (!signedInUser || signedInUser.externalId !== user.id) {
+    if (!signedInUser || signedInUser.email !== session.user.email) {
       getUserInfo();
     }
-  }, [user, router, signedInUser, dispatch]);
+  }, [session?.user, router, signedInUser, dispatch]);
 
   return <div>{children}</div>;
 };

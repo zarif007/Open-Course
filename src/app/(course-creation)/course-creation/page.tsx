@@ -6,15 +6,14 @@ import CourseTopicCreation from "@/components/course-topic/CourseTopicCreation";
 import CourseDetailsCreation from "@/components/course-details/CourseDetailsCreation";
 import { useAppSelector } from "@/redux/store";
 import { Button } from "@/components/ui/Button";
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";
 import createSlug from "@/utils/createSlug";
 import ErrorMessage from "@/components/ui/ErrorMessage";
-import { useDispatch } from "react-redux";
 import { ICourseTopic } from "@/types/courseTopic";
+import { useSession } from "next-auth/react";
 
 const MODE = "creation";
 
@@ -31,7 +30,7 @@ const CourseCreation = () => {
     (state) => state.courseCreationReducer.value.course
   );
 
-  const { user } = useUser();
+  const { data: session } = useSession();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -65,7 +64,8 @@ const CourseCreation = () => {
   };
 
   const handleSubmit = async () => {
-    if (loadingStatus !== "free" || !user?.id || !signedInUser?.id) return;
+    if (loadingStatus !== "free" || !session?.user?.email || !signedInUser?.id)
+      return;
 
     if (!validateCourseDetails()) return;
 

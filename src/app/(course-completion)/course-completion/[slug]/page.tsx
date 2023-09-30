@@ -11,6 +11,7 @@ import React from "react";
 import { ICourse } from "@/types/course";
 import { IUser } from "@/types/user";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 
 interface PageParams {
   params: {
@@ -36,7 +37,7 @@ export const generateMetadata = async ({
     course?.title
   }&theme=dark&
   &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.attributes?.first_name}`;
+  &creator=${creator.name}`;
 
   return {
     title: `Complete-${course?.title}`,
@@ -55,12 +56,12 @@ const CourseCompletion = async ({ params }: PageParams) => {
 
   if (!course) redirect("/404");
 
-  const user = await currentUser();
-  if (!user) redirect("");
+  const session = await getServerSession();
+  if (!session?.user) redirect("");
 
   const { data: enrollState } = await (
     await fetch(
-      `${nextApiEndPoint}/enrollState/?user=${user?.id}&course=${course.id}`,
+      `${nextApiEndPoint}/enrollState/?user=${session.user.email}&course=${course.id}`,
       {
         cache: "force-cache",
       }

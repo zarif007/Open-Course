@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { FaReply } from "react-icons/fa6";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import { IDiscussion } from "@/types/discussion";
-import { useUser } from "@clerk/nextjs";
 import { IUser } from "@/types/user";
 import EmojiPickerDialog from "../ui/EmojiPicker.Dialog";
+import { useSession } from "next-auth/react";
 
 const DiscussDropdown = ({
   discussion,
@@ -21,23 +21,23 @@ const DiscussDropdown = ({
   >;
   handleAddEmoji: (emoji: string) => void;
 }) => {
-  const { user, isLoaded } = useUser();
-
   const [accessStatus, setAccessStatus] = useState<
     "unauthorized" | "can-interact" | "can-modify"
   >("unauthorized");
+
+  const { data: session } = useSession();
 
   const styles = {
     icon: `h-5 w-5 cursor-pointer`,
   };
 
   useEffect(() => {
-    if (user && isLoaded) {
+    if (session?.user) {
       const sender = discussion.sender as IUser;
-      if (user.id === sender.externalId) setAccessStatus("can-modify");
+      if (session?.user?.email === sender.email) setAccessStatus("can-modify");
       else setAccessStatus("can-interact");
     }
-  }, [user, isLoaded]);
+  }, [session?.user]);
 
   return (
     <div className="flex space-x-2">

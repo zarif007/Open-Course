@@ -21,7 +21,6 @@ const handler = NextAuth({
     async signIn({ user }) {
       try {
         await axios.post(`${nextApiEndPoint}/user`, {
-          externalId: user.id,
           name: user.name,
           email: user.email,
           image: user.image,

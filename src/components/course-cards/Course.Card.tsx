@@ -27,15 +27,13 @@ import { ICourseTopic } from "@/types/courseTopic";
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
-  const router = useRouter();
-
   const creator = course.creator as IUser;
 
   const generatedBanner = `/api/generateBanner?courseName=${
     course.title
   }&theme=${theme}&
   &topics=${course.categories ? course.categories.join("  ") : ""}
-  &creator=${creator.attributes?.first_name ?? ""}`;
+  &creator=${creator.name ?? ""}`;
 
   return (
     <div className="p-4">
@@ -48,10 +46,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         <div className="p-6">
           <div className="flex justify-between items-center">
             <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
-              By{" "}
-              <span className="text-rose-500">
-                {creator.attributes.first_name ?? ""}
-              </span>
+              By <span className="text-rose-500">{creator.name ?? ""}</span>
             </h2>
             <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
               {formatDate(

@@ -22,15 +22,10 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
       <div className="flex space-x-2 items-center mx-auto">
         <Paragraph className="font-bold text-md">By</Paragraph>
         <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
-          <AvatarImage
-            className="rounded-full"
-            src={creator.attributes.image_url}
-          />
+          <AvatarImage className="rounded-full" src={creator.image} />
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>
-        <Paragraph className="font-bold text-md">
-          {creator.attributes.first_name}
-        </Paragraph>
+        <Paragraph className="font-bold text-md">{creator.name}</Paragraph>
       </div>
 
       <div className="flex flex-wrap mx-auto">

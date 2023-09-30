@@ -6,7 +6,6 @@ import { PiSunDuotone } from "react-icons/pi";
 import { PiMoonStarsDuotone } from "react-icons/pi";
 import Link from "next/link";
 import AvatarDropdown from "./Avatar.Dropdown";
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { Button } from "../ui/Button";
 import Paragraph from "../ui/Paragraph";
 import routeElements from "@/constants/navBar";
@@ -18,10 +17,10 @@ const NavBar = () => {
     icon: `h-8 w-8 cursor-pointer`,
   };
 
-  const { data: session } = useSession();
+  const session = useSession();
 
   const { theme, setTheme } = useTheme();
-  const { isSignedIn, user, isLoaded } = useUser();
+
   return (
     <nav className="backdrop-blur-sm bg-slate-100/75 dark:bg-gray-950/75 fixed w-full z-20 top-0 left-0 overflow-x-hidden">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -58,20 +57,10 @@ const NavBar = () => {
             )}
           </div>
 
-          {session ? (
-            <p onClick={() => signOut()}>{session.user?.name}</p>
-          ) : (
-            <Button onClick={() => signIn()}>login</Button>
-          )}
-
-          {isSignedIn ? (
+          {session.status !== "loading" && session.data?.user ? (
             <AvatarDropdown />
           ) : (
-            isLoaded && (
-              <SignInButton mode="modal">
-                <Button variant="general">Sign In</Button>
-              </SignInButton>
-            )
+            <Button onClick={() => signIn()}>login</Button>
           )}
 
           {/* Elements in Mobile view */}

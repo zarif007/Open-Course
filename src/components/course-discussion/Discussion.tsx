@@ -74,15 +74,11 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
       className={`${isDeleting && "opacity-25"} w-full`}
     >
       <div className="my-3 p-3 flex space-x-3 w-full">
-        <img
-          src={sender.attributes.image_url}
-          alt="dp"
-          className="rounded-full h-10 w-10"
-        />
+        <img src={sender.image} alt="dp" className="rounded-full h-10 w-10" />
         <div className="flex flex-col space-y-1 w-full">
           <div className="flex items-end space-x-2">
             <p className="text-md font-bold underline decoration-rose-500 decoration-2 truncate">
-              {sender.attributes.last_name}
+              {sender.name}
             </p>
             <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold">
               {formatDate(currentDiscussion.updatedAt!)}

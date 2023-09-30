@@ -7,7 +7,6 @@ import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "../ui/Textarea";
 import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/Button";
-import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { ICourse } from "@/types/course";
 import { courseCategories, courseLevels, languages } from "@/constants/course";
@@ -20,10 +19,6 @@ const CourseDetailsCreationForm = () => {
   );
 
   const [show, setShow] = useState<boolean>(true);
-
-  const { user } = useUser();
-
-  const { theme } = useTheme();
 
   const updateCourse = (course: ICourse) => {
     dispatch(setCourseForCreation(course));
@@ -47,13 +42,6 @@ const CourseDetailsCreationForm = () => {
       languages,
     });
   };
-
-  // const generatedBanner = `${nextApi}/generateBanner?courseName=${
-  //   course.title
-  // }&theme=${theme}&
-  // &topics=${course.categories ? course.categories.join("  ") : ""}&creator=${
-  //   user?.firstName
-  // }&imgUrl=${user?.imageUrl}`;
 
   return (
     <React.Fragment>

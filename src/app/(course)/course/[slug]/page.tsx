@@ -3,11 +3,9 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import React from "react";
 import { redirect } from "next/navigation";
-import { currentUser } from "@clerk/nextjs";
 import CourseGuard from "@/components/course-details/Course.Guard";
 import { Metadata } from "next";
 import { IUser } from "@/types/user";
-import { revalidateTag } from "next/cache";
 
 interface PageParams {
   params: {
@@ -38,7 +36,7 @@ export const generateMetadata = async ({
     course?.title
   }&theme=dark&
   &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.attributes?.first_name}`;
+  &creator=${creator.name}`;
 
   return {
     title: course?.title,

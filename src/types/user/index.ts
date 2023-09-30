@@ -35,7 +35,6 @@ interface UserAttributes {
 export interface IUser {
   id?: string;
   _id?: string;
-  externalId: string;
   name: string;
   email: string;
   image: string;

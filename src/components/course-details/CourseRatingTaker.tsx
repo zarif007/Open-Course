@@ -10,7 +10,6 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import Paragraph from "../ui/Paragraph";
-import { useUser } from "@clerk/nextjs";
 import { useAppSelector } from "@/redux/store";
 
 const StarDrawing = (

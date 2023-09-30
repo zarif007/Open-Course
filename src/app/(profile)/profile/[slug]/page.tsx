@@ -24,12 +24,12 @@ const Profile = async ({ params }: PageParams) => {
   return (
     <section className="w-full max-w-5xl mx-auto h-full flex flex-col items-center justify-center">
       <img
-        src={user.attributes.image_url}
+        src={user.image}
         alt="dp"
-        className="h-[25%] w-[25%] rounded shadow-[7px_18px_67px_64px_rgba(202,_54,_80,_0.18)]"
+        className="h-[5%] w-[5%] rounded shadow-[7px_18px_67px_64px_rgba(202,_54,_80,_0.18)]"
       />
       <LargeHeading className="my-6 underline decoration-rose-500 decoration-4">
-        {user.attributes.last_name}
+        {user.name}
       </LargeHeading>
     </section>
   );

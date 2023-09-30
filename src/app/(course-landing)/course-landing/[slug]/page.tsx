@@ -1,10 +1,12 @@
 import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
+import { store } from "@/redux/store";
 import { ICourse } from "@/types/course";
 import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -53,7 +55,7 @@ export const generateMetadata = async ({
     course?.title
   }&theme=dark&
   &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.attributes?.first_name}`;
+  &creator=${creator.name}`;
 
   return {
     title: course?.title,
@@ -66,10 +68,10 @@ export const generateMetadata = async ({
 };
 
 const CourseLanding = async ({ params }: PageParams) => {
-  const user = await currentUser();
+  const session = await getServerSession();
   const { course, enrollState } = await getCourse(
     params.slug,
-    user?.id ?? null
+    session?.user?.email ?? null
   );
 
   if (!course) redirect("/404");

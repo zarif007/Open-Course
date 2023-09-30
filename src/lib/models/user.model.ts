@@ -3,10 +3,6 @@ import { Schema, model, models } from "mongoose";
 
 export const UserSchema = new Schema<IUser, IUserModel>(
   {
-    externalId: {
-      type: String,
-      required: [true, "Id is required"],
-    },
     email: {
       type: String,
       required: [true, "Email is required"],

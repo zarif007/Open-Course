@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React from "react";
@@ -10,10 +11,9 @@ import {
   MenubarTrigger,
 } from "@/components/ui/Menu.Bar";
 
-import { SignOutButton } from "@clerk/nextjs";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 const AvatarDropdown = () => {
   const styles = {
     menuBarItems:
@@ -29,14 +29,13 @@ const AvatarDropdown = () => {
         <MenubarTrigger className="!bg-transparent">
           {signedInUser && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
-              <Avatar className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
-                <AvatarImage
+              <div className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
+                <img
                   className="rounded-full"
-                  src={signedInUser.attributes.image_url}
+                  src={signedInUser.image}
                   alt="dp"
                 />
-                <AvatarFallback>DP</AvatarFallback>
-              </Avatar>
+              </div>
             </div>
           )}
         </MenubarTrigger>
@@ -50,12 +49,15 @@ const AvatarDropdown = () => {
               className="text-gray-950 dark:text-slate-100"
             >
               {" "}
-              Profile ({signedInUser?.attributes.first_name})
+              Profile ({signedInUser?.name})
             </Link>
           </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem className={`${styles.menuBarItems} text-red-500`}>
-            <SignOutButton>Sign Out</SignOutButton>
+          <MenubarItem
+            onClick={() => signOut()}
+            className={`${styles.menuBarItems} text-red-500`}
+          >
+            Sign Out
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
