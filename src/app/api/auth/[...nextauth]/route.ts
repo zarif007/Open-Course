@@ -14,10 +14,12 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
+  debug: process.env.NODE_ENV === "development",
   callbacks: {
-    async session({ session }) {
-      return session;
-    },
     async signIn({ user }) {
       try {
         await axios.post(`${nextApiEndPoint}/user`, {
