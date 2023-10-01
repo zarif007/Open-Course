@@ -19,6 +19,9 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   debug: process.env.NODE_ENV === "development",
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     async signIn({ user }) {
       try {
@@ -30,9 +33,13 @@ const handler = NextAuth({
         });
         return true;
       } catch (error) {
-        console.log(error);
         return false;
       }
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
   },
 });
