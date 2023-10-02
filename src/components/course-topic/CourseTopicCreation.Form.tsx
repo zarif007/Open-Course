@@ -11,6 +11,7 @@ import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creati
 import { Textarea } from "../ui/Textarea";
 import ErrorMessage from "../ui/ErrorMessage";
 import { topicCreationSchema } from "@/validations/topicCreation";
+import { topicInputFields } from "@/constants/courseTopics";
 
 const CourseTopicCreationForm = ({
   submitData,
@@ -90,86 +91,43 @@ const CourseTopicCreationForm = ({
       className="flex flex-col justify-center items-center space-y-6 my-12"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <label htmlFor="text" className="font-bold">
-          Topic Name
-        </label>
-        <Input
-          type="text"
-          placeholder="How to train your Dragon Part-4565"
-          {...register("title")}
-          onChange={(e) =>
-            dispatch(
-              setCurrentCourseTopicForCreation({
-                ...currentCourseTopic,
-                versions: [
-                  {
-                    ...currentCourseTopic.versions[0],
-                    title: e.target.value,
-                  },
-                ],
-              })
-            )
-          }
-          defaultValue={defaultValue.versions[0].title}
-          required
-        />
-        <ErrorMessage text={errors.title?.message} className="" />
-      </div>
-
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <label htmlFor="url" className="font-bold">
-          Link (YT / Blog URL)
-        </label>
-        <Input
-          type="url"
-          placeholder="https://www.youtube.com/watch?v=Tx0ntUobTu8"
-          {...register("url")}
-          onChange={(e) =>
-            dispatch(
-              setCurrentCourseTopicForCreation({
-                ...currentCourseTopic,
-                versions: [
-                  {
-                    ...currentCourseTopic.versions[0],
-                    url: e.target.value,
-                  },
-                ],
-              })
-            )
-          }
-          defaultValue={defaultValue.versions[0].url}
-          required
-        />
-        <ErrorMessage text={errors.url?.message} className="" />
-      </div>
-
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <label htmlFor="number" className="font-bold">
-          Approx. Duration in minute (ex. 10)
-        </label>
-        <Input
-          type="number"
-          placeholder="NOT 10m or 10.34"
-          {...register("duration", { valueAsNumber: true })}
-          onChange={(e) =>
-            dispatch(
-              setCurrentCourseTopicForCreation({
-                ...currentCourseTopic,
-                versions: [
-                  {
-                    ...currentCourseTopic.versions[0],
-                    duration: isNaN(+e.target.value) ? 0 : +e.target.value,
-                  },
-                ],
-              })
-            )
-          }
-          defaultValue={defaultValue.versions[0].duration}
-          required
-        />
-        <ErrorMessage text={errors.duration?.message} className="" />
-      </div>
+      {[0, 1, 2].map((value) => {
+        const field = topicInputFields(value);
+        return (
+          <div
+            key={value}
+            className="grid w-full max-w-sm items-center gap-1.5"
+          >
+            <label htmlFor="text" className="font-bold">
+              {field.label}
+            </label>
+            <Input
+              type={field.type}
+              placeholder="How to train your Dragon Part-4565"
+              {...register(
+                field.key,
+                field.type === "number" ? { valueAsNumber: true } : {}
+              )}
+              onChange={(e) =>
+                dispatch(
+                  setCurrentCourseTopicForCreation({
+                    ...currentCourseTopic,
+                    versions: [
+                      {
+                        ...currentCourseTopic.versions[0],
+                        [field.key]: field.value(e),
+                      },
+                    ],
+                  })
+                )
+              }
+              defaultValue={defaultValue.versions[0][field.key]}
+              required
+            />
+            <ErrorMessage text={errors[field.key]?.message} className="" />
+          </div>
+        );
+      })}
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <label htmlFor="url" className="font-bold">
