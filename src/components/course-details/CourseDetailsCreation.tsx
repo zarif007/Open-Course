@@ -37,7 +37,7 @@ const CourseDetailsCreation = () => {
   };
 
   return (
-    <div className="bg-slate-200 dark:bg-gray-900 rounded my-4 m-2 md:m-6 p-4">
+    <div className="border-2 border-slate-200 dark:border-gray-900 rounded my-4 m-2 md:m-6 p-4">
       <CourseDetailsCreationForm />
 
       <div className="flex flex-wrap">

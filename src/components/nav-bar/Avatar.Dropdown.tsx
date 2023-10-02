@@ -32,8 +32,10 @@ const AvatarDropdown = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (!session?.user?.email) return;
-
+    if (!session?.user?.email) {
+      dispatch(setSignedInUser(null));
+      return;
+    }
     const getUserInfo = async () => {
       try {
         const { data } = await axios.get(
@@ -49,7 +51,7 @@ const AvatarDropdown = () => {
     if (!signedInUser || signedInUser.email !== session.user.email) {
       getUserInfo();
     }
-  }, [session?.user, signedInUser]);
+  }, [session, signedInUser]);
 
   return (
     <Menubar>

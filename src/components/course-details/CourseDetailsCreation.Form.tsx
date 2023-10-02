@@ -18,8 +18,6 @@ const CourseDetailsCreationForm = () => {
     (state) => state.courseCreationReducer.value.course
   );
 
-  const [show, setShow] = useState<boolean>(true);
-
   const updateCourse = (course: ICourse) => {
     dispatch(setCourseForCreation(course));
   };
@@ -45,23 +43,7 @@ const CourseDetailsCreationForm = () => {
 
   return (
     <React.Fragment>
-      <div
-        className="flex items-center w-fit cursor-pointer"
-        onClick={() => setShow(!show)}
-      >
-        <Button variant="link" className="border-0 p-0 focus:ring-0">
-          Show {show ? "Less" : "More"}
-        </Button>
-        <ChevronDown
-          className={`h-8 w-8 shrink-0 transition-transform duration-200 ${
-            !show ? "rotate-180" : ""
-          }`}
-        />
-      </div>
-      <form
-        className={`flex flex-col items-center space-y-3 ${!show && "blur-sm"}`}
-        onClick={() => setShow(true)}
-      >
+      <form className={`flex flex-col items-center space-y-3`}>
         <div className="w-full">
           <label htmlFor="text" className="font-bold">
             Name of the Course
@@ -77,59 +59,55 @@ const CourseDetailsCreationForm = () => {
           />
         </div>
 
-        {show && (
-          <React.Fragment>
-            <div className="flex flex-col w-full">
-              <label htmlFor="text" className="font-bold">
-                Description
-              </label>
-              <Textarea
-                defaultValue=""
-                placeholder="About this course"
-                className="text-lg font-semibold"
-              />
-            </div>
-            <div className="w-full flex flex-wrap">
-              <div className="mr-1 flex flex-col my-1">
-                <label htmlFor="text" className="font-bold">
-                  Category (Max. 3)
-                </label>
-                <Combobox
-                  limit={3}
-                  title="Category"
-                  list={courseCategories}
-                  currentValues={course.categories}
-                  setCurrentValuesFunction={setSelectedCourseTypes}
-                />
-              </div>
-              <div className="mr-1 flex flex-col my-1">
-                <label htmlFor="text" className="font-bold">
-                  Level (Max. 3)
-                </label>
-                <Combobox
-                  limit={3}
-                  title="Level"
-                  list={courseLevels}
-                  currentValues={course.levels}
-                  setCurrentValuesFunction={setSelectedLevels}
-                />
-              </div>
+        <div className="flex flex-col w-full">
+          <label htmlFor="text" className="font-bold">
+            Description
+          </label>
+          <Textarea
+            defaultValue=""
+            placeholder="About this course"
+            className="text-lg font-semibold"
+          />
+        </div>
+        <div className="w-full flex flex-wrap">
+          <div className="mr-1 flex flex-col my-1">
+            <label htmlFor="text" className="font-bold">
+              Category (Max. 3)
+            </label>
+            <Combobox
+              limit={3}
+              title="Category"
+              list={courseCategories}
+              currentValues={course.categories}
+              setCurrentValuesFunction={setSelectedCourseTypes}
+            />
+          </div>
+          <div className="mr-1 flex flex-col my-1">
+            <label htmlFor="text" className="font-bold">
+              Level (Max. 3)
+            </label>
+            <Combobox
+              limit={3}
+              title="Level"
+              list={courseLevels}
+              currentValues={course.levels}
+              setCurrentValuesFunction={setSelectedLevels}
+            />
+          </div>
 
-              <div className="mr-1 flex flex-col my-1">
-                <label htmlFor="text" className="font-bold">
-                  Language (Max. 3)
-                </label>
-                <Combobox
-                  limit={3}
-                  title="Language"
-                  list={languages}
-                  currentValues={course.languages}
-                  setCurrentValuesFunction={setSelectedLanguages}
-                />
-              </div>
-            </div>
-          </React.Fragment>
-        )}
+          <div className="mr-1 flex flex-col my-1">
+            <label htmlFor="text" className="font-bold">
+              Language (Max. 3)
+            </label>
+            <Combobox
+              limit={3}
+              title="Language"
+              list={languages}
+              currentValues={course.languages}
+              setCurrentValuesFunction={setSelectedLanguages}
+            />
+          </div>
+        </div>
       </form>
     </React.Fragment>
   );
