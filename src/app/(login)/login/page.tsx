@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { FaDiscord } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 
@@ -24,6 +24,9 @@ const providers = [
 
 const Login = () => {
   const { theme } = useTheme();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
@@ -34,8 +37,12 @@ const Login = () => {
           {providers.map((provider) => (
             <Button
               key={provider.name}
+              isLoading={isLoading}
               className="px-12 py-8 flex space-x-4 justify-center items-center"
-              onClick={() => signIn(provider.name, { callbackUrl })}
+              onClick={() => {
+                signIn(provider.name, { callbackUrl });
+                setIsLoading(true);
+              }}
             >
               {provider.icon}
               <p className="font-semibold text-xl">

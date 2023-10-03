@@ -52,7 +52,8 @@ const CourseTopic = ({
     return enrollState.finishedTopics.includes(currentCourseTopic.toString());
   };
 
-  const removeTopic = () => {
+  const removeTopic = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    e.stopPropagation();
     const topics = course.topics as ICourseTopic[];
 
     dispatch(
@@ -112,7 +113,10 @@ const CourseTopic = ({
           )
         ) : (
           <TooltipComponent content="Remove">
-            <FcDeleteRow className={styles.icon} onClick={removeTopic} />
+            <FcDeleteRow
+              className={styles.icon}
+              onClick={(e) => removeTopic(e)}
+            />
           </TooltipComponent>
         )}
       </div>
