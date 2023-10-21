@@ -6,6 +6,8 @@ import { redirect } from "next/navigation";
 import CourseGuard from "@/components/course-details/Course.Guard";
 import { Metadata } from "next";
 import { IUser } from "@/types/user";
+import constructMetadata from "@/utils/constructMetadata";
+import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 
 interface PageParams {
   params: {
@@ -30,22 +32,17 @@ export const generateMetadata = async ({
 }: PageParams): Promise<Metadata> => {
   const course: ICourse | null = await getCourse(params.slug);
 
-  const creator = course?.creator as IUser;
+  if (!course) {
+    return constructMetadata();
+  }
 
-  const generatedBanner = `https://open-course.vercel.app/api/generateBanner?courseName=${
-    course?.title
-  }&theme=dark&
-  &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.name}`;
+  const generatedBanner = generateBannerFromCourse(course);
 
-  return {
+  return constructMetadata({
     title: course?.title,
-    openGraph: {
-      title: course?.title,
-      description: course?.description,
-      images: generatedBanner,
-    },
-  };
+    description: course?.description,
+    image: generatedBanner,
+  });
 };
 
 const Course = async ({ params }: PageParams) => {

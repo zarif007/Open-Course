@@ -4,6 +4,8 @@ import { ICourse } from "@/types/course";
 import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import constructMetadata from "@/utils/constructMetadata";
+import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -37,33 +39,16 @@ export const generateMetadata = async ({
   const { course } = await getCourse(params.slug, null);
 
   if (!course) {
-    return {
-      title: "Open Course",
-      description: "Curate, Create & Share",
-      openGraph: {
-        title: "Open Course",
-        description: "Create & Enroll free courses",
-        images: "/whatisit-dark.png",
-      },
-    };
+    return constructMetadata();
   }
 
-  const creator = course?.creator as IUser;
+  const generatedBanner = generateBannerFromCourse(course);
 
-  const generatedBanner = `https://open-course.vercel.app/api/generateBanner?courseName=${
-    course?.title
-  }&theme=dark&
-  &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.name}`;
-
-  return {
+  return constructMetadata({
     title: course?.title,
-    openGraph: {
-      title: course?.title,
-      description: course?.description,
-      images: generatedBanner,
-    },
-  };
+    description: course?.description,
+    image: generatedBanner,
+  });
 };
 
 const CourseLanding = async ({ params }: PageParams) => {

@@ -4,18 +4,11 @@ import { Inter } from "next/font/google";
 import ClientProviders from "@/components/providers/ClientProviders";
 import NavBar from "@/components/nav-bar/Nav.Bar";
 import { Toaster } from "../components/ui/Toast";
+import constructMetadata from "@/utils/constructMetadata";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Open Course",
-  description: "Curate, Create & Share",
-  openGraph: {
-    title: "Open Course",
-    description: "Create & Enroll free courses",
-    images: "/whatisit-dark.png",
-  },
-};
+export const metadata: Metadata = constructMetadata();
 
 export default async function RootLayout({
   children,

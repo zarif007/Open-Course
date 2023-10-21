@@ -57,18 +57,14 @@ const ProgressBar = ({
   total: number;
 }) => {
   return (
-    <div className="flex space-x-2 justify-center items-center w-full">
-      <Paragraph
-        className={`font-semibold flex space-x-1 items-center ${
-          index === 1 && "pl-[3px]"
-        }`}
-      >
-        <span>{index}</span>
-        <PiStarDuotone className="" />
+    <div className="flex space-x-2 justify-center items-center w-full md:w-[50%]">
+      <Paragraph className={`w-1/12 font-semibold flex items-center`}>
+        <span className="w-[50%]">{index}</span>
+        <PiStarDuotone className="w-[50%]" />
       </Paragraph>
-      <Progress value={(value / total) * 100} className="w-md max-w-lg" />
-      <Paragraph className={`font-semibold flex space-x-1 items-center`}>
-        <span>{value}</span>
+      <Progress value={(value / total) * 100} className="w-10/12" />
+      <Paragraph className={`w-1/12 font-semibold flex space-x-1 items-center`}>
+        <span className="">{value}</span>
         <RiUserStarFill className="" />
       </Paragraph>
     </div>

@@ -1,9 +1,7 @@
+import constructMetadata from "@/utils/constructMetadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Create Course | Open Course",
-  description: "Curate, Create & Share",
-};
+export const metadata: Metadata = constructMetadata();
 
 export default function RootLayout({
   children,

@@ -11,15 +11,17 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
   ).then((res) => res.arrayBuffer());
 
   const { searchParams } = new URL(req.url || "");
-  const courseName = searchParams.get("courseName");
+  const courseTitle = searchParams.get("courseTitle");
+  const slug = searchParams.get("slug");
 
   const creator = searchParams.get("creator");
   const topics = searchParams.get("topics");
   const imgUrl = searchParams.get("imgUrl");
 
   const theme = searchParams.get("theme");
+
   try {
-    return new ImageResponse(
+    const constructImage = new ImageResponse(
       (
         <div
           tw={`h-full w-full flex items-start justify-start ${
@@ -37,7 +39,7 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
               </h1>
 
               <h1 tw="text-[60px] text-rose-500" style={{ fontWeight: 1200 }}>
-                {courseName}
+                {courseTitle}
               </h1>
 
               <p
@@ -70,6 +72,8 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
         ],
       }
     );
+
+    return constructImage;
   } catch {
     return new Response(`Failed to generate the image`, {
       status: 500,

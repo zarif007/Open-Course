@@ -11,6 +11,8 @@ import { ICourse } from "@/types/course";
 import { IUser } from "@/types/user";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import constructMetadata from "@/utils/constructMetadata";
+import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 
 interface PageParams {
   params: {
@@ -30,22 +32,17 @@ export const generateMetadata = async ({
 }: PageParams): Promise<Metadata> => {
   const course: ICourse | null = await getCourse(params.slug);
 
-  const creator = course?.creator as IUser;
+  if (!course) {
+    return constructMetadata();
+  }
 
-  const generatedBanner = `/api/generateBanner?courseName=${
-    course?.title
-  }&theme=dark&
-  &topics=${course?.categories ? course?.categories.join("  ") : ""}
-  &creator=${creator.name}`;
+  const generatedBanner = generateBannerFromCourse(course);
 
-  return {
-    title: `Complete-${course?.title}`,
-    openGraph: {
-      title: `Complete-${course?.title}`,
-      description: course?.description,
-      images: [`${generatedBanner}`],
-    },
-  };
+  return constructMetadata({
+    title: course?.title,
+    description: course?.description,
+    image: generatedBanner,
+  });
 };
 
 const CourseCompletion = async ({ params }: PageParams) => {

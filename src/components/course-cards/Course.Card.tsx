@@ -23,17 +23,14 @@ import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
 import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
 import { ICourseTopic } from "@/types/courseTopic";
+import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
 
   const creator = course.creator as IUser;
 
-  const generatedBanner = `/api/generateBanner?courseName=${
-    course.title
-  }&theme=${theme}&
-  &topics=${course.categories ? course.categories.join("  ") : ""}
-  &creator=${creator.name ?? ""}`;
+  const generatedBanner = generateBannerFromCourse(course);
 
   return (
     <div className="p-4">
