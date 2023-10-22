@@ -24,6 +24,8 @@ import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
 import { ICourseTopic } from "@/types/courseTopic";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
+import { Tooltip } from "../ui/Tooltip";
+import TooltipComponent from "../ui/TooltipComponent";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const { theme } = useTheme();
@@ -40,6 +42,18 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           alt="blog"
           className="lg:h-48 md:h-36 w-full object-cover object-center"
         />
+        <div className="flex space-x-2 -mt-8 mx-2">
+          {course.languages.map((lang) => {
+            return (
+              <div
+                key={lang}
+                className="px-1 rounded bg-slate-100 text-gray-950"
+              >
+                {lang.split(" ")[0]}
+              </div>
+            );
+          })}
+        </div>
         <div className="p-6">
           <div className="flex justify-between items-center">
             <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
@@ -70,7 +84,12 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             }}
           />
 
-          <SelectedTopics mode="view" selectedTopics={course.languages} />
+          <TooltipComponent content={course.categories.join(" \n ")}>
+            <SelectedTopics
+              mode="view"
+              selectedTopics={course.categories.map((x) => x.split(" ")[0])}
+            />
+          </TooltipComponent>
 
           <div className="flex justify-between">
             <ContentLogos

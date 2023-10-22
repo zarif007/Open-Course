@@ -12,6 +12,7 @@ const CourseCardSkeleton = () => {
         <Skeleton className="h-[24px] w-[200px] mb-2" />
         <Skeleton className="h-[16px] w-[150px] mb-2" />
         <Skeleton className="h-[16px] w-[300px] mb-2" />
+
         <div
           className="w-full max-w-5xl mx-auto"
           style={{
@@ -21,7 +22,11 @@ const CourseCardSkeleton = () => {
           }}
         />
 
-        <Skeleton className="h-[16px] w-[150px] mb-2 mt-4" />
+        <div className="flex space-x-2 mt-4">
+          <Skeleton className="h-[20px] w-[24px] mb-2" />
+          <Skeleton className="h-[20px] w-[24px] mb-2" />
+          <Skeleton className="h-[20px] w-[24px] mb-2" />
+        </div>
 
         <div className="flex justify-between items-center">
           <div className="flex">

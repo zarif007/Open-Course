@@ -88,15 +88,6 @@ const AvatarDropdown = () => {
               </div>
             </Link>
           </MenubarItem>
-          <MenubarItem className={styles.menuBarItems}>
-            <Link
-              href={`/profile/${signedInUser?.userName}`}
-              className="text-gray-950 dark:text-slate-100"
-            >
-              {" "}
-              Profile ({signedInUser?.name})
-            </Link>
-          </MenubarItem>
           <MenubarSeparator />
           <MenubarItem
             onClick={() => signOut()}
