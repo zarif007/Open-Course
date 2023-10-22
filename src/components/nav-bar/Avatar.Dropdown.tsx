@@ -70,9 +70,24 @@ const AvatarDropdown = () => {
           )}
         </MenubarTrigger>
         <MenubarContent className="bg-slate-100 mx-2 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 rounded">
-          {/* <MenubarItem className={styles.menuBarItems}>
-            <UserProfile />
-          </MenubarItem> */}
+          <MenubarItem className={styles.menuBarItems}>
+            <Link
+              href={`/profile/${signedInUser?.userName}`}
+              className="flex space-x-2 text-gray-950 dark:text-slate-100"
+            >
+              <img
+                src={signedInUser?.image}
+                alt="dp"
+                className="h-10 w-10 rounded-full"
+              />
+              <div>
+                <p className="text-xs font-semibold">{signedInUser?.name}</p>
+                <p className="text-xs font-semibold">
+                  @{signedInUser?.userName}
+                </p>
+              </div>
+            </Link>
+          </MenubarItem>
           <MenubarItem className={styles.menuBarItems}>
             <Link
               href={`/profile/${signedInUser?.userName}`}
