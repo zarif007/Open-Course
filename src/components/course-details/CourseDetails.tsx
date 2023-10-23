@@ -21,7 +21,7 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
       </LargeHeading>
       <div className="flex space-x-2 items-center mx-auto">
         <Paragraph className="font-bold text-md">By</Paragraph>
-        <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500">
+        <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500 my-3">
           <AvatarImage className="rounded-full" src={creator.image} />
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>

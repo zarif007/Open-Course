@@ -35,7 +35,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         <BlurredImage
           src={generatedBanner}
           alt="blog"
-          className="lg:h-48 md:h-36 w-full object-cover object-center"
+          className="lg:h-48 md:h-36 w-full object-cover object-center border border-rose-500"
         />
         <div className="flex space-x-2 -mt-8 mx-2">
           {course.languages.map((lang) => {

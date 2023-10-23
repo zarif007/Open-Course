@@ -116,7 +116,7 @@ const CourseContentController = () => {
   return (
     <div>
       <CourseContent courseTopic={currentCourseTopic} />
-      <div className="mt-28 flex justify-end">
+      <div className="mt-[40px] flex justify-end">
         {currentCourseTopic.topicID &&
         currentCourseTopic.topicID < course.topics.length ? (
           <Button
