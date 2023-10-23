@@ -43,9 +43,13 @@ const CourseContentsTabs = () => {
         size="sm"
         className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
       >
-        {course.title}
+        {currentCourseTopic.topicID}.{" "}
+        {
+          currentCourseTopic.versions[currentCourseTopic.versions.length - 1]
+            .title
+        }
       </LargeHeading>
-      <TabsList className="">
+      <TabsList className="mt-4">
         {tabElements.map((element) => (
           <TabsTrigger
             key={element.name}

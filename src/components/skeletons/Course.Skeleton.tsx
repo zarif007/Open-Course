@@ -16,8 +16,7 @@ const CourseSkeleton = () => {
       </div>
       <div className="md:w-9/12 w-full m-3 mt-2">
         <Skeleton className="h-16 w-full" />
-        <Skeleton className="h-10 w-80 mt-2" />
-        <Skeleton className="h-14 w-[70%] mt-2 mb-6 mx-auto" />
+        <Skeleton className="h-10 w-80 my-2" />
         <Skeleton className="h-96 w-full" />
       </div>
     </section>

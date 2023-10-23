@@ -4,16 +4,14 @@
 import React from "react";
 import Paragraph from "../ui/Paragraph";
 import { ICourse } from "@/types/course";
-import { useTheme } from "next-themes";
 import SelectedTopics from "../course-details/SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { Button, buttonVariants } from "../ui/Button";
+import { buttonVariants } from "../ui/Button";
 import {
   PiChatsDuotone,
   PiUsersThreeDuotone,
   PiShootingStarDuotone,
 } from "react-icons/pi";
-import { useRouter } from "next/navigation";
 import ContentLogos from "../course-content/ContentLogos";
 import calculateAvgRating from "@/utils/calculateAvgRating";
 import { IUser } from "@/types/user";
@@ -24,12 +22,9 @@ import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
 import { ICourseTopic } from "@/types/courseTopic";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import { Tooltip } from "../ui/Tooltip";
 import TooltipComponent from "../ui/TooltipComponent";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
-  const { theme } = useTheme();
-
   const creator = course.creator as IUser;
 
   const generatedBanner = generateBannerFromCourse(course);
