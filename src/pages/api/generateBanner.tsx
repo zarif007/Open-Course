@@ -6,6 +6,8 @@ export const config = {
   runtime: "edge",
 };
 
+export const revalidate = 3600;
+
 const handler: NextApiHandler = async (req: NextApiRequest) => {
   const BebasNeueRegular = await fetch(
     new URL("../../../public/BebasNeue-Regular.ttf", import.meta.url)

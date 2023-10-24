@@ -19,6 +19,8 @@ export const GET = async (req: NextRequest) => {
     req.nextUrl.searchParams,
     courseFilterableFields
   );
+
+  console.log(filtersData);
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(
       pick(req.nextUrl.searchParams, paginationFields)
@@ -36,6 +38,7 @@ export const GET = async (req: NextRequest) => {
       })),
     });
   }
+  console.log(andConditions, searchTerm, courseSearchableFields);
   // Filters needs $and to full fill all the conditions
   if (Object.keys(filtersData).length) {
     andConditions.push({

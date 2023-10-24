@@ -21,7 +21,7 @@ const GeneralNavbar = () => {
 
   const { theme, setTheme } = useTheme();
   return (
-    <div className="max-w-screen-xl flex flex-wrap items-center justify-between">
+    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
       {theme ? (
         <Link href="/" className="flex items-center space-x-1">
           <Image

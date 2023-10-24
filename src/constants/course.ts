@@ -5,7 +5,7 @@ export const courseSearchableFields = [
   "title",
   "description",
   "tags",
-  "creator.externalId",
+  "creator",
   "categories",
   "levels",
   "languages",
@@ -14,7 +14,7 @@ export const courseSearchableFields = [
 export const courseFilterableFields = [
   "searchTerm",
   "tags",
-  "creator.externalId",
+  "creator",
   "categories",
   "levels",
   "languages",

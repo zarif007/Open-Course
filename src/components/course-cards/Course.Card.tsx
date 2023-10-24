@@ -6,7 +6,7 @@ import Paragraph from "../ui/Paragraph";
 import { ICourse } from "@/types/course";
 import SelectedTopics from "../course-details/SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { buttonVariants } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
 import {
   PiChatsDuotone,
   PiUsersThreeDuotone,
@@ -22,7 +22,11 @@ import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
 import { ICourseTopic } from "@/types/courseTopic";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import TooltipComponent from "../ui/TooltipComponent";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/HoverCard";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -79,12 +83,26 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             }}
           />
 
-          <TooltipComponent content={course.categories.join(" \n ")}>
-            <SelectedTopics
-              mode="view"
-              selectedTopics={course.categories.map((x) => x.split(" ")[0])}
-            />
-          </TooltipComponent>
+          <div className="flex space-x-1 items-center">
+            {course.categories.map((category) => {
+              return (
+                <HoverCard key={category}>
+                  <HoverCardTrigger className="cursor-pointer">
+                    <SelectedTopics
+                      mode="view"
+                      selectedTopics={[category.split(" ")[0]]}
+                    />
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <p className="font-semibold mb-3">{category}</p>
+                    <Button className="px-2 w-full">
+                      View Courses {category.split(" ")[0]}
+                    </Button>
+                  </HoverCardContent>
+                </HoverCard>
+              );
+            })}
+          </div>
 
           <div className="flex justify-between">
             <ContentLogos
