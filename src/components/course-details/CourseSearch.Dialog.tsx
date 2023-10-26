@@ -35,13 +35,13 @@ const CourseSearchDialog = () => {
           placeholder="Search Courses"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {searchTerm !== "" && (
+        {searchTermFromParams !== "" && (
           <React.Fragment>
             <label htmlFor="text" className="font-bold">
               Searching for
             </label>
             <p className="px-2 dark:bg-slate-100 bg-gray-950 w-fit rounded text-slate-100 dark:text-gray-950 font-semibold text-md">
-              {searchTerm}
+              {searchTermFromParams}
             </p>
           </React.Fragment>
         )}
