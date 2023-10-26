@@ -89,6 +89,7 @@ export const GET = async (req: NextRequest) => {
       data: courses,
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({
       data: [],
     });

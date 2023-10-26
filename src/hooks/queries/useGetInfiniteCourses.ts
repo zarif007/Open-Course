@@ -4,16 +4,20 @@ import axios from "axios";
 
 const LIMIT = 6;
 
-const getCourses = async (page: number) => {
-  const { data } = await axios.get(
-    `${nextApiEndPoint}/courses?page=${page}&limit=${LIMIT}`
-  );
+const getCourses = async (page: number, searchTerm: string) => {
+  let url = `${nextApiEndPoint}/courses?page=${page}&limit=${LIMIT}`;
+
+  if (searchTerm !== "") {
+    url += `&searchTerm=${searchTerm}`;
+  }
+  console.log(url);
+  const { data } = await axios.get(url);
   return data.data;
 };
-const useGetInfiniteCourses = () => {
+const useGetInfiniteCourses = (searchTerm: string) => {
   return useInfiniteQuery(
     ["courses"],
-    async ({ pageParam = 1 }) => await getCourses(pageParam),
+    async ({ pageParam = 1 }) => await getCourses(pageParam, searchTerm),
     {
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
