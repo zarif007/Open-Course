@@ -145,7 +145,6 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             </div>
           </div>
           <Link
-            prefetch={false}
             href={`course-landing/${course.slug}`}
             className={`${buttonVariants({
               variant: "default",

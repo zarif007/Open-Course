@@ -4,8 +4,8 @@ export const courseStatuses = ["draft", "published"];
 export const courseSearchableFields = [
   "title",
   "description",
+  "categories",
   "tags",
-  "creator",
   "categories",
   "levels",
   "languages",
@@ -14,11 +14,9 @@ export const courseSearchableFields = [
 export const courseFilterableFields = [
   "searchTerm",
   "tags",
-  "creator",
   "categories",
   "levels",
   "languages",
-  "ratings",
 ];
 
 export const languages = [
