@@ -16,7 +16,7 @@ export interface ICourse {
   levels: string[] | [];
   languages: string[] | [];
   description: string;
-  banner?: string;
+  banner: string;
   slug: string;
   topics: ICourseTopic[] | Types.ObjectId[];
   tags: string[];

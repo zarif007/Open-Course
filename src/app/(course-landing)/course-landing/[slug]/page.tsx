@@ -42,7 +42,9 @@ export const generateMetadata = async ({
     return constructMetadata();
   }
 
-  const generatedBanner = generateBannerFromCourse(course);
+  const creator = course.creator as IUser;
+
+  const generatedBanner = generateBannerFromCourse(course, creator.name);
 
   return constructMetadata({
     title: course?.title,

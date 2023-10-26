@@ -31,15 +31,16 @@ import {
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
 
-  const generatedBanner = generateBannerFromCourse(course);
+  const generatedBanner = generateBannerFromCourse(course, creator.name);
 
   return (
     <div className="p-4">
-      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
+      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
         <BlurredImage
-          src={generatedBanner}
+          src={course.banner === "" ? generatedBanner : course.banner}
           alt="blog"
-          className="lg:h-48 md:h-36 w-full object-cover object-center border border-rose-500"
+          dimension="lg:h-48 md:h-36 w-full"
+          className="lg:h-48 md:h-36 w-full rounded object-cover object-center border border-rose-500"
         />
         <div className="flex space-x-2 -mt-8 mx-2">
           {course.languages.map((lang) => {
@@ -144,6 +145,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             </div>
           </div>
           <Link
+            prefetch={false}
             href={`course-landing/${course.slug}`}
             className={`${buttonVariants({
               variant: "default",

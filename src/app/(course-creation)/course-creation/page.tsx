@@ -17,6 +17,8 @@ import { useSession } from "next-auth/react";
 import { MdCancel, MdFileDownloadDone } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import LargeHeading from "@/components/ui/LargeHeading";
+import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
+import CourseBannerCreationForm from "@/components/course-banner/CourseBannerCreation.Form";
 
 const MODE = "creation";
 
@@ -33,7 +35,9 @@ const CourseCreation = () => {
 
   const { data: session } = useSession();
 
-  const [currentTab, setCurrentTab] = useState<"des" | "top">("des");
+  const [currentTab, setCurrentTab] = useState<
+    "description" | "topic" | "banner"
+  >("description");
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -42,12 +46,13 @@ const CourseCreation = () => {
   const router = useRouter();
 
   const onOutlineButtonClicked = () => {
-    if (currentTab === "des") router.push("/");
-    else setCurrentTab("des");
+    if (currentTab === "description") router.push("/");
+    else setCurrentTab(currentTab === "banner" ? "topic" : "description");
   };
 
   const onGeneralButtonClicked = () => {
-    if (currentTab === "des") setCurrentTab("top");
+    if (currentTab !== "banner")
+      setCurrentTab(currentTab === "description" ? "topic" : "banner");
     else handleSubmit();
   };
 
@@ -99,6 +104,10 @@ const CourseCreation = () => {
       slug: course.slug ? course.slug : createSlug(course.title),
       topics: courseTopics.filter((topic) => topic.id !== 0),
       creator: signedInUser.id,
+      banner:
+        course.banner === ""
+          ? generateBannerFromCourse(course, signedInUser.name)
+          : course.banner,
     };
 
     try {
@@ -122,12 +131,12 @@ const CourseCreation = () => {
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
-      {currentTab === "des" ? (
+      {currentTab === "description" ? (
         <div className="w-full max-w-5xl mx-auto my-auto pt-8">
           <LargeHeading>Course Details</LargeHeading>
           <CourseDetailsCreation />
         </div>
-      ) : (
+      ) : currentTab === "topic" ? (
         <div className="flex pb-24">
           {/* Left */}
           <CourseTopicsBar
@@ -145,6 +154,8 @@ const CourseCreation = () => {
             <CourseTopicCreation />
           </div>
         </div>
+      ) : (
+        <CourseBannerCreationForm />
       )}
       <div className="flex justify-center pt-6 space-x-3 items-center w-full">
         <Button
@@ -152,9 +163,9 @@ const CourseCreation = () => {
           className="flex space-x-2 items-center focus:ring-0"
           onClick={onOutlineButtonClicked}
         >
-          {currentTab === "des" ? <MdCancel /> : <IoIosArrowBack />}
+          {currentTab === "description" ? <MdCancel /> : <IoIosArrowBack />}
           <p className="font-semibold">
-            {currentTab === "des" ? "Cancel" : "Previous"}
+            {currentTab === "description" ? "Cancel" : "Previous"}
           </p>
         </Button>
         <Button
@@ -164,13 +175,13 @@ const CourseCreation = () => {
           onClick={onGeneralButtonClicked}
         >
           <p className="font-semibold">
-            {currentTab === "des"
+            {currentTab !== "banner"
               ? "Next"
               : loadingStatus !== "free"
               ? loadingStatus
               : "Done Creating Course?"}
           </p>
-          {currentTab === "des" ? (
+          {currentTab !== "banner" ? (
             <IoIosArrowForward />
           ) : (
             <MdFileDownloadDone />

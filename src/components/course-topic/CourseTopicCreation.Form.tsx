@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "../ui/Button";
-import { z, ZodType } from "zod";
 import { ICourseTopic } from "@/types/courseTopic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

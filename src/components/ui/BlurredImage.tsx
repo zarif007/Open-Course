@@ -6,10 +6,12 @@ const BlurredImage = ({
   src,
   alt,
   className,
+  dimension,
 }: {
   src: string;
   alt: string;
   className: string;
+  dimension: string;
 }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -25,7 +27,7 @@ const BlurredImage = ({
         onLoad={handleImageLoad}
         className={`${className} ${loaded ? "flex" : "hidden"}`}
       />
-      {!loaded && <Skeleton className="lg:h-48 md:h-36 w-full h-48" />}
+      {!loaded && <Skeleton className={dimension} />}
     </div>
   );
 };

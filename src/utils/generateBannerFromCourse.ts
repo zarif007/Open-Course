@@ -1,14 +1,12 @@
 import { ICourse } from "@/types/course";
 import { IUser } from "@/types/user";
 
-const generateBannerFromCourse = (course: ICourse) => {
-  const creator = course?.creator as IUser;
-
+const generateBannerFromCourse = (course: ICourse, creator: string) => {
   return `/api/generateBanner?courseTitle=${course?.title}&theme=dark&slug=${
     course.slug
   }&
       &topics=${course?.categories ? course?.categories.join("  ") : ""}
-      &creator=${creator.name}`;
+      &creator=${creator}`;
 };
 
 export default generateBannerFromCourse;
