@@ -53,15 +53,15 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
+          className="w-full justify-between bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
         >
-          {value ? value : `Select ${title}...`}
+          {value ? value : `Select ${title}`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        side="right"
-        className="w-[200px] p-0 bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
+        side="bottom"
+        className="w-full p-0 bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
       >
         <Command>
           <CommandInput placeholder={`Search ${title}...`} />

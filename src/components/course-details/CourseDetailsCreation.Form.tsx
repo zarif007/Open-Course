@@ -69,7 +69,7 @@ const CourseDetailsCreationForm = () => {
             className="text-lg font-semibold"
           />
         </div>
-        <div className="w-full flex flex-wrap">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-1">
           <div className="mr-1 flex flex-col my-1">
             <label htmlFor="text" className="font-bold">
               Category (Max. 3)
@@ -94,7 +94,6 @@ const CourseDetailsCreationForm = () => {
               setCurrentValuesFunction={setSelectedLevels}
             />
           </div>
-
           <div className="mr-1 flex flex-col my-1">
             <label htmlFor="text" className="font-bold">
               Language (Max. 3)

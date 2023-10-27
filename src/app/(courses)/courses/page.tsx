@@ -17,13 +17,26 @@ const Courses = () => {
   const searchParams = useSearchParams();
 
   const searchTerm = searchParams?.get("searchTerm") ?? "";
+  const category = searchParams?.get("category") ?? "";
+  const level = searchParams?.get("level") ?? "";
+  const language = searchParams?.get("language") ?? "";
+
+  const constructUrl = () => {
+    let url = "";
+    if (searchTerm !== "") url += `&searchTerm=${searchTerm}`;
+    if (category !== "") url += `&category=${category}`;
+    if (level !== "") url += `&level=${level}`;
+    if (language !== "") url += `&language=${language}`;
+
+    return url;
+  };
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, refetch } =
-    useGetInfiniteCourses(searchTerm);
+    useGetInfiniteCourses(constructUrl());
 
   useEffect(() => {
     refetch();
-  }, [searchTerm]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (inView && hasNextPage) {

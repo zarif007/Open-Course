@@ -8,7 +8,7 @@ const getCourses = async (page: number, searchTerm: string) => {
   let url = `${nextApiEndPoint}/courses?page=${page}&limit=${LIMIT}`;
 
   if (searchTerm !== "") {
-    url += `&searchTerm=${searchTerm}`;
+    url += searchTerm;
   }
   console.log(url);
   const { data } = await axios.get(url);
