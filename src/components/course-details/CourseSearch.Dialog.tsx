@@ -30,18 +30,21 @@ const CourseSearchDialog = () => {
 
     if (searchTerm !== "") url += `?searchTerm=${searchTerm}`;
 
+    console.log(selectedCategories);
     if (selectedCategories.length) {
       url += url.length ? "&" : "?";
-      url += `category=${selectedCategories.join(",")}`;
+      url += `categories=${selectedCategories.join(",")}`;
     }
     if (selectedLevels.length) {
       url += url.length ? "&" : "?";
-      url += `level=${selectedLevels.join(",")}`;
+      url += `levels=${selectedLevels.join(",")}`;
     }
     if (selectedLanguages.length) {
       url += url.length ? "&" : "?";
-      url += `language=${selectedLanguages.join(",")}`;
+      url += `languages=${selectedLanguages.join(",")}`;
     }
+    url = url !== "" ? url : "/courses";
+    console.log(url);
     router.push(url);
   };
 
@@ -50,12 +53,12 @@ const CourseSearchDialog = () => {
       <DialogTrigger>
         <Button className="flex space-x-2">
           <TbFilterSearch className="w-6 h-6" />
-          <p className="font-semibold">Search & Filter</p>
+          <p className="font-semibold">Search or Filter</p>
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-2xl w-full">
         <label htmlFor="text" className="font-bold">
-          Search Courses
+          Search or Filter Courses
         </label>
         <Input
           defaultValue={searchTerm}
@@ -81,7 +84,7 @@ const CourseSearchDialog = () => {
               list={courseCategories}
               currentValues={selectedCategories}
               setCurrentValuesFunction={(categories: string[]) => {
-                setSelectedCategories([...selectedCategories, ...categories]);
+                setSelectedCategories(categories);
               }}
             />
             <SelectedTopics
@@ -97,7 +100,7 @@ const CourseSearchDialog = () => {
               list={courseLevels}
               currentValues={selectedLevels}
               setCurrentValuesFunction={(levels: string[]) => {
-                setSelectedLevels([...selectedLevels, ...levels]);
+                setSelectedLevels(levels);
               }}
             />
             <SelectedTopics
@@ -113,7 +116,7 @@ const CourseSearchDialog = () => {
               list={languages}
               currentValues={selectedLanguages}
               setCurrentValuesFunction={(languages: string[]) => {
-                setSelectedLanguages([...selectedLanguages, ...languages]);
+                setSelectedLanguages(languages);
               }}
             />
             <SelectedTopics
@@ -124,7 +127,7 @@ const CourseSearchDialog = () => {
           </div>
         </div>
 
-        <DialogClose className="w-full">
+        <DialogClose>
           <Button onClick={constructUrlAndSearch} className="w-full">
             Search
           </Button>

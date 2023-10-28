@@ -10,7 +10,7 @@ const getCourses = async (page: number, searchTerm: string) => {
   if (searchTerm !== "") {
     url += searchTerm;
   }
-  console.log(url);
+
   const { data } = await axios.get(url);
   return data.data;
 };

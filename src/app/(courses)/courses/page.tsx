@@ -17,16 +17,16 @@ const Courses = () => {
   const searchParams = useSearchParams();
 
   const searchTerm = searchParams?.get("searchTerm") ?? "";
-  const category = searchParams?.get("category") ?? "";
-  const level = searchParams?.get("level") ?? "";
-  const language = searchParams?.get("language") ?? "";
+  const categories = searchParams?.get("categories") ?? "";
+  const levels = searchParams?.get("levels") ?? "";
+  const languages = searchParams?.get("languages") ?? "";
 
   const constructUrl = () => {
     let url = "";
     if (searchTerm !== "") url += `&searchTerm=${searchTerm}`;
-    if (category !== "") url += `&category=${category}`;
-    if (level !== "") url += `&level=${level}`;
-    if (language !== "") url += `&language=${language}`;
+    if (categories !== "") url += `&categories=${categories}`;
+    if (levels !== "") url += `&levels=${levels}`;
+    if (languages !== "") url += `&languages=${languages}`;
 
     return url;
   };

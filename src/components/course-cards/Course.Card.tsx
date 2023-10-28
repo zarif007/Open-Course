@@ -27,9 +27,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/HoverCard";
+import { useRouter } from "next/navigation";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
+
+  const router = useRouter();
 
   const generatedBanner = generateBannerFromCourse(course, creator.name);
 
@@ -96,7 +99,12 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <p className="font-semibold mb-3">{category}</p>
-                    <Button className="px-2 w-full">
+                    <Button
+                      className="px-2 w-full"
+                      onClick={() =>
+                        router.push(`/courses?categories=${category}`)
+                      }
+                    >
                       View Courses {category.split(" ")[0]}
                     </Button>
                   </HoverCardContent>

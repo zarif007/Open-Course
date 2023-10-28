@@ -47,11 +47,13 @@ export const GET = async (req: NextRequest) => {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
         [field]: {
-          $in: value,
+          $all: value,
         },
       })),
     });
   }
+
+  console.log(andConditions);
 
   // Dynamic  Sort needs  field to  do sorting
   const sortConditions: { [key: string]: SortOrder } = {};
