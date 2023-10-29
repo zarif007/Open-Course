@@ -28,6 +28,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/HoverCard";
 import { useRouter } from "next/navigation";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -42,8 +43,8 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         <BlurredImage
           src={course.banner === "" ? generatedBanner : course.banner}
           alt="blog"
-          dimension="lg:h-48 md:h-36 w-full"
-          className="lg:h-48 md:h-36 w-full rounded object-cover object-center border border-rose-500"
+          dimension="h-48 w-full"
+          className="h-48 w-full rounded object-cover object-center border border-rose-500"
         />
         <div className="flex space-x-2 -mt-8 mx-2">
           {course.languages.map((lang) => {
@@ -90,14 +91,14 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           <div className="flex space-x-1 items-center">
             {course.categories.map((category) => {
               return (
-                <HoverCard key={category}>
-                  <HoverCardTrigger className="cursor-pointer">
+                <Popover key={category}>
+                  <PopoverTrigger className="cursor-pointer">
                     <SelectedTopics
                       mode="view"
                       selectedTopics={[category.split(" ")[0]]}
                     />
-                  </HoverCardTrigger>
-                  <HoverCardContent>
+                  </PopoverTrigger>
+                  <PopoverContent>
                     <p className="font-semibold mb-3">{category}</p>
                     <Button
                       className="px-2 w-full"
@@ -107,8 +108,8 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                     >
                       View Courses {category.split(" ")[0]}
                     </Button>
-                  </HoverCardContent>
-                </HoverCard>
+                  </PopoverContent>
+                </Popover>
               );
             })}
           </div>

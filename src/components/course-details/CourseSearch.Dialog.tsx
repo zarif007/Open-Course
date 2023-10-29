@@ -20,8 +20,14 @@ const CourseSearchDialog = () => {
   const searchParams = useSearchParams();
 
   const searchTermFromParams = searchParams?.get("searchTerm") ?? "";
+  const categoriesFromParams = searchParams?.get("categories") ?? "";
+  const levelsFromParams = searchParams?.get("levels") ?? "";
+  const languagesFromParams = searchParams?.get("languages") ?? "";
+
   const [searchTerm, setSearchTerm] = useState<string>(searchTermFromParams);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    categoriesFromParams.split(",")
+  );
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 

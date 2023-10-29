@@ -2,7 +2,7 @@
 
 import CourseCard from "@/components/course-cards/Course.Card";
 import { ICourse } from "@/types/course";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import CourseCardSkeleton from "@/components/skeletons/CourseCard.Skeleton";
 import useGetInfiniteCourses from "@/hooks/queries/useGetInfiniteCourses";
@@ -13,6 +13,8 @@ const LIMIT = 6;
 
 const Courses = () => {
   const { ref, inView } = useInView();
+
+  const [courses, setCourses] = useState<ICourse[] | null>(null);
 
   const searchParams = useSearchParams();
 
@@ -35,6 +37,7 @@ const Courses = () => {
     useGetInfiniteCourses(constructUrl());
 
   useEffect(() => {
+    setCourses(null);
     refetch();
   }, [searchParams]);
 
@@ -44,7 +47,9 @@ const Courses = () => {
     }
   }, [inView, fetchNextPage, hasNextPage]);
 
-  const courses = data?.pages.flatMap((page) => page);
+  useEffect(() => {
+    setCourses(data?.pages.flatMap((page) => page) as ICourse[] | null);
+  }, [data]);
 
   return (
     <div className="md:mx-4">
