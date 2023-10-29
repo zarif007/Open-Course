@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { TbFilterSearch } from "react-icons/tb";
@@ -8,7 +9,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/Dialog";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/Input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Combobox } from "../ui/Combobox";
@@ -25,18 +26,27 @@ const CourseSearchDialog = () => {
   const languagesFromParams = searchParams?.get("languages") ?? "";
 
   const [searchTerm, setSearchTerm] = useState<string>(searchTermFromParams);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    categoriesFromParams.split(",")
-  );
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedCategories(
+      categoriesFromParams !== "" ? categoriesFromParams.split(",") : []
+    );
+    setSelectedLevels(
+      levelsFromParams !== "" ? levelsFromParams.split(",") : []
+    );
+    setSelectedLanguages(
+      languagesFromParams !== "" ? languagesFromParams.split(",") : []
+    );
+  }, [categoriesFromParams, levelsFromParams, languagesFromParams]);
 
   const constructUrlAndSearch = () => {
     let url = "";
 
     if (searchTerm !== "") url += `?searchTerm=${searchTerm}`;
 
-    console.log(selectedCategories);
     if (selectedCategories.length) {
       url += url.length ? "&" : "?";
       url += `categories=${selectedCategories.join(",")}`;
@@ -50,7 +60,6 @@ const CourseSearchDialog = () => {
       url += `languages=${selectedLanguages.join(",")}`;
     }
     url = url !== "" ? url : "/courses";
-    console.log(url);
     router.push(url);
   };
 

@@ -4,7 +4,7 @@ import { Skeleton } from "../ui/Skeleton";
 const CourseCardSkeleton = () => {
   return (
     <div className="my-2 h-full border-2 border-slate-300 dark:border-gray-800 rounded-lg overflow-hidden">
-      <Skeleton className="lg:h-48 md:h-36 w-full h-48" />
+      <Skeleton className="h-48 w-full" />
       <div className="p-6">
         <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 mb-1">
           <Skeleton className="w-[100px]" />
