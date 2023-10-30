@@ -138,7 +138,7 @@ const CourseCreation = () => {
           <CourseDetailsCreation />
         </div>
       ) : currentTab === "topic" ? (
-        <div className="flex pb-24">
+        <div className="flex pb-20">
           {/* Left */}
           <CourseTopicsBar
             showCourseTopics={showCourseTopics}
@@ -158,9 +158,11 @@ const CourseCreation = () => {
       ) : (
         <CourseBannerCreationForm />
       )}
+
       <CourseCreationSteps
         step={currentTab === "description" ? 0 : currentTab === "topic" ? 1 : 2}
       />
+
       <div className="flex justify-center pt-6 space-x-3 items-center w-full">
         <Button
           variant="outline"

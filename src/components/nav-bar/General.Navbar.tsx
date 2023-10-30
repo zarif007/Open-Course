@@ -88,33 +88,12 @@ const GeneralNavbar = () => {
         <ul className="flex flex-col font-lg font-bold p-4 md:p-0 mt-4  md:flex-row md:space-x-8 md:mt-0">
           {routeElements.map((route) => (
             <li key={route.name}>
-              {route.name === "Create" ? (
-                <Menubar>
-                  <MenubarMenu>
-                    <MenubarTrigger className="!bg-transparent">
-                      <p className="text-lg font-bold mb-4 block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 md:p-0 md:dark:hover:text-rose-500">
-                        Create
-                      </p>
-                    </MenubarTrigger>
-                    <MenubarContent className="bg-slate-100 mx-2 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 rounded">
-                      <MenubarItem className={styles.menuBarItems}>
-                        <Link href="/course-creation">Course</Link>
-                      </MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarItem className={styles.menuBarItems}>
-                        <Link href="/roadmap-creation">Roadmap</Link>
-                      </MenubarItem>
-                    </MenubarContent>
-                  </MenubarMenu>
-                </Menubar>
-              ) : (
-                <Link
-                  href={route.redirectTo}
-                  className="block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 md:p-0 md:dark:hover:text-rose-500"
-                >
-                  {route.name}
-                </Link>
-              )}
+              <Link
+                href={route.redirectTo}
+                className="block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 px-4 py-2 md:dark:hover:text-rose-500 dark:hover:bg-gray-900 hover:bg-slate-300"
+              >
+                {route.name}
+              </Link>
             </li>
           ))}
         </ul>
