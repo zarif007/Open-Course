@@ -10,9 +10,27 @@ import { IUser } from "@/types/user";
 import ContentLogos from "@/components/course-content/ContentLogos";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
+import { useSession } from "next-auth/react";
+import { Button } from "../ui/Button";
+import { FcSettings } from "react-icons/fc";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import { useRouter } from "next/navigation";
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
+  const { data: session } = useSession();
+
   const creator = course.creator as IUser;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
+
+  const handleSettings = () => {
+    dispatch(setCourseForUpdate(course));
+    router.push(`/course-update`);
+  };
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
@@ -27,7 +45,15 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
         </Avatar>
         <Paragraph className="font-bold text-md">{creator.name}</Paragraph>
       </div>
-
+      {creator.email === session?.user?.email && (
+        <Button
+          onClick={handleSettings}
+          className="w-fit mx-auto flex space-x-1"
+        >
+          <FcSettings />
+          <p>Settings</p>
+        </Button>
+      )}
       <div className="flex flex-wrap mx-auto">
         <div className="m-1">
           <label className="font-semibold">Categories</label>

@@ -22,6 +22,8 @@ import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
 import { signIn, useSession } from "next-auth/react";
+import { useAppSelector } from "@/redux/store";
+import { IUser } from "@/types/user";
 
 const CourseLandingPage = ({
   course,

@@ -38,6 +38,7 @@ const Courses = () => {
 
   useEffect(() => {
     setCourses(null);
+    console.log(searchParams);
     refetch();
   }, [searchParams]);
 

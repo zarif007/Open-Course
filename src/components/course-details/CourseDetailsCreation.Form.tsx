@@ -10,35 +10,33 @@ import { ICourse } from "@/types/course";
 import { courseCategories, courseLevels, languages } from "@/constants/course";
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 import { ImUnlocked } from "react-icons/im";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
-const CourseDetailsCreationForm = () => {
+const CourseDetailsCreationForm = ({
+  mode,
+  setSelectedCourseCategories,
+  setSelectedLevels,
+  setSelectedLanguages,
+}: {
+  mode: "creation" | "edit";
+  setSelectedCourseCategories: (categories: string[]) => void;
+  setSelectedLevels: (levels: string[]) => void;
+  setSelectedLanguages: (languages: string[]) => void;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const updateCourse = (course: ICourse) => {
-    dispatch(setCourseForCreation(course));
-  };
-
-  const setSelectedCourseTypes = (categories: string[]) => {
-    updateCourse({
-      ...course,
-      categories,
-    });
-  };
-  const setSelectedLevels = (levels: string[]) => {
-    updateCourse({
-      ...course,
-      levels,
-    });
-  };
-  const setSelectedLanguages = (languages: string[]) => {
-    updateCourse({
-      ...course,
-      languages,
-    });
+    dispatch(
+      mode === "creation"
+        ? setCourseForCreation(course)
+        : setCourseForUpdate(course)
+    );
   };
 
   return (
@@ -50,9 +48,7 @@ const CourseDetailsCreationForm = () => {
         <Input
           className={`h-12 md:h-16 text-gray-950 dark:text-slate-100 text-2xl md:text-4xl border font-bold`}
           defaultValue={course.title}
-          onChange={(e) =>
-            dispatch(setCourseForCreation({ ...course, title: e.target.value }))
-          }
+          onChange={(e) => updateCourse({ ...course, title: e.target.value })}
         />
       </div>
 
@@ -64,6 +60,9 @@ const CourseDetailsCreationForm = () => {
           defaultValue=""
           placeholder="About this course"
           className="text-lg font-semibold border"
+          onChange={(e) =>
+            updateCourse({ ...course, description: e.target.value })
+          }
         />
       </div>
 
@@ -114,7 +113,7 @@ const CourseDetailsCreationForm = () => {
             title="Category"
             list={courseCategories}
             currentValues={course.categories}
-            setCurrentValuesFunction={setSelectedCourseTypes}
+            setCurrentValuesFunction={setSelectedCourseCategories}
           />
         </div>
         <div className=" flex flex-col my-1">

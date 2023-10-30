@@ -12,15 +12,15 @@ import { useSession } from "next-auth/react";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import CourseCreationUpdate from "@/components/course-details/Course.CreationUpdate";
 
-const MODE = "creation";
+const MODE = "edit";
 
-const CourseCreation = () => {
+const CourseUpdate = () => {
   const [loadingStatus, setLoadingStatus] = useState<
     "free" | "Processing" | "Redirecting"
   >("free");
 
   const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+    (state) => state.courseUpdateReducer.value.course
   );
 
   const { data: session } = useSession();
@@ -86,15 +86,16 @@ const CourseCreation = () => {
     };
 
     try {
-      const { data } = await axios.post(`api/course`, courseData);
+      const { data } = await axios.put(`api/course/${course.id}`, courseData);
       toast({
-        title: "Course Created",
+        title: "Course Updated",
         type: "success",
-        message: "Course Created Successfully",
+        message: "Course Updated Successfully",
       });
       setLoadingStatus("Redirecting");
       router.push(`course-landing/${data.data.slug}`);
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error",
         type: "error",
@@ -113,4 +114,4 @@ const CourseCreation = () => {
   );
 };
 
-export default CourseCreation;
+export default CourseUpdate;

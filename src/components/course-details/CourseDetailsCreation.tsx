@@ -5,19 +5,26 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { ICourse } from "@/types/course";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
-const CourseDetailsCreation = () => {
+const CourseDetailsCreation = ({ mode }: { mode: "creation" | "edit" }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const updateCourse = (course: ICourse) => {
-    dispatch(setCourseForCreation(course));
+    dispatch(
+      mode === "creation"
+        ? setCourseForCreation(course)
+        : setCourseForUpdate(course)
+    );
   };
 
-  const setSelectedCourseTypes = (categories: string[]) => {
+  const setSelectedCourseCategories = (categories: string[]) => {
     updateCourse({
       ...course,
       categories,
@@ -38,14 +45,19 @@ const CourseDetailsCreation = () => {
 
   return (
     <div className="border-2 border-slate-200 dark:border-gray-900 rounded my-4 m-2 md:m-6 px-6 py-8">
-      <CourseDetailsCreationForm />
+      <CourseDetailsCreationForm
+        mode={mode}
+        setSelectedCourseCategories={setSelectedCourseCategories}
+        setSelectedLevels={setSelectedLevels}
+        setSelectedLanguages={setSelectedLanguages}
+      />
 
       <div className="flex flex-wrap">
         {[
           {
             elements: course.categories,
             label: "Categories",
-            setter: setSelectedCourseTypes,
+            setter: setSelectedCourseCategories,
           },
           {
             elements: course.levels,

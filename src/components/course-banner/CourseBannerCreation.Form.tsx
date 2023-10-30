@@ -7,26 +7,40 @@ import { Button } from "../ui/Button";
 import { useDispatch } from "react-redux";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { toast } from "../ui/Toast";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
-const CourseBannerCreationForm = () => {
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+const CourseBannerCreationForm = ({ mode }: { mode: "creation" | "edit" }) => {
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
-  const [banner, setBanner] = useState<string>(
-    generateBannerFromCourse(course, signedInUser?.name ?? "")
-  );
+  const [banner, setBanner] = useState<string>("");
+
+  useEffect(() => {
+    console.log(course.banner);
+    if (!course.title) return;
+    setBanner(
+      !course.banner || course.banner === ""
+        ? generateBannerFromCourse(course, signedInUser?.name ?? "")
+        : course.banner
+    );
+  }, [course]);
 
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSetBanner = () => {
+    const updated = {
+      ...course,
+      banner,
+    };
     dispatch(
-      setCourseForCreation({
-        ...course,
-        banner,
-      })
+      mode === "creation"
+        ? setCourseForCreation(updated)
+        : setCourseForUpdate(updated)
     );
     toast({
       title: "Banner Added",

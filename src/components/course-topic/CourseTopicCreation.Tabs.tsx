@@ -9,11 +9,15 @@ import CourseContent from "../course-content/CourseContent";
 
 const CourseTopicCreationTabs = ({
   submitData,
+  mode,
 }: {
   submitData: (data: ICourseTopic) => void;
+  mode: "creation" | "edit";
 }) => {
-  const currentCourseTopic = useAppSelector(
-    (state) => state.courseCreationReducer.value.currentCourseTopic
+  const currentCourseTopic = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.currentCourseTopic
+      : state.courseUpdateReducer.value.currentCourseTopic
   );
   return (
     <Tabs defaultValue="create" className="w-full mx-auto px-2 md:px-4">
@@ -28,7 +32,7 @@ const CourseTopicCreationTabs = ({
         </TabsTrigger>
       </TabsList>
       <TabsContent value="create">
-        <CourseTopicCreationForm submitData={submitData} />
+        <CourseTopicCreationForm submitData={submitData} mode={mode} />
       </TabsContent>
       <TabsContent value="preview">
         <CourseContent courseTopic={currentCourseTopic} />

@@ -10,13 +10,17 @@ import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creati
 import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/Input";
+import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
+
   const course = useAppSelector((state) =>
     mode === "view"
       ? state.courseViewReducer.value.course
-      : state.courseCreationReducer.value.course
+      : mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const enrollState = useAppSelector(
@@ -73,7 +77,11 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
             onClick={() =>
               mode === "view"
                 ? redirectToCurrentCourseTopic(courseTopic)
-                : dispatch(setCurrentCourseTopicForCreation(courseTopic))
+                : dispatch(
+                    mode === "creation"
+                      ? setCurrentCourseTopicForCreation(courseTopic)
+                      : setCurrentCourseTopicForUpdate(courseTopic)
+                  )
             }
           >
             <CourseTopic index={index} courseTopic={courseTopic} mode={mode} />

@@ -11,19 +11,26 @@ import { Textarea } from "../ui/Textarea";
 import ErrorMessage from "../ui/ErrorMessage";
 import { topicCreationSchema } from "@/validations/topicCreation";
 import { topicInputFields } from "@/constants/courseTopics";
+import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
 
 const CourseTopicCreationForm = ({
   submitData,
+  mode,
 }: {
   submitData: (data: ICourseTopic) => void;
+  mode: "creation" | "edit";
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const currentCourseTopic = useAppSelector(
-    (state) => state.courseCreationReducer.value.currentCourseTopic
+  const currentCourseTopic = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.currentCourseTopic
+      : state.courseUpdateReducer.value.currentCourseTopic
   );
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const {
@@ -60,7 +67,11 @@ const CourseTopicCreationForm = ({
       versions: [{ title: "", url: "", description: "", duration: 0 }],
       topicID: -1,
     };
-    dispatch(setCurrentCourseTopicForCreation(resetValue));
+    dispatch(
+      mode === "creation"
+        ? setCurrentCourseTopicForCreation(resetValue)
+        : setCurrentCourseTopicForUpdate(resetValue)
+    );
     setDefaultValue(resetValue);
   };
 
@@ -107,19 +118,22 @@ const CourseTopicCreationForm = ({
                 field.key,
                 field.type === "number" ? { valueAsNumber: true } : {}
               )}
-              onChange={(e) =>
+              onChange={(e) => {
+                const updated: ICourseTopic = {
+                  ...currentCourseTopic,
+                  versions: [
+                    {
+                      ...currentCourseTopic.versions[0],
+                      [field.key]: field.value(e),
+                    },
+                  ],
+                };
                 dispatch(
-                  setCurrentCourseTopicForCreation({
-                    ...currentCourseTopic,
-                    versions: [
-                      {
-                        ...currentCourseTopic.versions[0],
-                        [field.key]: field.value(e),
-                      },
-                    ],
-                  })
-                )
-              }
+                  mode === "creation"
+                    ? setCurrentCourseTopicForCreation(updated)
+                    : setCurrentCourseTopicForUpdate(updated)
+                );
+              }}
               defaultValue={defaultValue.versions[0][field.key]}
               required
             />

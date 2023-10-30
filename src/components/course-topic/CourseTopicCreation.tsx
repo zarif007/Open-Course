@@ -7,11 +7,15 @@ import { toast } from "../ui/Toast";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
-const CourseTopicCreation = () => {
+const CourseTopicCreation = ({ mode }: { mode: "creation" | "edit" }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const compare = (a: ICourseTopic, b: ICourseTopic) => {
@@ -26,14 +30,20 @@ const CourseTopicCreation = () => {
 
   const submitData = async (data: ICourseTopic) => {
     const courseTopics = course.topics as ICourseTopic[];
+
     const filteredCourseTopics = courseTopics.filter(
       (courseTopic) => courseTopic.topicID !== data.topicID
     );
+
+    const updated = {
+      ...course,
+      topics: [...filteredCourseTopics, data].sort(compare),
+    };
+
     dispatch(
-      setCourseForCreation({
-        ...course,
-        topics: [...filteredCourseTopics, data].sort(compare),
-      })
+      mode === "creation"
+        ? setCourseForCreation(updated)
+        : setCourseForUpdate(updated)
     );
     toast({
       title: "Success",
@@ -49,7 +59,7 @@ const CourseTopicCreation = () => {
   return (
     <section className="mx-2">
       <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
-      <CourseTopicCreationTabs submitData={submitData} />
+      <CourseTopicCreationTabs submitData={submitData} mode={mode} />
     </section>
   );
 };

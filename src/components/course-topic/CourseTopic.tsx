@@ -3,19 +3,14 @@
 
 import React from "react";
 import Paragraph from "../ui/Paragraph";
-import {
-  FcApproval,
-  FcDeleteRow,
-  FcLock,
-  FcSettings,
-  FcSportsMode,
-} from "react-icons/fc";
+import { FcApproval, FcDeleteRow, FcLock, FcSportsMode } from "react-icons/fc";
 import TooltipComponent from "../ui/TooltipComponent";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { ICourseTopic } from "@/types/courseTopic";
 import { getFavicon } from "@/utils/getFavicon";
 import { useDispatch } from "react-redux";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
 const CourseTopic = ({
   index,
@@ -32,19 +27,24 @@ const CourseTopic = ({
 
   const faviconURL = getFavicon(courseTopic.versions[0].url);
 
-  const course = useAppSelector(
-    (state) => state.courseCreationReducer.value.course
+  const course = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.course
+      : state.courseUpdateReducer.value.course
   );
 
   const currentCourseTopic = useAppSelector((state) =>
     mode === "view"
       ? state.courseViewReducer.value.currentCourseTopic
-      : state.courseCreationReducer.value.currentCourseTopic
+      : mode === "creation"
+      ? state.courseCreationReducer.value.currentCourseTopic
+      : state.courseUpdateReducer.value.currentCourseTopic
   );
 
   const enrollState = useAppSelector(
     (state) => state.courseViewReducer.value.enrollState
   );
+
   const dispatch = useDispatch<AppDispatch>();
 
   const isValidTopic = (): boolean => {
@@ -56,13 +56,17 @@ const CourseTopic = ({
     e.stopPropagation();
     const topics = course.topics as ICourseTopic[];
 
+    const updated = {
+      ...course,
+      topics: topics.filter(
+        (topic: ICourseTopic) => topic.topicID !== courseTopic.topicID
+      ),
+    };
+
     dispatch(
-      setCourseForCreation({
-        ...course,
-        topics: topics.filter(
-          (topic: ICourseTopic) => topic.topicID !== courseTopic.topicID
-        ),
-      })
+      mode === "creation"
+        ? setCourseForCreation(updated)
+        : setCourseForUpdate(updated)
     );
   };
 

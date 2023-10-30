@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import courseCreationReducer from "./features/course-creation-slice";
 import courseViewReducer from "./features/course-view-slice";
+import courseUpdateReducer from "./features/course-update-slice";
 import signedInUserReducer from "./features/signed-In-user-slice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
@@ -8,6 +9,7 @@ export const store = configureStore({
   reducer: {
     courseCreationReducer,
     courseViewReducer,
+    courseUpdateReducer,
     signedInUserReducer,
   },
 });

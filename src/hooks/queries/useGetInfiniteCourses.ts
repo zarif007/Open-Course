@@ -5,6 +5,7 @@ import axios from "axios";
 const LIMIT = 6;
 
 const getCourses = async (page: number, searchTerm: string) => {
+  console.log("refetching.....");
   let url = `${nextApiEndPoint}/courses?page=${page}&limit=${LIMIT}`;
 
   if (searchTerm !== "") {
