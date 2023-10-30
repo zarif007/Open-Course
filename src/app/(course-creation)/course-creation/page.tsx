@@ -19,6 +19,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import LargeHeading from "@/components/ui/LargeHeading";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import CourseBannerCreationForm from "@/components/course-banner/CourseBannerCreation.Form";
+import CourseCreationSteps from "@/components/course-details/CourseCreationSteps";
 
 const MODE = "creation";
 
@@ -132,7 +133,7 @@ const CourseCreation = () => {
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
       {currentTab === "description" ? (
-        <div className="w-full max-w-5xl mx-auto my-auto pt-8">
+        <div className="w-full max-w-4xl mx-auto my-auto pt-8">
           <LargeHeading>Course Details</LargeHeading>
           <CourseDetailsCreation />
         </div>
@@ -157,6 +158,9 @@ const CourseCreation = () => {
       ) : (
         <CourseBannerCreationForm />
       )}
+      <CourseCreationSteps
+        step={currentTab === "description" ? 0 : currentTab === "topic" ? 1 : 2}
+      />
       <div className="flex justify-center pt-6 space-x-3 items-center w-full">
         <Button
           variant="outline"

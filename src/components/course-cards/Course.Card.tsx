@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Paragraph from "../ui/Paragraph";
 import { ICourse } from "@/types/course";
@@ -22,18 +21,11 @@ import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
 import { ICourseTopic } from "@/types/courseTopic";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/HoverCard";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
-
-  const router = useRouter();
 
   const generatedBanner = generateBannerFromCourse(course, creator.name);
 
@@ -46,17 +38,23 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           dimension="h-48 w-full"
           className="h-48 w-full rounded object-cover object-center border border-rose-500"
         />
+
         <div className="flex space-x-2 -mt-8 mx-2">
-          {course.languages.map((lang) => {
-            return (
-              <div
-                key={lang}
-                className="px-1 rounded bg-slate-100 text-gray-950"
-              >
-                {lang.split(" ")[0]}
-              </div>
-            );
-          })}
+          {course.languages.map((lang) => (
+            <PopoverComponent
+              key={lang}
+              topic={lang}
+              routerName="languages"
+              trigger={
+                <div
+                  key={lang}
+                  className="px-1 rounded bg-slate-100 text-gray-950"
+                >
+                  {lang.split(" ")[0]}
+                </div>
+              }
+            />
+          ))}
         </div>
         <div className="p-6">
           <div className="flex justify-between items-center">
@@ -69,6 +67,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               )}
             </p>
           </div>
+
           <Paragraph
             size="default"
             className="font-bold underline decoration-rose-500 decoration-2 truncate"
@@ -89,29 +88,19 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           />
 
           <div className="flex space-x-1 items-center">
-            {course.categories.map((category) => {
-              return (
-                <Popover key={category}>
-                  <PopoverTrigger className="cursor-pointer">
-                    <SelectedTopics
-                      mode="view"
-                      selectedTopics={[category.split(" ")[0]]}
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <p className="font-semibold mb-3">{category}</p>
-                    <Button
-                      className="px-2 w-full"
-                      onClick={() =>
-                        router.push(`/courses?categories=${category}`)
-                      }
-                    >
-                      View Courses {category.split(" ")[0]}
-                    </Button>
-                  </PopoverContent>
-                </Popover>
-              );
-            })}
+            {course.categories.map((category) => (
+              <PopoverComponent
+                key={category}
+                topic={category}
+                routerName="categories"
+                trigger={
+                  <SelectedTopics
+                    mode="view"
+                    selectedTopics={[category.split(" ")[0]]}
+                  />
+                }
+              />
+            ))}
           </div>
 
           <div className="flex justify-between">
@@ -153,6 +142,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               </p>
             </div>
           </div>
+
           <Link
             href={`course-landing/${course.slug}`}
             className={`${buttonVariants({
@@ -164,6 +154,32 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const PopoverComponent = ({
+  topic,
+  routerName,
+  trigger,
+}: {
+  topic: string;
+  routerName: string;
+  trigger: React.JSX.Element;
+}) => {
+  const router = useRouter();
+  return (
+    <Popover>
+      <PopoverTrigger className="cursor-pointer">{trigger}</PopoverTrigger>
+      <PopoverContent>
+        <p className="font-semibold mb-3">{topic}</p>
+        <Button
+          className="px-2 w-full focus:ring-0"
+          onClick={() => router.push(`/courses?${routerName}=${topic}`)}
+        >
+          View Courses {topic.split(" ")[0]}
+        </Button>
+      </PopoverContent>
+    </Popover>
   );
 };
 
