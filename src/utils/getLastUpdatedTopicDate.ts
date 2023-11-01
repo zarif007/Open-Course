@@ -1,6 +1,8 @@
 import { ICourseTopic } from "@/types/courseTopic";
 
-const getLastUpdatedTopicDate = (courseTopics: ICourseTopic[]): Date | null => {
+const getLastUpdatedTopicDate = (
+  courseTopics: ICourseTopic[]
+): Date | string => {
   const sortedData = courseTopics
     .slice()
     .sort(
@@ -10,7 +12,7 @@ const getLastUpdatedTopicDate = (courseTopics: ICourseTopic[]): Date | null => {
     );
 
   // The first element in the sorted array has the latest updatedAt date
-  return sortedData[0].updatedAt ?? null;
+  return sortedData[0].updatedAt ?? "";
 };
 
 export default getLastUpdatedTopicDate;

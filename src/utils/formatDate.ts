@@ -14,8 +14,8 @@ const monthNames = [
 ];
 
 // Function to format the date
-function formatDate(mDBDate: Date | null) {
-  if (!mDBDate) return "";
+function formatDate(mDBDate: Date | string) {
+  if (mDBDate === "") return "";
   const date = new Date(mDBDate.toString());
   const day = date.getDate();
   const month = monthNames[date.getMonth()];

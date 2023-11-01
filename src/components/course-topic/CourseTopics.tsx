@@ -11,6 +11,8 @@ import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/Input";
 import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
+import { Button } from "../ui/Button";
+import { BiSolidFlagCheckered } from "react-icons/bi";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
@@ -64,11 +66,18 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
       <div className="mx-2">
-        <Input
-          className=""
-          placeholder="Search Topic"
-          onChange={(e) => handleFilterTopics(e)}
-        />
+        {mode === "view" ? (
+          <Input
+            className=""
+            placeholder="Search Topic"
+            onChange={(e) => handleFilterTopics(e)}
+          />
+        ) : (
+          <Button className="w-full flex space-x-2">
+            <p>Add Checkpoints</p>
+            <BiSolidFlagCheckered />
+          </Button>
+        )}
       </div>
       {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
         return (

@@ -57,11 +57,10 @@ const CourseUpdate = () => {
       showErrorToast("Must add at least one Languages");
       return false;
     }
-    // console.log(courseTopics);
-    // if (courseTopics.filter((topic) => topic.id !== 0).length) {
-    //   showErrorToast("Must add at least one Course Topic");
-    //   return false;
-    // }
+    if (courseTopics.filter((topic) => topic.id !== 0).length === 0) {
+      showErrorToast("Must add at least one Course Topic");
+      return false;
+    }
 
     return true;
   };
