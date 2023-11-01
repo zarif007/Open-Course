@@ -84,6 +84,8 @@ const CourseTopicCreationForm = ({
     const courseTopics = course.topics as ICourseTopic[];
 
     submitData({
+      id: currentCourseTopic.id ?? "",
+      _id: currentCourseTopic._id ?? "",
       versions: [data],
       topicID:
         currentCourseTopic.topicID && currentCourseTopic.topicID > 0
@@ -91,6 +93,8 @@ const CourseTopicCreationForm = ({
           : courseTopics && courseTopics.length > 0
           ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
           : 1,
+      createdAt: currentCourseTopic.createdAt ?? "",
+      updatedAt: currentCourseTopic.updatedAt ?? "",
     });
     reset();
     resetCourseTopic();

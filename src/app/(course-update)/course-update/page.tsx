@@ -40,6 +40,7 @@ const CourseUpdate = () => {
   };
 
   const validateCourseDetails = (): boolean => {
+    const courseTopics = course.topics as ICourseTopic[];
     if (!course.title) {
       showErrorToast("Title is required");
       return false;
@@ -56,10 +57,11 @@ const CourseUpdate = () => {
       showErrorToast("Must add at least one Languages");
       return false;
     }
-    if (course.topics.length === 1) {
-      showErrorToast("Must add at least one Course Topic");
-      return false;
-    }
+    // console.log(courseTopics);
+    // if (courseTopics.filter((topic) => topic.id !== 0).length) {
+    //   showErrorToast("Must add at least one Course Topic");
+    //   return false;
+    // }
 
     return true;
   };

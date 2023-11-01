@@ -2,7 +2,6 @@ import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
-import { ICourseTopic } from "@/types/courseTopic";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -17,32 +16,9 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
   const id = params.id;
   const payload = await req.json();
 
-  const topics: ICourseTopic[] = [];
-
-  // Creating or Updating topics and storing at the course
-  for (const topic of payload.topics) {
-    let res = topic;
-    if (topic._id === "") {
-      res = await CourseTopic.create({
-        versions: topic.versions,
-        topicID: topic.topicID,
-      });
-    } else {
-      res = await CourseTopic.findOneAndUpdate({ _id: topic._id }, topic, {
-        new: true,
-      });
-    }
-    topics.push(res);
-  }
-
-  const course = await Course.findByIdAndUpdate(
-    { _id: id },
-    {
-      ...payload,
-      topics: topics,
-    },
-    { new: true }
-  );
+  const course = await Course.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
 
   if (course) {
     await course.populate({

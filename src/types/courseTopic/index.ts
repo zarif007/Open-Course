@@ -12,8 +12,8 @@ export interface ICourseTopic {
       duration: number;
     }
   ];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   _v?: number;
 }
 

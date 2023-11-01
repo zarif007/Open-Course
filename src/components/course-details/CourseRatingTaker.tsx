@@ -50,7 +50,10 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
         ],
       };
 
-      await axios.put(`${nextApiEndPoint}/course/${course.id}`, updated);
+      await axios.put(
+        `${nextApiEndPoint}/course/updateRatings/${course.id}`,
+        updated
+      );
 
       toast({
         title: "Success",
