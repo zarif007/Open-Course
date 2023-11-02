@@ -1,6 +1,7 @@
 import { Model, Types } from "mongoose";
 import { ICourseTopic } from "../courseTopic";
 import { IUser } from "../user";
+import { ICheckPoint } from "../checkPoint";
 
 export interface ICourse {
   id?: string;
@@ -27,6 +28,7 @@ export interface ICourse {
         rating: number;
       }[]
     | [];
+  checkPoints: ICheckPoint[] | [];
   createdAt?: Date;
   updatedAt?: Date;
   _v?: number;

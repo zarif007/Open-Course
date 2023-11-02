@@ -14,7 +14,10 @@ export const POST = async (req: NextRequest) => {
 
   // Creating topics and storing _ids at the course
   for (const topic of payload.topics) {
-    const res = await CourseTopic.create(topic);
+    const res = await CourseTopic.create({
+      versions: topic.versions,
+      topicID: topic.topicID,
+    });
     topicIds.push(new Types.ObjectId(res._id.toString()));
   }
 

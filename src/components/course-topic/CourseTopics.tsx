@@ -6,16 +6,27 @@ import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopic from "./CourseTopic";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
+import {
+  setCourseForCreation,
+  setCurrentCourseTopicForCreation,
+} from "@/redux/features/course-creation-slice";
 import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/Input";
-import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
+import {
+  setCourseForUpdate,
+  setCurrentCourseTopicForUpdate,
+} from "@/redux/features/course-update-slice";
 import { Button } from "../ui/Button";
 import { BiSolidFlagCheckered } from "react-icons/bi";
+import { ICheckPoint } from "@/types/checkPoint";
+import { MdCancel } from "react-icons/md";
+import CheckPoints from "./CheckPoints";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
+  const [checkPointClicked, setCheckPointClicked] = useState<boolean>(false);
+  const [checkPointName, setCheckPointName] = useState<string>("");
 
   const course = useAppSelector((state) =>
     mode === "view"
@@ -27,6 +38,12 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
 
   const enrollState = useAppSelector(
     (state) => state.courseViewReducer.value.enrollState
+  );
+
+  const currentCourseTopic = useAppSelector((state) =>
+    mode === "creation"
+      ? state.courseCreationReducer.value.currentCourseTopic
+      : state.courseUpdateReducer.value.currentCourseTopic
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -62,10 +79,45 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
       )
     );
   };
+
+  const handleAddCheckPoint = () => {
+    const checkPoint = {
+      checkPointID: course.checkPoints ? course.checkPoints.length + 1 : 1,
+      topicID:
+        !currentCourseTopic.topicID || currentCourseTopic.topicID <= 0
+          ? 1
+          : currentCourseTopic.topicID,
+      name: checkPointName,
+    };
+    const updated = {
+      ...course,
+      checkPoints: [...(course.checkPoints ?? []), checkPoint],
+    };
+    dispatch(
+      mode === "creation"
+        ? setCourseForCreation(updated)
+        : setCourseForUpdate(updated)
+    );
+  };
+
+  const handleRemoveCheckPoint = (checkPointID: number) => {
+    const updated = {
+      ...course,
+      checkPoints: course.checkPoints.filter(
+        (cp) => cp.checkPointID !== checkPointID
+      ),
+    };
+    dispatch(
+      mode === "creation"
+        ? setCourseForCreation(updated)
+        : setCourseForUpdate(updated)
+    );
+  };
+
   return (
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
-      <div className="mx-2">
+      <div className="mx-2 my-1">
         {mode === "view" ? (
           <Input
             className=""
@@ -73,10 +125,25 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
             onChange={(e) => handleFilterTopics(e)}
           />
         ) : (
-          <Button className="w-full flex space-x-2">
+          <Button
+            onClick={() => setCheckPointClicked(!checkPointClicked)}
+            className="w-full flex space-x-2 focus:ring-0"
+          >
             <p>Add Checkpoints</p>
             <BiSolidFlagCheckered />
           </Button>
+        )}
+        {checkPointClicked && (
+          <div className="flex items-center space-x-1 my-2">
+            <Input
+              placeholder="Checkpoint Name"
+              defaultValue={checkPointName}
+              onChange={(e) => setCheckPointName(e.target.value)}
+            />
+            <Button className="focus:ring-0" onClick={handleAddCheckPoint}>
+              Set
+            </Button>
+          </div>
         )}
       </div>
       {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
@@ -93,6 +160,12 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
                   )
             }
           >
+            <CheckPoints
+              topicID={courseTopic.topicID as number}
+              checkPoints={course.checkPoints}
+              handleRemoveCheckPoint={handleRemoveCheckPoint}
+              mode={mode}
+            />
             <CourseTopic index={index} courseTopic={courseTopic} mode={mode} />
           </div>
         );

@@ -82,6 +82,16 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       ],
       default: [],
     },
+    checkPoints: {
+      type: [
+        {
+          topicID: Number,
+          checkPointID: Number,
+          name: String,
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,

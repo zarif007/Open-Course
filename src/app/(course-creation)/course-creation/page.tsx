@@ -56,7 +56,10 @@ const CourseCreation = () => {
       showErrorToast("Must add at least one Languages");
       return false;
     }
-    if (course.topics.length === 1) {
+
+    const courseTopics = course.topics as ICourseTopic[];
+
+    if (courseTopics.filter((topic) => topic.topicID !== 0).length === 0) {
       showErrorToast("Must add at least one Course Topic");
       return false;
     }
@@ -77,7 +80,7 @@ const CourseCreation = () => {
     const courseData: ICourse = {
       ...course,
       slug: course.slug ? course.slug : createSlug(course.title),
-      topics: courseTopics.filter((topic) => topic.id !== 0),
+      topics: courseTopics.filter((topic) => topic.topicID !== 0),
       creator: signedInUser.id,
       banner:
         course.banner === ""
