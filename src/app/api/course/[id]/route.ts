@@ -3,6 +3,7 @@ import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
 import { ICourseTopic } from "@/types/courseTopic";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -10,6 +11,8 @@ interface PageParams {
     id: string;
   };
 }
+
+export const revalidate = true;
 
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
   connectToDB();
@@ -55,6 +58,8 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
       model: User,
     });
   }
+
+  revalidatePath(`/course/${payload.slug}`);
 
   return NextResponse.json({ data: course });
 };

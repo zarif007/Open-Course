@@ -21,7 +21,6 @@ const CourseBannerCreationForm = ({ mode }: { mode: "creation" | "edit" }) => {
   const [banner, setBanner] = useState<string>("");
 
   useEffect(() => {
-    console.log(course.banner);
     if (!course.title) return;
     setBanner(
       !course.banner || course.banner === ""
@@ -65,12 +64,14 @@ const CourseBannerCreationForm = ({ mode }: { mode: "creation" | "edit" }) => {
             Set
           </Button>
         </div>
-        <BlurredImage
-          src={banner}
-          alt="banner"
-          dimension="h-full w-full md:h-[70%] md:w-[70%]"
-          className=" object-cover object-center rounded"
-        />
+        {banner !== "" && (
+          <BlurredImage
+            src={banner}
+            alt="banner"
+            dimension="h-full w-full md:h-[70%] md:w-[70%]"
+            className=" object-cover object-center rounded mx-auto"
+          />
+        )}
       </div>
     </div>
   );

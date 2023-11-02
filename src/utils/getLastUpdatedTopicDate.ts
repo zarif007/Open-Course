@@ -12,7 +12,6 @@ const getLastUpdatedTopicDate = (
     );
 
   // The first element in the sorted array has the latest updatedAt date
-  console.log(courseTopics);
   return sortedData[0].updatedAt ?? "";
 };
 
