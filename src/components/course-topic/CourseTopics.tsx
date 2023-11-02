@@ -25,8 +25,8 @@ import CheckPoints from "./CheckPoints";
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
-  const [checkPointClicked, setCheckPointClicked] = useState<boolean>(false);
-  const [checkPointName, setCheckPointName] = useState<string>("");
+  const [isAddCheckPointButtonClicked, setIsAddCheckPointButtonClicked] =
+    useState<boolean>(false);
 
   const course = useAppSelector((state) =>
     mode === "view"
@@ -38,12 +38,6 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
 
   const enrollState = useAppSelector(
     (state) => state.courseViewReducer.value.enrollState
-  );
-
-  const currentCourseTopic = useAppSelector((state) =>
-    mode === "creation"
-      ? state.courseCreationReducer.value.currentCourseTopic
-      : state.courseUpdateReducer.value.currentCourseTopic
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -80,44 +74,10 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
     );
   };
 
-  const handleAddCheckPoint = () => {
-    const checkPoint = {
-      checkPointID: course.checkPoints ? course.checkPoints.length + 1 : 1,
-      topicID:
-        !currentCourseTopic.topicID || currentCourseTopic.topicID <= 0
-          ? 1
-          : currentCourseTopic.topicID,
-      name: checkPointName,
-    };
-    const updated = {
-      ...course,
-      checkPoints: [...(course.checkPoints ?? []), checkPoint],
-    };
-    dispatch(
-      mode === "creation"
-        ? setCourseForCreation(updated)
-        : setCourseForUpdate(updated)
-    );
-  };
-
-  const handleRemoveCheckPoint = (checkPointID: number) => {
-    const updated = {
-      ...course,
-      checkPoints: course.checkPoints.filter(
-        (cp) => cp.checkPointID !== checkPointID
-      ),
-    };
-    dispatch(
-      mode === "creation"
-        ? setCourseForCreation(updated)
-        : setCourseForUpdate(updated)
-    );
-  };
-
   return (
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
-      <div className="mx-2 my-1">
+      <div className="m-2">
         {mode === "view" ? (
           <Input
             className=""
@@ -126,24 +86,14 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
           />
         ) : (
           <Button
-            onClick={() => setCheckPointClicked(!checkPointClicked)}
+            onClick={() =>
+              setIsAddCheckPointButtonClicked(!isAddCheckPointButtonClicked)
+            }
             className="w-full flex space-x-2 focus:ring-0"
           >
-            <p>Add Checkpoints</p>
+            <p>{isAddCheckPointButtonClicked ? "Done" : "Add Checkpoints"}</p>
             <BiSolidFlagCheckered />
           </Button>
-        )}
-        {checkPointClicked && (
-          <div className="flex items-center space-x-1 my-2">
-            <Input
-              placeholder="Checkpoint Name"
-              defaultValue={checkPointName}
-              onChange={(e) => setCheckPointName(e.target.value)}
-            />
-            <Button className="focus:ring-0" onClick={handleAddCheckPoint}>
-              Set
-            </Button>
-          </div>
         )}
       </div>
       {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
@@ -160,12 +110,14 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
                   )
             }
           >
-            <CheckPoints
-              topicID={courseTopic.topicID as number}
-              checkPoints={course.checkPoints}
-              handleRemoveCheckPoint={handleRemoveCheckPoint}
-              mode={mode}
-            />
+            <div className="mx-2">
+              <CheckPoints
+                topicID={courseTopic.topicID as number}
+                checkPoints={course.checkPoints}
+                mode={mode}
+                isAddCheckPointButtonClicked={isAddCheckPointButtonClicked}
+              />
+            </div>
             <CourseTopic index={index} courseTopic={courseTopic} mode={mode} />
           </div>
         );
