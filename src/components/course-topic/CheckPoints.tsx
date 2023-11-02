@@ -1,6 +1,6 @@
 import { ICheckPoint } from "@/types/checkPoint";
 import React, { useState } from "react";
-import { BiSolidFlagCheckered } from "react-icons/bi";
+import { BiSolidChevronDown, BiSolidFlagCheckered } from "react-icons/bi";
 import { MdCancel, MdOutlineCancelPresentation } from "react-icons/md";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
@@ -60,17 +60,19 @@ const CheckPoints = ({
             return (
               <div
                 key={cp.checkPointID}
-                className="mx-2 my-0 p-0 text-sm flex justify-between items-center font-semibold text-slate-500 dark:text-gray-500"
+                className="my-0 p-0 text-sm flex justify-between items-center font-semibold cursor-pointer hover:text-rose-500 dark:hover:text-rose-500 text-slate-500 dark:text-gray-500"
               >
                 <div className="flex space-x-1 items-center truncate">
                   <BiSolidFlagCheckered />
                   <p className="truncate">{cp.name}</p>
                 </div>
-                {mode !== "view" && (
+                {mode !== "view" ? (
                   <MdCancel
                     className="cursor-pointer w-4 h-4"
                     onClick={() => handleRemoveCheckPoint(cp.checkPointID)}
                   />
+                ) : (
+                  <BiSolidChevronDown className="cursor-pointer w-4 h-4" />
                 )}
               </div>
             );
@@ -79,7 +81,7 @@ const CheckPoints = ({
           <React.Fragment></React.Fragment>
         )
       ) : (
-        <CheckPointsAddition mode={mode} course={course} />
+        <CheckPointsAddition mode={mode} course={course} topicID={topicID} />
       )}
     </div>
   );
@@ -88,28 +90,21 @@ const CheckPoints = ({
 const CheckPointsAddition = ({
   mode,
   course,
+  topicID,
 }: {
   mode: "creation" | "edit";
   course: ICourse;
+  topicID: number;
 }) => {
   const [isBarClicked, setIsBarClicked] = useState<boolean>(false);
   const [checkPointName, setCheckPointName] = useState<string>("");
-
-  const currentCourseTopic = useAppSelector((state) =>
-    mode === "creation"
-      ? state.courseCreationReducer.value.currentCourseTopic
-      : state.courseUpdateReducer.value.currentCourseTopic
-  );
 
   const dispatch = useDispatch<AppDispatch>();
 
   const handleAddCheckPoint = () => {
     const checkPoint = {
       checkPointID: course.checkPoints ? course.checkPoints.length + 1 : 1,
-      topicID:
-        !currentCourseTopic.topicID || currentCourseTopic.topicID <= 0
-          ? 1
-          : currentCourseTopic.topicID,
+      topicID: !topicID || topicID <= 0 ? 1 : topicID,
       name: checkPointName,
     };
     const updated = {

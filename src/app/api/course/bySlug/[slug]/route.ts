@@ -12,8 +12,9 @@ interface PageParams {
   };
 }
 
-export const GET = async (req: NextRequest, { params }: PageParams) => {
+export const GET = async (req: NextApiRequest, { params }: PageParams) => {
   const slug = params.slug;
+
   connectToDB();
 
   const course = await Course.findOne({ slug })

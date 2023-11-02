@@ -98,18 +98,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
       </div>
       {courseTopics.map((courseTopic: ICourseTopic, index: number) => {
         return (
-          <div
-            key={index}
-            onClick={() =>
-              mode === "view"
-                ? redirectToCurrentCourseTopic(courseTopic)
-                : dispatch(
-                    mode === "creation"
-                      ? setCurrentCourseTopicForCreation(courseTopic)
-                      : setCurrentCourseTopicForUpdate(courseTopic)
-                  )
-            }
-          >
+          <div key={index}>
             <div className="mx-2">
               <CheckPoints
                 topicID={courseTopic.topicID as number}
@@ -118,7 +107,23 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
                 isAddCheckPointButtonClicked={isAddCheckPointButtonClicked}
               />
             </div>
-            <CourseTopic index={index} courseTopic={courseTopic} mode={mode} />
+            <div
+              onClick={() =>
+                mode === "view"
+                  ? redirectToCurrentCourseTopic(courseTopic)
+                  : dispatch(
+                      mode === "creation"
+                        ? setCurrentCourseTopicForCreation(courseTopic)
+                        : setCurrentCourseTopicForUpdate(courseTopic)
+                    )
+              }
+            >
+              <CourseTopic
+                index={index}
+                courseTopic={courseTopic}
+                mode={mode}
+              />
+            </div>
           </div>
         );
       })}
