@@ -8,26 +8,22 @@ import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
-import catchAsync from "@/utils/catchAsync";
 import pick from "@/utils/pick";
 import { SortOrder } from "mongoose";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
+export const GET = async (req: NextRequest) => {
   connectToDB();
 
-  const { searchParams } = new URL(req.url ?? "");
-
   const { searchTerm, ...filtersData } = pick(
-    searchParams,
+    req.nextUrl.searchParams,
     courseFilterableFields,
     true
   );
 
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(
-      pick(searchParams, paginationFields, false)
+      pick(req.nextUrl.searchParams, paginationFields, false)
     );
 
   const andConditions = [];
@@ -56,6 +52,8 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
       })),
     });
   }
+
+  console.log(andConditions);
 
   // Dynamic  Sort needs  field to  do sorting
   const sortConditions: { [key: string]: SortOrder } = {};

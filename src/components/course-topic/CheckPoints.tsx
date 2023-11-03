@@ -55,31 +55,27 @@ const CheckPoints = ({
   return (
     <div className="w-full">
       {mode === "view" || !isAddCheckPointButtonClicked ? (
-        checkForCheckPoints(topicID as number).length ? (
-          checkForCheckPoints(topicID as number).map((cp) => {
-            return (
-              <div
-                key={cp.checkPointID}
-                className="my-0 p-0 text-sm flex justify-between items-center font-semibold cursor-pointer hover:text-rose-500 dark:hover:text-rose-500 text-slate-500 dark:text-gray-500"
-              >
-                <div className="flex space-x-1 items-center truncate">
-                  <BiSolidFlagCheckered />
-                  <p className="truncate">{cp.name}</p>
-                </div>
-                {mode !== "view" ? (
-                  <MdCancel
-                    className="cursor-pointer w-4 h-4"
-                    onClick={() => handleRemoveCheckPoint(cp.checkPointID)}
-                  />
-                ) : (
-                  <BiSolidChevronDown className="cursor-pointer w-4 h-4" />
-                )}
+        checkForCheckPoints(topicID as number).map((cp) => {
+          return (
+            <div
+              key={cp.checkPointID}
+              className="my-0 p-0 text-sm flex justify-between items-center font-semibold cursor-pointer hover:text-rose-500 dark:hover:text-rose-500 text-slate-500 dark:text-gray-500"
+            >
+              <div className="flex space-x-1 items-center truncate">
+                <BiSolidFlagCheckered />
+                <p className="truncate">{cp.name}</p>
               </div>
-            );
-          })
-        ) : (
-          <React.Fragment></React.Fragment>
-        )
+              {mode !== "view" ? (
+                <MdCancel
+                  className="cursor-pointer w-4 h-4"
+                  onClick={() => handleRemoveCheckPoint(cp.checkPointID)}
+                />
+              ) : (
+                <BiSolidChevronDown className="cursor-pointer w-4 h-4" />
+              )}
+            </div>
+          );
+        })
       ) : (
         <CheckPointsAddition mode={mode} course={course} topicID={topicID} />
       )}
