@@ -12,7 +12,7 @@ interface PageParams {
   };
 }
 
-export const GET = async (req: NextApiRequest, { params }: PageParams) => {
+export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
 
   connectToDB();
