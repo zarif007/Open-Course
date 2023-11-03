@@ -4,29 +4,24 @@ import React, { useEffect, useState } from "react";
 import Paragraph from "../ui/Paragraph";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseTopic from "./CourseTopic";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import {
-  setCourseForCreation,
-  setCurrentCourseTopicForCreation,
-} from "@/redux/features/course-creation-slice";
-import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
-import { useRouter } from "next/navigation";
-import { Input } from "../ui/Input";
-import {
-  setCourseForUpdate,
-  setCurrentCourseTopicForUpdate,
-} from "@/redux/features/course-update-slice";
+import { useAppSelector } from "@/redux/store";
 import { Button } from "../ui/Button";
 import { BiSolidFlagCheckered } from "react-icons/bi";
-import { ICheckPoint } from "@/types/checkPoint";
-import { MdCancel } from "react-icons/md";
 import CheckPoints from "./CheckPoints";
+import { Input } from "../ui/Input";
+
+interface IHiddenRanges {
+  [key: number]: { start: number; end: number; isHidden: boolean };
+}
 
 const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
   const [isAddCheckPointButtonClicked, setIsAddCheckPointButtonClicked] =
     useState<boolean>(false);
+
+  const [hiddenTopicsRanges, setHiddenTopicsRanges] = useState<IHiddenRanges>(
+    []
+  );
 
   const course = useAppSelector((state) =>
     mode === "view"
@@ -36,27 +31,56 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
       : state.courseUpdateReducer.value.course
   );
 
-  const enrollState = useAppSelector(
-    (state) => state.courseViewReducer.value.enrollState
-  );
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const router = useRouter();
-
-  const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
-    if (!isValidTopic(courseTopic)) return;
-    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`);
-    dispatch(setCurrentCourseTopicForView(courseTopic));
+  const handleSettingHiddenRanges = (checkPointID: number) => {
+    const updated: IHiddenRanges = {
+      ...hiddenTopicsRanges,
+      [checkPointID]: {
+        ...hiddenTopicsRanges[checkPointID],
+        isHidden: !hiddenTopicsRanges[checkPointID].isHidden,
+      },
+    };
+    setHiddenTopicsRanges(updated);
   };
 
-  const isValidTopic = (courseTopic: ICourseTopic): boolean => {
-    const topicId = courseTopic.topicID as number;
-    return enrollState.finishedTopics.includes(topicId.toString());
+  const fallsUnderHiddenRange = (topicID: number): boolean => {
+    let flag = false;
+    Object.entries(hiddenTopicsRanges).map((range) => {
+      if (
+        range[1].start <= topicID &&
+        topicID <= range[1].end &&
+        range[1].isHidden
+      ) {
+        flag = true;
+        return;
+      }
+    });
+    return flag;
   };
 
   useEffect(() => {
     setCourseTopics(course.topics as ICourseTopic[]);
+
+    let ranges: IHiddenRanges = {};
+    let cps = course.checkPoints;
+
+    if (!cps) return;
+
+    cps = [...cps].sort((obj1, obj2) => obj1.topicID - obj2.topicID);
+
+    for (let i = 0; i < cps.length; i++) {
+      ranges = {
+        ...ranges,
+        [cps[i].checkPointID]: {
+          start: cps[i].topicID,
+          end:
+            cps.length - 1 === i
+              ? course.topics.length
+              : cps[i + 1].topicID - 1,
+          isHidden: false,
+        },
+      };
+    }
+    setHiddenTopicsRanges(ranges);
   }, [course]);
 
   const handleFilterTopics = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +104,6 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
       <div className="m-2">
         {mode === "view" ? (
           <Input
-            className=""
             placeholder="Search Topic"
             onChange={(e) => handleFilterTopics(e)}
           />
@@ -105,25 +128,16 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
                 checkPoints={course.checkPoints}
                 mode={mode}
                 isAddCheckPointButtonClicked={isAddCheckPointButtonClicked}
+                handleSettingHiddenRanges={handleSettingHiddenRanges}
               />
             </div>
-            <div
-              onClick={() =>
-                mode === "view"
-                  ? redirectToCurrentCourseTopic(courseTopic)
-                  : dispatch(
-                      mode === "creation"
-                        ? setCurrentCourseTopicForCreation(courseTopic)
-                        : setCurrentCourseTopicForUpdate(courseTopic)
-                    )
-              }
-            >
+            {!fallsUnderHiddenRange(courseTopic.topicID as number) && (
               <CourseTopic
                 index={index}
                 courseTopic={courseTopic}
                 mode={mode}
               />
-            </div>
+            )}
           </div>
         );
       })}

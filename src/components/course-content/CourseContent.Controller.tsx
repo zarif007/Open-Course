@@ -24,6 +24,10 @@ const CourseContentController = () => {
     (state) => state.courseViewReducer.value.course
   );
 
+  const enrollState = useAppSelector(
+    (state) => state.courseViewReducer.value.enrollState
+  );
+
   const router = useRouter();
 
   const { data: session } = useSession();
@@ -32,35 +36,38 @@ const CourseContentController = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const updateEnrollState = async (nextTopicId: number) => {
-    const { data } = await axios.get(
-      `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
-    );
-
-    const enrollState = data.data as IEnrollState;
-
-    const currentCourseTopicId = currentCourseTopic.topicID as number;
-
+  const updateEnrollState = async (nextTopicId: number, fetch: boolean) => {
     const courseTopics = course.topics as ICourseTopic[];
-
-    const state: IEnrollState = {
-      ...enrollState,
-      currentTopic: courseTopics[nextTopicId - 1].id as string,
-      finishedTopics: enrollState.finishedTopics.includes(
-        currentCourseTopicId.toString()
-      )
-        ? enrollState.finishedTopics
-        : [...enrollState.finishedTopics, currentCourseTopicId.toString()],
-    };
-
-    const updatedEnrollState = await axios.put(
-      `${nextApiEndPoint}/enrollState`,
-      state
-    );
-
-    dispatch(setEnrollState(updatedEnrollState.data.data));
-
     dispatch(setCurrentCourseTopicForView(courseTopics[nextTopicId - 1]));
+
+    if (!enrollState.finishedTopics.includes(nextTopicId.toString()) || fetch) {
+      const { data } = await axios.get(
+        `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
+      );
+
+      const enrollState = data.data as IEnrollState;
+
+      const currentCourseTopicId = currentCourseTopic.topicID as number;
+
+      const state: IEnrollState = {
+        ...enrollState,
+        currentTopic: courseTopics[nextTopicId - 1].id as string,
+        finishedTopics: enrollState.finishedTopics.includes(
+          currentCourseTopicId.toString()
+        )
+          ? enrollState.finishedTopics
+          : [...enrollState.finishedTopics, currentCourseTopicId.toString()],
+      };
+
+      await axios.put(`${nextApiEndPoint}/enrollState`, state);
+
+      const updatedEnrollState = await axios.put(
+        `${nextApiEndPoint}/enrollState`,
+        state
+      );
+
+      dispatch(setEnrollState(updatedEnrollState.data.data));
+    }
   };
 
   const handleNextButton = async () => {
@@ -72,7 +79,7 @@ const CourseContentController = () => {
     try {
       const nextTopicId = (currentCourseTopic.topicID as number) + 1;
 
-      await updateEnrollState(nextTopicId);
+      await updateEnrollState(nextTopicId, false);
 
       router.push(`/course/${course.slug}?topicId=${nextTopicId}`);
     } catch (error) {
@@ -95,7 +102,7 @@ const CourseContentController = () => {
     try {
       const nextTopicId = 1;
 
-      await updateEnrollState(nextTopicId);
+      await updateEnrollState(nextTopicId, true);
 
       toast({
         title: "Success",
@@ -106,7 +113,7 @@ const CourseContentController = () => {
     } catch (error) {
       toast({
         title: "Error",
-        message: `Something went wrong`,
+        message: `Something went wrong, try again`,
         type: "error",
       });
     } finally {

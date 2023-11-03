@@ -9,8 +9,16 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { ICourseTopic } from "@/types/courseTopic";
 import { getFavicon } from "@/utils/getFavicon";
 import { useDispatch } from "react-redux";
-import { setCourseForCreation } from "@/redux/features/course-creation-slice";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import {
+  setCourseForCreation,
+  setCurrentCourseTopicForCreation,
+} from "@/redux/features/course-creation-slice";
+import {
+  setCourseForUpdate,
+  setCurrentCourseTopicForUpdate,
+} from "@/redux/features/course-update-slice";
+import { useRouter } from "next/navigation";
+import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
 
 const CourseTopic = ({
   index,
@@ -28,7 +36,9 @@ const CourseTopic = ({
   const faviconURL = getFavicon(courseTopic.versions[0].url);
 
   const course = useAppSelector((state) =>
-    mode === "creation"
+    mode === "view"
+      ? state.courseViewReducer.value.course
+      : mode === "creation"
       ? state.courseCreationReducer.value.course
       : state.courseUpdateReducer.value.course
   );
@@ -47,9 +57,17 @@ const CourseTopic = ({
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const router = useRouter();
+
   const isValidTopic = (): boolean => {
     const currentCourseTopic = courseTopic.topicID as number;
     return enrollState.finishedTopics.includes(currentCourseTopic.toString());
+  };
+
+  const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
+    if (!isValidTopic()) return;
+    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`);
+    dispatch(setCurrentCourseTopicForView(courseTopic));
   };
 
   const removeTopic = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -72,6 +90,15 @@ const CourseTopic = ({
 
   return (
     <section
+      onClick={() =>
+        mode === "view"
+          ? redirectToCurrentCourseTopic(courseTopic)
+          : dispatch(
+              mode === "creation"
+                ? setCurrentCourseTopicForCreation(courseTopic)
+                : setCurrentCourseTopicForUpdate(courseTopic)
+            )
+      }
       className={`m-2 border-2 ${
         courseTopic.topicID === currentCourseTopic.topicID
           ? "dark:border-rose-500 border-rose-500"

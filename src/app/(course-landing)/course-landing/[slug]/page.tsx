@@ -23,11 +23,7 @@ const getCourse = async (
   const data = await (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userId=${userId}`,
-      {
-        next: {
-          revalidate: 6000,
-        },
-      }
+      { cache: "no-store" }
     )
   ).json();
 

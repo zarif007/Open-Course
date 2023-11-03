@@ -16,11 +16,13 @@ const CheckPoints = ({
   checkPoints,
   mode,
   isAddCheckPointButtonClicked,
+  handleSettingHiddenRanges,
 }: {
   topicID: number;
   checkPoints: ICheckPoint[];
   mode: "creation" | "edit" | "view";
   isAddCheckPointButtonClicked: boolean;
+  handleSettingHiddenRanges: (checkPointID: number) => void;
 }) => {
   const checkForCheckPoints = (topicID: number): ICheckPoint[] => {
     return checkPoints
@@ -59,6 +61,7 @@ const CheckPoints = ({
           return (
             <div
               key={cp.checkPointID}
+              onClick={() => handleSettingHiddenRanges(cp.checkPointID)}
               className="my-0 p-0 text-sm flex justify-between items-center font-semibold cursor-pointer hover:text-rose-500 dark:hover:text-rose-500 text-slate-500 dark:text-gray-500"
             >
               <div className="flex space-x-1 items-center truncate">
