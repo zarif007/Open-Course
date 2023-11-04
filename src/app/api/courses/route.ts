@@ -12,6 +12,17 @@ import pick from "@/utils/pick";
 import { SortOrder } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+const getCorsHeaders = (origin: string) => {
+  // Default options
+  const headers = {
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Origin": "https://open-course.vercel.app/",
+  };
+
+  return headers;
+};
+
 export const GET = async (req: NextRequest) => {
   connectToDB();
 
@@ -53,8 +64,6 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  console.log(andConditions);
-
   // Dynamic  Sort needs  field to  do sorting
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
@@ -81,12 +90,18 @@ export const GET = async (req: NextRequest) => {
     .skip(skip)
     .limit(limit);
 
-  return NextResponse.json({
-    meta: {
-      page,
-      limit,
-      total,
+  return NextResponse.json(
+    {
+      meta: {
+        page,
+        limit,
+        total,
+      },
+      data: courses,
     },
-    data: courses,
-  });
+    {
+      status: 200,
+      headers: getCorsHeaders(req.headers.get("origin") || ""),
+    }
+  );
 };
