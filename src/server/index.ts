@@ -4,7 +4,7 @@ import { publicProcedure, router } from "./trpc";
 export const appRouter = router({
   // api/trpc/getUsers
   getUsers: publicProcedure.query(async () => {
-    return await Course.findOne({ slug: "new-course-0mGKh" });
+    return await Course.find();
   }),
   getUserByEmail: publicProcedure.query(async (req: any) => {
     console.log(req);

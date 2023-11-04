@@ -33,10 +33,13 @@ const Profile = async ({ params }: PageParams) => {
       />
       <LargeHeading
         size="sm"
-        className="my-6 underline decoration-rose-500 decoration-4"
+        className="mt-6 mb-1 underline decoration-rose-500 decoration-4"
       >
         {user.name}
       </LargeHeading>
+      <p className="font-semibold text-md text-slate-300 dark:text-gray-700 mt-1 mb-4">
+        @{user.userName}
+      </p>
       <div className="flex space-x-2 justify-center items-center rounded bg-rose-500 px-4 py-1 font-semibold">
         <p>{user.points ?? 0}</p>
         <BiCoinStack />
