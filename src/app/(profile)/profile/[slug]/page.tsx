@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 
+import CreatedCourses from "@/components/profile/CreatedCourses";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
+import { BiCoinStack } from "react-icons/bi";
 
 interface PageParams {
   params: {
@@ -17,20 +19,29 @@ const Profile = async ({ params }: PageParams) => {
   const { data } = await axios.get(
     `${nextApiEndPoint}/user/byUserName/${params.slug}`
   );
+
   const user: IUser | null = data.data;
 
   if (!user) redirect("/404");
 
   return (
-    <section className="w-full max-w-5xl mx-auto h-full flex flex-col items-center justify-center">
+    <section className="w-full max-w-7xl mx-auto h-full flex flex-col items-center justify-center">
       <img
         src={user.image}
         alt="dp"
-        className="h-[5%] w-[5%] rounded shadow-[7px_18px_67px_64px_rgba(202,_54,_80,_0.18)]"
+        className="w-[30%] h-[30%] md:w-[10%] md:h-[10%] rounded-full"
       />
-      <LargeHeading className="my-6 underline decoration-rose-500 decoration-4">
+      <LargeHeading
+        size="sm"
+        className="my-6 underline decoration-rose-500 decoration-4"
+      >
         {user.name}
       </LargeHeading>
+      <div className="flex space-x-2 justify-center items-center rounded bg-rose-500 px-4 py-1 font-semibold">
+        <p>{user.points ?? 0}</p>
+        <BiCoinStack />
+      </div>
+      <CreatedCourses creatorId={user.id as string} />
     </section>
   );
 };

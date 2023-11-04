@@ -12,6 +12,12 @@ import pick from "@/utils/pick";
 import { SortOrder } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+export const corsHeaders = {
+  "Access-Control-Allow-Origin": "https://open-course.vercel.app",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export const GET = async (req: NextRequest) => {
   connectToDB();
 
@@ -81,12 +87,15 @@ export const GET = async (req: NextRequest) => {
     .skip(skip)
     .limit(limit);
 
-  return NextResponse.json({
-    meta: {
-      page,
-      limit,
-      total,
+  return NextResponse.json(
+    {
+      meta: {
+        page,
+        limit,
+        total,
+      },
+      data: courses,
     },
-    data: courses,
-  });
+    { headers: corsHeaders }
+  );
 };
