@@ -7,6 +7,7 @@ import ActivityCalendar, {
 } from "react-activity-calendar";
 import TooltipComponent from "../ui/TooltipComponent";
 import LargeHeading from "../ui/LargeHeading";
+import { useTheme } from "next-themes";
 
 const HeatmapContrib = () => {
   const data: Activity[] = [
@@ -46,9 +47,18 @@ const HeatmapContrib = () => {
       level: 4,
     },
   ];
+
+  const { theme } = useTheme();
+
   const explicitTheme: ThemeInput = {
     light: ["#f0f0f0", "#c4edde", "#7ac7c4", "#f73859", "#384259"],
-    dark: ["#383838", "#4D455D", "#7DB9B6", "#F5E9CF", "#E96479"],
+    dark: [
+      theme === "dark" ? "#f1f5f9" : "#020617",
+      "#fda4af",
+      "#f43f5e",
+      "#be123c",
+      "#881337",
+    ],
   };
   return (
     <div>
@@ -56,7 +66,7 @@ const HeatmapContrib = () => {
         size="sm"
         className="my-3 underline decoration-rose-500 decoration-4"
       >
-        Contribution
+        Activities
       </LargeHeading>
       <ActivityCalendar
         data={data}
