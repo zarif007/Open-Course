@@ -14,37 +14,37 @@ const HeatmapContrib = () => {
   const data: Activity[] = [
     {
       date: "2023-01-01",
-      count: 16,
+      count: 1,
       level: 2,
     },
     {
       date: "2023-02-20",
-      count: 16,
+      count: 3,
       level: 2,
     },
     {
       date: "2023-01-20",
-      count: 16,
+      count: 4,
       level: 2,
     },
     {
       date: "2023-02-20",
-      count: 16,
+      count: 10,
       level: 1,
     },
     {
       date: "2023-03-20",
-      count: 16,
+      count: 0,
       level: 2,
     },
     {
       date: "2023-04-20",
-      count: 16,
+      count: 0,
       level: 4,
     },
     {
       date: "2023-12-31",
-      count: 16,
+      count: 0,
       level: 4,
     },
   ];

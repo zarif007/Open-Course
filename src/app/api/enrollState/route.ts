@@ -1,7 +1,9 @@
 import { connectToDB } from "@/lib/connectToMongoose";
+import Activity from "@/lib/models/activity.mode";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import { EnrollState } from "@/lib/models/enrollState.model";
+import User from "@/lib/models/user.model";
 import { IEnrollState } from "@/types/enrollState";
 import { startSession } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
@@ -58,10 +60,25 @@ export const POST = async (req: NextRequest) => {
     );
 
     await Course.updateOne(
-      { _id: course?._id },
+      { _id: course._id },
       { $push: { enrolledUsers: payload.user } },
       { session, new: true }
     );
+
+    const enrolledUser = await User.findOneAndUpdate(
+      { email: payload.user },
+      { $inc: { points: 2 } }
+    );
+
+    const activity = new Activity({
+      user: enrolledUser._id,
+      date: new Date(),
+      link: `/course/${course.slug}`,
+      text: `Enrolled the course ${course.slug}`,
+      type: "enrolled",
+    });
+
+    await activity.save({ session });
 
     await session.commitTransaction();
     session.endSession();

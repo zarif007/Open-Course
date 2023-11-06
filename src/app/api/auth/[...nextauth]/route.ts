@@ -40,6 +40,12 @@ const handler = NextAuth({
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
+    async jwt({ token, user, session }) {
+      return token;
+    },
+    async session({ session, token, user }) {
+      return session;
+    },
   },
 });
 

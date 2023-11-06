@@ -1,4 +1,5 @@
 import { connectToDB } from "@/lib/connectToMongoose";
+import Activity from "@/lib/models/activity.mode";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
@@ -34,6 +35,19 @@ export const POST = async (req: NextRequest) => {
   await course.populate({
     path: "creator",
     model: User,
+  });
+
+  await User.findOneAndUpdate(
+    { _id: payload.creator },
+    { $inc: { points: 10 } }
+  );
+
+  await Activity.create({
+    user: payload.creator,
+    date: new Date(),
+    link: `/course/${payload.slug}`,
+    text: `Created the course ${payload.slug}`,
+    type: "created",
   });
 
   return NextResponse.json({ data: course });

@@ -88,7 +88,16 @@ const AvatarDropdown = () => {
               </div>
             </Link>
           </MenubarItem>
-          <MenubarSeparator />
+          <MenubarSeparator className="bg-slate-300 dark:bg-gray-800" />
+          <MenubarItem className={styles.menuBarItems}>
+            <Link
+              href={`/dashboard`}
+              className="text-gray-950 dark:text-slate-100"
+            >
+              Dashboard
+            </Link>
+          </MenubarItem>
+          <MenubarSeparator className="bg-slate-300 dark:bg-gray-800" />
           <MenubarItem
             onClick={() => signOut()}
             className={`${styles.menuBarItems} text-red-500`}

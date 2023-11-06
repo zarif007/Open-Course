@@ -1,3 +1,4 @@
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export { default } from "next-auth/middleware";
@@ -5,10 +6,7 @@ export { default } from "next-auth/middleware";
 export const middleware = async (request: NextRequest) => {
   const privatePages = ["/course-creation", "/dashboard", "/course"];
 
-  const token =
-    (process.env.NODE_ENV === "development"
-      ? request.cookies.get("next-auth.session-token")?.value
-      : request.cookies.get("__Secure-next-auth.session-token")?.value) ?? "";
+  const token = await getToken({ req: request });
 
   const pathName = request.nextUrl.pathname;
 
