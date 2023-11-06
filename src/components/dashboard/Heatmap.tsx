@@ -3,6 +3,7 @@
 import React from "react";
 import ActivityCalendar, {
   Activity,
+  ColorScale,
   ThemeInput,
 } from "react-activity-calendar";
 import TooltipComponent from "../ui/TooltipComponent";
@@ -50,15 +51,17 @@ const HeatmapContrib = () => {
 
   const { theme } = useTheme();
 
+  const colors: ColorScale = [
+    theme === "dark" ? "#f1f5f9" : "#020617",
+    "#fda4af",
+    "#f43f5e",
+    "#be123c",
+    "#881337",
+  ];
+
   const explicitTheme: ThemeInput = {
-    light: ["#f0f0f0", "#c4edde", "#7ac7c4", "#f73859", "#384259"],
-    dark: [
-      theme === "dark" ? "#f1f5f9" : "#020617",
-      "#fda4af",
-      "#f43f5e",
-      "#be123c",
-      "#881337",
-    ],
+    light: colors,
+    dark: colors,
   };
   return (
     <div>

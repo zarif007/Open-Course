@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 export { default } from "next-auth/middleware";
 
 export const middleware = async (request: NextRequest) => {
-  const privateRoutes = ["/course-creation"];
+  const privatePages = ["/course-creation", "/dashboard", "/course"];
+
   const token =
     (process.env.NODE_ENV === "development"
       ? request.cookies.get("next-auth.session-token")?.value
@@ -11,7 +12,11 @@ export const middleware = async (request: NextRequest) => {
 
   const pathName = request.nextUrl.pathname;
 
-  if (privateRoutes.includes(pathName) && !token) {
+  const isPrivatePage =
+    privatePages.includes(pathName) ||
+    !!privatePages.map((pv) => pathName.startsWith(pv));
+
+  if (isPrivatePage && !token) {
     return NextResponse.redirect(
       new URL(`/login?callbackUrl=${pathName}`, request.nextUrl)
     );
@@ -19,5 +24,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/course", "/course-creation", "/api"],
+  matcher: ["/course/:path*", "/course-creation", "/dashboard", "/api"],
 };
