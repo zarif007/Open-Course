@@ -4,7 +4,11 @@ export { default } from "next-auth/middleware";
 
 export const middleware = async (request: NextRequest) => {
   const privateRoutes = ["/course-creation"];
-  const token = request.cookies.get("next-auth.session-token")?.value ?? "";
+  const token =
+    (process.env.NODE_ENV === "development"
+      ? request.cookies.get("next-auth.session-token")?.value
+      : request.cookies.get("__Secure-next-auth.session-token")?.value) ?? "";
+
   const pathName = request.nextUrl.pathname;
 
   if (privateRoutes.includes(pathName) && !token) {
