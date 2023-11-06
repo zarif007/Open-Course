@@ -1,5 +1,4 @@
 import NextAuth from "next-auth";
-import { authOptions } from "./options";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
