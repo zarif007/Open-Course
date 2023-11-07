@@ -6,7 +6,8 @@ import ActivityCalendar, {
   ColorScale,
   ThemeInput,
 } from "react-activity-calendar";
-import TooltipComponent from "../ui/TooltipComponent";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import LargeHeading from "../ui/LargeHeading";
 import { useTheme } from "next-themes";
 
@@ -74,10 +75,19 @@ const HeatmapContrib = () => {
       <ActivityCalendar
         data={data}
         theme={explicitTheme}
+        eventHandlers={{
+          onClick: (event) => (activity) => {
+            alert(JSON.stringify(activity));
+          },
+        }}
         renderBlock={(block, activity) => {
-          return <>{block}</>;
+          return React.cloneElement(block, {
+            "data-tooltip-id": "react-tooltip",
+            "data-tooltip-html": `${activity.count} activities on ${activity.date}`,
+          });
         }}
       />
+      <ReactTooltip id="react-tooltip" />
     </div>
   );
 };
