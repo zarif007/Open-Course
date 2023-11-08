@@ -2,6 +2,7 @@
 
 import CreatedCourses from "@/components/profile/CreatedCourses";
 import LargeHeading from "@/components/ui/LargeHeading";
+import Points from "@/components/ui/Points";
 import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
@@ -40,10 +41,7 @@ const Profile = async ({ params }: PageParams) => {
       <p className="font-semibold text-md text-slate-300 dark:text-gray-700 mt-1 mb-4">
         @{user.userName}
       </p>
-      <div className="flex space-x-2 justify-center items-center rounded bg-rose-500 px-4 py-1 font-semibold">
-        <p>{user.points ?? 0}</p>
-        <BiCoinStack />
-      </div>
+      <Points points={user.points ?? 0} />
       <CreatedCourses creatorId={user.id as string} />
     </section>
   );

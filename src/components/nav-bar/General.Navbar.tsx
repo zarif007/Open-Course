@@ -11,14 +11,6 @@ import routeElements from "@/constants/navBar";
 import ElementsDropdown from "./Elements.Dropdown";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/Skeleton";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "@/components/ui/Menu.Bar";
 
 const GeneralNavbar = () => {
   const styles = {

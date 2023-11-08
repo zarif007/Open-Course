@@ -16,6 +16,9 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useAppSelector } from "@/redux/store";
 import { IActivity } from "@/types/actvity";
 import getCurrentTime from "@/utils/getCurrentTime";
+import formatCurrentDate from "@/utils/formatCurrentDate";
+import Link from "next/link";
+import Points from "../ui/Points";
 
 const populateDates = (
   startDate: string,
@@ -39,7 +42,7 @@ const populateDates = (
   return dates;
 };
 
-const HeatmapContrib = () => {
+const Heatmap = () => {
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
@@ -48,20 +51,24 @@ const HeatmapContrib = () => {
   const [activitiesForHeatmap, setActivitiesForHeatmap] = useState<
     IActivityHeatmap[]
   >([]);
+  const [selectedDate, setSelectedDate] = useState<{
+    date: string;
+    activities: Partial<IActivity>[];
+  }>();
 
   const formatActivities = (activities: IActivity[]) => {
     const updated: IActivityHeatmap[] = populateDates(
       "2023-01-01",
-      "2023-12-31"
+      formatCurrentDate(getCurrentTime()) ?? "2023-12-31"
     );
 
     const activityMap = new Map<string, IActivityHeatmap>();
 
     activities.map((activity) => {
-      const date = activity.date as string;
-      const count = activityMap.get(date.slice(0, 10))?.count ?? 0;
-      activityMap.set(date.slice(0, 10) as string, {
-        date: date.slice(0, 10) as string,
+      const date = formatCurrentDate(activity.date as string)!;
+      const count = activityMap.get(date)?.count ?? 0;
+      activityMap.set(date, {
+        date: date,
         count: count + 1,
         level: Math.min(count + 1, 4) as Level,
       });
@@ -86,9 +93,23 @@ const HeatmapContrib = () => {
     },
   });
 
-  const { theme } = useTheme();
+  const handleSetSelectedDate = (date: string) => {
+    const updated: Partial<IActivity>[] = [];
 
-  console.log(getCurrentTime());
+    activities.map((activity) => {
+      if (formatCurrentDate(activity.date as string) === date)
+        updated.push({
+          date: activity.date,
+          link: activity.link,
+          type: activity.type,
+          text: activity.text,
+        });
+    });
+
+    setSelectedDate({ date, activities: updated });
+  };
+
+  const { theme } = useTheme();
 
   const colors: ColorScale = [
     theme === "dark" ? "#f1f5f9" : "#020617",
@@ -102,6 +123,7 @@ const HeatmapContrib = () => {
     light: colors,
     dark: colors,
   };
+
   return (
     <div>
       <LargeHeading
@@ -115,7 +137,7 @@ const HeatmapContrib = () => {
         theme={explicitTheme}
         eventHandlers={{
           onClick: (event) => (activity) => {
-            alert(JSON.stringify(activity));
+            handleSetSelectedDate(activity.date);
           },
         }}
         renderBlock={(block, activity) => {
@@ -126,8 +148,38 @@ const HeatmapContrib = () => {
         }}
       />
       <ReactTooltip id="react-tooltip" />
+
+      {selectedDate?.date && (
+        <div className="border-2 border-slate-300 dark:border-gray-800 my-6 p-4 rounded">
+          <p className="font-semibold">
+            <span className="text-rose-500">
+              {selectedDate.activities.length}
+            </span>{" "}
+            Activities On{" "}
+            <span className="text-rose-500">{selectedDate.date}</span>
+          </p>
+
+          {selectedDate.activities.map((activity, index) => {
+            return (
+              <div
+                key={index}
+                className="my-2 flex items-center justify-between"
+              >
+                <Link
+                  className="text-blue-600 font-semibold"
+                  href={activity.link as string}
+                  target="_blank"
+                >
+                  {activity.text}
+                </Link>
+                <Points points={activity.type === "created" ? 10 : 2} />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
 
-export default HeatmapContrib;
+export default Heatmap;

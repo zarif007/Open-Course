@@ -10,8 +10,8 @@ const ActivitySchema = new Schema<IActivity, IActivityModel>(
       required: [true, "User is required"],
     },
     date: {
-      type: Date,
-      default: Date.now(),
+      type: String,
+      required: [true, "Date is required"],
     },
     link: {
       type: String,

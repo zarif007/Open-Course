@@ -3,6 +3,7 @@ import Activity from "@/lib/models/activity.mode";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
+import getCurrentTime from "@/utils/getCurrentTime";
 import { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -44,7 +45,7 @@ export const POST = async (req: NextRequest) => {
 
   await Activity.create({
     user: payload.creator,
-    date: new Date(),
+    date: getCurrentTime(),
     link: `/course/${payload.slug}`,
     text: `Created the course ${payload.slug}`,
     type: "created",

@@ -5,6 +5,7 @@ import CourseTopic from "@/lib/models/courseTopic.model";
 import { EnrollState } from "@/lib/models/enrollState.model";
 import User from "@/lib/models/user.model";
 import { IEnrollState } from "@/types/enrollState";
+import getCurrentTime from "@/utils/getCurrentTime";
 import { startSession } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -72,7 +73,7 @@ export const POST = async (req: NextRequest) => {
 
     const activity = new Activity({
       user: enrolledUser._id,
-      date: new Date(),
+      date: getCurrentTime(),
       link: `/course/${course.slug}`,
       text: `Enrolled the course ${course.slug}`,
       type: "enrolled",
