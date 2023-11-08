@@ -6,17 +6,13 @@ import apiReqWrapper from "@/utils/apiReqWrapper";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
-interface PageParams {
+interface IParams {
   params: {
     id: string;
   };
 }
 
-export const GET = async (
-  req: NextApiRequest,
-  { params }: PageParams,
-  res: NextApiResponse
-) => {
+export const GET = async (req: NextApiRequest, { params }: IParams) => {
   const id = params.id;
   connectToDB();
 

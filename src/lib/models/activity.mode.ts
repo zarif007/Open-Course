@@ -1,4 +1,4 @@
-import { IActivity, IActivityModel } from "@/types/actvities";
+import { IActivity, IActivityModel } from "@/types/actvity";
 import { ICourseTopic, ICourseTopicModel } from "@/types/courseTopic";
 import { Schema, model, models } from "mongoose";
 

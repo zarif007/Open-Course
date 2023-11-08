@@ -6,7 +6,7 @@ import { ICourseTopic } from "@/types/courseTopic";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-interface PageParams {
+interface IParams {
   params: {
     id: string;
   };
@@ -14,7 +14,7 @@ interface PageParams {
 
 export const revalidate = true;
 
-export const PUT = async (req: NextRequest, { params }: PageParams) => {
+export const PUT = async (req: NextRequest, { params }: IParams) => {
   connectToDB();
 
   const id = params.id;
