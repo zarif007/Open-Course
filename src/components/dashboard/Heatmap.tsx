@@ -16,7 +16,6 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useAppSelector } from "@/redux/store";
 import { IActivity } from "@/types/actvity";
 import getCurrentTime from "@/utils/getCurrentTime";
-import formatCurrentDate from "@/utils/formatCurrentDate";
 import Link from "next/link";
 import Points from "../ui/Points";
 
@@ -59,13 +58,13 @@ const Heatmap = () => {
   const formatActivities = (activities: IActivity[]) => {
     const updated: IActivityHeatmap[] = populateDates(
       "2023-01-01",
-      formatCurrentDate(getCurrentTime()) ?? "2023-12-31"
+      getCurrentTime() ?? "2023-12-31"
     );
 
     const activityMap = new Map<string, IActivityHeatmap>();
 
     activities.map((activity) => {
-      const date = formatCurrentDate(activity.date as string)!;
+      const date = activity.date as string;
       const count = activityMap.get(date)?.count ?? 0;
       activityMap.set(date, {
         date: date,
@@ -97,7 +96,7 @@ const Heatmap = () => {
     const updated: Partial<IActivity>[] = [];
 
     activities.map((activity) => {
-      if (formatCurrentDate(activity.date as string) === date)
+      if ((activity.date as string) === date)
         updated.push({
           date: activity.date,
           link: activity.link,
