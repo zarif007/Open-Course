@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 import { useRouter } from "next/navigation";
+import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
   const { data: session } = useSession();
@@ -34,6 +35,18 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
+      <div
+        className={`rounded mx-auto flex items-center space-x-2 ${
+          course.coursePrivacy === "public" ? "bg-blue-500" : "bg-violet-500"
+        } text-sm font-semibold px-2 py-1`}
+      >
+        {course.coursePrivacy === "public" ? (
+          <AiOutlineUnlock />
+        ) : (
+          <AiOutlineLock />
+        )}
+        <p>{course.coursePrivacy}</p>
+      </div>
       <LargeHeading className="text-center underline decoration-rose-500 decoration-4">
         {course.title}
       </LargeHeading>

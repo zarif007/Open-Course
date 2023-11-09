@@ -15,6 +15,8 @@ const initialState = {
       title: "New Course 🐉",
       categories: [],
       levels: [],
+      coursePrivacy: "public",
+      topicPrivacy: "locked",
       languages: [],
       topics: [
         {

@@ -66,8 +66,7 @@ const CourseUpdate = () => {
   };
 
   const handleSubmit = async () => {
-    if (loadingStatus !== "free" || !session?.user?.email || !signedInUser?.id)
-      return;
+    if (loadingStatus !== "free" || !signedInUser?.id) return;
 
     if (!validateCourseDetails()) return;
 

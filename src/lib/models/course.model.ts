@@ -1,4 +1,9 @@
-import { courseStatuses, courseTypes } from "@/constants/course";
+import {
+  coursePrivacy,
+  courseStatuses,
+  courseTypes,
+  topicPrivacy,
+} from "@/constants/course";
 import { ICourse, ICourseModel } from "@/types/course";
 import { Schema, model, models } from "mongoose";
 
@@ -91,6 +96,16 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
         },
       ],
       default: [],
+    },
+    coursePrivacy: {
+      type: String,
+      enum: coursePrivacy,
+      default: "public",
+    },
+    topicPrivacy: {
+      type: String,
+      enum: topicPrivacy,
+      default: "open",
     },
   },
   {

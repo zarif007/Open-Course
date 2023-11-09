@@ -13,7 +13,6 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { ICourseTopic } from "@/types/courseTopic";
-import { useSession } from "next-auth/react";
 
 const CourseContentController = () => {
   const currentCourseTopic = useAppSelector(
@@ -28,9 +27,11 @@ const CourseContentController = () => {
     (state) => state.courseViewReducer.value.enrollState
   );
 
-  const router = useRouter();
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
 
-  const { data: session } = useSession();
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -42,7 +43,7 @@ const CourseContentController = () => {
 
     if (!enrollState.finishedTopics.includes(nextTopicId.toString()) || fetch) {
       const { data } = await axios.get(
-        `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
+        `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
       );
 
       const enrollState = data.data as IEnrollState;
@@ -59,8 +60,6 @@ const CourseContentController = () => {
           : [...enrollState.finishedTopics, currentCourseTopicId.toString()],
       };
 
-      await axios.put(`${nextApiEndPoint}/enrollState`, state);
-
       const updatedEnrollState = await axios.put(
         `${nextApiEndPoint}/enrollState`,
         state
@@ -71,7 +70,7 @@ const CourseContentController = () => {
   };
 
   const handleNextButton = async () => {
-    if (isLoading || !session?.user || !course || !currentCourseTopic.id)
+    if (isLoading || !signedInUser?.id || !course || !currentCourseTopic.id)
       return;
 
     setIsLoading(true);
@@ -94,7 +93,7 @@ const CourseContentController = () => {
   };
 
   const handleDoneButton = async () => {
-    if (isLoading || !session?.user || !course || !currentCourseTopic.id)
+    if (isLoading || !signedInUser?.id || !course || !currentCourseTopic.id)
       return;
 
     setIsLoading(true);

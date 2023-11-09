@@ -57,9 +57,15 @@ const CourseCompletion = async ({ params }: PageParams) => {
   const session = await getServerSession();
   if (!session?.user) redirect("");
 
+  const { data: user } = await (
+    await fetch(`${nextApiEndPoint}/user/byEmail/${session.user.email}`, {
+      cache: "force-cache",
+    })
+  ).json();
+
   const { data: enrollState } = await (
     await fetch(
-      `${nextApiEndPoint}/enrollState/?user=${session.user.email}&course=${course.id}`,
+      `${nextApiEndPoint}/enrollState?user=${user.id}&course=${course.id}`,
       {
         cache: "force-cache",
       }

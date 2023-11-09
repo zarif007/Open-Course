@@ -4,21 +4,8 @@ import CourseTopicsBar from "../course-topic/CourseTopics.Bar";
 import CourseContentsTabs from "../course-content/CourseContents.Tabs";
 import CourseSkeleton from "../skeletons/Course.Skeleton";
 import useCourseGuard from "@/hooks/useCourseGuard";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { IEnrollState } from "@/types/enrollState";
-import { ICourseTopic } from "@/types/courseTopic";
+import React, { useState } from "react";
 import { ICourse } from "@/types/course";
-import canBeParsedToInt from "@/utils/canBeParsedToInt";
-import {
-  setCourseForView,
-  setCurrentCourseTopicForView,
-  setEnrollState,
-} from "@/redux/features/course-view-slice";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useSession } from "next-auth/react";
 
 const MODE = "view";
 

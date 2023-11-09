@@ -1,5 +1,7 @@
 export const courseTypes = ["gn", "org"];
 export const courseStatuses = ["draft", "published"];
+export const coursePrivacy = ["public", "private"];
+export const topicPrivacy = ["open", "locked"];
 
 export const courseSearchableFields = [
   "title",

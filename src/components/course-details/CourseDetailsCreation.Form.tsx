@@ -39,6 +39,26 @@ const CourseDetailsCreationForm = ({
     );
   };
 
+  const handleSwitch = (
+    value: boolean,
+    attribute: "coursePrivacy" | "topicPrivacy"
+  ) => {
+    const vl =
+      attribute === "coursePrivacy"
+        ? value
+          ? "public"
+          : "private"
+        : value
+        ? "open"
+        : "locked";
+    const updatedCourse = {
+      ...course,
+      [attribute]: vl,
+    };
+
+    updateCourse(updatedCourse);
+  };
+
   return (
     <form className={`flex flex-col items-center space-y-3 md:space-y-6`}>
       <div className="w-full">
@@ -81,8 +101,25 @@ const CourseDetailsCreationForm = ({
               <AiOutlineLock />
               <p>Private is invitation only</p>
             </div>
+            <div
+              className={`flex items-center space-x-1 font-semibold text-xs ${
+                course.coursePrivacy === "public"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {course.coursePrivacy === "public" ? (
+                <AiOutlineUnlock />
+              ) : (
+                <AiOutlineLock />
+              )}
+              <p>{course.coursePrivacy}</p>
+            </div>
           </div>
-          <Switch />
+          <Switch
+            defaultChecked={course.coursePrivacy === "public"}
+            onCheckedChange={(e) => handleSwitch(e, "coursePrivacy")}
+          />
         </div>
         <div className="flex justify-between items-center px-4 py-2 border border-slate-300 dark:border-gray-800 rounded w-full">
           <div className="">
@@ -98,8 +135,25 @@ const CourseDetailsCreationForm = ({
               <AiOutlineLock />
               <p>Finish previous topic to view</p>
             </div>
+            <div
+              className={`flex items-center space-x-1 font-semibold text-xs ${
+                course.topicPrivacy === "open"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {course.topicPrivacy === "open" ? (
+                <AiOutlineUnlock />
+              ) : (
+                <AiOutlineLock />
+              )}
+              <p>{course.topicPrivacy}</p>
+            </div>
           </div>
-          <Switch />
+          <Switch
+            defaultChecked={course.topicPrivacy === "open"}
+            onCheckedChange={(e) => handleSwitch(e, "topicPrivacy")}
+          />
         </div>
       </div>
 

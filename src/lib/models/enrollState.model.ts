@@ -9,8 +9,9 @@ const EnrollStateSchema = new Schema<IEnrollState, IEnrollStateModel>(
       required: [true, "The course ID is required"],
     },
     user: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User is required"],
     },
     currentTopic: {
       type: Schema.Types.ObjectId,

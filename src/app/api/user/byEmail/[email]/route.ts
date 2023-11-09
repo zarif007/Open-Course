@@ -1,8 +1,7 @@
 import { connectToDB } from "@/lib/connectToMongoose";
 import { connectToRedis } from "@/lib/connectToRedis";
 import User from "@/lib/models/user.model";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
   params: {
@@ -11,9 +10,9 @@ interface PageParams {
 }
 
 export const GET = async (
-  req: NextApiRequest,
+  req: NextRequest,
   { params }: PageParams,
-  res: NextApiResponse
+  res: NextResponse
 ) => {
   const email = params.email;
   // const redis = connectToRedis();

@@ -12,7 +12,6 @@ import {
   setEnrollState,
 } from "@/redux/features/course-view-slice";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useSession } from "next-auth/react";
 
 const useCourseGuard = (
   course: ICourse,
@@ -26,7 +25,9 @@ const useCourseGuard = (
 
   const router = useRouter();
 
-  const { data: session } = useSession();
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
 
   const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
     const currentTopic = enrollState.currentTopic as ICourseTopic;
@@ -41,7 +42,7 @@ const useCourseGuard = (
     try {
       const { data: enrollState } = await (
         await fetch(
-          `${nextApiEndPoint}/enrollState?user=${session?.user?.email}&course=${course.id}`
+          `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
         )
       ).json();
 
@@ -78,12 +79,12 @@ const useCourseGuard = (
   };
 
   useEffect(() => {
-    if (!session?.user) {
+    if (!signedInUser?.id) {
       router.push(`/course-landing/${slug}`);
     } else {
       actionBasedOnEnrollState();
     }
-  }, [topicId, course, session?.user]);
+  }, [topicId, course, signedInUser?.id]);
 };
 
 export default useCourseGuard;

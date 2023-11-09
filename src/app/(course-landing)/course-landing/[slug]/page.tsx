@@ -18,11 +18,11 @@ interface PageParams {
 
 const getCourse = async (
   slug: string,
-  userId: string | null
+  userEmail: string | null
 ): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
   const data = await (
     await fetch(
-      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userId=${userId}`,
+      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       { cache: "no-store" }
     )
   ).json();
@@ -52,6 +52,7 @@ export const generateMetadata = async ({
 
 const CourseLanding = async ({ params }: PageParams) => {
   const session = await getServerSession();
+
   const { course, enrollState } = await getCourse(
     params.slug,
     session?.user?.email ?? null

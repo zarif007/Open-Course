@@ -22,6 +22,7 @@ import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
 import { signIn, useSession } from "next-auth/react";
+import { useAppSelector } from "@/redux/store";
 
 const CourseLandingPage = ({
   course,
@@ -40,23 +41,27 @@ const CourseLandingPage = ({
 
   const { data: session } = useSession();
 
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
   useEffect(() => {
-    if (!session?.user || !enrollState) {
+    if (!signedInUser?.id || !enrollState) {
       setIsEnrolled("no");
     } else {
       setIsEnrolled("yes");
     }
-  }, [course, session?.user, enrollState]);
+  }, [course, signedInUser?.id, enrollState]);
 
   const handleEnrollment = async () => {
-    if (loadingStatus !== "free" || !session?.user?.email) return;
+    if (loadingStatus !== "free" || !signedInUser?.id) return;
 
     setLoadingStatus("Processing");
 
     try {
       const data = {
         course: course.id,
-        user: session?.user?.email,
+        user: signedInUser?.id,
       };
 
       await axios.post(`${nextApiEndPoint}/enrollState`, data);

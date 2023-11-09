@@ -16,6 +16,8 @@ const initialState = {
       categories: [],
       levels: [],
       languages: [],
+      coursePrivacy: "public",
+      topicPrivacy: "locked",
       topics: [
         {
           id: 0,

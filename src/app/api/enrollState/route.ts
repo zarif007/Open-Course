@@ -66,13 +66,10 @@ export const POST = async (req: NextRequest) => {
       { session, new: true }
     );
 
-    const enrolledUser = await User.findOneAndUpdate(
-      { email: payload.user },
-      { $inc: { points: 2 } }
-    );
+    await User.findOneAndUpdate({ _id: payload.user }, { $inc: { points: 2 } });
 
     const activity = new Activity({
-      user: enrolledUser._id,
+      user: payload.user,
       date: getCurrentTime(),
       link: `/course/${course.slug}`,
       text: `Enrolled the course ${course.slug}`,
