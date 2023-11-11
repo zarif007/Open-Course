@@ -24,7 +24,7 @@ import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 
-const CourseCard = ({ course }: { course: ICourse }) => {
+const CourseCardShort = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
 
   const generatedBanner = generateBannerFromCourse(course, creator.name);
@@ -35,40 +35,11 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         <BlurredImage
           src={course.banner === "" ? generatedBanner : course.banner}
           alt="blog"
-          dimension="h-48 w-full"
-          className="h-48 w-full rounded object-cover object-center border border-rose-500"
+          dimension="h-36 w-full"
+          className="h-36 w-full rounded object-cover object-center border border-rose-500"
         />
 
-        <div className="flex space-x-2 -mt-8 mx-2">
-          {course.languages.map((lang) => (
-            <PopoverComponent
-              key={lang}
-              topic={lang}
-              routerName="languages"
-              trigger={
-                <div
-                  key={lang}
-                  className="px-1 rounded bg-slate-100 text-gray-950"
-                >
-                  {lang.split(" ")[0]}
-                </div>
-              }
-            />
-          ))}
-        </div>
-
-        <div className="p-6">
-          <div className="flex justify-between items-center">
-            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
-              By <span className="text-rose-500">{creator.name ?? ""}</span>
-            </h2>
-            <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
-              {formatDate(
-                getLastUpdatedTopicDate(course.topics as ICourseTopic[])
-              )}
-            </p>
-          </div>
-
+        <div className="p-6 pt-2 pb-4">
           <Paragraph
             size="default"
             className="font-bold underline decoration-rose-500 decoration-2 truncate"
@@ -104,53 +75,13 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             ))}
           </div>
 
-          <div className="flex justify-between">
-            <ContentLogos
-              topics={course.topics as ICourseTopic[]}
-              withDuration={true}
-            />
-            <p className="text-gray-500 font-semibold">
-              {courseDurationCalculator(course.topics as ICourseTopic[])}
-            </p>
-          </div>
-
-          <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
-            <div className="flex space-x-1 items-center">
-              <PiShootingStarDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">
-                {calculateAvgRating(course.ratings ?? [])}
-                {" ("}
-                {(course.ratings ?? []).length}
-                {")"}
-              </p>
-            </div>
-            <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
-              |
-            </p>
-            <div className="flex space-x-1 items-center">
-              <PiUsersThreeDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">
-                {course.enrolledUsers.length}
-              </p>
-            </div>
-            <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
-              |
-            </p>
-            <div className="flex space-x-1 items-center">
-              <PiChatsDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">
-                {course.enrolledUsers.length}
-              </p>
-            </div>
-          </div>
-
           <Link
             href={`course-landing/${course.slug}`}
             className={`${buttonVariants({
               variant: "default",
             })} w-full mt-3 font-semibold`}
           >
-            Enroll
+            View
           </Link>
         </div>
       </div>
@@ -184,4 +115,4 @@ const PopoverComponent = ({
   );
 };
 
-export default CourseCard;
+export default CourseCardShort;

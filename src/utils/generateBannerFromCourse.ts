@@ -6,7 +6,7 @@ const generateBannerFromCourse = (course: ICourse, creator: string) => {
     course.slug
   }&
       &topics=${course?.categories ? course?.categories.join("  ") : ""}
-      &creator=${creator}`;
+      &creator=${creator ?? ""}`;
 };
 
 export default generateBannerFromCourse;
