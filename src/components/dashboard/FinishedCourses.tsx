@@ -5,7 +5,6 @@ import LargeHeading from "../ui/LargeHeading";
 import { useQuery } from "@tanstack/react-query";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { ICourse } from "@/types/course";
-import CourseCardSkeleton from "../skeletons/CourseCard.Skeleton";
 import SwiperComp from "../ui/SwiperComp";
 import { useAppSelector } from "@/redux/store";
 import CourseCardShort from "../course-cards/Course.Card.Short";
@@ -14,22 +13,23 @@ import CourseCardDashboard from "../course-cards/Course.Card.Dashboard";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseCardDashboardSkeleton from "../skeletons/CourseCardDashboard.Skeleton";
 
-const OngoingCourses = () => {
+const FinishedCourses = () => {
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
   const { data: courses, isLoading } = useQuery({
-    queryKey: [`course-onGoing-${signedInUser?.id}`],
+    queryKey: [`course-finished-${signedInUser?.id}`],
     enabled: !!signedInUser?.id,
     staleTime: 60000, // 60 seconds
     refetchOnMount: true,
     queryFn: async () => {
       const { data } = await (
         await fetch(
-          `${nextApiEndPoint}/courses/enrolledCourses/onGoing/${signedInUser?.id}`,
+          `${nextApiEndPoint}/courses/enrolledCourses/finished/${signedInUser?.id}`,
           { cache: "force-cache" }
         )
       ).json();
+      console.log(data);
       return data.map(
         async (
           state: {
@@ -50,7 +50,7 @@ const OngoingCourses = () => {
         size="sm"
         className="my-6 underline decoration-rose-500 decoration-4"
       >
-        Ongoing Courses
+        Finished Courses
       </LargeHeading>
       <div className="container px-5 py-8 mx-auto">
         <div className="flex flex-wrap -m-4"></div>
@@ -68,4 +68,4 @@ const OngoingCourses = () => {
   );
 };
 
-export default OngoingCourses;
+export default FinishedCourses;

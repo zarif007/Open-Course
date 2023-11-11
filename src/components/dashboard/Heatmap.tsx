@@ -18,6 +18,7 @@ import { IActivity } from "@/types/actvity";
 import getCurrentTime from "@/utils/getCurrentTime";
 import Link from "next/link";
 import Points from "../ui/Points";
+import HeatmapSkeleton from "../skeletons/Heatmap.Skeleton";
 
 const populateDates = (
   startDate: string,
@@ -79,7 +80,7 @@ const Heatmap = () => {
     setActivitiesForHeatmap(updated);
   };
 
-  useQuery({
+  const { isLoading } = useQuery({
     queryKey: [`heat-map-data-${signedInUser?.id}`],
     enabled: !!signedInUser?.id,
     queryFn: async () => {
@@ -127,25 +128,31 @@ const Heatmap = () => {
     <div>
       <LargeHeading
         size="sm"
-        className="my-3 underline decoration-rose-500 decoration-4"
+        className="my-3 underline decoration-rose-500 decoration-4 mb-3"
       >
         Activities
       </LargeHeading>
-      <ActivityCalendar
-        data={activitiesForHeatmap}
-        theme={explicitTheme}
-        eventHandlers={{
-          onClick: (event) => (activity) => {
-            handleSetSelectedDate(activity.date);
-          },
-        }}
-        renderBlock={(block, activity) => {
-          return React.cloneElement(block, {
-            "data-tooltip-id": "react-tooltip",
-            "data-tooltip-html": `${activity.count} activities on ${activity.date}`,
-          });
-        }}
-      />
+
+      {isLoading ? (
+        <HeatmapSkeleton />
+      ) : (
+        <ActivityCalendar
+          data={activitiesForHeatmap}
+          theme={explicitTheme}
+          eventHandlers={{
+            onClick: (event) => (activity) => {
+              handleSetSelectedDate(activity.date);
+            },
+          }}
+          renderBlock={(block, activity) => {
+            return React.cloneElement(block, {
+              "data-tooltip-id": "react-tooltip",
+              "data-tooltip-html": `${activity.count} activities on ${activity.date}`,
+            });
+          }}
+        />
+      )}
+
       <ReactTooltip id="react-tooltip" />
 
       {selectedDate?.date && (

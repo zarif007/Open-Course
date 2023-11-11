@@ -52,7 +52,11 @@ const CourseCardDashboard = ({
           </Paragraph>
 
           <div
-            onClick={() => router.push(`course-landing/${course.slug}`)}
+            onClick={() =>
+              router.push(
+                `course/${course.slug}?topicId=${currentTopic.topicID}`
+              )
+            }
             className="p-2 my-2 bg-slate-200 dark:bg-gray-900 cursor-pointer flex space-x-2 items-center rounded"
           >
             <ContentLogos topics={[currentTopic]} withDuration={false} />
@@ -69,7 +73,7 @@ const CourseCardDashboard = ({
           </div>
 
           <Link
-            href={`course-landing/${course.slug}`}
+            href={`course/${course.slug}?topicId=${currentTopic.topicID}`}
             className={`${buttonVariants({
               variant: "default",
             })} w-full mt-3 font-semibold`}
@@ -79,32 +83,6 @@ const CourseCardDashboard = ({
         </div>
       </div>
     </div>
-  );
-};
-
-const PopoverComponent = ({
-  topic,
-  routerName,
-  trigger,
-}: {
-  topic: string;
-  routerName: string;
-  trigger: React.JSX.Element;
-}) => {
-  const router = useRouter();
-  return (
-    <Popover>
-      <PopoverTrigger className="cursor-pointer">{trigger}</PopoverTrigger>
-      <PopoverContent>
-        <p className="font-semibold mb-3">{topic}</p>
-        <Button
-          className="px-2 w-full focus:ring-0"
-          onClick={() => router.push(`/courses?${routerName}=${topic}`)}
-        >
-          View {topic.split(" ")[0]} Courses
-        </Button>
-      </PopoverContent>
-    </Popover>
   );
 };
 

@@ -4,7 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 export { default } from "next-auth/middleware";
 
 export const middleware = async (request: NextRequest) => {
-  const privatePages = ["/course-creation", "/dashboard", "/course"];
+  const privatePages = [
+    "/course-creation",
+    "/dashboard",
+    "/course",
+    "/course-completion",
+  ];
 
   const token = await getToken({ req: request });
 
@@ -22,5 +27,11 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/course/:path*", "/course-creation", "/dashboard", "/api"],
+  matcher: [
+    "/course/:path*",
+    "/course-completion/:path*",
+    "/course-creation",
+    "/dashboard",
+    "/api",
+  ],
 };
