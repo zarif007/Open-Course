@@ -13,12 +13,12 @@ import LargeHeading from "../ui/LargeHeading";
 import { useTheme } from "next-themes";
 import { useQuery } from "@tanstack/react-query";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useAppSelector } from "@/redux/store";
 import { IActivity } from "@/types/actvity";
 import getCurrentTime from "@/utils/getCurrentTime";
 import Link from "next/link";
 import Points from "../ui/Points";
 import HeatmapSkeleton from "../skeletons/Heatmap.Skeleton";
+import { IUser } from "@/types/user";
 
 const populateDates = (
   startDate: string,
@@ -42,11 +42,7 @@ const populateDates = (
   return dates;
 };
 
-const Heatmap = () => {
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
-
+const Heatmap = ({ user }: { user: IUser | null }) => {
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [activitiesForHeatmap, setActivitiesForHeatmap] = useState<
     IActivityHeatmap[]
@@ -81,11 +77,11 @@ const Heatmap = () => {
   };
 
   const { isLoading } = useQuery({
-    queryKey: [`heat-map-data-${signedInUser?.id}`],
-    enabled: !!signedInUser?.id,
+    queryKey: [`heat-map-data-${user?.id}`],
+    enabled: !!user?.id,
     queryFn: async () => {
       const { data } = await (
-        await fetch(`${nextApiEndPoint}/activity/${signedInUser?.id}`)
+        await fetch(`${nextApiEndPoint}/activity/${user?.id}`)
       ).json();
 
       setActivities(data);
@@ -169,7 +165,7 @@ const Heatmap = () => {
             return (
               <div
                 key={index}
-                className="my-2 flex items-center justify-between"
+                className="my-1 text-sm flex items-center justify-between"
               >
                 <Link
                   className="text-blue-600 font-semibold"

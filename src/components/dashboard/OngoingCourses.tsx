@@ -13,21 +13,19 @@ import CourseCardShortSkeleton from "../skeletons/CourseCardShort.Skeleton";
 import CourseCardDashboard from "../course-cards/Course.Card.Dashboard";
 import { ICourseTopic } from "@/types/courseTopic";
 import CourseCardDashboardSkeleton from "../skeletons/CourseCardDashboard.Skeleton";
+import { IUser } from "@/types/user";
 
-const OngoingCourses = () => {
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
+const OngoingCourses = ({ user }: { user: IUser | null }) => {
   const { data: courses, isLoading } = useQuery({
-    queryKey: [`course-onGoing-${signedInUser?.id}`],
-    enabled: !!signedInUser?.id,
+    queryKey: [`course-onGoing-${user?.id}`],
+    enabled: !!user?.id,
     staleTime: 60000, // 60 seconds
     refetchOnMount: true,
     queryFn: async () => {
       const { data } = await (
         await fetch(
-          `${nextApiEndPoint}/courses/enrolledCourses/onGoing/${signedInUser?.id}`,
-          { cache: "force-cache" }
+          `${nextApiEndPoint}/courses/enrolledCourses/onGoing/${user?.id}`,
+          { cache: "no-store" }
         )
       ).json();
       return data.map(

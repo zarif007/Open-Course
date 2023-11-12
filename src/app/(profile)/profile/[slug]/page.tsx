@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import FinishedCourses from "@/components/dashboard/FinishedCourses";
+import Heatmap from "@/components/dashboard/Heatmap";
 import CreatedCourses from "@/components/profile/CreatedCourses";
 import LargeHeading from "@/components/ui/LargeHeading";
 import Points from "@/components/ui/Points";
@@ -8,7 +10,6 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
-import { BiCoinStack } from "react-icons/bi";
 
 interface PageParams {
   params: {
@@ -42,7 +43,11 @@ const Profile = async ({ params }: PageParams) => {
         @{user.userName}
       </p>
       <Points points={user.points ?? 0} />
+
+      <div className="mb-4" />
+      <Heatmap user={user} />
       <CreatedCourses creatorId={user.id as string} />
+      <FinishedCourses user={user} />
     </section>
   );
 };

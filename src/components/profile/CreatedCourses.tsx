@@ -25,7 +25,10 @@ const CreatedCourses = ({ creatorId }: { creatorId: string }) => {
   });
   return (
     <div className="mx-auto w-full mt-8">
-      <LargeHeading className="my-6 underline decoration-rose-500 decoration-4">
+      <LargeHeading
+        size="sm"
+        className="my-6 underline decoration-rose-500 decoration-4"
+      >
         Created Courses
       </LargeHeading>
       <div className="container px-5 py-8 mx-auto">

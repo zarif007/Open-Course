@@ -11,7 +11,7 @@ const HeatmapSkeleton = () => {
               return (
                 <Skeleton
                   key={index}
-                  className="h-[13px] w-[13px] rounded-sm mr-[3px] mb-[3px]"
+                  className="h-[8px] w-[8px] sm:h-[13px] sm:w-[13px] rounded-sm mr-[3px] mb-[3px]"
                 />
               );
             })}

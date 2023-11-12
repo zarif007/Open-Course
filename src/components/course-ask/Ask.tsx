@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { BiSolidDownvote, BiSolidUpvote } from "react-icons/bi";
 

@@ -9,24 +9,20 @@ import SwiperComp from "../ui/SwiperComp";
 import { useAppSelector } from "@/redux/store";
 import CourseCardShort from "../course-cards/Course.Card.Short";
 import CourseCardShortSkeleton from "../skeletons/CourseCardShort.Skeleton";
-import CourseCardDashboard from "../course-cards/Course.Card.Dashboard";
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseCardDashboardSkeleton from "../skeletons/CourseCardDashboard.Skeleton";
+import { IUser } from "@/types/user";
 
-const FinishedCourses = () => {
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
+const FinishedCourses = ({ user }: { user: IUser | null }) => {
   const { data: courses, isLoading } = useQuery({
-    queryKey: [`course-finished-${signedInUser?.id}`],
-    enabled: !!signedInUser?.id,
+    queryKey: [`course-finished-${user?.id}`],
+    enabled: !!user?.id,
     staleTime: 60000, // 60 seconds
     refetchOnMount: true,
     queryFn: async () => {
       const { data } = await (
         await fetch(
-          `${nextApiEndPoint}/courses/enrolledCourses/finished/${signedInUser?.id}`,
-          { cache: "force-cache" }
+          `${nextApiEndPoint}/courses/enrolledCourses/finished/${user?.id}`,
+          { cache: "no-store" }
         )
       ).json();
       console.log(data);
@@ -39,7 +35,7 @@ const FinishedCourses = () => {
           },
           index: number
         ) => {
-          return <CourseCardDashboard state={state} key={index} />;
+          return <CourseCardShort course={state.course} key={index} />;
         }
       );
     },
@@ -57,7 +53,7 @@ const FinishedCourses = () => {
         {isLoading ? (
           <div className="flex flex-wrap justify-between">
             {new Array(3).fill(9).map((_, index) => (
-              <CourseCardDashboardSkeleton key={index} />
+              <CourseCardShortSkeleton key={index} />
             ))}
           </div>
         ) : (
