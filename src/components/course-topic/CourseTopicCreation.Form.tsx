@@ -59,7 +59,7 @@ const CourseTopicCreationForm = ({
 
   useEffect(() => {
     setDefaultValue(currentCourseTopic);
-    reset(currentCourseTopic.versions[0]);
+    reset(currentCourseTopic.versions[currentCourseTopic.versions.length - 1]);
   }, [currentCourseTopic, reset]);
 
   const resetCourseTopic = () => {
@@ -105,11 +105,10 @@ const CourseTopicCreationForm = ({
       className="flex flex-col justify-center items-center space-y-6 my-12"
       onSubmit={handleSubmit(onSubmit)}
     >
-      {[0, 1, 2].map((value) => {
-        const field = topicInputFields(value);
+      {topicInputFields.map((field) => {
         return (
           <div
-            key={value}
+            key={field.label}
             className="grid w-full max-w-sm items-center gap-1.5"
           >
             <label htmlFor="text" className="font-bold">
@@ -138,7 +137,11 @@ const CourseTopicCreationForm = ({
                     : setCurrentCourseTopicForUpdate(updated)
                 );
               }}
-              defaultValue={defaultValue.versions[0][field.key]}
+              defaultValue={
+                defaultValue.versions[defaultValue.versions.length - 1][
+                  field.key
+                ]
+              }
               required
             />
             <ErrorMessage text={errors[field.key]?.message} className="" />
