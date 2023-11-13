@@ -9,7 +9,15 @@ export interface ICourseAsk {
   author: IUser | string | Types.ObjectId;
   topic: ICourseTopic | string | Types.ObjectId;
   title: string;
+  slug: string;
   question: string;
+  responses: [
+    {
+      user: IUser | string | Types.ObjectId;
+      answer: string;
+    }
+  ];
+  theAnswers: ICourseAsk[] | string[] | Types.ObjectId[];
   createdAt?: Date | string;
   updatedAt?: Date | string;
   upVote: IUser[] | string[] | Types.ObjectId[];

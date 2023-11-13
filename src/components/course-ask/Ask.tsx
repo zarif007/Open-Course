@@ -9,11 +9,16 @@ import Paragraph from "../ui/Paragraph";
 import { Button } from "../ui/Button";
 import { IUser } from "@/types/user";
 import { MdQuestionAnswer } from "react-icons/md";
+import formatDate from "@/utils/formatDate";
+import Link from "next/link";
 
 const Ask = ({ ask }: { ask: ICourseAsk }) => {
   const author = ask.author as IUser;
   return (
-    <div className="w-full flex items-center space-x-4 rounded p-3 border-2 border-slate-300 dark:border-gray-800">
+    <Link
+      href={`/ask/${ask.slug}`}
+      className="w-full flex items-center space-x-4 rounded px-3 py-4 border-2 border-slate-300 dark:border-gray-800"
+    >
       <div className="flex flex-col gap-4 items-center px-2 w-1/12">
         {/* <BiSolidUpvote className="w-8 h-8 cursor-pointer hover:text-green-500" />
         <p className="font-semibold text-lg">
@@ -38,17 +43,16 @@ const Ask = ({ ask }: { ask: ICourseAsk }) => {
           {ask.title}
         </p>
         <div className="flex justify-start space-x-2 items-center">
-          <img src={author.image} alt="author" className="h-6 w-6 rounded" />
-          <p className="text-xs font-semibold">{author.name}</p>
-        </div>
-        <p className="text-sm font-medium text-start">
-          {ask.question.slice(0, 100)}...
-        </p>
-        <div className="mt-4 flex justify-end">
-          <Button>View</Button>
+          <img src={author.image} alt="author" className="h-8 w-8 rounded" />
+          <div className="flex flex-col space-y-1">
+            <p className="text-xs font-semibold">{author.name}</p>
+            <p className="text-xs font-bold text-slate-400 dark:text-gray-700">
+              {formatDate(ask.updatedAt ?? "")}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

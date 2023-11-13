@@ -14,6 +14,7 @@ import { useAppSelector } from "@/redux/store";
 import { trpc } from "@/app/_trpc/client";
 import { toast } from "../ui/Toast";
 import { DialogClose } from "../ui/Dialog";
+import createSlug from "@/utils/createSlug";
 
 const CourseAskForm = () => {
   const signedInUser = useAppSelector(
@@ -61,6 +62,7 @@ const CourseAskForm = () => {
       topic: currentCourseTopic.id as string,
       title: data.title,
       question: data.question,
+      slug: createSlug(data.title),
     };
 
     try {
@@ -107,7 +109,7 @@ const CourseAskForm = () => {
           <Textarea
             {...register("question")}
             defaultValue=""
-            placeholder="Huh!! I don't know"
+            placeholder="Your question"
             className="text-sm font-semibold h-20"
           />
           <ErrorMessage text={errors.question?.message} className="" />

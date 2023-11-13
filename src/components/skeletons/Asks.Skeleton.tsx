@@ -5,7 +5,7 @@ const AsksSkeleton = () => {
   return (
     <div className="flex flex-col space-y-2">
       {new Array(5).fill(0).map((_, index) => (
-        <Skeleton key={index} className="h-32 md:h-40 w-full" />
+        <Skeleton key={index} className="h-32 w-full" />
       ))}
     </div>
   );

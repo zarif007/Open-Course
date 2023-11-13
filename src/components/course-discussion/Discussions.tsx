@@ -27,6 +27,7 @@ const Discussions = ({ discussions }: { discussions: IDiscussion[] }) => {
   //     ws.close();
   //   };
   // }, []);
+
   return (
     <div>
       {discussions.map((discussion) => (

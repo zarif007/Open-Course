@@ -17,9 +17,30 @@ const CourseAskSchema = new Schema<ICourseAsk, ICourseAskModel>(
       type: String,
       required: [true, "Title is required"],
     },
+    slug: {
+      type: String,
+      required: [true, "Slug is required"],
+    },
     question: {
       type: String,
       required: [true, "Question is required"],
+    },
+    responses: {
+      type: [
+        {
+          user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+          },
+          answer: String,
+        },
+      ],
+      default: [],
+    },
+    theAnswers: {
+      type: [Schema.Types.ObjectId],
+      ref: "CourseAsk",
+      default: [],
     },
     upVote: {
       type: [Schema.Types.ObjectId],
