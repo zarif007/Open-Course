@@ -6,6 +6,7 @@ import Ask from "./Ask";
 import CreateAskDialog from "./CreateAsk.Dialog";
 import { useAppSelector } from "@/redux/store";
 import { ICourseAsk } from "@/types/courseAsk";
+import AsksSkeleton from "../skeletons/Asks.Skeleton";
 
 const CourseAsks = () => {
   const currentCourseTopic = useAppSelector(
@@ -21,8 +22,9 @@ const CourseAsks = () => {
       <div className="flex justify-end mb-2">
         <CreateAskDialog />
       </div>
+
       {isLoading ? (
-        <>Loading....</>
+        <AsksSkeleton />
       ) : (
         <div className="flex flex-col space-y-2">
           {asks?.map((ask: ICourseAsk) => (
