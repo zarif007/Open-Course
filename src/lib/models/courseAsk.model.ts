@@ -8,11 +8,6 @@ const CourseAskSchema = new Schema<ICourseAsk, ICourseAskModel>(
       ref: "User",
       required: [true, "User is required"],
     },
-    course: {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
-      required: [true, "Course is required"],
-    },
     topic: {
       type: Schema.Types.ObjectId,
       ref: "CourseTopic",
@@ -25,6 +20,16 @@ const CourseAskSchema = new Schema<ICourseAsk, ICourseAskModel>(
     question: {
       type: String,
       required: [true, "Question is required"],
+    },
+    upVote: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    downVote: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
   },
   {

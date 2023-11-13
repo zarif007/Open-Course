@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import LargeHeading from "../ui/LargeHeading";
 import ErrorMessage from "../ui/ErrorMessage";
 import { Textarea } from "../ui/Textarea";
@@ -9,8 +9,21 @@ import { Button } from "../ui/Button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseAskInputSchema } from "@/validations/courseAsk";
+import { ICourseAsk } from "@/types/courseAsk";
+import { useAppSelector } from "@/redux/store";
+import { trpc } from "@/app/_trpc/client";
+import { toast } from "../ui/Toast";
+import { DialogClose } from "../ui/Dialog";
 
 const CourseAskForm = () => {
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
+  const currentCourseTopic = useAppSelector(
+    (state) => state.courseViewReducer.value.currentCourseTopic
+  );
+
   const {
     register,
     handleSubmit,
@@ -23,8 +36,49 @@ const CourseAskForm = () => {
     resolver: zodResolver(courseAskInputSchema),
   });
 
-  const onSubmit = (data: { title: string; question: string }) => {
-    console.log(data);
+  const [loadingStatus, setLoadingStatus] = useState<
+    "ready" | "loading" | "done"
+  >("ready");
+
+  const asks = trpc.getCourseAsks.useQuery({
+    topicId: currentCourseTopic.id as string,
+  });
+
+  const createCourseAsk = trpc.createCourseAsks.useMutation({
+    onSettled: () => {
+      asks.refetch();
+    },
+  });
+
+  const onSubmit = async (data: { title: string; question: string }) => {
+    if (!signedInUser || !currentCourseTopic.id || loadingStatus !== "ready")
+      return;
+
+    setLoadingStatus("loading");
+
+    const ask: Partial<ICourseAsk> = {
+      author: signedInUser?.id!,
+      topic: currentCourseTopic.id as string,
+      title: data.title,
+      question: data.question,
+    };
+
+    try {
+      const data = await createCourseAsk.mutateAsync(ask);
+      toast({
+        title: "Success",
+        type: "success",
+        message: "Question created successfully",
+      });
+      setLoadingStatus("done");
+    } catch {
+      toast({
+        title: "Complete required fields",
+        type: "error",
+        message: "Something went wrong",
+      });
+      setLoadingStatus("ready");
+    }
   };
 
   return (
@@ -58,9 +112,21 @@ const CourseAskForm = () => {
           />
           <ErrorMessage text={errors.question?.message} className="" />
         </div>
-        <Button type="submit" className="w-full">
-          Submit
-        </Button>
+        {loadingStatus !== "done" ? (
+          <Button
+            type="submit"
+            className="w-full"
+            isLoading={loadingStatus === "loading"}
+          >
+            Submit
+          </Button>
+        ) : (
+          <DialogClose>
+            <Button variant="outline" className="w-full">
+              Close
+            </Button>
+          </DialogClose>
+        )}
       </form>
     </div>
   );

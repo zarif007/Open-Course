@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { ICourse } from "@/types/course";
 import createSlug from "@/utils/createSlug";
 import { ICourseTopic } from "@/types/courseTopic";
-import { useSession } from "next-auth/react";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import CourseCreationUpdate from "@/components/course-details/Course.CreationUpdate";
 
@@ -22,8 +21,6 @@ const CourseCreation = () => {
   const course = useAppSelector(
     (state) => state.courseCreationReducer.value.course
   );
-
-  const { data: session } = useSession();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser

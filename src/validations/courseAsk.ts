@@ -1,13 +1,12 @@
 import { ICourseAsk } from "@/types/courseAsk";
 import { ZodType, z } from "zod";
 
-export const courseAskSchema: ZodType<ICourseAsk> = z.object({
+export const courseAskSchema: ZodType<Partial<ICourseAsk>> = z.object({
   title: z
     .string()
     .min(2, { message: "Title must be minimum 2 characters" })
     .max(200, { message: "Title must be maximum 200 characters" }),
   author: z.string().min(2).max(500),
-  course: z.string().min(2).max(500),
   topic: z.string().min(2).max(500),
   question: z
     .string()

@@ -3,22 +3,25 @@ import { publicProcedure, router } from "./trpc";
 import CourseAsk from "@/lib/models/courseAsk.model";
 import { z } from "zod";
 import { courseAskSchema } from "@/validations/courseAsk";
+import { ICourseAsk } from "@/types/courseAsk";
 
 export const appRouter = router({
   getCourseAsks: publicProcedure
     .input(
       z.object({
-        author: z.string().optional(),
         topicId: z.string().optional(),
       })
     )
-    .query(async ({ input }) => {
-      const { author, topicId } = input;
-      return await CourseAsk.find({ author, topicId }).limit(10);
+    .query(async ({ input }): Promise<ICourseAsk[] | null> => {
+      const { topicId } = input;
+      return await CourseAsk.find({ topic: topicId })
+        .limit(10)
+        .sort({ updatedAt: -1 })
+        .populate("author");
     }),
   createCourseAsks: publicProcedure
     .input(courseAskSchema)
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       return await CourseAsk.create(input);
     }),
 });
