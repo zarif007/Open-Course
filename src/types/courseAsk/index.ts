@@ -18,6 +18,7 @@ export interface ICourseAsk {
     }
   ];
   theAnswers: ICourseAsk[] | string[] | Types.ObjectId[];
+  tags: string[];
   createdAt?: Date | string;
   updatedAt?: Date | string;
   upVote: IUser[] | string[] | Types.ObjectId[];

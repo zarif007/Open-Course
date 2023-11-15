@@ -12,7 +12,7 @@ import { MdQuestionAnswer } from "react-icons/md";
 import formatDate from "@/utils/formatDate";
 import Link from "next/link";
 
-const Ask = ({ ask }: { ask: ICourseAsk }) => {
+const AskShort = ({ ask }: { ask: ICourseAsk }) => {
   const author = ask.author as IUser;
   return (
     <Link
@@ -56,4 +56,4 @@ const Ask = ({ ask }: { ask: ICourseAsk }) => {
   );
 };
 
-export default Ask;
+export default AskShort;

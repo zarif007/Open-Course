@@ -52,6 +52,10 @@ const CourseAskSchema = new Schema<ICourseAsk, ICourseAskModel>(
       ref: "User",
       default: [],
     },
+    tags: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,

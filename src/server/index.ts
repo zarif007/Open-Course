@@ -19,6 +19,13 @@ export const appRouter = router({
         .sort({ updatedAt: -1 })
         .populate("author");
     }),
+  getAskBySlug: publicProcedure
+    .input(z.string())
+    .query(async ({ input }): Promise<ICourseAsk | null> => {
+      const ask = await CourseAsk.findOne({ slug: input });
+      await ask.populate("author");
+      return ask;
+    }),
   createCourseAsks: publicProcedure
     .input(courseAskSchema)
     .mutation(async ({ input }) => {

@@ -2,7 +2,7 @@
 
 import { trpc } from "@/app/_trpc/client";
 import React from "react";
-import Ask from "./Ask";
+import AskShort from "./Ask.Short";
 import CreateAskDialog from "./CreateAsk.Dialog";
 import { useAppSelector } from "@/redux/store";
 import { ICourseAsk } from "@/types/courseAsk";
@@ -28,7 +28,7 @@ const CourseAsks = () => {
       ) : (
         <div className="flex flex-col space-y-2">
           {asks?.map((ask: ICourseAsk) => (
-            <Ask key={ask.id} ask={ask} />
+            <AskShort key={ask.id} ask={ask} />
           ))}
         </div>
       )}

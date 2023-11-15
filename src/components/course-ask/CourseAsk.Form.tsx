@@ -15,6 +15,7 @@ import { trpc } from "@/app/_trpc/client";
 import { toast } from "../ui/Toast";
 import { DialogClose } from "../ui/Dialog";
 import createSlug from "@/utils/createSlug";
+import SelectedTopics from "../course-details/SelectedTopics";
 
 const CourseAskForm = () => {
   const signedInUser = useAppSelector(
@@ -23,6 +24,10 @@ const CourseAskForm = () => {
 
   const currentCourseTopic = useAppSelector(
     (state) => state.courseViewReducer.value.currentCourseTopic
+  );
+
+  const course = useAppSelector(
+    (state) => state.courseViewReducer.value.course
   );
 
   const {
@@ -41,6 +46,8 @@ const CourseAskForm = () => {
     "ready" | "loading" | "done"
   >("ready");
 
+  const [selectedTags, setSelectedTags] = useState<string[]>(course.categories);
+
   const asks = trpc.getCourseAsks.useQuery({
     topicId: currentCourseTopic.id as string,
   });
@@ -50,6 +57,10 @@ const CourseAskForm = () => {
       asks.refetch();
     },
   });
+
+  const handleTagRemove = (values: string[]) => {
+    setSelectedTags(values);
+  };
 
   const onSubmit = async (data: { title: string; question: string }) => {
     if (!signedInUser || !currentCourseTopic.id || loadingStatus !== "ready")
@@ -63,10 +74,11 @@ const CourseAskForm = () => {
       title: data.title,
       question: data.question,
       slug: createSlug(data.title),
+      tags: course.categories,
     };
 
     try {
-      const data = await createCourseAsk.mutateAsync(ask);
+      await createCourseAsk.mutateAsync(ask);
       toast({
         title: "Success",
         type: "success",
@@ -114,6 +126,17 @@ const CourseAskForm = () => {
           />
           <ErrorMessage text={errors.question?.message} className="" />
         </div>
+        <div className="grid w-full items-center">
+          <label htmlFor="url" className="font-bold">
+            Tags
+          </label>
+          <SelectedTopics
+            selectedTopics={selectedTags}
+            mode="creation"
+            setSelectedTopics={handleTagRemove}
+          />
+        </div>
+
         {loadingStatus !== "done" ? (
           <Button
             type="submit"
