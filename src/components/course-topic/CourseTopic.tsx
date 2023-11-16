@@ -33,7 +33,9 @@ const CourseTopic = ({
     icon: "w-10 h-10 rounded p-1 hover:bg-slate-300 hover:dark:bg-gray-800",
   };
 
-  const faviconURL = getFavicon(courseTopic.versions[0].url);
+  const faviconURL = getFavicon(
+    courseTopic.versions[courseTopic.versions.length - 1].source ?? ""
+  );
 
   const course = useAppSelector((state) =>
     mode === "view"

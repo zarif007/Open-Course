@@ -31,6 +31,11 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       return await CourseAsk.create(input);
     }),
+  updateCourseAsks: publicProcedure
+    .input(courseAskSchema)
+    .mutation(async ({ input }) => {
+      return await CourseAsk.findOneAndUpdate({ slug: input.slug }, input);
+    }),
 });
 
 export type AppRouter = typeof appRouter;

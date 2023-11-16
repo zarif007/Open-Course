@@ -20,11 +20,6 @@ const AskShort = ({ ask }: { ask: ICourseAsk }) => {
       className="w-full flex items-center space-x-4 rounded px-3 py-4 border-2 border-slate-300 dark:border-gray-800"
     >
       <div className="flex flex-col gap-4 items-center px-2 w-1/12">
-        {/* <BiSolidUpvote className="w-8 h-8 cursor-pointer hover:text-green-500" />
-        <p className="font-semibold text-lg">
-          {ask.upVote.length - ask.downVote.length}
-        </p>
-        <BiSolidDownvote className="w-8 h-8 cursor-pointer hover:text-red-500" /> */}
         <div className="flex space-x-1 items-center justify-center">
           <BiSolidUpvote className="w-8 h-8" />
           <p className="font-semibold text-md">
@@ -33,9 +28,7 @@ const AskShort = ({ ask }: { ask: ICourseAsk }) => {
         </div>
         <div className="flex space-x-1 items-center justify-center">
           <MdQuestionAnswer className="w-8 h-8" />
-          <p className="font-semibold text-md">
-            {ask.upVote.length + ask.downVote.length}
-          </p>
+          <p className="font-semibold text-md">{ask.responses.length}</p>
         </div>
       </div>
       <div className="w-11/12 flex flex-col space-y-2">

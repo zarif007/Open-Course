@@ -27,7 +27,7 @@ const Profile = async ({ params }: PageParams) => {
   if (!user) redirect("/404");
 
   return (
-    <section className="w-full max-w-7xl mx-auto h-full flex flex-col items-center justify-center">
+    <section className="mx-auto h-full flex flex-col items-center justify-center px-2">
       <img
         src={user.image}
         alt="dp"

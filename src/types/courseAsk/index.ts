@@ -11,12 +11,10 @@ export interface ICourseAsk {
   title: string;
   slug: string;
   question: string;
-  responses: [
-    {
-      user: IUser | string | Types.ObjectId;
-      answer: string;
-    }
-  ];
+  responses: {
+    user: IUser | string | Types.ObjectId;
+    answer: string;
+  }[];
   theAnswers: ICourseAsk[] | string[] | Types.ObjectId[];
   tags: string[];
   createdAt?: Date | string;

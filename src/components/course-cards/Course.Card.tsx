@@ -32,12 +32,14 @@ const CourseCard = ({ course }: { course: ICourse }) => {
   return (
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
-        <BlurredImage
-          src={course.banner === "" ? generatedBanner : course.banner}
-          alt="blog"
-          dimension="h-48 w-full"
-          className="h-48 w-full rounded object-cover object-center border border-rose-500"
-        />
+        <Link href={`course-landing/${course.slug}`}>
+          <BlurredImage
+            src={course.banner === "" ? generatedBanner : course.banner}
+            alt="blog"
+            dimension="h-48 w-full"
+            className="h-48 w-full rounded object-cover object-center border border-rose-500"
+          />
+        </Link>
 
         <div className="flex space-x-2 -mt-8 mx-2">
           {course.languages.map((lang) => (
@@ -69,12 +71,14 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             </p>
           </div>
 
-          <Paragraph
-            size="default"
-            className="font-bold underline decoration-rose-500 decoration-2 truncate"
-          >
-            {course.title}
-          </Paragraph>
+          <Link href={`course-landing/${course.slug}`}>
+            <Paragraph
+              size="default"
+              className="font-bold underline decoration-rose-500 decoration-2 truncate"
+            >
+              {course.title}
+            </Paragraph>
+          </Link>
 
           <SelectedTopics
             mode="view"

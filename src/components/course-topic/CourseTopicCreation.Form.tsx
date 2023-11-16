@@ -52,6 +52,7 @@ const CourseTopicCreationForm = ({
         url: "",
         description: "",
         duration: 0,
+        source: "",
       },
     ],
     topicID: -1,
@@ -83,10 +84,11 @@ const CourseTopicCreationForm = ({
   }) => {
     const courseTopics = course.topics as ICourseTopic[];
 
+    const source = new URL(data.url).origin;
     submitData({
       id: currentCourseTopic.id ?? "",
       _id: currentCourseTopic._id ?? "",
-      versions: [data],
+      versions: [{ ...data, source }],
       topicID:
         currentCourseTopic.topicID && currentCourseTopic.topicID > 0
           ? currentCourseTopic.topicID

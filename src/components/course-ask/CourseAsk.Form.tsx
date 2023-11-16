@@ -87,9 +87,9 @@ const CourseAskForm = () => {
       setLoadingStatus("done");
     } catch {
       toast({
-        title: "Complete required fields",
+        title: "Something went wrong",
         type: "error",
-        message: "Something went wrong",
+        message: "please Try again later",
       });
       setLoadingStatus("ready");
     }

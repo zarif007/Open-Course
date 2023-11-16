@@ -10,6 +10,17 @@ import routeElements from "@/constants/navBar";
 import { FiMenu } from "react-icons/fi";
 import Link from "next/link";
 import { MenubarSeparator } from "@radix-ui/react-menubar";
+import {
+  PiHouseDuotone,
+  PiListPlusDuotone,
+  PiStackDuotone,
+} from "react-icons/pi";
+
+const routeIcons = {
+  Home: <PiHouseDuotone className="w-4 h-4" />,
+  Create: <PiListPlusDuotone className="w-4 h-4" />,
+  Courses: <PiStackDuotone className="w-4 h-4" />,
+};
 
 const ElementsDropdown = () => {
   const styles = {
@@ -28,9 +39,10 @@ const ElementsDropdown = () => {
               <MenubarItem className={styles.menuBarItems}>
                 <Link
                   href={route.redirectTo}
-                  className="text-gray-950 dark:text-slate-100"
+                  className="flex space-x-4 justify-center items-center text-gray-950 dark:text-slate-100"
                 >
-                  {route.name}
+                  {routeIcons[route.name as "Home" | "Create" | "Courses"]}
+                  <p>{route.name}</p>
                 </Link>
               </MenubarItem>
               {index + 1 !== routeElements.length && <MenubarSeparator />}

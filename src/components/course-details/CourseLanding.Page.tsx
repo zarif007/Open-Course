@@ -106,7 +106,7 @@ const CourseLandingPage = ({
       <Accordion type="single" collapsible>
         {courseTopics.map((topic, index: number) => {
           const faviconURL = getFavicon(
-            topic.versions[topic.versions.length - 1].url
+            topic.versions[topic.versions.length - 1].source ?? ""
           );
           return (
             <AccordionItem

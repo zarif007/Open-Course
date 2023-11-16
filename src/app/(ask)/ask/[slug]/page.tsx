@@ -60,6 +60,7 @@ const Ask = ({ params }: PageParams) => {
               </div>
             </div>
           </div>
+          <SelectedTopics mode="view" selectedTopics={ask.tags} />
 
           <div
             className="my-4 md:my-6 w-full max-w-5xl mx-auto"
@@ -68,14 +69,12 @@ const Ask = ({ params }: PageParams) => {
             }}
           />
 
-          <div className="w-full flex items-center space-x-4 px-3 py-4">
+          <div className="w-full flex items-start space-x-4 px-3 py-4">
             <VotingHandler ask={ask} />
-            <div className="w-11/12 flex flex-col space-y-2 font-semibold">
-              <p>{ask.question}</p>
+            <div className="w-11/12 flex flex-col space-y-2">
+              <p className="text-sm md:text-md font-semibold">{ask.question}</p>
             </div>
           </div>
-
-          <SelectedTopics selectedTopics={ask.tags} mode="view" />
         </React.Fragment>
       )}
     </div>

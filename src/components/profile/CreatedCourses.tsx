@@ -14,9 +14,7 @@ const CreatedCourses = ({ creatorId }: { creatorId: string }) => {
     queryKey: [`course-${creatorId}`],
     queryFn: async () => {
       const { data } = await (
-        await fetch(`${nextApiEndPoint}/courses/byCreator/${creatorId}`, {
-          next: { revalidate: 3600 },
-        })
+        await fetch(`${nextApiEndPoint}/courses/byCreator/${creatorId}`)
       ).json();
       return data.map(async (course: ICourse, index: number) => {
         return <CourseCard course={course} key={index} />;

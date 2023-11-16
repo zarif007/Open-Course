@@ -26,3 +26,5 @@ export const topicInputFields: ITopicFields[] = [
       isNaN(+e.target.value) ? 0 : +e.target.value,
   },
 ];
+
+export const topicTypes = ["content-from-internet", "text", "upload"];

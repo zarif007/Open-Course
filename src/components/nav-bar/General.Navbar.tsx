@@ -11,6 +11,17 @@ import routeElements from "@/constants/navBar";
 import ElementsDropdown from "./Elements.Dropdown";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/Skeleton";
+import {
+  PiHouseDuotone,
+  PiListPlusDuotone,
+  PiStackDuotone,
+} from "react-icons/pi";
+
+const routeIcons = {
+  Home: <PiHouseDuotone className="w-6 h-6" />,
+  Create: <PiListPlusDuotone className="w-6 h-6" />,
+  Courses: <PiStackDuotone className="w-6 h-6" />,
+};
 
 const GeneralNavbar = () => {
   const styles = {
@@ -82,9 +93,10 @@ const GeneralNavbar = () => {
             <li key={route.name}>
               <Link
                 href={route.redirectTo}
-                className="block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 px-4 py-2 md:dark:hover:text-rose-500 dark:hover:bg-gray-900 hover:bg-slate-300"
+                className="flex justify-center items-center space-x-1 block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 px-4 py-2 md:dark:hover:text-rose-500 dark:hover:bg-gray-900 hover:bg-slate-300"
               >
-                {route.name}
+                {routeIcons[route.name as "Home" | "Create" | "Courses"]}
+                <p>{route.name}</p>
               </Link>
             </li>
           ))}
