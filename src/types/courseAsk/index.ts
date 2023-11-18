@@ -8,6 +8,7 @@ export interface ICourseAsk {
   _id?: string;
   author: IUser | string | Types.ObjectId;
   topic: ICourseTopic | string | Types.ObjectId;
+  version: number;
   title: string;
   slug: string;
   question: string;

@@ -21,6 +21,8 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
     .populate({
       path: "currentTopic",
       model: CourseTopic,
+      select:
+        "versions.title versions.description versions.source versions.duration",
     })
     .populate({
       path: "course",

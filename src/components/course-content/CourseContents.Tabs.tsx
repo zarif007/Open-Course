@@ -10,6 +10,8 @@ import CourseDiscussion from "../course-discussion/CourseDiscussion";
 import CourseAsks from "../course-ask/CourseAsks";
 import CourseContentController from "./CourseContent.Controller";
 import { useAppSelector } from "@/redux/store";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const tabElements = [
   {
@@ -34,11 +36,15 @@ const CourseContentsTabs = () => {
     (state) => state.courseViewReducer.value.currentCourseTopic
   );
 
-  const course = useAppSelector(
-    (state) => state.courseViewReducer.value.course
-  );
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const tab = searchParams?.get("tab");
+
+  const currentTab: string = tab ?? "content";
+
   return (
-    <Tabs defaultValue="content" className="w-full mx-auto px-2 md:px-6">
+    <Tabs defaultValue={currentTab} className="w-full mx-auto px-2 md:px-6">
       <LargeHeading
         size="sm"
         className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
@@ -55,6 +61,11 @@ const CourseContentsTabs = () => {
             key={element.name}
             className="font-semibold flex items-center space-x-1"
             value={element.value}
+            onClick={() =>
+              router.push(
+                `?topicId=${currentCourseTopic.topicID}&tab=${element.value}`
+              )
+            }
           >
             {element.icon}
             <span>{element.name}</span>
@@ -65,10 +76,7 @@ const CourseContentsTabs = () => {
         <CourseContentController />
       </TabsContent>
       <TabsContent value="discuss">
-        <CourseDiscussion
-          courseId={course.id}
-          topicId={currentCourseTopic.id as string}
-        />
+        <CourseDiscussion />
       </TabsContent>
       <TabsContent value="ask">
         <CourseAsks />

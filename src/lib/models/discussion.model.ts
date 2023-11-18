@@ -8,15 +8,14 @@ const DiscussionSchema = new Schema<IDiscussion, IDiscussionModel>(
       ref: "User",
       required: [true, "Sender is required"],
     },
-    course: {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
-      required: [true, "Course is required"],
-    },
-    topic: {
+    topicId: {
       type: Schema.Types.ObjectId,
       ref: "CourseTopic",
       required: [true, "Course Topic is required"],
+    },
+    version: {
+      type: Number,
+      required: [true, "Version is required"],
     },
     comment: {
       type: String,

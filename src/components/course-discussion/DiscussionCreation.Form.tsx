@@ -14,10 +14,10 @@ import { BsEmojiLaughing } from "react-icons/bs";
 import { Button } from "../ui/Button";
 
 const DiscussionCreationForm = ({
-  courseId,
+  version,
   topicId,
 }: {
-  courseId: string | undefined;
+  version: number | undefined;
   topicId: string | undefined;
 }) => {
   const signedInUser = useAppSelector(
@@ -34,11 +34,11 @@ const DiscussionCreationForm = ({
   }>({ resolver: zodResolver(commentCreationSchema) });
 
   const onSubmit = async (data: { comment: string }) => {
-    if (!signedInUser || !topicId || !courseId) return;
+    if (!signedInUser || !topicId || version === undefined) return;
     const payload: Partial<IDiscussion> = {
       sender: signedInUser?._id!,
-      course: courseId,
-      topic: topicId,
+      topicId: topicId,
+      version,
       comment: data.comment,
     };
     reset();

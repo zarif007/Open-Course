@@ -3,16 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const useGetDiscussions = (
-  courseId: string | undefined,
+  version: number | undefined,
   topicId: string | undefined
 ) => {
   return useQuery({
-    queryKey: [`discussions-${courseId}-${topicId}`],
-    enabled: !!courseId && !!topicId,
+    queryKey: [`discussions-${version}-${topicId}`],
+    enabled: version !== undefined && !!topicId,
     refetchInterval: 1000,
     queryFn: async () => {
       const { data } = await axios.get(
-        `${nextApiEndPoint}/discussion?courseId=${courseId}&topicId=${topicId}`
+        `${nextApiEndPoint}/discussion?topicId=${topicId}&version=${version}`
       );
       return data.data;
     },

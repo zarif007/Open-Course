@@ -1,14 +1,13 @@
 import { Model, Types } from "mongoose";
 import { IUser } from "../user";
-import { ICourse } from "../course";
 import { ICourseTopic } from "../courseTopic";
 
 export interface IDiscussion {
   id?: number | string;
   _id?: string;
   sender: IUser | string;
-  course: ICourse | string;
-  topic: ICourseTopic | string;
+  topicId: ICourseTopic | string;
+  version: number;
   comment: string;
   replies: IDiscussion[] | [] | Types.ObjectId[];
   reactions: {

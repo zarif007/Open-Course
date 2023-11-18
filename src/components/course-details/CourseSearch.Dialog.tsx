@@ -71,7 +71,7 @@ const CourseSearchDialog = () => {
           <p className="font-semibold">Search or Filter</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-2xl w-full top-[25%]">
+      <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-2xl w-full md:top-[25%]">
         <label htmlFor="text" className="font-bold">
           Search or Filter Courses
         </label>

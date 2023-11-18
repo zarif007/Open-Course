@@ -9,12 +9,14 @@ export const appRouter = router({
   getCourseAsks: publicProcedure
     .input(
       z.object({
-        topicId: z.string().optional(),
+        topic: z.string().optional(),
+        version: z.number().optional(),
       })
     )
     .query(async ({ input }): Promise<ICourseAsk[] | null> => {
-      const { topicId } = input;
-      return await CourseAsk.find({ topic: topicId })
+      const { topic, version } = input;
+      console.log(input);
+      return await CourseAsk.find({ topic, version })
         .limit(10)
         .sort({ updatedAt: -1 })
         .populate("author");

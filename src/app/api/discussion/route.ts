@@ -8,18 +8,17 @@ export const GET = async (req: NextRequest) => {
   connectToDB();
 
   const topicId = req.nextUrl.searchParams.get("topicId");
-  const courseId = req.nextUrl.searchParams.get("courseId");
+  const version = req.nextUrl.searchParams.get("version");
 
   const discussions = await Discussion.find({
-    course: courseId,
-    topic: topicId,
+    version: parseInt(version ?? ""),
+    topicId,
   })
     .populate({
       path: "sender",
       model: User,
     })
     .sort({ createdAt: -1 });
-
   return NextResponse.json({ data: discussions });
 };
 

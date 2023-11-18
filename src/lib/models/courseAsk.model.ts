@@ -13,6 +13,10 @@ const CourseAskSchema = new Schema<ICourseAsk, ICourseAskModel>(
       ref: "CourseTopic",
       required: [true, "Course topic is required"],
     },
+    version: {
+      type: Number,
+      required: [true, "Version is required"],
+    },
     title: {
       type: String,
       required: [true, "Title is required"],

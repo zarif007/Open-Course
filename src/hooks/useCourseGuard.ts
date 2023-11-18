@@ -19,8 +19,8 @@ const useCourseGuard = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const dispatch = useDispatch<AppDispatch>();
-  const searchParams = useSearchParams();
 
+  const searchParams = useSearchParams();
   const topicId = searchParams?.get("topicId");
 
   const router = useRouter();

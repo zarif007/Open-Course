@@ -9,6 +9,7 @@ export const courseAskSchema: ZodType<Partial<ICourseAsk>> = z.object({
   author: z.string().min(2).max(500),
   slug: z.string().min(10).max(250),
   topic: z.string().min(2).max(500),
+  version: z.number(),
   question: z
     .string()
     .min(10, { message: "Question must be minimum 10 characters" })

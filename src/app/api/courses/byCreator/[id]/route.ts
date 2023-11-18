@@ -17,10 +17,13 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
     .populate({
       path: "topics",
       model: CourseTopic,
+      select:
+        "versions.title versions.description versions.source versions.duration",
     })
     .populate({
       path: "creator",
       model: User,
+      select: "name image userName",
     })
     .limit(10);
 

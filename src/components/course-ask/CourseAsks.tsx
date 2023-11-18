@@ -13,8 +13,10 @@ const CourseAsks = () => {
     (state) => state.courseViewReducer.value.currentCourseTopic
   );
 
+  const version = currentCourseTopic.versions.length - 1;
   const { data: asks, isLoading } = trpc.getCourseAsks.useQuery({
-    topicId: currentCourseTopic.id as string,
+    topic: currentCourseTopic.id as string,
+    version,
   });
 
   return (

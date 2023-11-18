@@ -16,6 +16,7 @@ import { toast } from "../ui/Toast";
 import { DialogClose } from "../ui/Dialog";
 import createSlug from "@/utils/createSlug";
 import SelectedTopics from "../course-details/SelectedTopics";
+import RichTextEditor from "../ui/RichTextEditor";
 
 const CourseAskForm = () => {
   const signedInUser = useAppSelector(
@@ -48,8 +49,11 @@ const CourseAskForm = () => {
 
   const [selectedTags, setSelectedTags] = useState<string[]>(course.categories);
 
+  const version = currentCourseTopic.versions.length - 1;
+
   const asks = trpc.getCourseAsks.useQuery({
-    topicId: currentCourseTopic.id as string,
+    topic: currentCourseTopic.id as string,
+    version,
   });
 
   const createCourseAsk = trpc.createCourseAsks.useMutation({
@@ -71,6 +75,7 @@ const CourseAskForm = () => {
     const ask: Partial<ICourseAsk> = {
       author: signedInUser?.id!,
       topic: currentCourseTopic.id as string,
+      version,
       title: data.title,
       question: data.question,
       slug: createSlug(data.title),
@@ -136,6 +141,8 @@ const CourseAskForm = () => {
             setSelectedTopics={handleTagRemove}
           />
         </div>
+
+        <RichTextEditor />
 
         {loadingStatus !== "done" ? (
           <Button

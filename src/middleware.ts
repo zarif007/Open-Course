@@ -9,15 +9,32 @@ export const middleware = async (request: NextRequest) => {
     "/dashboard",
     "/course",
     "/course-completion",
+
+    // Api routes
+    "/api/course/",
+    "/api/course/byId",
+    "/api/course/bySlug",
+    "/api/course/updateRatings",
+
+    "/api/activity",
+
+    "/api/courseTopic",
+
+    "/api/enrollState",
   ];
 
   const token = await getToken({ req: request });
 
   const pathName = request.nextUrl.pathname;
 
-  const isPrivatePage =
-    privatePages.includes(pathName) ||
-    !!privatePages.map((pv) => pathName.startsWith(pv));
+  let isPrivatePage = privatePages.includes(pathName);
+
+  privatePages.map((pv) => {
+    if (pathName.startsWith(pv)) {
+      isPrivatePage = true;
+      return;
+    }
+  });
 
   if (isPrivatePage && !token) {
     return NextResponse.redirect(
@@ -32,6 +49,6 @@ export const config = {
     "/course-completion/:path*",
     "/course-creation",
     "/dashboard",
-    "/api",
+    "/api/:path*",
   ],
 };

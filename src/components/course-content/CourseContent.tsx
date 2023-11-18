@@ -11,15 +11,9 @@ import { MdOutlineVideoLibrary } from "react-icons/md";
 import checkIfUrlIsEmbeddable from "@/utils/checkIfUrlIsEmbeddable";
 
 function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
-  const [urlStatus, setUrlStatus] = useState<
-    "loading" | "available" | "unavailable"
-  >("available");
-
   const [showUrl, setShowUrl] = useState<boolean>(false);
 
-  useEffect(() => {
-    var iframe = document.querySelector("iframe"); // Replace with your element's ID or selection method
-  }, [courseTopic]);
+  const contentUrl = courseTopic.versions[courseTopic.versions.length - 1].url;
 
   return (
     <div className={`mx-auto w-[100%] h-[45vh] md:h-[80vh]`} id="main">
@@ -37,15 +31,11 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
             </div>
           )}
         </div>
-        <CourseContentFullscreenDialog
-          url={courseTopic.versions[courseTopic.versions.length - 1].url}
-        />
+        <CourseContentFullscreenDialog url={contentUrl} />
       </div>
       {!showUrl ? (
         <iframe
-          src={createEmbeddableUrls(
-            courseTopic.versions[courseTopic.versions.length - 1].url
-          )}
+          src={createEmbeddableUrls(contentUrl)}
           id="iframe"
           className="border-[3px] border-rose-500 rounded "
           width="100%"
@@ -55,9 +45,7 @@ function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
           allowFullScreen
         />
       ) : (
-        <CourseContentUrl
-          url={courseTopic.versions[courseTopic.versions.length - 1].url}
-        />
+        <CourseContentUrl url={contentUrl} />
       )}
     </div>
   );

@@ -26,6 +26,7 @@ const initialState = {
             {
               title: "Example101",
               url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+              source: "https://www.youtube.com",
               description: "Just another example",
               duration: 10,
             },
