@@ -1,11 +1,11 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
-import apiReqWrapper from "@/utils/apiReqWrapper";
-import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+
 import { getToken } from "next-auth/jwt";
-import { getSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -17,12 +17,13 @@ interface PageParams {
 export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
 
-  // const token = await getToken({ req });
-  // if (!token) {
-  //   return NextResponse.json({ status: 401, message: "Unauthorized" });
-  // }
-
   connectToDB();
+
+  // const session = await getServerSession(authOptions);
+  // console.log("session-------------", session);
+  // // if (!token) {
+  // //   return NextResponse.json({ status: 401, message: "Unauthorized" });
+  // // }
 
   const course = await Course.findOne({ slug })
     .populate({

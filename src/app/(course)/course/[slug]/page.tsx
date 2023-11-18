@@ -52,6 +52,8 @@ const Course = async ({ params }: PageParams) => {
 
   if (!course) redirect("/404");
 
+  console.log(course);
+
   return <CourseGuard course={course} slug={params.slug} />;
 };
 

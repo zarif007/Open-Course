@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 export { default } from "next-auth/middleware";
 
 export const middleware = async (request: NextRequest) => {
-  const privatePages = [
+  const protectedPages = [
     "/course-creation",
     "/dashboard",
     "/course",
     "/course-completion",
+  ];
 
-    // Api routes
-    "/api/course/",
+  const protectedApiRoutes = [
     "/api/course/byId",
     "/api/course/bySlug",
     "/api/course/updateRatings",
@@ -27,19 +27,32 @@ export const middleware = async (request: NextRequest) => {
 
   const pathName = request.nextUrl.pathname;
 
-  let isPrivatePage = privatePages.includes(pathName);
+  const canAccess = (protectedRoutes: string[]) => {
+    let isPrivate = protectedRoutes.includes(pathName);
 
-  privatePages.map((pv) => {
-    if (pathName.startsWith(pv)) {
-      isPrivatePage = true;
-      return;
+    protectedRoutes.map((pv) => {
+      if (pathName.startsWith(pv)) {
+        isPrivate = true;
+        return;
+      }
+    });
+
+    return !(isPrivate && !token);
+  };
+
+  if (pathName.startsWith("/api")) {
+    if (!canAccess(protectedApiRoutes)) {
+      return NextResponse.json({
+        status: 401,
+        message: "Unauthorized: Login required",
+      });
     }
-  });
-
-  if (isPrivatePage && !token) {
-    return NextResponse.redirect(
-      new URL(`/login?callbackUrl=${pathName}`, request.nextUrl)
-    );
+  } else {
+    if (!canAccess(protectedPages)) {
+      return NextResponse.redirect(
+        new URL(`/login?callbackUrl=${pathName}`, request.nextUrl)
+      );
+    }
   }
 };
 
