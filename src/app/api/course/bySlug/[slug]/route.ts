@@ -4,8 +4,6 @@ import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
 import { getServerSession } from "next-auth";
-
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -18,12 +16,6 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
 
   connectToDB();
-
-  // const session = await getServerSession(authOptions);
-  // console.log("session-------------", session);
-  // // if (!token) {
-  // //   return NextResponse.json({ status: 401, message: "Unauthorized" });
-  // // }
 
   const course = await Course.findOne({ slug })
     .populate({

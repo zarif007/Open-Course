@@ -11,16 +11,13 @@ export const middleware = async (request: NextRequest) => {
     "/course-completion",
   ];
 
-  const protectedApiRoutes = [
-    "/api/course/byId",
-    "/api/course/bySlug",
-    "/api/course/updateRatings",
-
-    "/api/activity",
-
-    "/api/courseTopic",
-
-    "/api/enrollState",
+  const protectedApiRoutes: string[] = [
+    // "/api/course/byId",
+    // "/api/course/bySlug",
+    // "/api/course/updateRatings",
+    // "/api/activity",
+    // "/api/courseTopic",
+    // "/api/enrollState",
   ];
 
   const token = await getToken({ req: request });

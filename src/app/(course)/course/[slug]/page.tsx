@@ -18,9 +18,7 @@ interface PageParams {
 const getCourse = async (slug: string) => {
   const { data: courseData } = await (
     await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
-      next: {
-        revalidate: 600,
-      },
+      cache: "no-store",
     })
   ).json();
 
@@ -51,8 +49,6 @@ const Course = async ({ params }: PageParams) => {
   const course = await getCourse(params.slug);
 
   if (!course) redirect("/404");
-
-  console.log(course);
 
   return <CourseGuard course={course} slug={params.slug} />;
 };

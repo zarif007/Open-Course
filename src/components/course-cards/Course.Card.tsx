@@ -32,7 +32,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
   return (
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
-        <Link href={`course-landing/${course.slug}`}>
+        <Link href={`/course-landing/${course.slug}`}>
           <BlurredImage
             src={course.banner === "" ? generatedBanner : course.banner}
             alt="blog"
@@ -71,7 +71,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             </p>
           </div>
 
-          <Link href={`course-landing/${course.slug}`}>
+          <Link href={`/course-landing/${course.slug}`}>
             <Paragraph
               size="default"
               className="font-bold underline decoration-rose-500 decoration-2 truncate"
@@ -149,7 +149,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <Link
-            href={`course-landing/${course.slug}`}
+            href={`/course-landing/${course.slug}`}
             className={`${buttonVariants({
               variant: "default",
             })} w-full mt-3 font-semibold`}
