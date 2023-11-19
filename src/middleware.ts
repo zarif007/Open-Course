@@ -3,21 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export { default } from "next-auth/middleware";
 
+const allowedOrigins = process.env.NODE_ENV === "production" ? [""] : [""];
+
 export const middleware = async (request: NextRequest) => {
   const protectedPages = [
     "/course-creation",
     "/dashboard",
     "/course",
     "/course-completion",
-  ];
-
-  const protectedApiRoutes: string[] = [
-    // "/api/course/byId",
-    // "/api/course/bySlug",
-    // "/api/course/updateRatings",
-    // "/api/activity",
-    // "/api/courseTopic",
-    // "/api/enrollState",
   ];
 
   const token = await getToken({ req: request });
@@ -38,12 +31,6 @@ export const middleware = async (request: NextRequest) => {
   };
 
   if (pathName.startsWith("/api")) {
-    if (!canAccess(protectedApiRoutes)) {
-      return NextResponse.json({
-        status: 401,
-        message: "Unauthorized: Login required",
-      });
-    }
   } else {
     if (!canAccess(protectedPages)) {
       return NextResponse.redirect(

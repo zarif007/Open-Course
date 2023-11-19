@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import { IUser } from "@/types/user";
 import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
+import { headers } from "next/headers";
 
 interface PageParams {
   params: {
@@ -18,7 +19,9 @@ interface PageParams {
 const getCourse = async (slug: string) => {
   const { data: courseData } = await (
     await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
+      method: "GET",
+      headers: headers(),
     })
   ).json();
 

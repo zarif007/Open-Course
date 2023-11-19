@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { getSession } from "@/lib/auth/useAuth";
 import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
@@ -14,6 +15,14 @@ interface PageParams {
 
 export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
 
   connectToDB();
 
