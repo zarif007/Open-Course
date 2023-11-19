@@ -42,11 +42,11 @@ const CourseContentController = () => {
     dispatch(setCurrentCourseTopicForView(courseTopics[nextTopicId - 1]));
 
     if (!enrollState.finishedTopics.includes(nextTopicId.toString()) || fetch) {
-      const { data } = await axios.get(
-        `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
-      );
+      // const { data } = await axios.get(
+      //   `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
+      // );
 
-      const enrollState = data.data as IEnrollState;
+      // const enrollState = data.data as IEnrollState;
 
       const currentCourseTopicId = currentCourseTopic.topicID as number;
 

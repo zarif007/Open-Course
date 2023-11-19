@@ -3,6 +3,7 @@ import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
 import { ICourseTopic } from "@/types/courseTopic";
+import { getToken } from "next-auth/jwt";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,9 +16,22 @@ interface IParams {
 export const revalidate = true;
 
 export const PUT = async (req: NextRequest, { params }: IParams) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   connectToDB();
 
   const id = params.id;
+
+  // Fetch user from db using id and get the email
+  // Validate if user.email === token.email
+
   const payload = await req.json();
 
   const topics: ICourseTopic[] = [];

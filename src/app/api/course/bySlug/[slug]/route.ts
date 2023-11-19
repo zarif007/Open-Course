@@ -5,6 +5,7 @@ import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
 import { getServerSession } from "next-auth";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -15,9 +16,10 @@ interface PageParams {
 
 export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
-  const session = await getServerSession(authOptions);
 
-  if (!session) {
+  const token = await getToken({ req });
+
+  if (!token) {
     return NextResponse.json({
       status: 401,
       message: "Unauthorized: Login required",
