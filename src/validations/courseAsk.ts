@@ -5,7 +5,8 @@ export const courseAskSchema: ZodType<Partial<ICourseAsk>> = z.object({
   title: z
     .string()
     .min(2, { message: "Title must be minimum 2 characters" })
-    .max(200, { message: "Title must be maximum 200 characters" }),
+    .max(200, { message: "Title must be maximum 200 characters" })
+    .trim(),
   author: z.string().min(2).max(500),
   slug: z.string().min(10).max(250),
   topic: z.string().min(2).max(500),
@@ -13,7 +14,8 @@ export const courseAskSchema: ZodType<Partial<ICourseAsk>> = z.object({
   question: z
     .string()
     .min(10, { message: "Question must be minimum 10 characters" })
-    .max(4000, { message: "Question must be maximum 4000 characters" }),
+    .max(4000, { message: "Question must be maximum 4000 characters" })
+    .trim(),
   responses: z
     .array(z.object({ user: z.string(), answer: z.string() }))
     .optional(),
@@ -27,9 +29,11 @@ export const courseAskInputSchema: ZodType<Partial<ICourseAsk>> = z.object({
   title: z
     .string()
     .min(2, { message: "Title must be minimum 2 characters" })
-    .max(200, { message: "Title must be maximum 200 characters" }),
+    .max(200, { message: "Title must be maximum 200 characters" })
+    .trim(),
   question: z
     .string()
     .min(10, { message: "Question must be minimum 10 characters" })
-    .max(2000, { message: "Question must be maximum 2000 characters" }),
+    .max(2000, { message: "Question must be maximum 2000 characters" })
+    .trim(),
 });

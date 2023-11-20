@@ -17,6 +17,15 @@ import { DialogClose } from "../ui/Dialog";
 import createSlug from "@/utils/createSlug";
 import SelectedTopics from "../course-details/SelectedTopics";
 import RichTextEditor from "../ui/RichTextEditor";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/Form";
 
 const CourseAskForm = () => {
   const signedInUser = useAppSelector(
@@ -31,16 +40,9 @@ const CourseAskForm = () => {
     (state) => state.courseViewReducer.value.course
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<{
-    title: string;
-    question: string;
-  }>({
+  const form = useForm<z.infer<typeof courseAskInputSchema>>({
     resolver: zodResolver(courseAskInputSchema),
+    mode: "onChange",
   });
 
   const [loadingStatus, setLoadingStatus] = useState<
@@ -66,7 +68,7 @@ const CourseAskForm = () => {
     setSelectedTags(values);
   };
 
-  const onSubmit = async (data: { title: string; question: string }) => {
+  const onSubmit = async (data: z.infer<typeof courseAskInputSchema>) => {
     if (!signedInUser || !currentCourseTopic.id || loadingStatus !== "ready")
       return;
 
@@ -78,8 +80,8 @@ const CourseAskForm = () => {
       version,
       title: data.title,
       question: data.question,
-      slug: createSlug(data.title),
-      tags: course.categories,
+      slug: createSlug(data.title!),
+      tags: selectedTags,
     };
 
     try {
@@ -103,62 +105,56 @@ const CourseAskForm = () => {
   return (
     <div className="w-full">
       <LargeHeading size="sm">Ask a Question</LargeHeading>
-      <form
-        className="flex flex-col space-y-6"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="grid w-full items-center gap-1.5">
-          <label htmlFor="url" className="font-bold">
-            Title
-          </label>
-          <Input
-            defaultValue=""
-            {...register("title")}
-            placeholder="Title of your question"
-            className="text-sm font-semibold"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="my-2">
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Title of your question"
+                    className="text-sm font-semibold"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <ErrorMessage text={errors.title?.message} className="" />
-        </div>
-        <div className="grid w-full items-center gap-1.5">
-          <label htmlFor="url" className="font-bold">
-            Question
-          </label>
-          {/* <Textarea
-            {...register("question")}
-            defaultValue=""
-            placeholder="Your question"
-            className="text-sm font-semibold h-20"
+          <FormField
+            control={form.control}
+            name="question"
+            render={({ field }) => (
+              <FormItem className="my-2">
+                <FormLabel>Question</FormLabel>
+                <FormControl>
+                  <RichTextEditor description={""} onChange={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <ErrorMessage text={errors.question?.message} className="" /> */}
-          <RichTextEditor />
-        </div>
-        <div className="grid w-full items-center">
-          <label htmlFor="url" className="font-bold">
-            Tags
-          </label>
-          <SelectedTopics
-            selectedTopics={selectedTags}
-            mode="creation"
-            setSelectedTopics={handleTagRemove}
-          />
-        </div>
 
-        {loadingStatus !== "done" ? (
-          <Button
-            type="submit"
-            className="w-full"
-            isLoading={loadingStatus === "loading"}
-          >
-            Submit
-          </Button>
-        ) : (
-          <DialogClose>
-            <Button variant="outline" className="w-full">
-              Close
+          {loadingStatus !== "done" ? (
+            <Button
+              type="submit"
+              className="w-full"
+              isLoading={loadingStatus === "loading"}
+            >
+              Submit
             </Button>
-          </DialogClose>
-        )}
-      </form>
+          ) : (
+            <DialogClose className="w-full">
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            </DialogClose>
+          )}
+        </form>
+      </Form>
     </div>
   );
 };

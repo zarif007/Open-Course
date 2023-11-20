@@ -15,7 +15,13 @@ import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import { useCallback } from "react";
 
-const RichTextEditor = () => {
+const RichTextEditor = ({
+  description,
+  onChange,
+}: {
+  description: string;
+  onChange: (richText: string) => void;
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({}),
@@ -34,7 +40,7 @@ const RichTextEditor = () => {
         },
       }),
     ],
-    content: "<h2>Hello World! 🌎️</h2>",
+    content: description,
     editorProps: {
       attributes: {
         class:
@@ -42,7 +48,7 @@ const RichTextEditor = () => {
       },
     },
     onUpdate({ editor }) {
-      console.log(editor.getHTML());
+      onChange(editor.getHTML());
     },
   });
 

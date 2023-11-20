@@ -9,6 +9,7 @@ import SelectedTopics from "@/components/course-details/SelectedTopics";
 import VotingHandler from "@/components/course-ask/VotingHandler";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
+import DOMPurify from "dompurify";
 
 interface PageParams {
   params: {
@@ -72,7 +73,11 @@ const Ask = ({ params }: PageParams) => {
           <div className="w-full flex items-start space-x-4 px-3 py-4">
             <VotingHandler ask={ask} />
             <div className="w-11/12 flex flex-col space-y-2">
-              <p className="text-sm md:text-md font-semibold">{ask.question}</p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(ask.question),
+                }}
+              />
             </div>
           </div>
         </React.Fragment>
