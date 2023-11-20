@@ -21,7 +21,7 @@ const getCourse = async (slug: string) => {
     await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
       next: { revalidate: 3600 },
       method: "GET",
-      headers: headers(),
+      headers: new Headers(headers()),
     })
   ).json();
 

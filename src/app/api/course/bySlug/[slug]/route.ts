@@ -7,6 +7,7 @@ import User from "@/lib/models/user.model";
 import { getServerSession } from "next-auth";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies, headers } from "next/headers";
 
 interface PageParams {
   params: {
