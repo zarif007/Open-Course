@@ -17,12 +17,13 @@ interface PageParams {
 export const GET = async (req: NextRequest, { params }: PageParams) => {
   const slug = params.slug;
 
-  const token = await getToken({ req });
+  const session = await getServerSession(authOptions);
 
-  if (!token) {
+  if (!session) {
     return NextResponse.json({
       status: 401,
       message: "Unauthorized: Login required",
+      data: null,
     });
   }
 
@@ -39,5 +40,5 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
       select: "name image userName",
     });
 
-  return NextResponse.json({ data: course });
+  return NextResponse.json({ status: 200, data: course });
 };
