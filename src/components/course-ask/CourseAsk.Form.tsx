@@ -121,15 +121,16 @@ const CourseAskForm = () => {
         </div>
         <div className="grid w-full items-center gap-1.5">
           <label htmlFor="url" className="font-bold">
-            Description
+            Question
           </label>
-          <Textarea
+          {/* <Textarea
             {...register("question")}
             defaultValue=""
             placeholder="Your question"
             className="text-sm font-semibold h-20"
           />
-          <ErrorMessage text={errors.question?.message} className="" />
+          <ErrorMessage text={errors.question?.message} className="" /> */}
+          <RichTextEditor />
         </div>
         <div className="grid w-full items-center">
           <label htmlFor="url" className="font-bold">
@@ -141,8 +142,6 @@ const CourseAskForm = () => {
             setSelectedTopics={handleTagRemove}
           />
         </div>
-
-        <RichTextEditor />
 
         {loadingStatus !== "done" ? (
           <Button
