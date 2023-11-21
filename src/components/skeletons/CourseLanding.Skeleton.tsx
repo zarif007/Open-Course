@@ -40,12 +40,6 @@ const CourseLandingSkeleton = () => {
         <Skeleton className={`font-semibold flex space-x-1 items-center`} />
       </div>
 
-      <Accordion type="single" collapsible>
-        {[1, 2, 3].map((_, index) => (
-          <Skeleton key={index} className="m-4 px-4 md:mx-6 h-16" />
-        ))}
-      </Accordion>
-
       <Skeleton className="text-center underline decoration-rose-500 decoration-4 h-8 w-[70%] md:w-[30%] my-4 mx-auto" />
       <div className="mx-auto">
         {[1, 2, 3, 4, 5].map((_, index) => (
@@ -55,6 +49,12 @@ const CourseLandingSkeleton = () => {
           />
         ))}
       </div>
+
+      <Accordion type="single" collapsible>
+        {[1, 2, 3].map((_, index) => (
+          <Skeleton key={index} className="m-4 px-4 md:mx-6 h-16" />
+        ))}
+      </Accordion>
     </div>
   );
 };

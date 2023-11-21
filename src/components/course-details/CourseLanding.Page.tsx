@@ -17,12 +17,13 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
-import CourseReviews from "./CourseReviews";
+import CourseRatings from "./CourseRatings";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
 import { signIn, useSession } from "next-auth/react";
 import { useAppSelector } from "@/redux/store";
+import CourseReviews from "./CourseReviews";
 
 const CourseLandingPage = ({
   course,
@@ -101,6 +102,7 @@ const CourseLandingPage = ({
   return (
     <div className="max-w-5xl w-full mx-auto">
       <CourseDetails course={course} />
+      <CourseRatings reviews={course.reviews ?? []} />
       <LargeHeading size="sm" className="text-center">
         Course Topics
       </LargeHeading>

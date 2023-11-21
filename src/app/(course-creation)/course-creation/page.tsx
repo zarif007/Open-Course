@@ -79,7 +79,7 @@ const CourseCreation = () => {
       topics: courseTopics.filter((topic) => topic.topicID !== 0),
       creator: signedInUser.id,
       banner:
-        course.banner === ""
+        !course.banner || course.banner === ""
           ? generateBannerFromCourse(course, signedInUser.name)
           : course.banner,
     };

@@ -35,6 +35,10 @@ export const GET = async (req: NextRequest) => {
       model: User,
       select: "name image userName",
     });
+  // .populate({
+  //   path: "course.reviews.user",
+  //   mode: User,
+  // });
 
   let enrollState = null;
 
