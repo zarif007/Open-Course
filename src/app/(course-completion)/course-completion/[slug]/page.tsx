@@ -13,6 +13,7 @@ import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
+import { headers } from "next/headers";
 
 interface PageParams {
   params: {
@@ -21,10 +22,15 @@ interface PageParams {
 }
 
 const getCourse = async (slug: string) => {
-  const { data: CourseData } = await axios.get(
-    `${nextApiEndPoint}/course/bySlug/${slug}`
-  );
-  return CourseData.data;
+  const { data: courseData } = await (
+    await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
+      cache: "force-cache",
+      method: "GET",
+      headers: new Headers(headers()),
+    })
+  ).json();
+
+  return courseData;
 };
 
 export const generateMetadata = async ({
@@ -63,14 +69,18 @@ const CourseCompletion = async ({ params }: PageParams) => {
     })
   ).json();
 
+  console.log(user);
+
   const { data: enrollState } = await (
     await fetch(
       `${nextApiEndPoint}/enrollState?user=${user.id}&course=${course.id}`,
       {
-        cache: "force-cache",
+        cache: "no-store",
       }
     )
   ).json();
+
+  console.log(enrollState);
 
   if (!enrollState) redirect(`/course/${slug}`);
 

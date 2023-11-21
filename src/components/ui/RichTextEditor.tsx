@@ -9,6 +9,7 @@ import {
   BiHeading,
   BiItalic,
   BiLinkAlt,
+  BiLogoMarkdown,
   BiParagraph,
 } from "react-icons/bi";
 import Heading from "@tiptap/extension-heading";
@@ -56,6 +57,10 @@ const RichTextEditor = ({
     <div className="gap-4">
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
+      <div className="flex items-center space-x-2 text-slate-300 dark:text-gray-700">
+        <BiLogoMarkdown className="w-6 h-6" />
+        <p className="font-semibold text-sm">Mark down enabled</p>
+      </div>
     </div>
   );
 };
