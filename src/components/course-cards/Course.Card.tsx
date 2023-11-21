@@ -122,9 +122,9 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             <div className="flex space-x-1 items-center">
               <PiShootingStarDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">
-                {calculateAvgRating(course.ratings ?? [])}
+                {calculateAvgRating(course.reviews ?? [])}
                 {" ("}
-                {(course.ratings ?? []).length}
+                {(course.reviews ?? []).length}
                 {")"}
               </p>
             </div>
