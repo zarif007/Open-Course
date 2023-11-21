@@ -18,6 +18,9 @@ import { AppDispatch } from "@/redux/store";
 import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 import { useRouter } from "next/navigation";
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
+import calculateAvgRating from "@/utils/calculateAvgRating";
+import { PiShootingStarDuotone } from "react-icons/pi";
+import BlurredImage from "../ui/BlurredImage";
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
   const { data: session } = useSession();
@@ -35,6 +38,12 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
+      <BlurredImage
+        src={course.banner}
+        className=""
+        alt="banner"
+        dimension="w-full h-48"
+      />
       <div
         className={`rounded mx-auto flex items-center space-x-2 ${
           course.coursePrivacy === "public" ? "bg-blue-500" : "bg-violet-500"
@@ -89,6 +98,13 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
           topics={course.topics as ICourseTopic[]}
           withDuration={false}
         />
+      </div>
+      <div className="flex items-center justify-center mt-4 space-x-2">
+        <p className="font-bold text-md ">
+          Reviews {calculateAvgRating(course.reviews ?? [])}(
+          {course?.reviews?.length ?? 0})
+        </p>
+        <PiShootingStarDuotone className="w-6 h-6" />
       </div>
     </div>
   );

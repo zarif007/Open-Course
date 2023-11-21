@@ -1,4 +1,4 @@
-import CourseRatingTaker from "@/components/course-details/CourseRatingTaker";
+import CourseReviewTaker from "@/components/course-details/CourseReviewTaker";
 import { buttonVariants } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
@@ -93,7 +93,7 @@ const CourseCompletion = async ({ params }: PageParams) => {
       <LargeHeading className="underline decoration-rose-500 decoration-4">
         {course.title}
       </LargeHeading>
-      <CourseRatingTaker course={course} />
+      <CourseReviewTaker course={course} />
       <Link
         href={`/course/${slug}`}
         className={`${buttonVariants({

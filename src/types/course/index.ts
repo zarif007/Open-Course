@@ -22,10 +22,11 @@ export interface ICourse {
   topics: ICourseTopic[] | Types.ObjectId[];
   tags: string[];
   status: string;
-  ratings?:
+  reviews?:
     | {
         user: string;
         rating: number;
+        comment: string;
       }[]
     | [];
   checkPoints: ICheckPoint[] | [];

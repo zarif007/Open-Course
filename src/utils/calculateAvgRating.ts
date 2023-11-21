@@ -1,14 +1,14 @@
 const calculateAvgRating = (
-  ratings: { user: string; rating: number }[] | []
+  reviews: { user: string; rating: number }[] | []
 ): number => {
-  if (ratings.length === 0) return 0;
+  if (reviews.length === 0) return 0;
   let total = 0;
 
-  ratings.map((rating) => {
-    total += rating.rating;
+  reviews.map((review) => {
+    total += review.rating;
   });
 
-  return parseFloat((total / ratings.length).toFixed(1));
+  return parseFloat((total / reviews.length).toFixed(1));
 };
 
 export default calculateAvgRating;

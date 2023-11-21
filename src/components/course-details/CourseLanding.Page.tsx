@@ -17,7 +17,7 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
-import CourseRatings from "./CourseRatings";
+import CourseReviews from "./CourseReviews";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
@@ -99,10 +99,11 @@ const CourseLandingPage = ({
       : loadingStatus;
 
   return (
-    <div className="max-w-5xl w-full mx-auto ">
+    <div className="max-w-5xl w-full mx-auto">
       <CourseDetails course={course} />
-      <CourseRatings ratings={course.ratings ?? []} />
-      <LargeHeading size="sm">Course Topics</LargeHeading>
+      <LargeHeading size="sm" className="text-center">
+        Course Topics
+      </LargeHeading>
       <Accordion type="single" collapsible>
         {courseTopics.map((topic, index: number) => {
           const faviconURL = getFavicon(
@@ -132,6 +133,7 @@ const CourseLandingPage = ({
           );
         })}
       </Accordion>
+      <CourseReviews reviews={course.reviews ?? []} />
       {isEnrolled !== "loading" && (
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">

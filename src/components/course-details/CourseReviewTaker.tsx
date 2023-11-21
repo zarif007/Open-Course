@@ -11,6 +11,20 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import Paragraph from "../ui/Paragraph";
 import { useAppSelector } from "@/redux/store";
+import { Textarea } from "../ui/Textarea";
+import { LucideHeartHandshake } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/Form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { courseReviewSchema } from "@/validations/courseReview";
+import { z } from "zod";
 
 const StarDrawing = (
   <path
@@ -19,13 +33,22 @@ const StarDrawing = (
   ></path>
 );
 
-export default function CourseRatingTaker({ course }: { course: ICourse }) {
-  const [rating, setRating] = useState(1);
+export default function CourseReviewTaker({ course }: { course: ICourse }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
+
+  const form = useForm<z.infer<typeof courseReviewSchema>>({
+    resolver: zodResolver(courseReviewSchema),
+    mode: "onChange",
+    defaultValues: {
+      user: signedInUser?.id,
+      rating: 1,
+      comment: "",
+    },
+  });
 
   const customStyles = {
     itemShapes: StarDrawing,
@@ -33,26 +56,27 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
     inactiveFillColor: "#fda4af",
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: z.infer<typeof courseReviewSchema>) => {
     if (isLoading || !signedInUser) return;
 
     setIsLoading(true);
 
     try {
-      const updated: ICourse = {
+      const review: ICourse = {
         ...course,
-        ratings: [
-          ...(course.ratings || []),
+        reviews: [
+          ...(course.reviews || []),
           {
             user: signedInUser.id as string,
-            rating,
+            rating: data.rating,
+            comment: data.comment,
           },
         ],
       };
 
       await axios.put(
         `${nextApiEndPoint}/course/updateRatings/${course.id}`,
-        updated
+        review
       );
 
       toast({
@@ -72,35 +96,73 @@ export default function CourseRatingTaker({ course }: { course: ICourse }) {
   };
 
   return (
-    <div className="mx-auto my-12">
-      <LargeHeading size="sm">Rate this course</LargeHeading>
-      <CurrentUserRating
-        ratings={course.ratings ?? []}
+    <div className="mx-auto my-16 w-[75%] md:w-[50%]">
+      <LargeHeading size="sm" className="">
+        Rate this course
+      </LargeHeading>
+      <CurrentUserReview
+        ratings={course.reviews ?? []}
         userId={signedInUser?.id ?? ""}
       />
-      <div className="flex space-x-2 items-center">
-        <Rating
-          style={{ maxWidth: 220 }}
-          itemStyles={customStyles}
-          value={rating}
-          onChange={setRating}
-        />
-        <p className="font-bold p-2 px-3 rounded bg-slate-300 dark:bg-gray-800">
-          {rating}
-        </p>
-      </div>
-      <Button
-        className="my-6 w-full"
-        onClick={handleSubmit}
-        isLoading={isLoading}
-      >
-        Rate
-      </Button>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <FormField
+            control={form.control}
+            name="rating"
+            render={({ field }) => (
+              <FormItem className="my-2">
+                <FormControl>
+                  <div className="flex space-x-2 items-center justify-center my-3">
+                    <Rating
+                      {...field}
+                      style={{ maxWidth: 220 }}
+                      itemStyles={customStyles}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <p className="font-bold p-2 px-3 rounded bg-slate-300 dark:bg-gray-800">
+                      {field.value}
+                    </p>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="comment"
+            render={({ field }) => (
+              <FormItem className="my-2">
+                <FormLabel>Question</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder="Write something nice!!!"
+                    className="font-semibold"
+                    onChange={field.onChange}
+                    defaultValue={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            className="my-6 w-full flex justify-center items-center space-x-2"
+            isLoading={isLoading}
+          >
+            <p>Submit</p>
+            <LucideHeartHandshake className="w-6 h-6" />
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
 
-const CurrentUserRating = ({
+const CurrentUserReview = ({
   ratings,
   userId,
 }: {
@@ -113,9 +175,11 @@ const CurrentUserRating = ({
       if (rating.user === userId) setRating(rating.rating);
     });
   };
+
   useEffect(() => {
     findRating();
   }, [ratings, userId]);
+
   return (
     <React.Fragment>
       {rating && (

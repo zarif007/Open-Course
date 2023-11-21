@@ -78,11 +78,12 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       type: [String],
       default: [],
     },
-    ratings: {
+    reviews: {
       type: [
         {
           user: String,
           rating: Number,
+          comment: String,
         },
       ],
       default: [],

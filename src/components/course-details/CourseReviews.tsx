@@ -6,10 +6,10 @@ import { RiUserStarFill } from "react-icons/ri";
 import { Progress } from "@/components/ui/Progress";
 import calculateAvgRating from "@/utils/calculateAvgRating";
 
-const CourseRatings = ({
-  ratings,
+const CourseReviews = ({
+  reviews,
 }: {
-  ratings: { user: string; rating: number }[] | [];
+  reviews: { user: string; rating: number }[] | [];
 }) => {
   const [ratingsRange, setRatingsRange] = useState<number[]>([
     0, 0, 0, 0, 0, 0,
@@ -17,21 +17,21 @@ const CourseRatings = ({
 
   const createRange = () => {
     const updated = [0, 0, 0, 0, 0, 0];
-    ratings.map((rating) => {
-      updated[`${rating.rating}`] += 1;
+    reviews.map((review) => {
+      updated[`${review.rating}`] += 1;
     });
     setRatingsRange(updated);
   };
 
   useEffect(() => {
     createRange();
-  }, [ratings]);
+  }, [reviews]);
 
   return (
-    <div className="m-4 md:mx-6 mb-8 flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8">
       <div className="flex space-x-2 items-center">
-        <LargeHeading size="sm">
-          Ratings ({calculateAvgRating(ratings)})
+        <LargeHeading size="sm" className="text-center">
+          Ratings ({calculateAvgRating(reviews)})
         </LargeHeading>
         <PiShootingStarDuotone className="w-10 h-10" />
       </div>
@@ -40,7 +40,7 @@ const CourseRatings = ({
           key={index}
           value={ratingsRange[5 - index]}
           index={5 - index}
-          total={ratings.length}
+          total={reviews.length}
         />
       ))}
     </div>
@@ -57,7 +57,7 @@ const ProgressBar = ({
   total: number;
 }) => {
   return (
-    <div className="flex space-x-2 justify-center items-center w-full md:w-[50%]">
+    <div className="flex space-x-2 justify-center items-center w-full md:w-[50%] w-[80%]">
       <Paragraph className={`w-1/12 font-semibold flex items-center`}>
         <span className="w-[50%]">{index}</span>
         <PiStarDuotone className="w-[50%]" />
@@ -71,4 +71,4 @@ const ProgressBar = ({
   );
 };
 
-export default CourseRatings;
+export default CourseReviews;
