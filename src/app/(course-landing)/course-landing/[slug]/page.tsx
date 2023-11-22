@@ -16,7 +16,7 @@ interface PageParams {
   };
 }
 
-const getCourse = async (
+const getCourseAndEnrollState = async (
   slug: string,
   userEmail: string | null
 ): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
@@ -33,7 +33,7 @@ const getCourse = async (
 export const generateMetadata = async ({
   params,
 }: PageParams): Promise<Metadata> => {
-  const { course } = await getCourse(params.slug, null);
+  const { course } = await getCourseAndEnrollState(params.slug, null);
 
   if (!course) {
     return constructMetadata();
@@ -53,7 +53,7 @@ export const generateMetadata = async ({
 const CourseLanding = async ({ params }: PageParams) => {
   const session = await getServerSession();
 
-  const { course, enrollState } = await getCourse(
+  const { course, enrollState } = await getCourseAndEnrollState(
     params.slug,
     session?.user?.email ?? null
   );

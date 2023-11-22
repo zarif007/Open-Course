@@ -26,6 +26,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { courseReviewSchema } from "@/validations/courseReview";
 import { z } from "zod";
 import { IUser } from "@/types/user";
+import { FaStar } from "react-icons/fa6";
+import { Skeleton } from "../ui/Skeleton";
 
 const StarDrawing = (
   <path
@@ -35,8 +37,54 @@ const StarDrawing = (
 );
 
 export default function CourseReviewTaker({ course }: { course: ICourse }) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAlreadyReviewed, setIsAlreadyReviewed] = useState<
+    "loading" | "no" | { rating: number; comment: string }
+  >("loading");
 
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
+  useEffect(() => {
+    if (!course.id || !signedInUser) return;
+
+    let flag = false;
+    course.reviews?.map((review) => {
+      const user = review.user as IUser;
+
+      if (user.id === signedInUser.id) {
+        setIsAlreadyReviewed({
+          rating: review.rating,
+          comment: review.comment,
+        });
+        flag = true;
+        return;
+      }
+    });
+
+    !flag && setIsAlreadyReviewed("no");
+  }, [course, signedInUser]);
+
+  return (
+    <div className="mx-auto my-16 w-[75%] md:w-[50%]">
+      {typeof isAlreadyReviewed === "string" ? (
+        isAlreadyReviewed === "loading" ? (
+          <Skeleton className="w-full h-40" />
+        ) : (
+          <ReviewTakingForm course={course} />
+        )
+      ) : (
+        <CurrentUserReview
+          rating={isAlreadyReviewed.rating}
+          comment={isAlreadyReviewed.comment}
+        />
+      )}
+    </div>
+  );
+}
+
+const ReviewTakingForm = ({ course }: { course: ICourse }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
@@ -97,14 +145,10 @@ export default function CourseReviewTaker({ course }: { course: ICourse }) {
   };
 
   return (
-    <div className="mx-auto my-16 w-[75%] md:w-[50%]">
+    <div>
       <LargeHeading size="sm" className="">
         Rate this course
       </LargeHeading>
-      <CurrentUserReview
-        ratings={course.reviews ?? []}
-        userId={signedInUser?.id ?? ""}
-      />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
@@ -161,33 +205,26 @@ export default function CourseReviewTaker({ course }: { course: ICourse }) {
       </Form>
     </div>
   );
-}
+};
 
 const CurrentUserReview = ({
-  ratings,
-  userId,
+  rating,
+  comment,
 }: {
-  ratings: { user: string | IUser; rating: number }[] | [];
-  userId: string;
+  rating: number;
+  comment: string;
 }) => {
-  const [rating, setRating] = useState<number | null>(null);
-  const findRating = () => {
-    ratings.map((rating) => {
-      if (rating.user === userId) setRating(rating.rating);
-    });
-  };
-
-  useEffect(() => {
-    findRating();
-  }, [ratings, userId]);
-
   return (
     <React.Fragment>
-      {rating && (
+      <div className="flex items-center justify-center space-x-2 my-3 text-rose-500">
         <Paragraph className="font-semibold text-center">
           You have rated {rating}
         </Paragraph>
-      )}
+        <FaStar />
+      </div>
+
+      <p className="font-semibold text-start text-rose-500">You Comment</p>
+      <p className="font-medium text-start text-sm">{comment}</p>
     </React.Fragment>
   );
 };

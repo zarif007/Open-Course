@@ -14,6 +14,8 @@ import { getServerSession } from "next-auth";
 import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { headers } from "next/headers";
+import { IEnrollState } from "@/types/enrollState";
+import { FaStar } from "react-icons/fa6";
 
 interface PageParams {
   params: {
@@ -21,22 +23,28 @@ interface PageParams {
   };
 }
 
-const getCourse = async (slug: string) => {
-  const { data: courseData } = await (
-    await fetch(`${nextApiEndPoint}/course/bySlug/${slug}`, {
-      cache: "force-cache",
-      method: "GET",
-      headers: new Headers(headers()),
-    })
+const getCourseAndEnrollState = async (
+  slug: string,
+  userEmail: string | null
+): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
+  const data = await (
+    await fetch(
+      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
+      {
+        cache: "no-store",
+        method: "GET",
+        headers: new Headers(headers()),
+      }
+    )
   ).json();
 
-  return courseData;
+  return data;
 };
 
 export const generateMetadata = async ({
   params,
 }: PageParams): Promise<Metadata> => {
-  const course: ICourse | null = await getCourse(params.slug);
+  const { course } = await getCourseAndEnrollState(params.slug, null);
 
   if (!course) {
     return constructMetadata();
@@ -54,35 +62,16 @@ export const generateMetadata = async ({
 };
 
 const CourseCompletion = async ({ params }: PageParams) => {
-  const slug = params.slug;
+  const session = await getServerSession();
 
-  const course = await getCourse(slug);
+  const { course, enrollState } = await getCourseAndEnrollState(
+    params.slug,
+    session?.user?.email ?? null
+  );
 
   if (!course) redirect("/404");
 
-  const session = await getServerSession();
-  if (!session?.user) redirect("");
-
-  const { data: user } = await (
-    await fetch(`${nextApiEndPoint}/user/byEmail/${session.user.email}`, {
-      cache: "force-cache",
-    })
-  ).json();
-
-  console.log(user);
-
-  const { data: enrollState } = await (
-    await fetch(
-      `${nextApiEndPoint}/enrollState?user=${user.id}&course=${course.id}`,
-      {
-        cache: "no-store",
-      }
-    )
-  ).json();
-
-  console.log(enrollState);
-
-  if (!enrollState) redirect(`/course/${slug}`);
+  if (!enrollState) redirect(`/course/${params.slug}`);
 
   return (
     <main className="w-full max-w-5xl mx-auto h-full flex flex-col">
@@ -90,12 +79,14 @@ const CourseCompletion = async ({ params }: PageParams) => {
         Congratulation 🎉
       </LargeHeading>
       <LargeHeading size="sm">on the Completion of</LargeHeading>
+
       <LargeHeading className="underline decoration-rose-500 decoration-4">
         {course.title}
       </LargeHeading>
+
       <CourseReviewTaker course={course} />
       <Link
-        href={`/course/${slug}`}
+        href={`/course/${params.slug}`}
         className={`${buttonVariants({
           variant: "default",
         })} mx-auto w-[80%] md:w-[50%] flex items-center space-x-2`}

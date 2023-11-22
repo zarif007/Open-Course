@@ -29,7 +29,7 @@ const CourseRatings = ({
   }, [reviews]);
 
   return (
-    <div className="flex flex-col items-center my-3">
+    <div className="flex flex-col items-center m-4 md:mx-6">
       <div className="flex space-x-2 items-center">
         <LargeHeading size="sm" className="text-center mb-3">
           Ratings ({calculateAvgRating(reviews)})

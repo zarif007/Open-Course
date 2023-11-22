@@ -17,7 +17,7 @@ const CourseReviews = ({
         </LargeHeading>
         <PiChatCenteredTextDuotone className="w-10 h-10" />
       </div>
-      <div className="flex flex-col w-full space-y-2 my-6">
+      <div className="flex flex-col w-full space-y-4 my-6">
         {reviews.map((review, index) => {
           const author = review.user as IUser;
           return (
@@ -25,7 +25,7 @@ const CourseReviews = ({
               <div className="flex space-x-2">
                 <img src={author.image} className="w-10 h-10 rounded-full" />
                 <div className="flex flex-col space-y-1">
-                  <p className="text-xs font-semibold">{author.name}</p>
+                  <p className="text-sm font-bold">{author.name}</p>
                   <div className="flex space-x-1 items-center text-yellow-500">
                     <p className="text-sm font-semibold ">{review.rating}</p>
                     <FaStar />
