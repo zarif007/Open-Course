@@ -3,7 +3,7 @@ import User from "@/lib/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const users = await User.find({});
 
@@ -11,7 +11,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const payload = await req.json();
   const isExists = await User.findOne({ email: payload.email });

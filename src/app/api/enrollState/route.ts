@@ -10,7 +10,7 @@ import { startSession } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const user = req.nextUrl.searchParams.get("user");
   const course = req.nextUrl.searchParams.get("course");
@@ -24,7 +24,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const session = await startSession();
   try {
@@ -90,7 +90,7 @@ export const POST = async (req: NextRequest) => {
 };
 
 export const PUT = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const payload: IEnrollState = await req.json();
 

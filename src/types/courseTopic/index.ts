@@ -4,10 +4,16 @@ export interface ICourseTopic {
   id?: number | string;
   _id?: string;
   topicID?: number;
-  type?: "content-from-internet" | "text" | "upload";
+  sortID?: number;
   views?: number;
   versions: [
-    // Type will differ from here
+    /*
+      Type will differ from here
+      {
+        type: "free_source_content" | "text" | "quiz"
+        data: IFreeSourceContent | ITextContent | IQuizContent
+      } 
+    */
     {
       title: string;
       url: string;

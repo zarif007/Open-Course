@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
   const userEmail = req.nextUrl.searchParams.get("userEmail");
   const courseSlug = req.nextUrl.searchParams.get("courseSlug");
 

@@ -23,7 +23,7 @@ export const GET = async (
   //   return NextResponse.json({ data: userFromRedis });
   // }
 
-  connectToDB();
+  await connectToDB();
 
   const user = await User.findOne({ email });
 

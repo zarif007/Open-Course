@@ -15,7 +15,7 @@ interface IParams {
 }
 
 export const GET = async (req: NextRequest, { params }: IParams) => {
-  connectToDB();
+  await connectToDB();
 
   const enrollStates = await EnrollState.find({ user: params.user })
     .populate({

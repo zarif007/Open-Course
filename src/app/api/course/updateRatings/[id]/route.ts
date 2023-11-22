@@ -12,7 +12,7 @@ interface PageParams {
 }
 
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
-  connectToDB();
+  await connectToDB();
 
   const id = params.id;
   const payload = await req.json();

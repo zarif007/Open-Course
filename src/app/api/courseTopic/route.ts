@@ -3,7 +3,7 @@ import CourseTopic from "@/lib/models/courseTopic.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const topics = await CourseTopic.find({});
 

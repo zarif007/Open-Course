@@ -8,10 +8,9 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
       type: Number,
       required: [true, "Topic ID is required"],
     },
-    type: {
-      type: String,
-      enum: topicTypes,
-      default: "content-from-internet",
+    sortID: {
+      type: Number,
+      default: 0,
     },
     views: {
       type: Number,

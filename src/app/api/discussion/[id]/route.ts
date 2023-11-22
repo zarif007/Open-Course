@@ -9,7 +9,7 @@ interface PageParams {
 }
 
 export const DELETE = async (req: NextRequest, { params }: PageParams) => {
-  connectToDB();
+  await connectToDB();
 
   const id = params.id;
   await Discussion.findByIdAndDelete(id);
@@ -18,7 +18,7 @@ export const DELETE = async (req: NextRequest, { params }: PageParams) => {
 };
 
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
-  connectToDB();
+  await connectToDB();
 
   const payload = await req.json();
 

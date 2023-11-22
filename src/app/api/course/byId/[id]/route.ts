@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
   }
 
   const id = params.id;
-  connectToDB();
+  await connectToDB();
 
   const course = await Course.findById(id)
     .populate({

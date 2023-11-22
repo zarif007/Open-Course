@@ -25,7 +25,7 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
     });
   }
 
-  connectToDB();
+  await connectToDB();
 
   const id = params.id;
 

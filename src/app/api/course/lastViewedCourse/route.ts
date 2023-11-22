@@ -2,7 +2,7 @@ import { connectToDB } from "@/lib/connectToMongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   // const course = await Course.findById(id)
   //   .populate({

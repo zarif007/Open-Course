@@ -11,7 +11,7 @@ interface PageParams {
 }
 
 export const GET = async (req: NextRequest, { params }: PageParams) => {
-  connectToDB();
+  await connectToDB();
 
   const courses = await Course.find({ creator: params.id })
     .populate({

@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  connectToDB();
+  await connectToDB();
 
   const topicId = req.nextUrl.searchParams.get("topicId");
   const version = req.nextUrl.searchParams.get("version");
@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest, res: NextApiResponse) => {
-  connectToDB();
+  await connectToDB();
 
   const payload = await req.json();
 

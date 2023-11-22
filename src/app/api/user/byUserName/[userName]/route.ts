@@ -15,7 +15,7 @@ export const GET = async (
   res: NextApiResponse
 ) => {
   const userName = params.userName;
-  connectToDB();
+  await connectToDB();
 
   const user = await User.findOne({ userName });
 

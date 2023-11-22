@@ -28,7 +28,7 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
     });
   }
 
-  connectToDB();
+  await connectToDB();
 
   const course = await Course.findOne({ slug })
     .populate({

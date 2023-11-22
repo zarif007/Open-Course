@@ -9,7 +9,7 @@ interface IParams {
 }
 
 export const GET = async (req: NextRequest, { params }: IParams) => {
-  connectToDB();
+  await connectToDB();
   const user = params.user;
 
   const activities = await Activity.find({ user });
