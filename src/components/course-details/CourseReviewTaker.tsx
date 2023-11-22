@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseReviewSchema } from "@/validations/courseReview";
 import { z } from "zod";
+import { IUser } from "@/types/user";
 
 const StarDrawing = (
   <path
@@ -166,7 +167,7 @@ const CurrentUserReview = ({
   ratings,
   userId,
 }: {
-  ratings: { user: string; rating: number }[] | [];
+  ratings: { user: string | IUser; rating: number }[] | [];
   userId: string;
 }) => {
   const [rating, setRating] = useState<number | null>(null);
