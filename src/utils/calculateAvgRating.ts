@@ -1,5 +1,7 @@
+import { IUser } from "@/types/user";
+
 const calculateAvgRating = (
-  reviews: { user: string; rating: number }[] | []
+  reviews: { user: IUser | string; rating: number }[] | []
 ): number => {
   if (reviews.length === 0) return 0;
   let total = 0;

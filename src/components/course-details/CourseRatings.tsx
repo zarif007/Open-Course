@@ -5,11 +5,12 @@ import { PiShootingStarDuotone, PiStarDuotone } from "react-icons/pi";
 import { RiUserStarFill } from "react-icons/ri";
 import { Progress } from "@/components/ui/Progress";
 import calculateAvgRating from "@/utils/calculateAvgRating";
+import { IUser } from "@/types/user";
 
 const CourseRatings = ({
   reviews,
 }: {
-  reviews: { user: string; rating: number }[] | [];
+  reviews: { user: IUser | string; rating: number; comment: string }[] | [];
 }) => {
   const [ratingsRange, setRatingsRange] = useState<number[]>([
     0, 0, 0, 0, 0, 0,
@@ -30,7 +31,7 @@ const CourseRatings = ({
   return (
     <div className="flex flex-col items-center my-3">
       <div className="flex space-x-2 items-center">
-        <LargeHeading size="sm" className="text-center">
+        <LargeHeading size="sm" className="text-center mb-3">
           Ratings ({calculateAvgRating(reviews)})
         </LargeHeading>
         <PiShootingStarDuotone className="w-10 h-10" />

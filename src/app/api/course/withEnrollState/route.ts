@@ -34,11 +34,12 @@ export const GET = async (req: NextRequest) => {
       path: "creator",
       model: User,
       select: "name image userName",
+    })
+    .populate({
+      path: "reviews.user",
+      model: User,
+      select: "name image userName",
     });
-  // .populate({
-  //   path: "course.reviews.user",
-  //   mode: User,
-  // });
 
   let enrollState = null;
 

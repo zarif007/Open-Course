@@ -24,7 +24,7 @@ export interface ICourse {
   status: string;
   reviews?:
     | {
-        user: string;
+        user: string | IUser;
         rating: number;
         comment: string;
       }[]

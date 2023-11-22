@@ -24,6 +24,7 @@ import { IEnrollState } from "@/types/enrollState";
 import { signIn, useSession } from "next-auth/react";
 import { useAppSelector } from "@/redux/store";
 import CourseReviews from "./CourseReviews";
+import { PiStackDuotone } from "react-icons/pi";
 
 const CourseLandingPage = ({
   course,
@@ -103,10 +104,13 @@ const CourseLandingPage = ({
     <div className="max-w-5xl w-full mx-auto">
       <CourseDetails course={course} />
       <CourseRatings reviews={course.reviews ?? []} />
-      <LargeHeading size="sm" className="text-center">
-        Course Topics
-      </LargeHeading>
-      <Accordion type="single" collapsible>
+      <div className="flex space-x-2 items-center justify-center mt-8">
+        <LargeHeading size="sm" className="text-center">
+          Course Topics ({course.topics.length})
+        </LargeHeading>
+        <PiStackDuotone className="w-10 h-10" />
+      </div>
+      <Accordion type="single" collapsible className="mb-8">
         {courseTopics.map((topic, index: number) => {
           const faviconURL = getFavicon(
             topic.versions[topic.versions.length - 1].source ?? ""
