@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 export interface ICourseTopic {
   id?: number | string;
   _id?: string;
-  topicID?: number;
+  topicID: number;
   sortID?: number;
   views?: number;
   versions: [
@@ -17,8 +17,8 @@ export interface ICourseTopic {
     {
       title: string;
       url: string;
-      source?: string;
-      description?: string;
+      source: string;
+      description: string;
       duration: number;
     }
   ];

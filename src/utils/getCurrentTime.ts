@@ -1,8 +1,10 @@
 const getCurrentTime = () => {
-  const currentDate: Date = new Date();
-  const formattedDate: string = currentDate.toISOString().split("T")[0];
+  const timestamp = Date.now();
+  const offset = new Date().getTimezoneOffset();
+  const localTime = new Date(timestamp - offset * 60000);
+  const formattedLocalTime = localTime.toISOString().split("T")[0];
 
-  return formattedDate;
+  return formattedLocalTime;
 };
 
 export default getCurrentTime;

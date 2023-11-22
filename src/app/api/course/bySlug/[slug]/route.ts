@@ -1,13 +1,9 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { getSession } from "@/lib/auth/useAuth";
 import { connectToDB } from "@/lib/connectToMongoose";
 import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
-import { getServerSession } from "next-auth";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies, headers } from "next/headers";
 
 interface PageParams {
   params: {
@@ -15,15 +11,18 @@ interface PageParams {
   };
 }
 
-export const GET = async (req: NextRequest, { params }: PageParams) => {
+export const GET = async (
+  req: NextRequest,
+  { params }: PageParams
+): Promise<NextResponse> => {
   const slug = params.slug;
 
-  const session = await getServerSession(authOptions);
+  const token = await getToken({ req });
 
-  if (!session) {
+  if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: "Unauthorized: Login required!!!",
       data: null,
     });
   }

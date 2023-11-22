@@ -25,7 +25,7 @@ const FinishedCourses = ({ user }: { user: IUser | null }) => {
           { cache: "no-store" }
         )
       ).json();
-      console.log(data);
+
       return data.map(
         async (
           state: {
