@@ -20,7 +20,7 @@ const selectors = [
 
 const CourseTopicSelector = () => {
   return (
-    <div className="mx-2 flex justify-center items-center flex-col mt-4 mb-24 space-y-3 w-full h-full">
+    <div className="flex justify-center items-center flex-col mt-4 mb-24 space-y-3 h-full">
       {selectors.map((selector) => (
         <Button
           key={selector.title}
