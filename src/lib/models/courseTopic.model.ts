@@ -18,25 +18,32 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
     },
     versions: [
       {
-        title: {
+        type: {
           type: String,
-          required: [true, "Title is required"],
+          enum: topicTypes,
+          default: "free_source_content",
         },
-        description: {
-          type: String,
-          default: "",
-        },
-        url: {
-          type: String,
-          required: [true, "Link is required"],
-        },
-        source: {
-          type: String,
-          default: "",
-        },
-        duration: {
-          type: Number,
-          default: 0,
+        data: {
+          title: {
+            type: String,
+            required: [true, "Title is required"],
+          },
+          description: {
+            type: String,
+            default: "",
+          },
+          url: {
+            type: String,
+            required: [true, "Link is required"],
+          },
+          source: {
+            type: String,
+            default: "",
+          },
+          duration: {
+            type: Number,
+            default: 0,
+          },
         },
       },
     ],

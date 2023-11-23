@@ -19,6 +19,7 @@ export const POST = async (req: NextRequest) => {
     const res = await CourseTopic.create({
       versions: topic.versions,
       topicID: topic.topicID,
+      sortID: topic.sortID,
     });
     topicIds.push(new Types.ObjectId(res._id.toString()));
   }

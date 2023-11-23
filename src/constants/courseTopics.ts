@@ -27,4 +27,4 @@ export const topicInputFields: ITopicFields[] = [
   },
 ];
 
-export const topicTypes = ["content-from-internet", "text", "upload"];
+export const topicTypes = ["free_source_content", "text_content", "quiz"];

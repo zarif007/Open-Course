@@ -6,25 +6,28 @@ export interface ICourseTopic {
   topicID: number;
   sortID?: number;
   views?: number;
-  versions: [
-    /*
+  versions: /*
       Type will differ from here
       {
-        type: "free_source_content" | "text" | "quiz"
+        type: "free_source_content" | "text_content" | "quiz"
         data: IFreeSourceContent | ITextContent | IQuizContent
       } 
     */
-    {
-      title: string;
-      url: string;
-      source: string;
-      description: string;
-      duration: number;
-    }
-  ];
+  {
+    type: "free_source_content" | "text_content" | "quiz" | "";
+    data: IFreeSourceContent;
+  }[];
   createdAt?: Date | string;
   updatedAt?: Date | string;
   _v?: number;
+}
+
+interface IFreeSourceContent {
+  title: string;
+  url: string;
+  source: string;
+  description: string;
+  duration: number;
 }
 
 export type ICourseTopicModel = Model<ICourseTopic, Record<string, unknown>>;

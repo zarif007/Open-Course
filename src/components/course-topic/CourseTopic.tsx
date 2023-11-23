@@ -34,7 +34,7 @@ const CourseTopic = ({
   };
 
   const faviconURL = getFavicon(
-    courseTopic.versions[courseTopic.versions.length - 1].source ?? ""
+    courseTopic.versions[courseTopic.versions.length - 1].data.source ?? ""
   );
 
   const course = useAppSelector((state) =>
@@ -112,20 +112,27 @@ const CourseTopic = ({
         <div>
           <TooltipComponent
             content={
-              courseTopic.versions[courseTopic.versions.length - 1].title
+              courseTopic.versions[courseTopic.versions.length - 1].data.title
             }
           >
             <Paragraph className="truncate-text-1-line text-start">
               {courseTopic.topicID}.{" "}
               <span className="font-bold">
-                {courseTopic.versions[courseTopic.versions.length - 1].title}
+                {
+                  courseTopic.versions[courseTopic.versions.length - 1].data
+                    .title
+                }
               </span>{" "}
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
             <img src={faviconURL} className="h-7 w-7" alt="og" />
             <Paragraph size="sm" className="truncate-text-1-line font-semibold">
-              {courseTopic.versions[courseTopic.versions.length - 1].duration}m
+              {
+                courseTopic.versions[courseTopic.versions.length - 1].data
+                  .duration
+              }
+              m
             </Paragraph>
           </div>
         </div>

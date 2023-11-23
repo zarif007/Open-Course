@@ -91,7 +91,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
     }
     setCourseTopics(
       allTopics.filter((topic) =>
-        topic.versions[topic.versions.length - 1].title
+        topic.versions[topic.versions.length - 1].data.title
           .toLowerCase()
           .includes(e.target.value.toLowerCase())
       )

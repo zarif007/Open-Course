@@ -18,7 +18,7 @@ const ContentLogos = ({
           className={`h-7 w-7 rounded-full border-2 border-rose-500 bg-slate-100 dark:bg-gray-950
                 ${index !== 0 && "-ml-2"}`}
           src={getFavicon(
-            topic.versions[topic.versions.length - 1].source ?? ""
+            topic.versions[topic.versions.length - 1].data.source ?? ""
           )}
           alt="logo"
         />

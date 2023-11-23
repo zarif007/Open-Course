@@ -43,6 +43,7 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
       res = await CourseTopic.create({
         versions: topic.versions,
         topicID: topic.topicID,
+        sortID: topic.sortID,
       });
     } else {
       res = await CourseTopic.findOneAndUpdate({ _id: topic._id }, topic, {

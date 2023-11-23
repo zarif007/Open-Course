@@ -19,12 +19,12 @@ const CourseTopicCreation = ({ mode }: { mode: "creation" | "edit" }) => {
   );
 
   const compare = (a: ICourseTopic, b: ICourseTopic) => {
-    if (typeof a.topicID === "number" && typeof b.topicID === "number") {
-      return a.topicID - b.topicID;
+    if (typeof a.sortID === "number" && typeof b.sortID === "number") {
+      return a.sortID - b.sortID;
     }
-    if (!a.topicID) return 1;
-    if (!b.topicID) return -1;
-    if (typeof a.topicID === "number") return -1;
+    if (!a.sortID) return 1;
+    if (!b.sortID) return -1;
+    if (typeof a.sortID === "number") return -1;
     return 1;
   };
 
@@ -58,7 +58,6 @@ const CourseTopicCreation = ({ mode }: { mode: "creation" | "edit" }) => {
 
   return (
     <section className="mx-2">
-      <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
       <CourseTopicCreationTabs submitData={submitData} mode={mode} />
     </section>
   );

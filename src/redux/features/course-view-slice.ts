@@ -17,14 +17,19 @@ const initialState = {
     currentCourseTopic: {
       id: -1,
       topicID: -1,
+      sortID: 0,
+      views: 0,
       versions: [
         {
-          title: "",
-          description: "",
-          url: "",
-          duration: 10,
-        }
-      ]
+          type: "free_source_content",
+          data: {
+            title: "",
+            description: "",
+            url: "",
+            duration: 10,
+          },
+        },
+      ],
     },
     enrollState: {},
   },
@@ -37,7 +42,10 @@ export const courseView = createSlice({
     setCourseForView: (state, action: PayloadAction<ICourse>) => {
       state.value.course = action.payload;
     },
-    setCurrentCourseTopicForView: (state, action: PayloadAction<ICourseTopic>) => {
+    setCurrentCourseTopicForView: (
+      state,
+      action: PayloadAction<ICourseTopic>
+    ) => {
       state.value.currentCourseTopic = action.payload;
     },
     setEnrollState: (state, action: PayloadAction<IEnrollState>) => {
@@ -46,5 +54,9 @@ export const courseView = createSlice({
   },
 });
 
-export const { setCourseForView, setCurrentCourseTopicForView, setEnrollState } = courseView.actions;
+export const {
+  setCourseForView,
+  setCurrentCourseTopicForView,
+  setEnrollState,
+} = courseView.actions;
 export default courseView.reducer;

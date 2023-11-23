@@ -52,7 +52,7 @@ const CourseContentsTabs = () => {
         {currentCourseTopic.topicID}.{" "}
         {
           currentCourseTopic.versions[currentCourseTopic.versions.length - 1]
-            .title
+            .data.title
         }
       </LargeHeading>
       <TabsList className="mt-4">

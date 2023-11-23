@@ -61,7 +61,10 @@ const CourseCardDashboard = ({
           >
             <ContentLogos topics={[currentTopic]} withDuration={false} />
             <p className="font-semibold text-sm">
-              {currentTopic.versions[currentTopic.versions.length - 1].title}
+              {
+                currentTopic.versions[currentTopic.versions.length - 1].data
+                  .title
+              }
             </p>
           </div>
 

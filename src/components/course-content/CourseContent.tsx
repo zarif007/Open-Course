@@ -13,7 +13,8 @@ import checkIfUrlIsEmbeddable from "@/utils/checkIfUrlIsEmbeddable";
 function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
   const [showUrl, setShowUrl] = useState<boolean>(false);
 
-  const contentUrl = courseTopic.versions[courseTopic.versions.length - 1].url;
+  const contentUrl =
+    courseTopic.versions[courseTopic.versions.length - 1].data.url;
 
   return (
     <div className={`mx-auto w-[100%] h-[45vh] md:h-[80vh]`} id="main">

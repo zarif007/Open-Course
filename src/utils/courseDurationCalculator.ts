@@ -3,7 +3,7 @@ import { ICourseTopic } from "@/types/courseTopic";
 const courseDurationCalculator = (topics: ICourseTopic[]): string => {
   let duration = 0;
   topics.map((topic) => {
-    duration += topic.versions[topic.versions.length - 1].duration;
+    duration += topic.versions[topic.versions.length - 1].data.duration;
   });
   const inMin = parseInt((duration % 60).toFixed(0));
   const inHr = parseInt((duration / 60).toFixed(0));

@@ -3,7 +3,6 @@ import { buttonVariants } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
 import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import axios from "axios";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React from "react";
@@ -15,7 +14,6 @@ import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { headers } from "next/headers";
 import { IEnrollState } from "@/types/enrollState";
-import { FaStar } from "react-icons/fa6";
 
 interface PageParams {
   params: {

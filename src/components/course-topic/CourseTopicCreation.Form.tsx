@@ -48,11 +48,14 @@ const CourseTopicCreationForm = ({
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
       {
-        title: "",
-        url: "",
-        description: "",
-        duration: 0,
-        source: "",
+        type: "free_source_content",
+        data: {
+          title: "",
+          url: "",
+          description: "",
+          duration: 0,
+          source: "",
+        },
       },
     ],
     topicID: -1,
@@ -60,12 +63,25 @@ const CourseTopicCreationForm = ({
 
   useEffect(() => {
     setDefaultValue(currentCourseTopic);
-    reset(currentCourseTopic.versions[currentCourseTopic.versions.length - 1]);
+    reset(
+      currentCourseTopic.versions[currentCourseTopic.versions.length - 1].data
+    );
   }, [currentCourseTopic, reset]);
 
   const resetCourseTopic = () => {
     const resetValue: ICourseTopic = {
-      versions: [{ title: "", url: "", description: "", duration: 0 }],
+      versions: [
+        {
+          type: "",
+          data: {
+            title: "",
+            url: "",
+            description: "",
+            duration: 0,
+            source: "",
+          },
+        },
+      ],
       topicID: -1,
     };
     dispatch(
@@ -85,16 +101,24 @@ const CourseTopicCreationForm = ({
     const courseTopics = course.topics as ICourseTopic[];
 
     const source = new URL(data.url).origin;
+
+    const topicID =
+      currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+        ? currentCourseTopic.topicID
+        : courseTopics && courseTopics.length > 0
+        ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
+        : 1;
     submitData({
       id: currentCourseTopic.id ?? "",
       _id: currentCourseTopic._id ?? "",
-      versions: [{ ...data, source }],
-      topicID:
-        currentCourseTopic.topicID && currentCourseTopic.topicID > 0
-          ? currentCourseTopic.topicID
-          : courseTopics && courseTopics.length > 0
-          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
-          : 1,
+      versions: [
+        {
+          type: "free_source_content",
+          data: { ...data, source },
+        },
+      ],
+      topicID,
+      sortID: topicID,
       createdAt: currentCourseTopic.createdAt ?? "",
       updatedAt: currentCourseTopic.updatedAt ?? "",
     });
@@ -128,8 +152,11 @@ const CourseTopicCreationForm = ({
                   ...currentCourseTopic,
                   versions: [
                     {
-                      ...currentCourseTopic.versions[0],
-                      [field.key]: field.value(e),
+                      type: "free_source_content",
+                      data: {
+                        ...currentCourseTopic.versions[0].data,
+                        [field.key]: field.value(e),
+                      },
                     },
                   ],
                 };
@@ -140,7 +167,7 @@ const CourseTopicCreationForm = ({
                 );
               }}
               defaultValue={
-                defaultValue.versions[defaultValue.versions.length - 1][
+                defaultValue.versions[defaultValue.versions.length - 1].data[
                   field.key
                 ]
               }

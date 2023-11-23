@@ -22,13 +22,18 @@ const initialState = {
         {
           id: 0,
           topicID: 0,
+          sortID: 0,
+          views: 0,
           versions: [
             {
-              title: "Example101",
-              url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
-              source: "https://www.youtube.com",
-              description: "Just another example",
-              duration: 10,
+              type: "free_source_content",
+              data: {
+                title: "Example101",
+                url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+                source: "https://www.youtube.com",
+                description: "Just another example",
+                duration: 10,
+              },
             },
           ],
         },
@@ -37,12 +42,18 @@ const initialState = {
     currentCourseTopic: {
       id: -1,
       topicID: -1,
+      sortID: 0,
+      views: -1,
       versions: [
         {
-          title: "",
-          description: "",
-          url: "",
-          duration: 0,
+          type: "",
+          data: {
+            title: "",
+            url: "",
+            source: "",
+            description: "",
+            duration: 0,
+          },
         },
       ],
     },

@@ -113,7 +113,7 @@ const CourseLandingPage = ({
       <Accordion type="single" collapsible className="mb-8">
         {courseTopics.map((topic, index: number) => {
           const faviconURL = getFavicon(
-            topic.versions[topic.versions.length - 1].source ?? ""
+            topic.versions[topic.versions.length - 1].data.source ?? ""
           );
           return (
             <AccordionItem
@@ -122,7 +122,7 @@ const CourseLandingPage = ({
               className="m-4 px-4 md:mx-6"
             >
               <AccordionTrigger className="text-start">
-                {topic.versions[topic.versions.length - 1].title}
+                {topic.versions[topic.versions.length - 1].data.title}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex space-x-2">
@@ -131,7 +131,7 @@ const CourseLandingPage = ({
                     size="sm"
                     className="truncate-text-1-line font-semibold"
                   >
-                    {topic.versions[topic.versions.length - 1].duration}m
+                    {topic.versions[topic.versions.length - 1].data.duration}m
                   </Paragraph>
                 </div>
               </AccordionContent>

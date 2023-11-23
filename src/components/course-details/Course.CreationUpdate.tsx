@@ -11,6 +11,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import LargeHeading from "@/components/ui/LargeHeading";
 import CourseBannerCreationForm from "@/components/course-banner/CourseBannerCreation.Form";
 import CourseCreationSteps from "@/components/course-details/CourseCreationSteps";
+import CourseTopicSelector from "../course-topic/CourseTopic.Selector";
 
 const CourseCreationUpdate = ({
   MODE,
@@ -62,7 +63,9 @@ const CourseCreationUpdate = ({
               showCourseTopics ? "w-full md:w-9/12" : "w-full"
             }  ml-auto rounded mt-6`}
           >
-            <CourseTopicCreation mode={MODE} />
+            <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
+            {/* <CourseTopicCreation mode={MODE} /> */}
+            <CourseTopicSelector />
           </div>
         </div>
       ) : (
