@@ -12,6 +12,7 @@ const getCourses = async (page: number, searchTerm: string) => {
   }
 
   const { data } = await axios.get(url);
+
   return data.data;
 };
 const useGetInfiniteCourses = (searchTerm: string) => {

@@ -7,6 +7,7 @@ import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -23,7 +24,11 @@ const getCourseAndEnrollState = async (
   const data = await (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
-      { cache: "no-store" }
+      {
+        cache: "no-store",
+        method: "GET",
+        headers: new Headers(headers()),
+      }
     )
   ).json();
 
