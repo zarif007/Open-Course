@@ -25,7 +25,7 @@ const CourseTopicSelector = () => {
         <Button
           key={selector.title}
           variant="outline"
-          className="flex items-center justify-center space-x-4 rounded w-80 h-16"
+          className="flex items-center justify-center space-x-4 rounded w-72 md:w-80 h-16"
         >
           {selector.icon}
           <p className="font-bold text-2xl">{selector.title}</p>
