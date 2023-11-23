@@ -12,6 +12,8 @@ import LargeHeading from "@/components/ui/LargeHeading";
 import CourseBannerCreationForm from "@/components/course-banner/CourseBannerCreation.Form";
 import CourseCreationSteps from "@/components/course-details/CourseCreationSteps";
 import CourseTopicSelector from "../course-topic/CourseTopic.Selector";
+import { PiArrowFatLeftDuotone } from "react-icons/pi";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const CourseCreationUpdate = ({
   MODE,
@@ -23,6 +25,10 @@ const CourseCreationUpdate = ({
   handleSubmit: () => Promise<void>;
 }) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
+
+  const [selectedType, setSelectedType] = useState<
+    "free_source_content" | "text_content" | "quiz" | ""
+  >("");
 
   const [currentTab, setCurrentTab] = useState<
     "description" | "topic" | "banner"
@@ -39,6 +45,18 @@ const CourseCreationUpdate = ({
     if (currentTab !== "banner")
       setCurrentTab(currentTab === "description" ? "topic" : "banner");
     else handleSubmit();
+  };
+
+  const currentSelectedType = {
+    "": (
+      <CourseTopicSelector
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+      />
+    ),
+    free_source_content: <CourseTopicCreation mode={MODE} />,
+    text_content: <p>Text</p>,
+    quiz: <p>Quiz</p>,
   };
 
   return (
@@ -64,8 +82,15 @@ const CourseCreationUpdate = ({
             }  ml-auto rounded mt-6`}
           >
             <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
-            {/* <CourseTopicCreation mode={MODE} /> */}
-            <CourseTopicSelector />
+            {selectedType !== "" && (
+              <div
+                className="flex justify-end m-4 md:m-8 cursor-pointer"
+                onClick={() => setSelectedType("")}
+              >
+                <FaArrowLeft className="h-10 w-10" />
+              </div>
+            )}
+            {currentSelectedType[selectedType]}
           </div>
         </div>
       ) : (
