@@ -14,6 +14,10 @@ import CourseCreationSteps from "@/components/course-details/CourseCreationSteps
 import CourseTopicSelector from "../course-topic/CourseTopic.Selector";
 import { PiArrowFatLeftDuotone } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa6";
+import DocCreationForm from "../course-doc/DocCreation.Form";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setSelectedTopicType } from "@/redux/features/selected-topic-type";
 
 const CourseCreationUpdate = ({
   MODE,
@@ -26,9 +30,11 @@ const CourseCreationUpdate = ({
 }) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
-  const [selectedType, setSelectedType] = useState<
-    "free_source_content" | "text_content" | "quiz" | ""
-  >("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  const selectedTopicType = useAppSelector(
+    (state) => state.selectedTopicType.value.selectedType
+  );
 
   const [currentTab, setCurrentTab] = useState<
     "description" | "topic" | "banner"
@@ -45,18 +51,6 @@ const CourseCreationUpdate = ({
     if (currentTab !== "banner")
       setCurrentTab(currentTab === "description" ? "topic" : "banner");
     else handleSubmit();
-  };
-
-  const currentSelectedType = {
-    "": (
-      <CourseTopicSelector
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-      />
-    ),
-    free_source_content: <CourseTopicCreation mode={MODE} />,
-    text_content: <p>Text</p>,
-    quiz: <p>Quiz</p>,
   };
 
   return (
@@ -82,15 +76,22 @@ const CourseCreationUpdate = ({
             }  ml-auto rounded mt-6`}
           >
             <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
-            {selectedType !== "" && (
+            {selectedTopicType !== "" && (
               <div
                 className="flex justify-end m-4 md:m-8 cursor-pointer"
-                onClick={() => setSelectedType("")}
+                onClick={() => dispatch(setSelectedTopicType(""))}
               >
                 <FaArrowLeft className="h-10 w-10" />
               </div>
             )}
-            {currentSelectedType[selectedType]}
+            {selectedTopicType === "" ? (
+              <CourseTopicSelector />
+            ) : (
+              <CourseTopicCreation
+                mode={MODE}
+                selectedType={selectedTopicType}
+              />
+            )}
           </div>
         </div>
       ) : (

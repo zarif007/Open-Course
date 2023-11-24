@@ -46,7 +46,7 @@ const initialState = {
       views: -1,
       versions: [
         {
-          type: "",
+          type: "free_source_content",
           data: {
             title: "",
             url: "",

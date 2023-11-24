@@ -1,9 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 import Paragraph from "../ui/Paragraph";
-import { FcApproval, FcDeleteRow, FcLock, FcSportsMode } from "react-icons/fc";
+import {
+  FcApproval,
+  FcDeleteRow,
+  FcDocument,
+  FcLock,
+  FcSportsMode,
+} from "react-icons/fc";
 import TooltipComponent from "../ui/TooltipComponent";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { ICourseTopic } from "@/types/courseTopic";
@@ -19,6 +25,7 @@ import {
 } from "@/redux/features/course-update-slice";
 import { useRouter } from "next/navigation";
 import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
+import { setSelectedTopicType } from "@/redux/features/selected-topic-type";
 
 const CourseTopic = ({
   index,
@@ -33,9 +40,18 @@ const CourseTopic = ({
     icon: "w-10 h-10 rounded p-1 hover:bg-slate-300 hover:dark:bg-gray-800",
   };
 
-  const faviconURL = getFavicon(
-    courseTopic.versions[courseTopic.versions.length - 1].data.source ?? ""
-  );
+  const version = courseTopic.versions.length - 1;
+  const topic = courseTopic.versions[version];
+
+  const favIcon = (): ReactNode => {
+    if (topic.type === "free_source_content") {
+      const favIconUrl = getFavicon(topic.data.source ?? "");
+
+      return <img src={favIconUrl} className="h-7 w-7" alt="og" />;
+    } else {
+      return <FcDocument className="h-7 w-7" />;
+    }
+  };
 
   const course = useAppSelector((state) =>
     mode === "view"
@@ -90,17 +106,23 @@ const CourseTopic = ({
     );
   };
 
+  const handleOnClick = () => {
+    mode === "view"
+      ? redirectToCurrentCourseTopic(courseTopic)
+      : dispatch(
+          mode === "creation"
+            ? setCurrentCourseTopicForCreation(courseTopic)
+            : setCurrentCourseTopicForUpdate(courseTopic)
+        );
+
+    const topicType =
+      courseTopic.versions[courseTopic.versions.length - 1].type;
+    dispatch(setSelectedTopicType(topicType));
+  };
+
   return (
     <section
-      onClick={() =>
-        mode === "view"
-          ? redirectToCurrentCourseTopic(courseTopic)
-          : dispatch(
-              mode === "creation"
-                ? setCurrentCourseTopicForCreation(courseTopic)
-                : setCurrentCourseTopicForUpdate(courseTopic)
-            )
-      }
+      onClick={handleOnClick}
       className={`m-2 border-2 ${
         courseTopic.topicID === currentCourseTopic.topicID
           ? "dark:border-rose-500 border-rose-500"
@@ -126,7 +148,7 @@ const CourseTopic = ({
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
-            <img src={faviconURL} className="h-7 w-7" alt="og" />
+            {favIcon()}
             <Paragraph size="sm" className="truncate-text-1-line font-semibold">
               {
                 courseTopic.versions[courseTopic.versions.length - 1].data

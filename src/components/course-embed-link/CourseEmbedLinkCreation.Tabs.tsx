@@ -1,13 +1,13 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseTopicCreationForm from "./CourseTopicCreation.Form";
+import CourseEmbedLinkCreationForm from "./CourseEmbedLinkCreation.Form";
 import { MdPreview } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
 import { useAppSelector } from "@/redux/store";
 import CourseContent from "../course-content/CourseContent";
 
-const CourseTopicCreationTabs = ({
+const CourseEmbedLinkCreationTabs = ({
   submitData,
   mode,
 }: {
@@ -32,7 +32,7 @@ const CourseTopicCreationTabs = ({
         </TabsTrigger>
       </TabsList>
       <TabsContent value="create">
-        <CourseTopicCreationForm submitData={submitData} mode={mode} />
+        <CourseEmbedLinkCreationForm submitData={submitData} mode={mode} />
       </TabsContent>
       <TabsContent value="preview">
         <CourseContent courseTopic={currentCourseTopic} />
@@ -41,4 +41,4 @@ const CourseTopicCreationTabs = ({
   );
 };
 
-export default CourseTopicCreationTabs;
+export default CourseEmbedLinkCreationTabs;

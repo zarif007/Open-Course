@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "../ui/Button";
-import { ICourseTopic } from "@/types/courseTopic";
+import { ICourseTopic, IFreeSourceContent } from "@/types/courseTopic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AppDispatch, useAppSelector } from "@/redux/store";
@@ -9,11 +9,11 @@ import { useDispatch } from "react-redux";
 import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
 import { Textarea } from "../ui/Textarea";
 import ErrorMessage from "../ui/ErrorMessage";
-import { topicCreationSchema } from "@/validations/topicCreation";
 import { topicInputFields } from "@/constants/courseTopics";
 import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
+import { FreeSourceContentSchema } from "@/validations/freeSourceContent";
 
-const CourseTopicCreationForm = ({
+const CourseEmbedLinkCreationForm = ({
   submitData,
   mode,
 }: {
@@ -43,7 +43,7 @@ const CourseTopicCreationForm = ({
     url: string;
     description: string;
     duration: number;
-  }>({ resolver: zodResolver(topicCreationSchema) });
+  }>({ resolver: zodResolver(FreeSourceContentSchema) });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
@@ -72,7 +72,7 @@ const CourseTopicCreationForm = ({
     const resetValue: ICourseTopic = {
       versions: [
         {
-          type: "",
+          type: "free_source_content",
           data: {
             title: "",
             url: "",
@@ -126,6 +126,9 @@ const CourseTopicCreationForm = ({
     resetCourseTopic();
   };
 
+  const defaultData = defaultValue.versions[defaultValue.versions.length - 1]
+    .data as IFreeSourceContent;
+
   return (
     <form
       className="flex flex-col justify-center items-center space-y-6 my-12"
@@ -156,7 +159,7 @@ const CourseTopicCreationForm = ({
                       data: {
                         ...currentCourseTopic.versions[0].data,
                         [field.key]: field.value(e),
-                      },
+                      } as IFreeSourceContent,
                     },
                   ],
                 };
@@ -166,11 +169,7 @@ const CourseTopicCreationForm = ({
                     : setCurrentCourseTopicForUpdate(updated)
                 );
               }}
-              defaultValue={
-                defaultValue.versions[defaultValue.versions.length - 1].data[
-                  field.key
-                ]
-              }
+              defaultValue={defaultData[field.key]}
               required
             />
             <ErrorMessage text={errors[field.key]?.message} className="" />
@@ -218,4 +217,4 @@ const CourseTopicCreationForm = ({
   );
 };
 
-export default CourseTopicCreationForm;
+export default CourseEmbedLinkCreationForm;

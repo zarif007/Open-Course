@@ -2,14 +2,22 @@ import React from "react";
 import LargeHeading from "../ui/LargeHeading";
 
 import { ICourseTopic } from "@/types/courseTopic";
-import CourseTopicCreationTabs from "./CourseTopicCreation.Tabs";
+import CourseEmbedLinkCreationTabs from "../course-embed-link/CourseEmbedLinkCreation.Tabs";
 import { toast } from "../ui/Toast";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import DocCreationForm from "../course-doc/DocCreation.Form";
+import CourseEmbedLinkCreationForm from "../course-embed-link/CourseEmbedLinkCreation.Form";
 
-const CourseTopicCreation = ({ mode }: { mode: "creation" | "edit" }) => {
+const CourseTopicCreation = ({
+  mode,
+  selectedType,
+}: {
+  mode: "creation" | "edit";
+  selectedType: "free_source_content" | "doc_content" | "quiz";
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const course = useAppSelector((state) =>
@@ -56,9 +64,17 @@ const CourseTopicCreation = ({ mode }: { mode: "creation" | "edit" }) => {
     });
   };
 
+  const currentSelectedType = {
+    free_source_content: (
+      <CourseEmbedLinkCreationTabs submitData={submitData} mode={mode} />
+    ),
+    doc_content: <DocCreationForm submitData={submitData} mode={mode} />,
+    quiz: <p>Quiz</p>,
+  };
+
   return (
-    <section className="mx-2">
-      <CourseTopicCreationTabs submitData={submitData} mode={mode} />
+    <section className="mx-2 animate-in slide-in-from-right duration-300">
+      {currentSelectedType[selectedType]}
     </section>
   );
 };
