@@ -172,8 +172,8 @@ const DocCreationForm = ({
             )}
           />
 
-          <Button type="submit" className="w-full">
-            Submit
+          <Button type="submit" className="w-full mt-4">
+            Add
           </Button>
         </form>
       </Form>

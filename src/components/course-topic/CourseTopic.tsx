@@ -120,6 +120,8 @@ const CourseTopic = ({
     dispatch(setSelectedTopicType(topicType));
   };
 
+  console.log(courseTopic, currentCourseTopic.topicID);
+
   return (
     <section
       onClick={handleOnClick}

@@ -6,8 +6,14 @@ import CourseEmbedLinkCreationTabs from "../course-embed-link/CourseEmbedLinkCre
 import { toast } from "../ui/Toast";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setCourseForCreation } from "@/redux/features/course-creation-slice";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import {
+  setCourseForCreation,
+  setCurrentCourseTopicForCreation,
+} from "@/redux/features/course-creation-slice";
+import {
+  setCourseForUpdate,
+  setCurrentCourseTopicForUpdate,
+} from "@/redux/features/course-update-slice";
 import DocCreationForm from "../course-doc/DocCreation.Form";
 import CourseEmbedLinkCreationForm from "../course-embed-link/CourseEmbedLinkCreation.Form";
 import CourseTopicSelector from "./CourseTopic.Selector";
@@ -67,6 +73,28 @@ const CourseTopicCreation = ({
     });
   };
 
+  const handleResetOnBackButtonPressed = () => {
+    dispatch(setSelectedTopicType(""));
+    const resetValue: ICourseTopic = {
+      versions: [
+        {
+          type: "doc_content",
+          data: {
+            title: "",
+            duration: 0,
+            content: "",
+          },
+        },
+      ],
+      topicID: -1,
+    };
+    dispatch(
+      mode === "creation"
+        ? setCurrentCourseTopicForCreation(resetValue)
+        : setCurrentCourseTopicForUpdate(resetValue)
+    );
+  };
+
   const currentSelectedType = {
     "": <CourseTopicSelector />,
     free_source_content: (
@@ -83,7 +111,7 @@ const CourseTopicCreation = ({
       {selectedTopicType !== "" && (
         <div
           className="flex justify-end m-4 md:m-8 cursor-pointer"
-          onClick={() => dispatch(setSelectedTopicType(""))}
+          onClick={handleResetOnBackButtonPressed}
         >
           <FaArrowLeft className="h-10 w-10" />
         </div>

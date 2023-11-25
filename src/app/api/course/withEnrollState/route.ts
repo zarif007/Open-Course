@@ -28,12 +28,12 @@ export const GET = async (req: NextRequest) => {
       path: "topics",
       model: CourseTopic,
       select:
-        "versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
+        "topicID sortID views versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
     })
     .populate({
       path: "creator",
       model: User,
-      select: "name image userName",
+      select: "name image userName email",
     })
     .populate({
       path: "reviews.user",
