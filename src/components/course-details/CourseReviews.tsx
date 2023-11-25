@@ -13,7 +13,7 @@ const CourseReviews = ({
     <div className="m-4 px-4 md:mx-6">
       <div className="flex space-x-2 items-center justify-center mt-8">
         <LargeHeading size="sm" className="text-center">
-          Course Topics ({reviews.length})
+          Reviews ({reviews.length})
         </LargeHeading>
         <PiChatCenteredTextDuotone className="w-10 h-10" />
       </div>

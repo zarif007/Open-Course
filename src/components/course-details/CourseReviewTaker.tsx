@@ -179,7 +179,7 @@ const ReviewTakingForm = ({ course }: { course: ICourse }) => {
             name="comment"
             render={({ field }) => (
               <FormItem className="my-2">
-                <FormLabel>Question</FormLabel>
+                <FormLabel>Comment</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
