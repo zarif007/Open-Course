@@ -39,14 +39,17 @@ const CourseContentController = () => {
 
   const updateEnrollState = async (nextTopicId: number, fetch: boolean) => {
     const courseTopics = course.topics as ICourseTopic[];
-    dispatch(setCurrentCourseTopicForView(courseTopics[nextTopicId - 1]));
+    // Search next topic by search not by index
+    const nextTopic = courseTopics[nextTopicId - 1];
+    dispatch(setCurrentCourseTopicForView(nextTopic));
 
     if (!enrollState.finishedTopics.includes(nextTopicId.toString()) || fetch) {
       const currentCourseTopicId = currentCourseTopic.topicID as number;
 
       const state: IEnrollState = {
         ...enrollState,
-        currentTopic: courseTopics[nextTopicId - 1].id as string,
+        // Search next topic by search not by index
+        currentTopic: nextTopic.id as string,
         finishedTopics: enrollState.finishedTopics.includes(
           currentCourseTopicId.toString()
         )
@@ -70,6 +73,8 @@ const CourseContentController = () => {
     setIsLoading(true);
 
     try {
+      // need to check if topicId = topicId + 1 exits if not search next
+      // topic id
       const nextTopicId = (currentCourseTopic.topicID as number) + 1;
 
       await updateEnrollState(nextTopicId, false);
@@ -93,6 +98,7 @@ const CourseContentController = () => {
     setIsLoading(true);
 
     try {
+      // Check the first topic in the array
       const nextTopicId = 1;
 
       await updateEnrollState(nextTopicId, true);
