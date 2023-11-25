@@ -39,7 +39,7 @@ const CourseTopicSelector = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="animate-in slide-in-from-right duration-300 flex justify-center items-center flex-col mt-4 mb-24 space-y-3 h-full">
+    <div className="animate-in slide-in-from-right duration-300 flex justify-center items-center flex-col my-24 space-y-3 h-full">
       {selectors.map((selector) => (
         <Button
           key={selector.title}

@@ -75,23 +75,10 @@ const CourseCreationUpdate = ({
               showCourseTopics ? "w-full md:w-9/12" : "w-full"
             }  ml-auto rounded mt-6`}
           >
-            <LargeHeading className="my-4">Course Topic Creation</LargeHeading>
-            {selectedTopicType !== "" && (
-              <div
-                className="flex justify-end m-4 md:m-8 cursor-pointer"
-                onClick={() => dispatch(setSelectedTopicType(""))}
-              >
-                <FaArrowLeft className="h-10 w-10" />
-              </div>
-            )}
-            {selectedTopicType === "" ? (
-              <CourseTopicSelector />
-            ) : (
-              <CourseTopicCreation
-                mode={MODE}
-                selectedType={selectedTopicType}
-              />
-            )}
+            <CourseTopicCreation
+              mode={MODE}
+              selectedTopicType={selectedTopicType}
+            />
           </div>
         </div>
       ) : (

@@ -6,20 +6,10 @@ import { ICourse } from "@/types/course";
 import SelectedTopics from "../course-details/SelectedTopics";
 import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
 import { Button, buttonVariants } from "../ui/Button";
-import {
-  PiChatsDuotone,
-  PiUsersThreeDuotone,
-  PiShootingStarDuotone,
-} from "react-icons/pi";
-import ContentLogos from "../course-content/ContentLogos";
-import calculateAvgRating from "@/utils/calculateAvgRating";
 import { IUser } from "@/types/user";
 import BlurredImage from "../ui/BlurredImage";
-import formatDate from "@/utils/formatDate";
-import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
 import courseDurationCalculator from "@/utils/courseDurationCalculator";
 import Link from "next/link";
-import { ICourseTopic } from "@/types/courseTopic";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";

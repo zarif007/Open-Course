@@ -40,7 +40,7 @@ const CourseEmbedLinkDisplay = ({
         <iframe
           src={createEmbeddableUrls(contentUrl)}
           id="iframe"
-          className="border-[3px] border-rose-500 rounded "
+          className="border-[3px] border-rose-500 rounded"
           width="100%"
           height="100%"
           title="Embedded Website"

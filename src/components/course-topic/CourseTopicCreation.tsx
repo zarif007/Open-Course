@@ -10,13 +10,16 @@ import { setCourseForCreation } from "@/redux/features/course-creation-slice";
 import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 import DocCreationForm from "../course-doc/DocCreation.Form";
 import CourseEmbedLinkCreationForm from "../course-embed-link/CourseEmbedLinkCreation.Form";
+import CourseTopicSelector from "./CourseTopic.Selector";
+import { setSelectedTopicType } from "@/redux/features/selected-topic-type";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const CourseTopicCreation = ({
   mode,
-  selectedType,
+  selectedTopicType,
 }: {
   mode: "creation" | "edit";
-  selectedType: "free_source_content" | "doc_content" | "quiz";
+  selectedTopicType: "free_source_content" | "doc_content" | "quiz" | "";
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -65,6 +68,7 @@ const CourseTopicCreation = ({
   };
 
   const currentSelectedType = {
+    "": <CourseTopicSelector />,
     free_source_content: (
       <CourseEmbedLinkCreationTabs submitData={submitData} mode={mode} />
     ),
@@ -74,7 +78,18 @@ const CourseTopicCreation = ({
 
   return (
     <section className="mx-2 animate-in slide-in-from-right duration-300">
-      {currentSelectedType[selectedType]}
+      <LargeHeading className="mt-4 mb-12">Course Topic Creation</LargeHeading>
+
+      {selectedTopicType !== "" && (
+        <div
+          className="flex justify-end m-4 md:m-8 cursor-pointer"
+          onClick={() => dispatch(setSelectedTopicType(""))}
+        >
+          <FaArrowLeft className="h-10 w-10" />
+        </div>
+      )}
+
+      {currentSelectedType[selectedTopicType]}
     </section>
   );
 };
