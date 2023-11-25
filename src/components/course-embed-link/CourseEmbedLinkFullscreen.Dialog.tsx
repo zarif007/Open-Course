@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { BiFullscreen } from "react-icons/bi";
 import createEmbeddableUrls from "@/utils/getEmbedableUrl";
 
-const CourseContentFullscreenDialog = ({ url }: { url: string }) => {
+const CourseEmbedLinkFullscreenDialog = ({ url }: { url: string }) => {
   return (
     <Dialog>
       <DialogTrigger className="flex space-x-1 items-center">
@@ -25,4 +25,4 @@ const CourseContentFullscreenDialog = ({ url }: { url: string }) => {
   );
 };
 
-export default CourseContentFullscreenDialog;
+export default CourseEmbedLinkFullscreenDialog;

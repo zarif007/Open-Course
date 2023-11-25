@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/Popover";
 import Link from "next/link";
 
-const CourseContentUrl = ({ url }: { url: string }) => {
+const CourseEmbedRawUrl = ({ url }: { url: string }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
   useEffect(() => {
     setIsCopied(false);
@@ -44,4 +44,4 @@ const CourseContentUrl = ({ url }: { url: string }) => {
   );
 };
 
-export default CourseContentUrl;
+export default CourseEmbedRawUrl;

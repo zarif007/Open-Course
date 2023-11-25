@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -25,6 +25,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useAppSelector } from "@/redux/store";
 import CourseReviews from "./CourseReviews";
 import { PiStackDuotone } from "react-icons/pi";
+import { FcDocument } from "react-icons/fc";
 
 const CourseLandingPage = ({
   course,
@@ -100,6 +101,18 @@ const CourseLandingPage = ({
         : "Enroll"
       : loadingStatus;
 
+  const favIcon = (topic: ICourseTopic): ReactNode => {
+    const version = topic.versions.length - 1;
+    const topicInfo = topic.versions[version];
+    if (topicInfo.type === "free_source_content") {
+      const favIconUrl = getFavicon(topicInfo.data.source ?? "");
+
+      return <img src={favIconUrl} className="h-7 w-7" alt="og" />;
+    } else {
+      return <FcDocument className="h-7 w-7" />;
+    }
+  };
+
   return (
     <div className="max-w-5xl w-full mx-auto">
       <CourseDetails course={course} />
@@ -112,9 +125,6 @@ const CourseLandingPage = ({
       </div>
       <Accordion type="single" collapsible className="mb-8">
         {courseTopics.map((topic, index: number) => {
-          const faviconURL = getFavicon(
-            topic.versions[topic.versions.length - 1].data.source ?? ""
-          );
           return (
             <AccordionItem
               value={index.toString()}
@@ -126,7 +136,7 @@ const CourseLandingPage = ({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex space-x-2">
-                  <img src={faviconURL} className="h-7 w-7" alt="og" />
+                  {favIcon(topic)}
                   <Paragraph
                     size="sm"
                     className="truncate-text-1-line font-semibold"

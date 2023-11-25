@@ -23,28 +23,7 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
           enum: topicTypes,
           default: "free_source_content",
         },
-        data: {
-          title: {
-            type: String,
-            required: [true, "Title is required"],
-          },
-          description: {
-            type: String,
-            default: "",
-          },
-          url: {
-            type: String,
-            required: [true, "Link is required"],
-          },
-          source: {
-            type: String,
-            default: "",
-          },
-          duration: {
-            type: Number,
-            default: 0,
-          },
-        },
+        data: { type: Schema.Types.Mixed, required: true },
       },
     ],
   },

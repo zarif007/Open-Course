@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
       path: "currentTopic",
       model: CourseTopic,
       select:
-        "versions.data.title versions.data.description versions.data.source versions.data.duration",
+        "versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
     })
     .populate({
       path: "course",

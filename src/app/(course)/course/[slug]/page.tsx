@@ -1,6 +1,5 @@
 import { ICourse } from "@/types/course";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import axios from "axios";
 import React from "react";
 import { redirect } from "next/navigation";
 import CourseGuard from "@/components/course-details/Course.Guard";
