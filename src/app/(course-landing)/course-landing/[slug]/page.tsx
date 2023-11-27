@@ -1,4 +1,4 @@
-import CourseLandingPage from "@/components/course-details/CourseLanding.Page";
+import CourseLandingPage from "@/components/course-landing-page/CourseLanding.Page";
 import { ICourse } from "@/types/course";
 import { IEnrollState } from "@/types/enrollState";
 import { IUser } from "@/types/user";

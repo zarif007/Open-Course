@@ -17,15 +17,7 @@ import { useRouter } from "next/navigation";
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
-  const { data: session } = useSession();
-
   const creator = course.creator as IUser;
-
-  const router = useRouter();
-
-  const handleSettings = () => {
-    router.push(`/course-update/${course.slug}`);
-  };
 
   return (
     <div className="flex flex-col justify-start p-3 md:p-6">
@@ -52,15 +44,6 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
         </Avatar>
         <Paragraph className="font-bold text-md">{creator.name}</Paragraph>
       </div>
-      {creator.email === session?.user?.email && (
-        <Button
-          onClick={handleSettings}
-          className="w-fit mx-auto flex space-x-1"
-        >
-          <FcSettings />
-          <p>Settings</p>
-        </Button>
-      )}
       <div className="flex flex-wrap mx-auto">
         <div className="m-1">
           <label className="font-semibold">Categories</label>

@@ -1,33 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
-"use client";
-
-import React, { ReactNode, useEffect, useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/Accordion";
-import { getFavicon } from "@/utils/getFavicon";
-import Paragraph from "../ui/Paragraph";
-import LargeHeading from "../ui/LargeHeading";
-import CourseDetails from "./CourseDetails";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
-import CourseRatings from "./CourseRatings";
-import { ICourse } from "@/types/course";
-import { ICourseTopic } from "@/types/courseTopic";
-import { IEnrollState } from "@/types/enrollState";
 import { signIn, useSession } from "next-auth/react";
 import { useAppSelector } from "@/redux/store";
-import CourseReviews from "./CourseReviews";
-import { PiStackDuotone } from "react-icons/pi";
-import { FcDocument } from "react-icons/fc";
+import { ICourse } from "@/types/course";
+import { IEnrollState } from "@/types/enrollState";
 
-const CourseLandingPage = ({
+const CourseEnrollmentButton = ({
   course,
   enrollState,
 }: {
@@ -92,8 +74,6 @@ const CourseLandingPage = ({
     setLoadingStatus("Redirecting");
   };
 
-  const courseTopics = course.topics as ICourseTopic[];
-
   const buttonText =
     loadingStatus === "free"
       ? isEnrolled === "yes"
@@ -101,55 +81,8 @@ const CourseLandingPage = ({
         : "Enroll"
       : loadingStatus;
 
-  const favIcon = (topic: ICourseTopic): ReactNode => {
-    const version = topic.versions.length - 1;
-    const topicInfo = topic.versions[version];
-    if (topicInfo.type === "free_source_content") {
-      const favIconUrl = getFavicon(topicInfo.data.source ?? "");
-
-      return <img src={favIconUrl} className="h-7 w-7" alt="og" />;
-    } else {
-      return <FcDocument className="h-7 w-7" />;
-    }
-  };
-
   return (
-    <div className="max-w-5xl w-full mx-auto">
-      <CourseDetails course={course} />
-      <CourseRatings reviews={course.reviews ?? []} />
-      <div className="flex space-x-2 items-center justify-center mt-8">
-        <LargeHeading size="sm" className="text-center">
-          Course Topics ({course.topics.length})
-        </LargeHeading>
-        <PiStackDuotone className="w-10 h-10" />
-      </div>
-      <Accordion type="single" collapsible className="mb-8">
-        {courseTopics.map((topic, index: number) => {
-          return (
-            <AccordionItem
-              value={index.toString()}
-              key={index}
-              className="m-4 px-4 md:mx-6"
-            >
-              <AccordionTrigger className="text-start">
-                {topic.versions[topic.versions.length - 1].data.title}
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex space-x-2">
-                  {favIcon(topic)}
-                  <Paragraph
-                    size="sm"
-                    className="truncate-text-1-line font-semibold"
-                  >
-                    {topic.versions[topic.versions.length - 1].data.duration}m
-                  </Paragraph>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
-      <CourseReviews reviews={course.reviews ?? []} />
+    <div>
       {isEnrolled !== "loading" && (
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
@@ -181,4 +114,4 @@ const CourseLandingPage = ({
   );
 };
 
-export default CourseLandingPage;
+export default CourseEnrollmentButton;
