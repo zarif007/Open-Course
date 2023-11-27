@@ -7,9 +7,19 @@ import User from "@/lib/models/user.model";
 import { IEnrollState } from "@/types/enrollState";
 import getCurrentTime from "@/utils/getCurrentTime";
 import { startSession } from "mongoose";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const user = req.nextUrl.searchParams.get("user");
@@ -24,6 +34,15 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const session = await startSession();
@@ -90,6 +109,15 @@ export const POST = async (req: NextRequest) => {
 };
 
 export const PUT = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const payload: IEnrollState = await req.json();

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import axios from "axios";
 import { toast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
@@ -11,22 +11,42 @@ import { ICourseTopic } from "@/types/courseTopic";
 import { useSession } from "next-auth/react";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import CourseCreationUpdate from "@/components/course-details/Course.CreationUpdate";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 
 const MODE = "edit";
 
-const CourseUpdate = () => {
+interface PageParams {
+  params: {
+    slug: string;
+  };
+}
+
+const CourseUpdate = ({ params }: PageParams) => {
   const [loadingStatus, setLoadingStatus] = useState<
     "free" | "Processing" | "Redirecting"
   >("free");
 
-  const course = useAppSelector(
-    (state) => state.courseUpdateReducer.value.course
-  );
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { data: session } = useSession();
+  const { isLoading } = useQuery({
+    queryKey: [`course-${params.slug}`],
+    queryFn: async () => {
+      const { data } = await (
+        await fetch(`${nextApiEndPoint}/course/bySlug/${params.slug}`)
+      ).json();
+      dispatch(setCourseForUpdate(data));
+    },
+  });
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
+  );
+
+  const course = useAppSelector(
+    (state) => state.courseUpdateReducer.value.course
   );
 
   const router = useRouter();
@@ -66,7 +86,7 @@ const CourseUpdate = () => {
   };
 
   const handleSubmit = async () => {
-    if (loadingStatus !== "free" || !signedInUser?.id) return;
+    if (loadingStatus !== "free" || !signedInUser?.id || isLoading) return;
 
     if (!validateCourseDetails()) return;
 
@@ -86,16 +106,18 @@ const CourseUpdate = () => {
     };
 
     try {
-      const { data } = await axios.put(`api/course/${course.id}`, courseData);
+      const { data } = await axios.put(
+        `${nextApiEndPoint}/course/${course.id}`,
+        courseData
+      );
       toast({
         title: "Course Updated",
         type: "success",
         message: "Course Updated Successfully",
       });
       setLoadingStatus("Redirecting");
-      router.push(`course-landing/${data.data.slug}`);
+      router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
-      console.log(error);
       toast({
         title: "Error",
         type: "error",
@@ -106,11 +128,13 @@ const CourseUpdate = () => {
   };
 
   return (
-    <CourseCreationUpdate
-      MODE={MODE}
-      loadingStatus={loadingStatus}
-      handleSubmit={handleSubmit}
-    />
+    <div>
+      <CourseCreationUpdate
+        MODE={MODE}
+        loadingStatus={loadingStatus}
+        handleSubmit={handleSubmit}
+      />
+    </div>
   );
 };
 

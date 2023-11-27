@@ -12,7 +12,7 @@ const CourseProgressBar = ({ styles }: { styles: string }) => {
   );
 
   const outOf = course.topics.length;
-  const completed = enrollState.finishedTopics.length;
+  const completed = Math.min(enrollState.finishedTopics.length, outOf);
 
   return (
     <div

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import LargeHeading from "@/components/ui/LargeHeading";
@@ -16,24 +17,6 @@ const AskPage = ({ ask }: { ask: ICourseAsk }) => {
     downVote: [],
   });
 
-  // useEffect(() => {
-  //   console.log(ask);
-  //   setVote((prevVote) => {
-  //     // Check if the values have changed before updating the state
-  //     if (
-  //       JSON.stringify(prevVote.upVote) !== JSON.stringify(ask.upVote) ||
-  //       JSON.stringify(prevVote.downVote) !== JSON.stringify(ask.downVote)
-  //     ) {
-  //       return {
-  //         upVote: ask.upVote as string[],
-  //         downVote: ask.downVote as string[],
-  //       };
-  //     }
-  //     return prevVote;
-  //   });
-  // }, [ask]);
-
-  // const handleVoting = async () => {};
   return (
     <div className="w-full max-w-5xl mx-auto">
       <LargeHeading

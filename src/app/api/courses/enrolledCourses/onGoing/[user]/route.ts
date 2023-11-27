@@ -6,6 +6,7 @@ import User from "@/lib/models/user.model";
 import { ICourse } from "@/types/course";
 import { ICourseTopic } from "@/types/courseTopic";
 import { IEnrollState } from "@/types/enrollState";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 interface IParams {
@@ -15,6 +16,15 @@ interface IParams {
 }
 
 export const GET = async (req: NextRequest, { params }: IParams) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const enrollStates = await EnrollState.find({ user: params.user })

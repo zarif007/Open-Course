@@ -8,6 +8,7 @@ import { IUser } from "@/types/user";
 import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
 import { headers } from "next/headers";
+import sortCourseBasedOnTopicsSortID from "@/utils/sortCourseBasedOnTopicsSortID";
 
 interface PageParams {
   params: {
@@ -52,7 +53,12 @@ const Course = async ({ params }: PageParams) => {
 
   if (!course) redirect("/404");
 
-  return <CourseGuard course={course} slug={params.slug} />;
+  return (
+    <CourseGuard
+      course={sortCourseBasedOnTopicsSortID(course)}
+      slug={params.slug}
+    />
+  );
 };
 
 export default Course;

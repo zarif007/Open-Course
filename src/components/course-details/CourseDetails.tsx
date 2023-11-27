@@ -1,4 +1,4 @@
-"use cleit";
+"use client";
 
 import React from "react";
 import LargeHeading from "../ui/LargeHeading";
@@ -13,9 +13,6 @@ import { ICourseTopic } from "@/types/courseTopic";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/Button";
 import { FcSettings } from "react-icons/fc";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
 import { useRouter } from "next/navigation";
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 
@@ -24,13 +21,10 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
 
   const creator = course.creator as IUser;
 
-  const dispatch = useDispatch<AppDispatch>();
-
   const router = useRouter();
 
   const handleSettings = () => {
-    dispatch(setCourseForUpdate(course));
-    router.push(`/course-update`);
+    router.push(`/course-update/${course.slug}`);
   };
 
   return (

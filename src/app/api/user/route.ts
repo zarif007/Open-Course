@@ -1,5 +1,6 @@
 import { connectToDB } from "@/lib/connectToMongoose";
 import User from "@/lib/models/user.model";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -11,6 +12,15 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const payload = await req.json();

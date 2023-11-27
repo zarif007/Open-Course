@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export { default } from "next-auth/middleware";
 
-const allowedOrigins = process.env.NODE_ENV === "production" ? [""] : [""];
+const allowedOrigins = ["https://www.my-frontend.com"];
 
 export const middleware = async (request: NextRequest) => {
   const protectedPages = [

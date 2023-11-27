@@ -5,6 +5,7 @@ import { IUser } from "@/types/user";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import constructMetadata from "@/utils/constructMetadata";
 import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
+import sortCourseBasedOnTopicsSortID from "@/utils/sortCourseBasedOnTopicsSortID";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
@@ -65,7 +66,12 @@ const CourseLanding = async ({ params }: PageParams) => {
 
   if (!course) redirect("/404");
 
-  return <CourseLandingPage course={course} enrollState={enrollState} />;
+  return (
+    <CourseLandingPage
+      course={sortCourseBasedOnTopicsSortID(course)}
+      enrollState={enrollState}
+    />
+  );
 };
 
 export default CourseLanding;

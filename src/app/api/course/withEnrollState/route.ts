@@ -3,9 +3,7 @@ import Course from "@/lib/models/course.model";
 import CourseTopic from "@/lib/models/courseTopic.model";
 import { EnrollState } from "@/lib/models/enrollState.model";
 import User from "@/lib/models/user.model";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/options";
 
 export const GET = async (req: NextRequest) => {
   await connectToDB();

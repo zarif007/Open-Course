@@ -12,6 +12,8 @@ import {
   setEnrollState,
 } from "@/redux/features/course-view-slice";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import { EnrollState } from "@/lib/models/enrollState.model";
+import sortCompareBasedOnSortID from "@/utils/sortCompareBasedOnSortID";
 
 const useCourseGuard = (
   course: ICourse,
@@ -38,6 +40,30 @@ const useCourseGuard = (
     );
   };
 
+  // Incase the next topic based on sequence is deleted
+  const findTheNextTopic = (
+    potentialTopicID: number,
+    enrollState: IEnrollState
+  ): ICourseTopic => {
+    const courseTopics = course.topics as ICourseTopic[];
+
+    // Default
+    let currentTopic = courseTopics[0];
+
+    for (let i = 0; i < courseTopics.length; i++) {
+      const topic = courseTopics[i];
+      if (topic.topicID === potentialTopicID) {
+        return topic;
+      }
+
+      if (enrollState.finishedTopics.includes(topic.topicID.toString())) {
+        currentTopic = topic;
+      }
+    }
+
+    return currentTopic;
+  };
+
   const actionBasedOnEnrollState = async () => {
     try {
       const { data: enrollState } = await (
@@ -49,23 +75,25 @@ const useCourseGuard = (
       if (!enrollState) {
         router.push(`/course-landing/${slug}`);
       } else {
-        const courseTopics = course.topics as ICourseTopic[];
         if (
           !topicId ||
           !canBeParsedToInt(topicId) ||
           !isValid(parseInt(topicId), enrollState)
         ) {
           const currentTopic = enrollState.currentTopic as ICourseTopic;
-          router.push(`/course/${slug}?topicId=${currentTopic.topicID}`);
-          dispatch(
-            setCurrentCourseTopicForView(
-              courseTopics[currentTopic.topicID! - 1]
-            )
-          );
+          /*
+            In this case current topic or any finished topic or 
+            topic 0 will be the next topic 
+          */
+          const nextTopic = findTheNextTopic(currentTopic.topicID, enrollState);
+          router.push(`/course/${slug}?topicId=${nextTopic.topicID}`);
+          dispatch(setCurrentCourseTopicForView(nextTopic));
         } else {
-          dispatch(
-            setCurrentCourseTopicForView(courseTopics[parseInt(topicId) - 1])
-          );
+          const nextTopic = findTheNextTopic(parseInt(topicId), enrollState);
+          if (parseInt(topicId) !== nextTopic.topicID) {
+            router.push(`/course/${slug}?topicId=${nextTopic.topicID}`);
+          }
+          dispatch(setCurrentCourseTopicForView(nextTopic));
         }
         setIsLoading(false);
 

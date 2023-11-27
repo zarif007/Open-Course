@@ -1,6 +1,7 @@
 import { connectToDB } from "@/lib/connectToMongoose";
 import { connectToRedis } from "@/lib/connectToRedis";
 import User from "@/lib/models/user.model";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -22,6 +23,15 @@ export const GET = async (
   // if (userFromRedis) {
   //   return NextResponse.json({ data: userFromRedis });
   // }
+
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
 
   await connectToDB();
 

@@ -12,6 +12,15 @@ interface PageParams {
 }
 
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
+
   await connectToDB();
 
   const id = params.id;

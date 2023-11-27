@@ -40,9 +40,6 @@ const CourseTopic = ({
     icon: "w-10 h-10 rounded p-1 hover:bg-slate-300 hover:dark:bg-gray-800",
   };
 
-  const version = courseTopic.versions.length - 1;
-  const topic = courseTopic.versions[version];
-
   const favIcon = (): ReactNode => {
     if (topic.type === "free_source_content") {
       const favIconUrl = getFavicon(topic.data.source ?? "");
@@ -76,6 +73,9 @@ const CourseTopic = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
+
+  const version = currentCourseTopic.versions.length - 1;
+  const topic = courseTopic.versions[version];
 
   const isValidTopic = (): boolean => {
     const currentCourseTopic = courseTopic.topicID as number;
@@ -115,12 +115,9 @@ const CourseTopic = ({
             : setCurrentCourseTopicForUpdate(courseTopic)
         );
 
-    const topicType =
-      courseTopic.versions[courseTopic.versions.length - 1].type;
+    const topicType = courseTopic.versions[version].type;
     dispatch(setSelectedTopicType(topicType));
   };
-
-  console.log(courseTopic, currentCourseTopic.topicID);
 
   return (
     <section
@@ -134,29 +131,18 @@ const CourseTopic = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <TooltipComponent
-            content={
-              courseTopic.versions[courseTopic.versions.length - 1].data.title
-            }
-          >
+          <TooltipComponent content={courseTopic.versions[version].data.title}>
             <Paragraph className="truncate-text-1-line text-start">
-              {courseTopic.topicID}.{" "}
+              {index}.{" "}
               <span className="font-bold">
-                {
-                  courseTopic.versions[courseTopic.versions.length - 1].data
-                    .title
-                }
+                {courseTopic.versions[version].data.title}
               </span>{" "}
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
             {favIcon()}
             <Paragraph size="sm" className="truncate-text-1-line font-semibold">
-              {
-                courseTopic.versions[courseTopic.versions.length - 1].data
-                  .duration
-              }
-              m
+              {courseTopic.versions[version].data.duration}m
             </Paragraph>
           </div>
         </div>

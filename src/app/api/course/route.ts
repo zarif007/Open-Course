@@ -5,9 +5,18 @@ import CourseTopic from "@/lib/models/courseTopic.model";
 import User from "@/lib/models/user.model";
 import getCurrentTime from "@/utils/getCurrentTime";
 import { Types } from "mongoose";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized: Login required",
+    });
+  }
   await connectToDB();
 
   const payload = await req.json();

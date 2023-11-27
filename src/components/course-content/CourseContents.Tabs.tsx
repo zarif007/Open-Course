@@ -49,9 +49,9 @@ const CourseContentsTabs = () => {
         size="sm"
         className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
       >
-        {currentCourseTopic.topicID}.{" "}
+        {currentCourseTopic?.topicID}.{" "}
         {
-          currentCourseTopic.versions[currentCourseTopic.versions.length - 1]
+          currentCourseTopic?.versions[currentCourseTopic?.versions.length - 1]
             .data.title
         }
       </LargeHeading>
@@ -63,7 +63,7 @@ const CourseContentsTabs = () => {
             value={element.value}
             onClick={() =>
               router.push(
-                `?topicId=${currentCourseTopic.topicID}&tab=${element.value}`
+                `?topicId=${currentCourseTopic?.topicID}&tab=${element.value}`
               )
             }
           >

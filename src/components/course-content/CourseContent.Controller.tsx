@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseContent from "./CourseContent";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,7 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { ICourseTopic } from "@/types/courseTopic";
+import sortCompareBasedOnSortID from "@/utils/sortCompareBasedOnSortID";
 
 const CourseContentController = () => {
   const currentCourseTopic = useAppSelector(
@@ -37,18 +38,37 @@ const CourseContentController = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const updateEnrollState = async (nextTopicId: number, fetch: boolean) => {
-    const courseTopics = course.topics as ICourseTopic[];
-    // Search next topic by search not by index
-    const nextTopic = courseTopics[nextTopicId - 1];
-    dispatch(setCurrentCourseTopicForView(nextTopic));
+  const [isLastTopic, setIsLastTopic] = useState<boolean>(false);
 
-    if (!enrollState.finishedTopics.includes(nextTopicId.toString()) || fetch) {
+  useEffect(() => {
+    if (!course || !currentCourseTopic.sortID) return;
+    const courseTopics = course.topics as ICourseTopic[];
+    const lastTopic = courseTopics[courseTopics.length - 1];
+    setIsLastTopic(lastTopic.sortID === currentCourseTopic.sortID);
+  }, [course, currentCourseTopic]);
+
+  // Incase the next topic based on sequence is deleted
+  const findTheNextTopic = (potentialSortID: number): ICourseTopic => {
+    const courseTopics = course.topics as ICourseTopic[];
+    for (let i = 0; i < courseTopics.length; i++) {
+      const topic = courseTopics[i];
+      if (topic.sortID! >= potentialSortID) {
+        return topic;
+      }
+    }
+
+    return courseTopics[0];
+  };
+
+  const updateEnrollState = async (nextTopic: ICourseTopic, fetch: boolean) => {
+    if (
+      !enrollState.finishedTopics.includes(nextTopic.topicID.toString()) ||
+      fetch
+    ) {
       const currentCourseTopicId = currentCourseTopic.topicID as number;
 
       const state: IEnrollState = {
         ...enrollState,
-        // Search next topic by search not by index
         currentTopic: nextTopic.id as string,
         finishedTopics: enrollState.finishedTopics.includes(
           currentCourseTopicId.toString()
@@ -64,6 +84,8 @@ const CourseContentController = () => {
 
       dispatch(setEnrollState(updatedEnrollState.data.data));
     }
+
+    dispatch(setCurrentCourseTopicForView(nextTopic));
   };
 
   const handleNextButton = async () => {
@@ -73,13 +95,13 @@ const CourseContentController = () => {
     setIsLoading(true);
 
     try {
-      // need to check if topicId = topicId + 1 exits if not search next
-      // topic id
-      const nextTopicId = (currentCourseTopic.topicID as number) + 1;
+      const nextTopic = findTheNextTopic(
+        (currentCourseTopic.sortID as number) + 1
+      );
 
-      await updateEnrollState(nextTopicId, false);
+      await updateEnrollState(nextTopic, false);
 
-      router.push(`/course/${course.slug}?topicId=${nextTopicId}`);
+      router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
     } catch (error) {
       toast({
         title: "Error",
@@ -99,9 +121,9 @@ const CourseContentController = () => {
 
     try {
       // Check the first topic in the array
-      const nextTopicId = 1;
+      const nextTopic = findTheNextTopic(1);
 
-      await updateEnrollState(nextTopicId, true);
+      await updateEnrollState(nextTopic, true);
 
       toast({
         title: "Success",
@@ -119,12 +141,12 @@ const CourseContentController = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <div>
       <CourseContent courseTopic={currentCourseTopic} />
       <div className="mt-[40px] flex justify-end">
-        {currentCourseTopic.topicID &&
-        currentCourseTopic.topicID < course.topics.length ? (
+        {!isLastTopic ? (
           <Button
             className="px-12"
             onClick={handleNextButton}
