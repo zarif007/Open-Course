@@ -96,6 +96,7 @@
     "react-icons": "^4.11.0",
     "react-intersection-observer": "^9.5.2",
     "react-redux": "^8.1.1",
+    "react-share": "^5.0.2",
     "react-tooltip": "^5.22.0",
     "react-ts-typewriter": "^0.1.8-b",
     "sharp": "^0.32.6",
