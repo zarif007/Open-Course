@@ -16,7 +16,7 @@ const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
     if (!signedInUser || isLoading) return;
     setIsLoading(true);
     const payload = {
-      user: signedInUser.id,
+      creator: signedInUser.id,
       courseSlug,
     };
 
@@ -24,7 +24,7 @@ const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
       `${nextApiEndPoint}/invitationLink`,
       payload
     );
-    console.log(data.link);
+    console.log("response", data);
 
     setIsLoading(false);
   };

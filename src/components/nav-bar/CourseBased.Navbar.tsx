@@ -15,6 +15,7 @@ const CourseBasedNavbar = () => {
   const creator = course.creator as IUser | null;
 
   const router = useRouter();
+
   return (
     <div className="flex justify-between items-center">
       <div className="flex items- space-x-2">
