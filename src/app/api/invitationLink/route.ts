@@ -36,7 +36,6 @@ export const POST = async (req: NextRequest) => {
   const data = {
     creator: creator,
     link: `${mainEndPoint}/course-landing/${courseSlug}`,
-    message: "Invited to join " + courseSlug,
     banner,
     createdAt: currentLocalTime(),
     expiresIn,

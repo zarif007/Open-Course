@@ -7,6 +7,8 @@ import Paragraph from "../ui/Paragraph";
 import { Button } from "../ui/Button";
 import LargeHeading from "../ui/LargeHeading";
 import { useRouter } from "next/navigation";
+import { FaRegFaceSadCry } from "react-icons/fa6";
+import { FcExpired } from "react-icons/fc";
 
 const InvitationHandler = ({
   invitationData,
@@ -44,7 +46,11 @@ const InvitationHandler = ({
           </Button>
         </div>
       ) : (
-        <div>{message}</div>
+        <div className="w-full max-w-xl gap-6 flex flex-col justify-center items-center mx-2 my-12">
+          <FcExpired className="w-24 h-24 text-gray-950" />
+          <LargeHeading size="sm">{message}</LargeHeading>
+          <Button onClick={() => router.push("/")}>Back to Home page</Button>
+        </div>
       )}
     </div>
   );

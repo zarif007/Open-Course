@@ -3,7 +3,6 @@ interface IInvitationLink {
   expiresIn: number; // In day
   creator: string;
   maxCapacity: number;
-  message: string;
   banner: string;
   courseTitle: string;
   courseId: string;
