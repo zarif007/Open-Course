@@ -61,6 +61,7 @@ export function Combobox({
       </PopoverTrigger>
       <PopoverContent
         side="bottom"
+        avoidCollisions={false}
         className="w-full p-0 bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
       >
         <Command>

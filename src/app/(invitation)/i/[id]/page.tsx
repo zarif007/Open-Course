@@ -45,7 +45,9 @@ export const generateMetadata = async ({
 const CourseInvitation = async ({ params }: PageParams) => {
   const { data, message } = await getData(params.id);
 
-  return <InvitationHandler invitationData={data} message={message} />;
+  return (
+    <InvitationHandler invitationData={data} message={message} id={params.id} />
+  );
 };
 
 export default CourseInvitation;
