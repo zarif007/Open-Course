@@ -12,15 +12,6 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const token = await getToken({ req });
-
-  if (!token) {
-    return NextResponse.json({
-      status: 401,
-      message: "Unauthorized: Login required",
-    });
-  }
-
   await connectToDB();
 
   const payload = await req.json();

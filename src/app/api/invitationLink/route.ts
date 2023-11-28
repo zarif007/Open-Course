@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
   // client.set('myKey', 'newValue', 'KEEPTTL');
 
   const data = {
-    creator: creator,
+    creator,
     link: `${mainEndPoint}/course-landing/${courseSlug}`,
     banner,
     createdAt: currentLocalTime(),
