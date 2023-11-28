@@ -2,6 +2,11 @@ interface IInvitationLink {
   link: string;
   expiresIn: number; // In day
   creator: string;
+  maxCapacity: number;
+  message: string;
+  banner: string;
+  courseTitle: string;
+  courseId: string;
   createdAt: Date | string;
 }
 

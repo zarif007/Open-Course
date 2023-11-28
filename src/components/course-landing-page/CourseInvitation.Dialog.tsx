@@ -13,7 +13,17 @@ import ShareOnSocialsComp from "./ShareOnSocials.Comp";
 import { Input } from "../ui/Input";
 import ErrorMessage from "../ui/ErrorMessage";
 
-const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
+const CourseInvitationDialog = ({
+  courseSlug,
+  banner,
+  courseId,
+  courseTitle,
+}: {
+  courseSlug: string;
+  banner: string;
+  courseId: string;
+  courseTitle: string;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openModifyPanel, setOpenModifyPanel] = useState<boolean>(false);
   const [expiresIn, setExpiresIn] = useState<number>(7);
@@ -34,8 +44,11 @@ const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
     const payload = {
       creator: signedInUser.id,
       courseSlug,
+      banner,
       expiresIn,
       maxCapacity,
+      courseId,
+      courseTitle,
     };
 
     const { data } = await axios.post(
@@ -57,14 +70,6 @@ const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
       </DialogTrigger>
       <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-xl w-full">
         <FcInvite className="w-16 h-16 mx-auto" />
-
-        <Button
-          className="w-full focus:ring-0"
-          isLoading={isLoading}
-          onClick={createInvitationLink}
-        >
-          Generate {url !== "" && "another"} Invitation Link
-        </Button>
 
         {openModifyPanel && (
           <div className="flex space-x-2 justify-center items-center animate-in slide-in-from-bottom-5">
@@ -100,6 +105,14 @@ const CourseInvitationDialog = ({ courseSlug }: { courseSlug: string }) => {
             {openModifyPanel ? "Done?" : "Change"}
           </span>
         </p>
+
+        <Button
+          className="w-full focus:ring-0"
+          isLoading={isLoading}
+          onClick={createInvitationLink}
+        >
+          Generate {url !== "" && "another"} Invitation Link
+        </Button>
 
         {url !== "" && (
           <React.Fragment>

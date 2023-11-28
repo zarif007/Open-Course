@@ -29,7 +29,12 @@ const CourseLandingSideWidget = ({ course }: { course: ICourse }) => {
         <CourseShareDialog
           url={`${mainEndPoint}/course-landing/${course.slug}`}
         />
-        <CourseInvitationDialog courseSlug={course.slug} />
+        <CourseInvitationDialog
+          courseSlug={course.slug}
+          banner={course.banner}
+          courseId={course.id as string}
+          courseTitle={course.title}
+        />
         <TooltipComponent content="Bookmark this course">
           <FcBookmark className={styles.icon} />
         </TooltipComponent>
