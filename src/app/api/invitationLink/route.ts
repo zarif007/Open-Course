@@ -7,9 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   const payload = await req.json();
 
-  const { creator, courseSlug } = payload;
-
-  //   `${mainEndPoint}/course-landing/${courseSlug}`
+  const { creator, courseSlug, expiresIn, maxCapacity } = payload;
 
   const redis = connectToRedis();
   // const userFromRedis = await redis.get(email);
@@ -17,18 +15,19 @@ export const POST = async (req: NextRequest) => {
   //   return NextResponse.json({ data: userFromRedis });
   // }
 
-  const code = nanoid(5).toUpperCase();
+  const code = "IN-" + nanoid(5).toUpperCase();
 
   const data = {
     creator: creator,
-    link: `${mainEndPoint}/i/${code}`,
+    link: `${mainEndPoint}/course-landing/${courseSlug}`,
     createdAt: currentLocalTime(),
-    expiresIn: 7,
+    expiresIn,
+    maxCapacity,
   };
 
-  await redis.set(`${creator}-${courseSlug}`, data, {
-    ex: 60,
+  await redis.set(code, data, {
+    ex: 60 * 24 * expiresIn, // min * hours * day
   });
 
-  return NextResponse.json({ data });
+  return NextResponse.json({ data, code });
 };

@@ -10,13 +10,24 @@ import Link from "next/link";
 
 const CopyToClipboardComp = ({ url }: { url: string }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
+
   useEffect(() => {
     setIsCopied(false);
   }, [url]);
+
+  const handleCopy = () => {
+    setIsCopied(true);
+    const timeoutId = setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  };
+
   return (
     <Popover>
       <PopoverTrigger>
-        <CopyToClipboard text={url} onCopy={() => setIsCopied(true)}>
+        <CopyToClipboard text={url} onCopy={handleCopy}>
           <PiCopySimpleDuotone
             className={`h-8 w-8 cursor-pointer ${isCopied && "text-rose-500"}`}
           />
