@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
       path: "topics",
       model: CourseTopic,
       select:
-        "versions.data.title versions.data.description versions.data.source versions.data.duration",
+        "versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
     })
     .populate({
       path: "creator",

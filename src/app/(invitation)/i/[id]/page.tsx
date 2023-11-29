@@ -33,7 +33,7 @@ export const generateMetadata = async ({
     return constructMetadata();
   }
 
-  const text = "Invited to Join " + data.title;
+  const text = "Invited to Join " + data.courseTitle;
 
   return constructMetadata({
     title: text,

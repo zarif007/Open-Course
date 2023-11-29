@@ -18,33 +18,17 @@ export const POST = async (req: NextRequest) => {
   try {
     const payload = await req.json();
 
-    const {
-      creator,
-      courseSlug,
-      expiresIn,
-      maxCapacity,
-      banner,
-      courseId,
-      courseTitle,
-    } = payload;
-
     const redis = connectToRedis();
 
     const code = "IN-" + nanoid(5).toUpperCase();
 
     const data = {
-      creator,
-      link: `${mainEndPoint}/course-landing/${courseSlug}`,
-      banner,
+      ...payload,
       createdAt: currentLocalTime(),
-      expiresIn,
-      courseId,
-      courseTitle,
-      maxCapacity,
     };
 
     await redis.set(code, data, {
-      ex: 60 * 24 * expiresIn, // min * hours * day
+      ex: 60 * 24 * payload.expiresIn, // min * hours * day
     });
 
     return NextResponse.json({ data, code, status: 201 });

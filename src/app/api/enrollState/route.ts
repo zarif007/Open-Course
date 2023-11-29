@@ -58,7 +58,7 @@ export const POST = async (req: NextRequest) => {
     if (alreadyExists) {
       await session.abortTransaction();
       session.endSession();
-      return NextResponse.json({ data: null });
+      return NextResponse.json({ data: alreadyExists });
     }
 
     const course = await Course.findById(payload.course).session(session);
@@ -104,7 +104,7 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    return NextResponse.json({ data: null });
+    return NextResponse.json({ data: null, status: 500 });
   }
 };
 

@@ -1,5 +1,7 @@
 import { connectToRedis } from "@/lib/connectToRedis";
 import IInvitationLink from "@/types/invitationLink";
+import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PageParams {
@@ -51,10 +53,11 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
     };
     const currentTTL = await redis.ttl(params.id);
 
-    redis.setex(params.id, currentTTL, updated);
+    await redis.setex(params.id, currentTTL, updated);
 
     return NextResponse.json({ data: updated, message: null, status: 201 });
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json({
       data: null,
       message: "Something went wrong, please try again later",

@@ -1,5 +1,5 @@
 interface IInvitationLink {
-  link: string;
+  courseSlug: string;
   expiresIn: number; // In day
   creator: string;
   maxCapacity: number;
