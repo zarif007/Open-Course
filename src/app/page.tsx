@@ -8,9 +8,9 @@ export default function Home() {
     <div className="mb-12">
       <LandingPage />
 
-      <HorizontalLine />
+      {/* <HorizontalLine /> */}
       <IntroPage />
-      <HorizontalLine />
+      {/* <HorizontalLine /> */}
       <CoursesLanding />
     </div>
   );

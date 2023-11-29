@@ -21,17 +21,15 @@ const GalaxyBg = ({ children }: { children: ReactNode }) => {
         <PointCircle />
       </Canvas>
 
-      <div className="absolute top-[50%] left-[50%] mx-auto">{children}</div>
+      <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full md:w-[50%]">
+        {children}
+      </div>
     </div>
   );
 };
 
 const PointCircle = () => {
-  const ref = useRef<{
-    rotation: {
-      z: number;
-    };
-  }>(null);
+  const ref = useRef<any>(null);
 
   useFrame(({ clock }) => {
     if (ref.current?.rotation) {
@@ -51,7 +49,7 @@ const PointCircle = () => {
   );
 };
 
-const Point = ({ position, color }: { position: number[]; color: string }) => {
+const Point = ({ position, color }: { position: any; color: string }) => {
   return (
     <Sphere position={position} args={[0.1, 10, 10]}>
       <meshStandardMaterial
