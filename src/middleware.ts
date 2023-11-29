@@ -8,6 +8,7 @@ const allowedOrigins = ["https://www.my-frontend.com"];
 export const middleware = async (request: NextRequest) => {
   const protectedPages = [
     "/course-creation",
+    "/course-update",
     "/dashboard",
     "/course",
     "/course-completion",
@@ -43,6 +44,7 @@ export const middleware = async (request: NextRequest) => {
 export const config = {
   matcher: [
     "/course/:path*",
+    "/course-update/:path*",
     "/course-completion/:path*",
     "/course-creation",
     "/dashboard",

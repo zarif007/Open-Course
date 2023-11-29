@@ -39,17 +39,19 @@ const CourseUpdate = ({ params }: PageParams) => {
 
   const { isLoading } = useQuery({
     queryKey: [`course-${params.slug}`],
+    enabled: !!signedInUser?.id,
     queryFn: async () => {
       const { data } = await (
         await fetch(`${nextApiEndPoint}/course/bySlug/${params.slug}`)
       ).json();
 
-      if (data.author !== signedInUser?.id) {
+      if (data.creator.id !== signedInUser?.id) {
         router.push("/");
-        return;
+      } else {
+        dispatch(setCourseForUpdate(data));
       }
 
-      dispatch(setCourseForUpdate(data));
+      return;
     },
   });
 
