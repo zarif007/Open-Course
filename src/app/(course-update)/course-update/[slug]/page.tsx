@@ -31,25 +31,31 @@ const CourseUpdate = ({ params }: PageParams) => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const router = useRouter();
+
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
   const { isLoading } = useQuery({
     queryKey: [`course-${params.slug}`],
     queryFn: async () => {
       const { data } = await (
         await fetch(`${nextApiEndPoint}/course/bySlug/${params.slug}`)
       ).json();
+
+      if (data.author !== signedInUser?.id) {
+        router.push("/");
+        return;
+      }
+
       dispatch(setCourseForUpdate(data));
     },
   });
 
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
-
   const course = useAppSelector(
     (state) => state.courseUpdateReducer.value.course
   );
-
-  const router = useRouter();
 
   const showErrorToast = (errorMsg: string) => {
     toast({
@@ -129,11 +135,15 @@ const CourseUpdate = ({ params }: PageParams) => {
 
   return (
     <div>
-      <CourseCreationUpdate
-        MODE={MODE}
-        loadingStatus={loadingStatus}
-        handleSubmit={handleSubmit}
-      />
+      {isLoading ? (
+        <p>loading....</p>
+      ) : (
+        <CourseCreationUpdate
+          MODE={MODE}
+          loadingStatus={loadingStatus}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </div>
   );
 };
