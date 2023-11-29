@@ -21,7 +21,7 @@ const GalaxyBg = ({ children }: { children: ReactNode }) => {
         <PointCircle />
       </Canvas>
 
-      <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full md:w-[50%]">
+      <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full md:w-[45%]">
         {children}
       </div>
     </div>
@@ -55,7 +55,7 @@ const Point = ({ position, color }: { position: any; color: string }) => {
       <meshStandardMaterial
         emissive={color}
         emissiveIntensity={0.5}
-        roughness={0.5}
+        roughness={1}
         color={color}
       />
     </Sphere>

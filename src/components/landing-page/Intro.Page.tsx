@@ -6,6 +6,7 @@ import Paragraph from "../ui/Paragraph";
 import LargeHeading from "../ui/LargeHeading";
 import { Button } from "../ui/Button";
 import GalaxyBg from "../ui/ThreeD/GalaxyBg";
+import AnimatedHoverCard from "../ui/animation/AnimatedHoverCard";
 
 const IntroPage = () => {
   const { theme } = useTheme();
@@ -52,17 +53,21 @@ const IntroPage = () => {
             </figcaption>
           </figure>
 
-          <div className="my-4">
-            <Image
-              className=""
-              src={
-                theme === "dark" ? "/whatisit-dark.png" : "/whatisit-light.png"
-              }
-              alt="banner"
-              width={800}
-              height={800}
-            />
-          </div>
+          <AnimatedHoverCard>
+            <div className="my-4">
+              <Image
+                className=""
+                src={
+                  theme === "dark"
+                    ? "/whatisit-dark.png"
+                    : "/whatisit-light.png"
+                }
+                alt="banner"
+                width={800}
+                height={800}
+              />
+            </div>
+          </AnimatedHoverCard>
 
           <Button
             variant="generalRose"
