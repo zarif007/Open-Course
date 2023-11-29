@@ -6,7 +6,7 @@ import { FiMousePointer } from "react-icons/fi";
 
 const AnimatedHoverCard = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="grid w-full place-content-center px-4 py-12">
+    <div className="grid w-full place-content-center">
       <TiltCard>{children}</TiltCard>
     </div>
   );
@@ -60,14 +60,14 @@ const TiltCard = ({ children }: { children: ReactNode }) => {
         rotateX,
         transformStyle: "preserve-3d",
       }}
-      className="relative rounded"
+      className="relative h-96 w-96 rounded-xl grid place-content-center mx-auto"
     >
       <div
         style={{
           transform: "translateZ(75px)",
           transformStyle: "preserve-3d",
         }}
-        className="absolute inset-4 grid place-content-center rounded shadow-lg"
+        className="absolute h-full inset-4 grid place-content-center rounded-xl shadow-lg mx-auto"
       >
         {children}
       </div>

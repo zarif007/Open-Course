@@ -54,19 +54,15 @@ const IntroPage = () => {
           </figure>
 
           <AnimatedHoverCard>
-            <div className="my-4">
-              <Image
-                className=""
-                src={
-                  theme === "dark"
-                    ? "/whatisit-dark.png"
-                    : "/whatisit-light.png"
-                }
-                alt="banner"
-                width={800}
-                height={800}
-              />
-            </div>
+            <Image
+              className="h-full w-full"
+              src={
+                theme === "dark" ? "/whatisit-dark.png" : "/whatisit-light.png"
+              }
+              alt="banner"
+              width={800}
+              height={800}
+            />
           </AnimatedHoverCard>
 
           <Button
