@@ -15,38 +15,44 @@ export const POST = async (req: NextRequest) => {
     });
   }
 
-  const payload = await req.json();
+  try {
+    const payload = await req.json();
 
-  const {
-    creator,
-    courseSlug,
-    expiresIn,
-    maxCapacity,
-    banner,
-    courseId,
-    courseTitle,
-  } = payload;
+    const {
+      creator,
+      courseSlug,
+      expiresIn,
+      maxCapacity,
+      banner,
+      courseId,
+      courseTitle,
+    } = payload;
 
-  const redis = connectToRedis();
+    const redis = connectToRedis();
 
-  const code = "IN-" + nanoid(5).toUpperCase();
+    const code = "IN-" + nanoid(5).toUpperCase();
 
-  // client.set('myKey', 'newValue', 'KEEPTTL');
+    const data = {
+      creator,
+      link: `${mainEndPoint}/course-landing/${courseSlug}`,
+      banner,
+      createdAt: currentLocalTime(),
+      expiresIn,
+      courseId,
+      courseTitle,
+      maxCapacity,
+    };
 
-  const data = {
-    creator,
-    link: `${mainEndPoint}/course-landing/${courseSlug}`,
-    banner,
-    createdAt: currentLocalTime(),
-    expiresIn,
-    courseId,
-    courseTitle,
-    maxCapacity,
-  };
+    await redis.set(code, data, {
+      ex: 60 * 24 * expiresIn, // min * hours * day
+    });
 
-  await redis.set(code, data, {
-    ex: 60 * 24 * expiresIn, // min * hours * day
-  });
-
-  return NextResponse.json({ data, code, status: 201 });
+    return NextResponse.json({ data, code, status: 201 });
+  } catch {
+    return NextResponse.json({
+      data: null,
+      message: "Something went wrong, please try again later",
+      status: 505,
+    });
+  }
 };

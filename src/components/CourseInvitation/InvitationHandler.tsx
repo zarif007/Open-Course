@@ -11,6 +11,7 @@ import { FaRegFaceSadCry } from "react-icons/fa6";
 import { FcExpired } from "react-icons/fc";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
+import { toast } from "../ui/Toast";
 
 const InvitationHandler = ({
   invitationData,
@@ -25,19 +26,35 @@ const InvitationHandler = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const errorOnToast = (message: string) => {
+    toast({
+      title: "Error",
+      type: "error",
+      message: message,
+    });
+  };
+
   const handleEnrollment = async () => {
     setIsLoading(true);
     try {
-      await axios.put(`${nextApiEndPoint}/invitationLink/${id}`);
+      const { data } = await axios.put(
+        `${nextApiEndPoint}/invitationLink/${id}`
+      );
+      console.log(data.status);
+      if (data.status === 201) {
+        console.log(data);
+      } else {
+        errorOnToast(data.message);
+      }
     } catch (error) {
     } finally {
       setIsLoading(false);
     }
   };
   return (
-    <div className="w-full max-w-5xl h-full flex flex-col justify-center items-center mx-auto my-16">
+    <div className="w-full max-w-5xl h-full flex flex-col justify-center items-center mx-auto my-16 px-2">
       {invitationData ? (
-        <div className="w-full max-w-xl flex flex-col justify-center items-center mx-2">
+        <div className="w-full max-w-xl flex flex-col justify-center items-center">
           <LargeHeading
             className="my-3 underline decoration-rose-500 decoration-4"
             size="sm"
@@ -68,7 +85,7 @@ const InvitationHandler = ({
           </Button>
         </div>
       ) : (
-        <div className="w-full max-w-xl gap-6 flex flex-col justify-center items-center mx-2 my-12">
+        <div className="w-xl gap-6 flex flex-col justify-center items-center mx-2 my-12">
           <FcExpired className="w-24 h-24 text-gray-950" />
           <LargeHeading size="sm">{message}</LargeHeading>
           <Button onClick={() => router.push("/")}>Back to Home page</Button>
