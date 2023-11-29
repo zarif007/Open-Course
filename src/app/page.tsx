@@ -1,6 +1,7 @@
 import CoursesLanding from "@/components/landing-page/Courses.Landing";
 import IntroPage from "@/components/landing-page/Intro.Page";
 import LandingPage from "@/components/landing-page/Landing.Page";
+import GalaxyBg from "@/components/ui/ThreeD/GalaxyBg";
 
 export default function Home() {
   return (
