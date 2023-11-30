@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/Button";
 import GalaxyBg from "@/components/ui/ThreeD/GalaxyBg";
-import AnimatedHoverCard from "@/components/ui/animation/AnimatedHoverCard";
+import { useAppSelector } from "@/redux/store";
 import { signIn } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FaDiscord, FaSquareFacebook } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
@@ -36,10 +36,25 @@ const providers = [
 ];
 
 const Login = () => {
+  const router = useRouter();
+
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
+  useEffect(() => {
+    if (signedInUser?.id) {
+      router.push("/");
+    }
+  }, [signedInUser]);
+
   return (
-    <div className="w-full h-screen pt-12 mx-auto my-auto">
+    <div className="w-full h-screen mx-auto my-auto">
       <GalaxyBg>
         <div className="w-full h-full flex flex-col space-y-3 items-center justify-center mx-auto">
+          <p className="text-2xl underline decoration-rose-500 decoration-4 font-bold text-center">
+            Sign In With
+          </p>
           {providers.map((provider) => (
             <Provider key={provider.name} provider={provider} />
           ))}
@@ -69,7 +84,7 @@ const Provider = ({
       }}
     >
       {provider.icon}
-      <p className="font-bold text-lg">Sign In With {provider.title}</p>
+      <p className="font-bold text-lg">{provider.title}</p>
     </Button>
   );
 };

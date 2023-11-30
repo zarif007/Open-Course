@@ -1,5 +1,5 @@
 import { ICourseTopic, IFreeSourceContent } from "@/types/courseTopic";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import createEmbeddableUrls from "@/utils/getEmbedableUrl";
 import CourseEmbedLinkFullscreenDialog from "./CourseEmbedLinkFullscreen.Dialog";
 import CourseEmbedRawUrl from "./CourseEmbedRawUrl";
@@ -12,6 +12,8 @@ const CourseEmbedLinkDisplay = ({
   courseTopic: ICourseTopic;
 }) => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
+
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   const content = courseTopic.versions[courseTopic.versions.length - 1]
     .data as IFreeSourceContent;
@@ -46,6 +48,7 @@ const CourseEmbedLinkDisplay = ({
           title="Embedded Website"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          onLoad={() => setLoaded(true)}
         />
       ) : (
         <CourseEmbedRawUrl url={contentUrl} />
