@@ -54,7 +54,7 @@ const CourseCardDashboard = ({
           <div
             onClick={() =>
               router.push(
-                `course/${course.slug}?topicId=${currentTopic.topicID}`
+                `/course/${course.slug}?topicId=${currentTopic.topicID}`
               )
             }
             className="p-2 my-2 bg-slate-200 dark:bg-gray-900 cursor-pointer flex space-x-2 items-center rounded"
@@ -76,7 +76,7 @@ const CourseCardDashboard = ({
           </div>
 
           <Link
-            href={`course/${course.slug}?topicId=${currentTopic.topicID}`}
+            href={`/course/${course.slug}?topicId=${currentTopic.topicID}`}
             className={`${buttonVariants({
               variant: "default",
             })} w-full mt-3 font-semibold`}
