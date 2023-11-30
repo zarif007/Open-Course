@@ -15,13 +15,11 @@ export const POST = async (req: NextRequest) => {
   await connectToDB();
 
   const payload = await req.json();
-  const isExists = await User.findOne({ email: payload.email });
 
-  if (isExists) {
-    return NextResponse.json({ data: null });
-  }
-
-  const user = await User.create(payload);
+  const user = await User.findOneAndUpdate({ email: payload.email }, payload, {
+    new: true,
+    upsert: true,
+  });
 
   return NextResponse.json({ data: user });
 };

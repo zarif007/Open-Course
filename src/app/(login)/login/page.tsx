@@ -36,32 +36,41 @@ const providers = [
 ];
 
 const Login = () => {
+  return (
+    <div className="w-full h-screen pt-12 mx-auto my-auto">
+      <GalaxyBg>
+        <div className="w-full h-full flex flex-col space-y-3 items-center justify-center mx-auto">
+          {providers.map((provider) => (
+            <Provider key={provider.name} provider={provider} />
+          ))}
+        </div>
+      </GalaxyBg>
+    </div>
+  );
+};
+
+const Provider = ({
+  provider,
+}: {
+  provider: { name: string; title: string; icon: React.JSX.Element };
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
   return (
-    <div className="w-full h-screen pt-16 mx-auto my-auto">
-      <GalaxyBg>
-        <div className="w-full h-full flex flex-col space-y-3 items-center justify-center mx-auto">
-          {providers.map((provider) => (
-            <Button
-              key={provider.name}
-              isLoading={isLoading}
-              className="w-80 py-8 flex space-x-2 justify-center items-center focus:ring-0"
-              onClick={() => {
-                signIn(provider.name, { callbackUrl });
-                setIsLoading(true);
-              }}
-            >
-              {provider.icon}
-              <p className="font-bold text-lg">Sign In With {provider.title}</p>
-            </Button>
-          ))}
-        </div>
-      </GalaxyBg>
-    </div>
+    <Button
+      isLoading={isLoading}
+      className="w-80 py-8 flex space-x-2 justify-center items-center focus:ring-0"
+      onClick={() => {
+        signIn(provider.name, { callbackUrl });
+        setIsLoading(true);
+      }}
+    >
+      {provider.icon}
+      <p className="font-bold text-lg">Sign In With {provider.title}</p>
+    </Button>
   );
 };
 
