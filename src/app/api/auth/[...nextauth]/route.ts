@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import User from "@/lib/models/user.model";
-import { connectToDB } from "@/lib/connectToMongoose";
 import createSlug from "@/utils/createSlug";
+import { connectToDB } from "@/lib/connectToMongoose";
+import User from "@/lib/models/user.model";
 
 const handler = NextAuth({
   providers: [
@@ -24,16 +24,26 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user }) {
       try {
-        await axios.post(`${nextApiEndPoint}/user`, {
+        const data = {
           name: user.name,
           email: user.email,
           image: user.image,
           userName: createSlug(user.name ?? ""),
-        });
+        };
+
+        await connectToDB();
+
+        const isExists = await User.findOne({ email: data.email });
+
+        if (!isExists) {
+          await User.create(data);
+        }
+
         return true;
       } catch (error) {
         return false;
       }
+      return true;
     },
     async redirect({ url, baseUrl }) {
       if (url.startsWith("/")) return `${baseUrl}${url}`;

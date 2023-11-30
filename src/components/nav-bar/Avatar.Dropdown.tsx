@@ -18,6 +18,8 @@ import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { useDispatch } from "react-redux";
 import { setSignedInUser } from "@/redux/features/signed-In-user-slice";
+import { useRouter } from "next/navigation";
+
 const AvatarDropdown = () => {
   const styles = {
     menuBarItems:
@@ -25,6 +27,8 @@ const AvatarDropdown = () => {
   };
 
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -42,7 +46,12 @@ const AvatarDropdown = () => {
           `${nextApiEndPoint}/user/byEmail/${session?.user?.email}`
         );
 
-        dispatch(setSignedInUser(data.data ?? null));
+        if (!data.data) {
+          router.push("/login");
+          return;
+        }
+
+        dispatch(setSignedInUser(data.data));
       } catch (error) {
         // Handle error
       }
