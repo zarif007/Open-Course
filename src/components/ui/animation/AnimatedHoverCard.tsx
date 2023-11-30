@@ -60,7 +60,7 @@ const TiltCard = ({ children }: { children: ReactNode }) => {
         rotateX,
         transformStyle: "preserve-3d",
       }}
-      className="relative h-96 w-96 rounded-xl grid place-content-center mx-auto"
+      className="relative h-16 w-96 rounded-xl grid place-content-center mx-auto"
     >
       <div
         style={{
