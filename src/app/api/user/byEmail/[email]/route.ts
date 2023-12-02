@@ -16,13 +16,6 @@ export const GET = async (
   res: NextResponse
 ) => {
   const email = params.email;
-  // const redis = connectToRedis();
-
-  // const userFromRedis = await redis.get(email);
-
-  // if (userFromRedis) {
-  //   return NextResponse.json({ data: userFromRedis });
-  // }
 
   const token = await getToken({ req });
 

@@ -5,6 +5,8 @@ export interface IUser {
   _id?: string;
   name: string;
   email: string;
+  password?: string;
+  isEmailVerified?: boolean;
   image: string;
   role?: "super_admin" | "admin" | "user" | "pro_User";
   preferences?: string[];

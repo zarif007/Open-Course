@@ -59,6 +59,7 @@
     "@vercel/og": "^0.5.9",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.6.1",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
@@ -116,6 +117,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/dompurify": "^3.0.5",
     "@types/favico.js": "^0.0.29",
     "@types/shortid": "^0.0.29",

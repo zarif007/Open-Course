@@ -5,6 +5,7 @@ import GitHubProvider from "next-auth/providers/github";
 import createSlug from "@/utils/createSlug";
 import { connectToDB } from "@/lib/connectToMongoose";
 import User from "@/lib/models/user.model";
+import CredentialProvider from "next-auth/providers/credentials";
 
 const scopes = ["identify"].join(" ");
 
@@ -13,6 +14,16 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+    CredentialProvider({
+      name: "credentials",
+      credentials: {},
+
+      async authorize(credentials) {
+        const user = { id: "1" };
+
+        return user;
+      },
     }),
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID ?? "",
@@ -39,12 +50,13 @@ const handler = NextAuth({
           name: user.name,
           email: user.email,
           image: user.image,
-          userName: createSlug(user.name ?? ""),
         };
 
         await connectToDB();
 
-        const isExists = await User.findOne({ email: data.email });
+        const isExists = await User.findOne({ email: data.email }).select(
+          "_id"
+        );
 
         if (!isExists) {
           await User.create(data);

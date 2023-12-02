@@ -5,7 +5,7 @@ import { useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
 
   const signedInUser = useAppSelector(
@@ -20,9 +20,9 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen mx-auto my-auto">
-      <CommonComps type="signIn" />
+      <CommonComps type="signUp" />
     </div>
   );
 };
 
-export default Login;
+export default Register;
