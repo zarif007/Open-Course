@@ -49,6 +49,7 @@ const Provider = ({
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
+
   return (
     <Button
       isLoading={isLoading}

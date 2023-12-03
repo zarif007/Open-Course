@@ -15,7 +15,7 @@ import { Button } from "../ui/Button";
 import axios from "axios";
 import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import loginInputsSchema from "@/validations/auth/login";
 import { signIn } from "next-auth/react";
 
@@ -23,6 +23,10 @@ const LoginForm = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
 
   const form = useForm<z.infer<typeof loginInputsSchema>>({
     resolver: zodResolver(loginInputsSchema),
@@ -57,12 +61,14 @@ const LoginForm = () => {
         return;
       }
 
-      await signIn("credentials", {
-        email,
-        password,
-      });
-
-      router.push("/dashboard");
+      await signIn(
+        "credentials",
+        { callbackUrl },
+        {
+          email,
+          password,
+        }
+      );
 
       toast({
         title: "Success",
