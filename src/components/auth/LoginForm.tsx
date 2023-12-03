@@ -62,13 +62,13 @@ const LoginForm = () => {
         password,
       });
 
+      router.push("/dashboard");
+
       toast({
         title: "Success",
         type: "success",
         message: "Logged In Successfully",
       });
-
-      router.push("/");
     } catch {
       errorToast("Something went wrong");
     } finally {

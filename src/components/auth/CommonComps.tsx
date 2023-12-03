@@ -16,8 +16,8 @@ const CommonComps = ({ type }: { type: "signIn" | "signUp" }) => {
   return (
     <GalaxyBg>
       <div
-        className="mx-auto w-96 p-4 backdrop-blur-sm rounded mb-2 animate-in slide-in-from-right duration-300"
-        key={showEmailPasswordPortal ? "yes" : "no"}
+        className="mx-auto w-96 p-4 backdrop-blur-sm rounded mb-2 animate-in slide-in-from-top duration-300"
+        key={type === "signIn" ? 0 : 1}
       >
         {!showEmailPasswordPortal ? (
           <div className="flex flex-col">
@@ -57,7 +57,7 @@ const CommonComps = ({ type }: { type: "signIn" | "signUp" }) => {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="w-full overflow-x-hidden">
             <div
               className="flex justify-end m-2 cursor-pointer"
               onClick={() => setShowEmailPasswordPortal(false)}
