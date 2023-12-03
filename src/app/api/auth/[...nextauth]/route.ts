@@ -2,10 +2,10 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
-import createSlug from "@/utils/createSlug";
 import { connectToDB } from "@/lib/connectToMongoose";
 import User from "@/lib/models/user.model";
 import CredentialProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 const scopes = ["identify"].join(" ");
 
@@ -17,12 +17,23 @@ const handler = NextAuth({
     }),
     CredentialProvider({
       name: "credentials",
-      credentials: {},
+      credentials: {
+        email: { label: "", placeholder: "" },
+        password: { label: "", placeholder: "" },
+      },
 
       async authorize(credentials) {
-        const user = { id: "1" };
+        if (!credentials) return;
 
-        return user;
+        try {
+          await connectToDB();
+
+          const user = await User.findOne({ email: credentials?.email });
+
+          return user;
+        } catch {
+          return null;
+        }
       },
     }),
     DiscordProvider({
@@ -45,6 +56,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user }) {
+      console.log("why this is running----------");
       try {
         const data = {
           name: user.name,

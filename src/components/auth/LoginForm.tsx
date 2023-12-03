@@ -17,6 +17,7 @@ import { nextApiEndPoint } from "@/utils/apiEndpoints";
 import { toast } from "../ui/Toast";
 import { useRouter } from "next/navigation";
 import loginInputsSchema from "@/validations/auth/login";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const LoginForm = () => {
 
   const errorToast = (errorMsg: string) => {
     toast({
-      title: "Complete required fields",
+      title: "Error",
       type: "error",
       message: errorMsg,
     });
@@ -41,8 +42,10 @@ const LoginForm = () => {
     try {
       const { email, password } = data;
 
+      // Check conditions here
+
       const { data: response } = await axios.post(
-        `${nextApiEndPoint}/user/register`,
+        `${nextApiEndPoint}/user/checkUser`,
         {
           email,
           password,
@@ -54,15 +57,20 @@ const LoginForm = () => {
         return;
       }
 
+      await signIn("credentials", {
+        email,
+        password,
+      });
+
       toast({
         title: "Success",
         type: "success",
-        message: "User Created Successfully",
+        message: "Logged In Successfully",
       });
 
-      router.push("/login");
+      router.push("/");
     } catch {
-      errorToast("Something went wrong!");
+      errorToast("Something went wrong");
     } finally {
       setLoading(false);
     }

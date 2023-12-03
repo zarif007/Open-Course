@@ -11,6 +11,8 @@ import LoginForm from "./LoginForm";
 const CommonComps = ({ type }: { type: "signIn" | "signUp" }) => {
   const [showEmailPasswordPortal, setShowEmailPasswordPortal] =
     useState<boolean>(false);
+
+  const header = type === "signIn" ? "Sign In" : "Sign Up";
   return (
     <GalaxyBg>
       <div
@@ -20,7 +22,7 @@ const CommonComps = ({ type }: { type: "signIn" | "signUp" }) => {
         {!showEmailPasswordPortal ? (
           <div className="flex flex-col">
             <p className="text-2xl mb-4 underline decoration-rose-500 decoration-4 font-bold text-center">
-              {type === "signIn" ? "Sign In" : "Sign Up"} With Social
+              {header} With Social
             </p>
             <OAuthProviders />
             <div className="w-full flex items-center justify-center mx-auto my-2 space-x-3">
@@ -63,7 +65,7 @@ const CommonComps = ({ type }: { type: "signIn" | "signUp" }) => {
               <FaArrowLeft className="h-6 w-6" />
             </div>
             <p className="text-2xl mb-4 underline decoration-rose-500 decoration-4 font-bold text-center">
-              {type === "signIn" ? "Sign In" : "Sign Up"} With Cred
+              {header} With Cred
             </p>
             {type === "signIn" ? <LoginForm /> : <RegistrationForm />}
           </div>
