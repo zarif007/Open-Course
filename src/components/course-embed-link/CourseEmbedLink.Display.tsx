@@ -1,10 +1,10 @@
-import { ICourseTopic, IFreeSourceContent } from "@/types/courseTopic";
-import React, { useEffect, useRef, useState } from "react";
-import createEmbeddableUrls from "@/utils/getEmbedableUrl";
-import CourseEmbedLinkFullscreenDialog from "./CourseEmbedLinkFullscreen.Dialog";
-import CourseEmbedRawUrl from "./CourseEmbedRawUrl";
-import { FiLink } from "react-icons/fi";
-import { MdOutlineVideoLibrary } from "react-icons/md";
+import { ICourseTopic, IFreeSourceContent } from '@/types/courseTopic';
+import React, { useRef, useState } from 'react';
+import createEmbeddableUrls from '@/utils/getEmbedableUrl';
+import CourseEmbedLinkFullscreenDialog from './CourseEmbedLinkFullscreen.Dialog';
+import CourseEmbedRawUrl from './CourseEmbedRawUrl';
+import { FiLink } from 'react-icons/fi';
+import { MdOutlineVideoLibrary } from 'react-icons/md';
 
 const CourseEmbedLinkDisplay = ({
   courseTopic,
@@ -13,7 +13,7 @@ const CourseEmbedLinkDisplay = ({
 }) => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
 
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const content = courseTopic.versions[courseTopic.versions.length - 1]
     .data as IFreeSourceContent;
@@ -42,13 +42,13 @@ const CourseEmbedLinkDisplay = ({
         <iframe
           src={createEmbeddableUrls(contentUrl)}
           id="iframe"
+          ref={iframeRef}
           className="border-[3px] border-rose-500 rounded"
           width="100%"
           height="100%"
           title="Embedded Website"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          onLoad={() => setLoaded(true)}
         />
       ) : (
         <CourseEmbedRawUrl url={contentUrl} />

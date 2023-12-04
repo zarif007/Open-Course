@@ -1,14 +1,16 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import Course from "@/lib/models/course.model";
-import CourseTopic from "@/lib/models/courseTopic.model";
-import { EnrollState } from "@/lib/models/enrollState.model";
-import User from "@/lib/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import Course from '@/lib/models/course.model';
+import CourseTopic from '@/lib/models/courseTopic.model';
+import { EnrollState } from '@/lib/models/enrollState.model';
+import User from '@/lib/models/user.model';
+import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
 
 export const GET = async (req: NextRequest) => {
   await connectToDB();
-  const userEmail = req.nextUrl.searchParams.get("userEmail");
-  const courseSlug = req.nextUrl.searchParams.get("courseSlug");
+  const userEmail = req.nextUrl.searchParams.get('userEmail');
+  const courseSlug = req.nextUrl.searchParams.get('courseSlug');
 
   if (!courseSlug) {
     return NextResponse.json({ course: null, enrollState: null });
@@ -23,20 +25,20 @@ export const GET = async (req: NextRequest) => {
 
   const course = await Course.findOne({ slug: courseSlug })
     .populate({
-      path: "topics",
+      path: 'topics',
       model: CourseTopic,
       select:
-        "topicID sortID views versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
+        'topicID sortID views versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
     })
     .populate({
-      path: "creator",
+      path: 'creator',
       model: User,
-      select: "name image userName email",
+      select: 'name image userName email',
     })
     .populate({
-      path: "reviews.user",
+      path: 'reviews.user',
       model: User,
-      select: "name image userName",
+      select: 'name image userName',
     });
 
   let enrollState = null;
@@ -46,7 +48,7 @@ export const GET = async (req: NextRequest) => {
       user: userId,
       course,
     }).populate({
-      path: "currentTopic",
+      path: 'currentTopic',
       model: CourseTopic,
     });
   }

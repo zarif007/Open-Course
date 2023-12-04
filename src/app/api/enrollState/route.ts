@@ -1,14 +1,14 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import Activity from "@/lib/models/activity.mode";
-import Course from "@/lib/models/course.model";
-import CourseTopic from "@/lib/models/courseTopic.model";
-import { EnrollState } from "@/lib/models/enrollState.model";
-import User from "@/lib/models/user.model";
-import { IEnrollState } from "@/types/enrollState";
-import getCurrentTime from "@/utils/getCurrentTime";
-import { startSession } from "mongoose";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import Activity from '@/lib/models/activity.mode';
+import Course from '@/lib/models/course.model';
+import CourseTopic from '@/lib/models/courseTopic.model';
+import { EnrollState } from '@/lib/models/enrollState.model';
+import User from '@/lib/models/user.model';
+import { IEnrollState } from '@/types/enrollState';
+import getCurrentTime from '@/utils/getCurrentTime';
+import { startSession } from 'mongoose';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
   const token = await getToken({ req });
@@ -16,17 +16,17 @@ export const GET = async (req: NextRequest) => {
   if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: 'Unauthorized: Login required',
     });
   }
 
   await connectToDB();
 
-  const user = req.nextUrl.searchParams.get("user");
-  const course = req.nextUrl.searchParams.get("course");
+  const user = req.nextUrl.searchParams.get('user');
+  const course = req.nextUrl.searchParams.get('course');
 
   const enrollState = await EnrollState.findOne({ user, course }).populate({
-    path: "currentTopic",
+    path: 'currentTopic',
     model: CourseTopic,
   });
 
@@ -39,7 +39,7 @@ export const POST = async (req: NextRequest) => {
   if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: 'Unauthorized: Login required',
     });
   }
 
@@ -92,7 +92,7 @@ export const POST = async (req: NextRequest) => {
       date: getCurrentTime(),
       link: `/course/${course.slug}`,
       text: `Enrolled the course ${course.slug}`,
-      type: "enrolled",
+      type: 'enrolled',
     });
 
     await activity.save({ session });
@@ -114,7 +114,7 @@ export const PUT = async (req: NextRequest) => {
   if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: 'Unauthorized: Login required',
     });
   }
 
