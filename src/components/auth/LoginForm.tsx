@@ -46,8 +46,6 @@ const LoginForm = () => {
     try {
       const { email, password } = data;
 
-      // Check conditions here
-
       const { data: response } = await axios.post(
         `${nextApiEndPoint}/user/checkUser`,
         {
@@ -61,14 +59,19 @@ const LoginForm = () => {
         return;
       }
 
-      await signIn(
+      const signInResponse = await signIn(
         "credentials",
-        { callbackUrl },
         {
           email,
           password,
-        }
+        },
+        { callbackUrl }
       );
+
+      if (signInResponse?.error) {
+        errorToast("Something went wrong, try using different methods");
+        return;
+      }
 
       toast({
         title: "Success",
