@@ -5,8 +5,6 @@ import { EnrollState } from '@/lib/models/enrollState.model';
 import User from '@/lib/models/user.model';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 export const GET = async (req: NextRequest) => {
   await connectToDB();
   const userEmail = req.nextUrl.searchParams.get('userEmail');
