@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Input } from "../ui/Input";
+import React, { useState } from 'react';
+import { Input } from '../ui/Input';
 import {
   Form,
   FormControl,
@@ -7,26 +7,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/Form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/Button";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import { useRouter, useSearchParams } from "next/navigation";
-import loginInputsSchema from "@/validations/auth/login";
-import { signIn } from "next-auth/react";
+} from '@/components/ui/Form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../ui/Button';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import loginInputsSchema from '@/validations/auth/login';
+import { signIn } from 'next-auth/react';
 
 const LoginForm = () => {
-  const router = useRouter();
-
   const [loading, setLoading] = useState<boolean>(false);
-
-  const searchParams = useSearchParams();
-
-  const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
 
   const form = useForm<z.infer<typeof loginInputsSchema>>({
     resolver: zodResolver(loginInputsSchema),
@@ -34,8 +27,8 @@ const LoginForm = () => {
 
   const errorToast = (errorMsg: string) => {
     toast({
-      title: "Error",
-      type: "error",
+      title: 'Error',
+      type: 'error',
       message: errorMsg,
     });
   };
@@ -48,6 +41,7 @@ const LoginForm = () => {
 
       const { data: response } = await axios.post(
         `${nextApiEndPoint}/user/checkUser`,
+
         {
           email,
           password,
@@ -59,34 +53,30 @@ const LoginForm = () => {
         return;
       }
 
-      const signInResponse = await signIn(
-        "credentials",
-        {
-          email,
-          password,
-        },
-        { callbackUrl }
-      );
+      const signInResponse = await signIn('credentials', {
+        email,
+        password,
+      });
 
       if (signInResponse?.error) {
-        errorToast("Something went wrong, try using different methods");
+        errorToast('Something went wrong, try using different methods');
         return;
       }
 
       toast({
-        title: "Success",
-        type: "success",
-        message: "Logged In Successfully",
+        title: 'Success',
+        type: 'success',
+        message: 'Logged In Successfully',
       });
     } catch {
-      errorToast("Something went wrong");
+      errorToast('Something went wrong');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto px-1">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

@@ -1,12 +1,17 @@
-"use client";
+'use client';
 
-import CommonComps from "@/components/auth/CommonComps";
-import { useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import CommonComps from '@/components/auth/CommonComps';
+import { useAppSelector } from '@/redux/store';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const Login = () => {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams?.get('callbackUrl') ?? '';
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -14,7 +19,7 @@ const Login = () => {
 
   useEffect(() => {
     if (signedInUser?.id) {
-      router.push("/");
+      router.push('/' + callbackUrl);
     }
   }, [signedInUser]);
 
