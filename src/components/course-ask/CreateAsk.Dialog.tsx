@@ -1,9 +1,9 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
-import { Button } from "../ui/Button";
-import { FcQuestions } from "react-icons/fc";
-import { BsFillQuestionOctagonFill } from "react-icons/bs";
-import CourseAskForm from "./CourseAsk.Form";
+import React from 'react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
+import { Button } from '../ui/Button';
+import { FcQuestions } from 'react-icons/fc';
+import { BsFillQuestionOctagonFill } from 'react-icons/bs';
+import CourseAskForm from './CourseAsk.Form';
 
 const CreateAskDialog = () => {
   return (

@@ -1,10 +1,9 @@
-import InvitationHandler from "@/components/CourseInvitation/InvitationHandler";
-import IInvitationLink from "@/types/invitationLink";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import constructMetadata from "@/utils/constructMetadata";
-import { Metadata } from "next";
-import { headers } from "next/headers";
-import React from "react";
+import InvitationHandler from '@/components/course-invitation/InvitationHandler';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import constructMetadata from '@/utils/constructMetadata';
+import { Metadata } from 'next';
+import { headers } from 'next/headers';
+import React from 'react';
 
 interface PageParams {
   params: {
@@ -15,8 +14,8 @@ interface PageParams {
 const getData = async (id: string) => {
   const { data, message } = await (
     await fetch(`${nextApiEndPoint}/invitationLink/${id}`, {
-      cache: "force-cache",
-      method: "GET",
+      cache: 'force-cache',
+      method: 'GET',
       headers: new Headers(headers()),
     })
   ).json();
@@ -33,7 +32,7 @@ export const generateMetadata = async ({
     return constructMetadata();
   }
 
-  const text = "Invited to Join " + data.courseTitle;
+  const text = 'Invited to Join ' + data.courseTitle;
 
   return constructMetadata({
     title: text,

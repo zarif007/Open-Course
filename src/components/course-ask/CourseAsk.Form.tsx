@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import LargeHeading from "../ui/LargeHeading";
-import ErrorMessage from "../ui/ErrorMessage";
-import { Textarea } from "../ui/Textarea";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { courseAskInputSchema } from "@/validations/courseAsk";
-import { ICourseAsk } from "@/types/courseAsk";
-import { useAppSelector } from "@/redux/store";
-import { trpc } from "@/app/_trpc/client";
-import { toast } from "../ui/Toast";
-import { DialogClose } from "../ui/Dialog";
-import createSlug from "@/utils/createSlug";
-import SelectedTopics from "../course-details/SelectedTopics";
-import RichTextEditor from "../ui/RichTextEditor";
-import { z } from "zod";
+import React, { useState } from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import ErrorMessage from '../ui/ErrorMessage';
+import { Textarea } from '../ui/Textarea';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { courseAskInputSchema } from '@/validations/courseAsk';
+import { ICourseAsk } from '@/types/courseAsk';
+import { useAppSelector } from '@/redux/store';
+import { trpc } from '@/app/_trpc/client';
+import { toast } from '../ui/Toast';
+import { DialogClose } from '../ui/Dialog';
+import createSlug from '@/utils/createSlug';
+import SelectedTopics from '../course-details/SelectedTopics';
+import RichTextEditor from '../ui/RichTextEditor';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -25,7 +25,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/Form";
+} from '@/components/ui/Form';
 
 const CourseAskForm = () => {
   const signedInUser = useAppSelector(
@@ -42,12 +42,12 @@ const CourseAskForm = () => {
 
   const form = useForm<z.infer<typeof courseAskInputSchema>>({
     resolver: zodResolver(courseAskInputSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const [loadingStatus, setLoadingStatus] = useState<
-    "ready" | "loading" | "done"
-  >("ready");
+    'ready' | 'loading' | 'done'
+  >('ready');
 
   const [selectedTags, setSelectedTags] = useState<string[]>(course.categories);
 
@@ -69,10 +69,10 @@ const CourseAskForm = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof courseAskInputSchema>) => {
-    if (!signedInUser || !currentCourseTopic.id || loadingStatus !== "ready")
+    if (!signedInUser || !currentCourseTopic.id || loadingStatus !== 'ready')
       return;
 
-    setLoadingStatus("loading");
+    setLoadingStatus('loading');
 
     const ask: Partial<ICourseAsk> = {
       author: signedInUser?.id!,
@@ -87,18 +87,19 @@ const CourseAskForm = () => {
     try {
       await createCourseAsk.mutateAsync(ask);
       toast({
-        title: "Success",
-        type: "success",
-        message: "Question created successfully",
+        title: 'Success',
+        type: 'success',
+        message: 'Question created successfully',
       });
-      setLoadingStatus("done");
-    } catch {
+      setLoadingStatus('done');
+    } catch (error) {
+      console.log(error);
       toast({
-        title: "Something went wrong",
-        type: "error",
-        message: "please Try again later",
+        title: 'Something went wrong',
+        type: 'error',
+        message: 'please Try again later',
       });
-      setLoadingStatus("ready");
+      setLoadingStatus('ready');
     }
   };
 
@@ -131,18 +132,24 @@ const CourseAskForm = () => {
               <FormItem className="my-2">
                 <FormLabel>Question</FormLabel>
                 <FormControl>
-                  <RichTextEditor description={""} onChange={field.onChange} />
+                  <RichTextEditor description={''} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {loadingStatus !== "done" ? (
+          <SelectedTopics
+            selectedTopics={course.categories}
+            mode="creation"
+            setSelectedTopics={handleTagRemove}
+          />
+
+          {loadingStatus !== 'done' ? (
             <Button
               type="submit"
               className="w-full"
-              isLoading={loadingStatus === "loading"}
+              isLoading={loadingStatus === 'loading'}
             >
               Submit
             </Button>

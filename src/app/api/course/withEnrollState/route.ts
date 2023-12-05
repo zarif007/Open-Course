@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
   await connectToDB();
+
   const userEmail = req.nextUrl.searchParams.get('userEmail');
   const courseSlug = req.nextUrl.searchParams.get('courseSlug');
 

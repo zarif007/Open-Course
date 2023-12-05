@@ -1,7 +1,8 @@
-import { Model } from "mongoose";
-import { IUser } from "../user";
-import { Types } from "mongoose";
-import { ICourseTopic } from "../courseTopic";
+import { Model } from 'mongoose';
+import { IUser } from '../user';
+import { Types } from 'mongoose';
+import { ICourseTopic } from '../courseTopic';
+import { IAskResponse } from './response';
 
 export interface ICourseAsk {
   id?: number | string;
@@ -12,11 +13,8 @@ export interface ICourseAsk {
   title: string;
   slug: string;
   question: string;
-  responses: {
-    user: IUser | string | Types.ObjectId;
-    answer: string;
-  }[];
-  theAnswers: ICourseAsk[] | string[] | Types.ObjectId[];
+  responses: IAskResponse[] | string[] | Types.ObjectId[];
+  theAnswers: string[] | Types.ObjectId[];
   tags: string[];
   createdAt?: Date | string;
   updatedAt?: Date | string;

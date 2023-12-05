@@ -1,5 +1,4 @@
 import { connectToRedis } from '@/lib/connectToRedis';
-import { mainEndPoint } from '@/utils/apiEndpoints';
 import currentLocalTime from '@/utils/currentLocalTime';
 import { nanoid } from 'nanoid';
 import { getToken } from 'next-auth/jwt';

@@ -1,31 +1,33 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { BiSolidDownvote, BiSolidUpvote } from "react-icons/bi";
-import TooltipComponent from "../ui/TooltipComponent";
-import { ICourseAsk } from "@/types/courseAsk";
-import { useAppSelector } from "@/redux/store";
-import { trpc } from "@/app/_trpc/client";
-import { toast } from "../ui/Toast";
-import { IUser } from "@/types/user";
+import React, { useState } from 'react';
+import { BiSolidDownvote, BiSolidUpvote } from 'react-icons/bi';
+import TooltipComponent from '../ui/TooltipComponent';
+import { ICourseAsk } from '@/types/courseAsk';
+import { useAppSelector } from '@/redux/store';
+import { trpc } from '@/app/_trpc/client';
+import { toast } from '../ui/Toast';
+import { IUser } from '@/types/user';
+import { IAskResponse } from '@/types/courseAsk/response';
 
-const VotingHandler = ({ ask }: { ask: ICourseAsk }) => {
+const VotingHandler = ({ object }: { object: ICourseAsk | IAskResponse }) => {
   const updateAsk = trpc.updateCourseAsks.useMutation();
+  const updateResponse = trpc.updateAskResponse.useMutation();
 
   const [votes, setVotes] = useState<{ upVote: string[]; downVote: string[] }>({
-    upVote: ask.upVote as string[],
-    downVote: ask.downVote as string[],
+    upVote: object.upVote as string[],
+    downVote: object.downVote as string[],
   });
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
-  const handleVoting = async (type: "up" | "down") => {
+  const handleVoting = async (type: 'up' | 'down') => {
     if (!signedInUser?.id) return;
 
     let updated = votes;
-    if (type === "up") {
+    if (type === 'up') {
       if (!updated.upVote.includes(signedInUser.id)) {
         updated = {
           upVote: [...updated.upVote, signedInUser.id],
@@ -37,7 +39,7 @@ const VotingHandler = ({ ask }: { ask: ICourseAsk }) => {
           downVote: updated.downVote,
         };
       }
-    } else if (type === "down") {
+    } else if (type === 'down') {
       if (!updated.downVote.includes(signedInUser.id)) {
         updated = {
           downVote: [...updated.downVote, signedInUser.id],
@@ -54,21 +56,23 @@ const VotingHandler = ({ ask }: { ask: ICourseAsk }) => {
     // For Optimistic Update
     setVotes(updated);
 
-    const author = ask.author as IUser;
-    const updatedAsk = {
-      ...ask,
+    const author = object.author as IUser;
+    const updatedObject = {
+      ...object,
       author: author.id,
       upVote: updated.upVote,
       downVote: updated.downVote,
     };
 
     try {
-      await updateAsk.mutateAsync(updatedAsk);
+      if ((object as ICourseAsk).title)
+        await updateAsk.mutateAsync(updatedObject);
+      else await updateResponse.mutateAsync(updatedObject);
     } catch {
       toast({
-        title: "Something went wrong",
-        type: "error",
-        message: "please Try again later",
+        title: 'Something went wrong',
+        type: 'error',
+        message: 'please Try again later',
       });
     }
   };
@@ -77,9 +81,9 @@ const VotingHandler = ({ ask }: { ask: ICourseAsk }) => {
     <div className="flex flex-col gap-4 items-center px-2 w-1/12">
       <TooltipComponent content="Up Vote">
         <BiSolidUpvote
-          onClick={() => handleVoting("up")}
+          onClick={() => handleVoting('up')}
           className={`w-8 h-8 cursor-pointer hover:text-green-500 ${
-            votes.upVote.includes(signedInUser?.id ?? "") && "text-green-500"
+            votes.upVote.includes(signedInUser?.id ?? '') && 'text-green-500'
           }`}
         />
       </TooltipComponent>
@@ -88,9 +92,9 @@ const VotingHandler = ({ ask }: { ask: ICourseAsk }) => {
       </p>
       <TooltipComponent content="Down Vote">
         <BiSolidDownvote
-          onClick={() => handleVoting("down")}
+          onClick={() => handleVoting('down')}
           className={`w-8 h-8 cursor-pointer hover:text-red-500 ${
-            votes.downVote.includes(signedInUser?.id ?? "") && "text-red-500"
+            votes.downVote.includes(signedInUser?.id ?? '') && 'text-red-500'
           }`}
         />
       </TooltipComponent>

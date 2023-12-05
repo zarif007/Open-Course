@@ -1,29 +1,28 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import DiscordProvider from "next-auth/providers/discord";
-import GitHubProvider from "next-auth/providers/github";
-import { connectToDB } from "@/lib/connectToMongoose";
-import User from "@/lib/models/user.model";
-import CredentialProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import DiscordProvider from 'next-auth/providers/discord';
+import GitHubProvider from 'next-auth/providers/github';
+import { connectToDB } from '@/lib/connectToMongoose';
+import User from '@/lib/models/user.model';
+import CredentialProvider from 'next-auth/providers/credentials';
 
-const scopes = ["identify"].join(" ");
+const scopes = ['identify'].join(' ');
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
     CredentialProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
-        email: { label: "", placeholder: "" },
-        password: { label: "", placeholder: "" },
+        email: { label: '', placeholder: '' },
+        password: { label: '', placeholder: '' },
       },
 
       async authorize(credentials) {
-        if (!credentials) return;
+        if (!credentials) return null;
 
         try {
           await connectToDB();
@@ -37,26 +36,25 @@ const handler = NextAuth({
       },
     }),
     DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID ?? "",
-      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? "",
+      clientId: process.env.DISCORD_CLIENT_ID ?? '',
+      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
       authorization: { params: { scope: scopes } },
     }),
     GitHubProvider({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   callbacks: {
     async signIn({ user }) {
-      console.log("why this is running----------");
       try {
         const data = {
           name: user.name,
@@ -67,7 +65,7 @@ const handler = NextAuth({
         await connectToDB();
 
         const isExists = await User.findOne({ email: data.email }).select(
-          "_id"
+          '_id'
         );
 
         if (!isExists) {
@@ -80,7 +78,7 @@ const handler = NextAuth({
       }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },

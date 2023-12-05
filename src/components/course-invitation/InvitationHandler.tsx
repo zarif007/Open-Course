@@ -1,21 +1,20 @@
-"use client";
+'use client';
 
 /* eslint-disable @next/next/no-img-element */
-import IInvitationLink from "@/types/invitationLink";
-import React, { useState } from "react";
-import Paragraph from "../ui/Paragraph";
-import { Button, buttonVariants } from "../ui/Button";
-import LargeHeading from "../ui/LargeHeading";
-import { useRouter } from "next/navigation";
-import { FaRegFaceSadCry } from "react-icons/fa6";
-import { FcExpired } from "react-icons/fc";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import { useAppSelector } from "@/redux/store";
-import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
-import { Skeleton } from "../ui/Skeleton";
+import IInvitationLink from '@/types/invitationLink';
+import React, { useState } from 'react';
+import Paragraph from '../ui/Paragraph';
+import { Button, buttonVariants } from '../ui/Button';
+import LargeHeading from '../ui/LargeHeading';
+import { useRouter } from 'next/navigation';
+import { FcExpired } from 'react-icons/fc';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import { useAppSelector } from '@/redux/store';
+import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
+import { Skeleton } from '../ui/Skeleton';
 
 const InvitationHandler = ({
   invitationData,
@@ -29,8 +28,8 @@ const InvitationHandler = ({
   const router = useRouter();
 
   const [loadingStatus, setLoadingStatus] = useState<
-    "free" | "Processing" | "Redirecting"
-  >("free");
+    'free' | 'Processing' | 'Redirecting'
+  >('free');
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -41,18 +40,18 @@ const InvitationHandler = ({
   // session.status === "loading" && signedInUser === null
 
   const errorOnToast = (message: string) => {
-    setLoadingStatus("free");
+    setLoadingStatus('free');
     toast({
-      title: "Error",
-      type: "error",
+      title: 'Error',
+      type: 'error',
       message: message,
     });
   };
 
   const handleEnrollment = async () => {
-    if (loadingStatus !== "free" || !signedInUser?.id) return;
+    if (loadingStatus !== 'free' || !signedInUser?.id) return;
 
-    setLoadingStatus("Processing");
+    setLoadingStatus('Processing');
 
     try {
       const { data } = await axios.put(
@@ -74,14 +73,14 @@ const InvitationHandler = ({
       await axios.post(`${nextApiEndPoint}/enrollState`, enrollmentInfo);
 
       router.push(`/course/${courseInfo.courseSlug}`);
-      setLoadingStatus("Redirecting");
+      setLoadingStatus('Redirecting');
       toast({
-        title: "Course Enrolled",
-        type: "success",
+        title: 'Course Enrolled',
+        type: 'success',
         message: `${courseInfo.courseTitle} Enrolled Successfully`,
       });
     } catch (error) {
-      errorOnToast("Something went wrong, try again later");
+      errorOnToast('Something went wrong, try again later');
     }
   };
 
@@ -107,26 +106,26 @@ const InvitationHandler = ({
           <Link
             href={`/course-landing/${invitationData.courseSlug}`}
             className={`${buttonVariants({
-              variant: "outline",
+              variant: 'outline',
             })} w-full my-1`}
           >
             View Course
           </Link>
 
-          {session.status === "loading" ||
-          (session.status === "authenticated" && !signedInUser) ? (
+          {session.status === 'loading' ||
+          (session.status === 'authenticated' && !signedInUser) ? (
             <Skeleton className="w-full h-10" />
           ) : (
             <Button
               className="w-full my-1"
               onClick={() => {
-                session.status === "authenticated"
+                session.status === 'authenticated'
                   ? handleEnrollment()
                   : signIn();
               }}
-              isLoading={loadingStatus !== "free"}
+              isLoading={loadingStatus !== 'free'}
             >
-              {loadingStatus === "free" ? "Enroll" : loadingStatus}
+              {loadingStatus === 'free' ? 'Enroll' : loadingStatus}
             </Button>
           )}
         </div>
@@ -134,7 +133,7 @@ const InvitationHandler = ({
         <div className="w-xl gap-6 flex flex-col justify-center items-center mx-2 my-12">
           <FcExpired className="w-24 h-24 text-gray-950" />
           <LargeHeading size="sm">{message}</LargeHeading>
-          <Button onClick={() => router.push("/")}>Back to Home page</Button>
+          <Button onClick={() => router.push('/')}>Back to Home page</Button>
         </div>
       )}
     </div>
