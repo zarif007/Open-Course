@@ -1,8 +1,9 @@
-import { connectToRedis } from "@/lib/connectToRedis";
-import IInvitationLink from "@/types/invitationLink";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToRedis } from '@/lib/connectToRedis';
+import IInvitationLink from '@/types/invitationLink';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import axios from 'axios';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface PageParams {
   params: {
@@ -18,7 +19,7 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
     if (!data || data.maxCapacity <= 0) {
       return NextResponse.json({
         status: !data ? 404 : 403,
-        message: !data ? "Invitation link is expired" : "Seat limit exceeded",
+        message: !data ? 'Invitation link is expired' : 'Seat limit exceeded',
         data: null,
       });
     }
@@ -27,13 +28,22 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
   } catch {
     return NextResponse.json({
       data: null,
-      message: "Something went wrong, please try again later",
+      message: 'Something went wrong, please try again later',
       status: 505,
     });
   }
 };
 
 export const PUT = async (req: NextRequest, { params }: PageParams) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: 'Unauthorized: Login required',
+    });
+  }
+
   try {
     const redis = connectToRedis();
 
@@ -42,7 +52,7 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
     if (!data || data.maxCapacity <= 0) {
       return NextResponse.json({
         status: !data ? 404 : 403,
-        message: !data ? "Invitation link is expired" : "Seat limit exceeded",
+        message: !data ? 'Invitation link is expired' : 'Seat limit exceeded',
         data: null,
       });
     }
@@ -60,7 +70,7 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
     console.log(error);
     return NextResponse.json({
       data: null,
-      message: "Something went wrong, please try again later",
+      message: 'Something went wrong, please try again later',
       status: 505,
     });
   }
