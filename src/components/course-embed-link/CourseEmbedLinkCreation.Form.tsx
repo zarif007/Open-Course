@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { Input } from "@/components/ui/Input";
-import { Button } from "../ui/Button";
-import { ICourseTopic, IFreeSourceContent } from "@/types/courseTopic";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
-import { Textarea } from "../ui/Textarea";
-import ErrorMessage from "../ui/ErrorMessage";
-import { topicInputFields } from "@/constants/courseTopics";
-import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
-import { FreeSourceContentSchema } from "@/validations/freeSourceContent";
+import React, { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/Input';
+import { Button } from '../ui/Button';
+import { ICourseTopic, IFreeSourceContent } from '@/types/courseTopic';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { setCurrentCourseTopicForCreation } from '@/redux/features/course-creation-slice';
+import { Textarea } from '../ui/Textarea';
+import ErrorMessage from '../ui/ErrorMessage';
+import { topicInputFields } from '@/constants/courseTopics';
+import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
+import { FreeSourceContentSchema } from '@/validations/freeSourceContent';
 
 const CourseEmbedLinkCreationForm = ({
   submitData,
   mode,
 }: {
   submitData: (data: ICourseTopic) => void;
-  mode: "creation" | "edit";
+  mode: 'creation' | 'edit';
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const currentCourseTopic = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
       : state.courseUpdateReducer.value.currentCourseTopic
   );
   const course = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.course
       : state.courseUpdateReducer.value.course
   );
@@ -48,13 +48,13 @@ const CourseEmbedLinkCreationForm = ({
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
       {
-        type: "free_source_content",
+        type: 'free_source_content',
         data: {
-          title: "",
-          url: "",
-          description: "",
+          title: '',
+          url: '',
+          description: '',
           duration: 0,
-          source: "",
+          source: '',
         },
       },
     ],
@@ -72,20 +72,20 @@ const CourseEmbedLinkCreationForm = ({
     const resetValue: ICourseTopic = {
       versions: [
         {
-          type: "free_source_content",
+          type: 'free_source_content',
           data: {
-            title: "",
-            url: "",
-            description: "",
+            title: '',
+            url: '',
+            description: '',
             duration: 0,
-            source: "",
+            source: '',
           },
         },
       ],
       topicID: -1,
     };
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCurrentCourseTopicForCreation(resetValue)
         : setCurrentCourseTopicForUpdate(resetValue)
     );
@@ -106,21 +106,21 @@ const CourseEmbedLinkCreationForm = ({
       currentCourseTopic.topicID && currentCourseTopic.topicID > 0
         ? currentCourseTopic.topicID
         : courseTopics && courseTopics.length > 0
-        ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
-        : 1;
+          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
+          : 1;
     submitData({
-      id: currentCourseTopic.id ?? "",
-      _id: currentCourseTopic._id ?? "",
+      id: currentCourseTopic.id ?? '',
+      _id: currentCourseTopic._id ?? '',
       versions: [
         {
-          type: "free_source_content",
+          type: 'free_source_content',
           data: { ...data, source },
         },
       ],
       topicID,
       sortID: topicID,
-      createdAt: currentCourseTopic.createdAt ?? "",
-      updatedAt: currentCourseTopic.updatedAt ?? "",
+      createdAt: currentCourseTopic.createdAt ?? '',
+      updatedAt: currentCourseTopic.updatedAt ?? '',
     });
     reset();
     resetCourseTopic();
@@ -131,14 +131,14 @@ const CourseEmbedLinkCreationForm = ({
 
   return (
     <form
-      className="flex flex-col justify-center items-center space-y-6 my-12"
+      className="flex flex-col justify-center items-center space-y-6 my-12 w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       {topicInputFields.map((field) => {
         return (
           <div
             key={field.label}
-            className="grid w-full max-w-sm items-center gap-1.5"
+            className="grid w-full max-w-md items-center gap-1.5"
           >
             <label htmlFor="text" className="font-bold">
               {field.label}
@@ -148,14 +148,14 @@ const CourseEmbedLinkCreationForm = ({
               placeholder="How to train your Dragon Part-4565"
               {...register(
                 field.key,
-                field.type === "number" ? { valueAsNumber: true } : {}
+                field.type === 'number' ? { valueAsNumber: true } : {}
               )}
               onChange={(e) => {
                 const updated: ICourseTopic = {
                   ...currentCourseTopic,
                   versions: [
                     {
-                      type: "free_source_content",
+                      type: 'free_source_content',
                       data: {
                         ...currentCourseTopic.versions[0].data,
                         [field.key]: field.value(e),
@@ -164,7 +164,7 @@ const CourseEmbedLinkCreationForm = ({
                   ],
                 };
                 dispatch(
-                  mode === "creation"
+                  mode === 'creation'
                     ? setCurrentCourseTopicForCreation(updated)
                     : setCurrentCourseTopicForUpdate(updated)
                 );
@@ -177,12 +177,12 @@ const CourseEmbedLinkCreationForm = ({
         );
       })}
 
-      <div className="grid w-full max-w-sm items-center gap-1.5">
+      <div className="grid w-full max-w-md items-center gap-1.5">
         <label htmlFor="url" className="font-bold">
           Description (Optional)
         </label>
         <Textarea
-          {...register("description")}
+          {...register('description')}
           defaultValue=""
           placeholder="Huh!! I don't know"
           className="text-sm font-semibold"
@@ -190,21 +190,12 @@ const CourseEmbedLinkCreationForm = ({
         <ErrorMessage text={errors.url?.message} className="" />
       </div>
 
-      <div className="flex space-x-2 justify-start">
-        <Button
-          type="submit"
-          variant="general"
-          className="dark:bg-slate-100 dark:text-gray-900"
-        >
-          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
-            ? "Update"
-            : "Add"}
-        </Button>
+      <div className="flex space-x-2 justify-start w-full max-w-md">
         {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
           <Button
             type="button"
-            variant="general"
-            className="dark:bg-slate-100 dark:text-gray-900"
+            variant="outline"
+            className="w-full"
             onClick={resetCourseTopic}
           >
             Add Another
@@ -212,6 +203,15 @@ const CourseEmbedLinkCreationForm = ({
         ) : (
           <></>
         )}
+        <Button
+          type="submit"
+          variant="general"
+          className="dark:bg-slate-100 dark:text-gray-900 w-full"
+        >
+          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+            ? 'Update'
+            : 'Add'}
+        </Button>
       </div>
     </form>
   );

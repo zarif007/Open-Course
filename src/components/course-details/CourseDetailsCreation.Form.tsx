@@ -1,16 +1,16 @@
-import React from "react";
-import { Input } from "../ui/Input";
-import { Combobox } from "../ui/Combobox";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { setCourseForCreation } from "@/redux/features/course-creation-slice";
-import { Textarea } from "../ui/Textarea";
-import { Switch } from "@/components/ui/Switch";
-import { ICourse } from "@/types/course";
-import { courseCategories, courseLevels, languages } from "@/constants/course";
-import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
-import { ImUnlocked } from "react-icons/im";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import React from 'react';
+import { Input } from '../ui/Input';
+import { Combobox } from '../ui/Combobox';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { setCourseForCreation } from '@/redux/features/course-creation-slice';
+import { Textarea } from '../ui/Textarea';
+import { Switch } from '@/components/ui/Switch';
+import { ICourse } from '@/types/course';
+import { courseCategories, courseLevels, languages } from '@/constants/course';
+import { AiOutlineLock, AiOutlineUnlock } from 'react-icons/ai';
+import { ImUnlocked } from 'react-icons/im';
+import { setCourseForUpdate } from '@/redux/features/course-update-slice';
 
 const CourseDetailsCreationForm = ({
   mode,
@@ -18,7 +18,7 @@ const CourseDetailsCreationForm = ({
   setSelectedLevels,
   setSelectedLanguages,
 }: {
-  mode: "creation" | "edit";
+  mode: 'creation' | 'edit';
   setSelectedCourseCategories: (categories: string[]) => void;
   setSelectedLevels: (levels: string[]) => void;
   setSelectedLanguages: (languages: string[]) => void;
@@ -26,14 +26,14 @@ const CourseDetailsCreationForm = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const course = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.course
       : state.courseUpdateReducer.value.course
   );
 
   const updateCourse = (course: ICourse) => {
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCourseForCreation(course)
         : setCourseForUpdate(course)
     );
@@ -41,16 +41,16 @@ const CourseDetailsCreationForm = ({
 
   const handleSwitch = (
     value: boolean,
-    attribute: "coursePrivacy" | "topicPrivacy"
+    attribute: 'coursePrivacy' | 'topicPrivacy'
   ) => {
     const vl =
-      attribute === "coursePrivacy"
+      attribute === 'coursePrivacy'
         ? value
-          ? "public"
-          : "private"
+          ? 'public'
+          : 'private'
         : value
-        ? "open"
-        : "locked";
+          ? 'open'
+          : 'locked';
     const updatedCourse = {
       ...course,
       [attribute]: vl,
@@ -103,12 +103,12 @@ const CourseDetailsCreationForm = ({
             </div>
             <div
               className={`flex items-center space-x-1 font-semibold text-xs ${
-                course.coursePrivacy === "public"
-                  ? "text-green-500"
-                  : "text-red-500"
+                course.coursePrivacy === 'public'
+                  ? 'text-green-500'
+                  : 'text-red-500'
               }`}
             >
-              {course.coursePrivacy === "public" ? (
+              {course.coursePrivacy === 'public' ? (
                 <AiOutlineUnlock />
               ) : (
                 <AiOutlineLock />
@@ -117,8 +117,9 @@ const CourseDetailsCreationForm = ({
             </div>
           </div>
           <Switch
-            defaultChecked={course.coursePrivacy === "public"}
-            onCheckedChange={(e) => handleSwitch(e, "coursePrivacy")}
+            defaultChecked={course.coursePrivacy === 'public'}
+            onCheckedChange={(e) => handleSwitch(e, 'coursePrivacy')}
+            disabled
           />
         </div>
         <div className="flex justify-between items-center px-4 py-2 border border-slate-300 dark:border-gray-800 rounded w-full">
@@ -137,12 +138,12 @@ const CourseDetailsCreationForm = ({
             </div>
             <div
               className={`flex items-center space-x-1 font-semibold text-xs ${
-                course.topicPrivacy === "open"
-                  ? "text-green-500"
-                  : "text-red-500"
+                course.topicPrivacy === 'open'
+                  ? 'text-green-500'
+                  : 'text-red-500'
               }`}
             >
-              {course.topicPrivacy === "open" ? (
+              {course.topicPrivacy === 'open' ? (
                 <AiOutlineUnlock />
               ) : (
                 <AiOutlineLock />
@@ -151,8 +152,8 @@ const CourseDetailsCreationForm = ({
             </div>
           </div>
           <Switch
-            defaultChecked={course.topicPrivacy === "open"}
-            onCheckedChange={(e) => handleSwitch(e, "topicPrivacy")}
+            defaultChecked={course.topicPrivacy === 'open'}
+            onCheckedChange={(e) => handleSwitch(e, 'topicPrivacy')}
           />
         </div>
       </div>
