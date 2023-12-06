@@ -30,7 +30,11 @@ const Ask = ({ params }: PageParams) => {
       ) : (
         <div className="flex flex-col space-y-4">
           <AskPage ask={ask} />
-          <AskResponsePage topic={ask.topic as string} version={ask.version} />
+          <AskResponsePage
+            questionId={ask.id as string}
+            topic={ask.topic as string}
+            version={ask.version}
+          />
         </div>
       )}
     </div>

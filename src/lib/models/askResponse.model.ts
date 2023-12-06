@@ -8,6 +8,10 @@ const AskResponseSchema = new Schema<IAskResponse, IAskResponseModel>(
       ref: 'User',
       required: [true, 'User is required'],
     },
+    questionId: {
+      type: String,
+      required: [true, 'QuestionId is required'],
+    },
     topic: {
       type: Schema.Types.ObjectId,
       ref: 'CourseTopic',

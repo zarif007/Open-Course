@@ -4,6 +4,7 @@ import { ZodType, z } from 'zod';
 export const askResponseSchema: ZodType<Partial<IAskResponse>> = z.object({
   id: z.string().optional(),
   author: z.string().min(2).max(500),
+  questionId: z.string().min(2).max(500),
   topic: z.string().min(2).max(500),
   version: z.number(),
   answer: z

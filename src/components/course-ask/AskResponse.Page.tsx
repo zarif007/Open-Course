@@ -4,13 +4,16 @@ import AskResponseForm from './AskResponse.Form';
 import { trpc } from '@/app/_trpc/client';
 
 const AskResponsePage = ({
+  questionId,
   topic,
   version,
 }: {
+  questionId: string;
   topic: string;
   version: number;
 }) => {
   const { data: responses, isLoading } = trpc.getAskResponses.useQuery({
+    questionId,
     topic,
     version,
   });
@@ -22,7 +25,11 @@ const AskResponsePage = ({
       ) : (
         <AskResponses responses={responses ?? []} />
       )}
-      <AskResponseForm topic={topic} version={version} />
+      <AskResponseForm
+        questionId={questionId}
+        topic={topic}
+        version={version}
+      />
     </div>
   );
 };

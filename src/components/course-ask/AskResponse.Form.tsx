@@ -17,12 +17,13 @@ import Paragraph from '../ui/Paragraph';
 import { IAskResponse } from '@/types/courseAsk/response';
 import { trpc } from '@/app/_trpc/client';
 import { toast } from '../ui/Toast';
-import { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 
 const AskResponseForm = ({
+  questionId,
   topic,
   version,
 }: {
+  questionId: string;
   topic: string;
   version: number;
 }) => {
@@ -46,6 +47,7 @@ const AskResponseForm = ({
   });
 
   const responses = trpc.getAskResponses.useQuery({
+    questionId,
     topic,
     version,
   });
@@ -63,6 +65,7 @@ const AskResponseForm = ({
 
     const ask: Partial<IAskResponse> = {
       author: signedInUser?.id!,
+      questionId,
       topic,
       version,
       answer: data.answer,
@@ -77,7 +80,6 @@ const AskResponseForm = ({
         message: 'Response created successfully',
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Something went wrong',
         type: 'error',
