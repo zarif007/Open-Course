@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import axios from "axios";
-import { toast } from "@/components/ui/Toast";
-import { useRouter } from "next/navigation";
-import { ICourse } from "@/types/course";
-import createSlug from "@/utils/createSlug";
-import { ICourseTopic } from "@/types/courseTopic";
-import { useSession } from "next-auth/react";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import CourseCreationUpdate from "@/components/course-details/Course.CreationUpdate";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useDispatch } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import React, { useState } from 'react';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import axios from 'axios';
+import { toast } from '@/components/ui/Toast';
+import { useRouter } from 'next/navigation';
+import { ICourse } from '@/types/course';
+import createSlug from '@/utils/createSlug';
+import { ICourseTopic } from '@/types/courseTopic';
+import { useSession } from 'next-auth/react';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import CourseCreationUpdate from '@/components/course-details/Course.CreationUpdate';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { useDispatch } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { setCourseForUpdate } from '@/redux/features/course-update-slice';
+import CourseUpdatePageSkeleton from '@/components/skeletons/CourseUpdatePage.Skeleton';
 
-const MODE = "edit";
+const MODE = 'edit';
 
 interface PageParams {
   params: {
@@ -26,8 +27,8 @@ interface PageParams {
 
 const CourseUpdate = ({ params }: PageParams) => {
   const [loadingStatus, setLoadingStatus] = useState<
-    "free" | "Processing" | "Redirecting"
-  >("free");
+    'free' | 'Processing' | 'Redirecting'
+  >('free');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -46,7 +47,7 @@ const CourseUpdate = ({ params }: PageParams) => {
       ).json();
 
       if (data.creator.id !== signedInUser?.id) {
-        router.push("/");
+        router.push('/');
       } else {
         dispatch(setCourseForUpdate(data));
       }
@@ -61,8 +62,8 @@ const CourseUpdate = ({ params }: PageParams) => {
 
   const showErrorToast = (errorMsg: string) => {
     toast({
-      title: "Complete required fields",
-      type: "error",
+      title: 'Complete required fields',
+      type: 'error',
       message: errorMsg,
     });
   };
@@ -70,23 +71,23 @@ const CourseUpdate = ({ params }: PageParams) => {
   const validateCourseDetails = (): boolean => {
     const courseTopics = course.topics as ICourseTopic[];
     if (!course.title) {
-      showErrorToast("Title is required");
+      showErrorToast('Title is required');
       return false;
     }
     if (course.categories.length === 0) {
-      showErrorToast("Must add at least one Category");
+      showErrorToast('Must add at least one Category');
       return false;
     }
     if (course.levels.length === 0) {
-      showErrorToast("Must add at least one Level");
+      showErrorToast('Must add at least one Level');
       return false;
     }
     if (course.languages.length === 0) {
-      showErrorToast("Must add at least one Languages");
+      showErrorToast('Must add at least one Languages');
       return false;
     }
     if (courseTopics.filter((topic) => topic.id !== 0).length === 0) {
-      showErrorToast("Must add at least one Course Topic");
+      showErrorToast('Must add at least one Course Topic');
       return false;
     }
 
@@ -94,11 +95,11 @@ const CourseUpdate = ({ params }: PageParams) => {
   };
 
   const handleSubmit = async () => {
-    if (loadingStatus !== "free" || !signedInUser?.id || isLoading) return;
+    if (loadingStatus !== 'free' || !signedInUser?.id || isLoading) return;
 
     if (!validateCourseDetails()) return;
 
-    setLoadingStatus("Processing");
+    setLoadingStatus('Processing');
 
     const courseTopics = course.topics as ICourseTopic[];
 
@@ -108,7 +109,7 @@ const CourseUpdate = ({ params }: PageParams) => {
       topics: courseTopics.filter((topic) => topic.id !== 0),
       creator: signedInUser.id,
       banner:
-        course.banner === ""
+        course.banner === ''
           ? generateBannerFromCourse(course, signedInUser.name)
           : course.banner,
     };
@@ -119,26 +120,26 @@ const CourseUpdate = ({ params }: PageParams) => {
         courseData
       );
       toast({
-        title: "Course Updated",
-        type: "success",
-        message: "Course Updated Successfully",
+        title: 'Course Updated',
+        type: 'success',
+        message: 'Course Updated Successfully',
       });
-      setLoadingStatus("Redirecting");
+      setLoadingStatus('Redirecting');
       router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
       toast({
-        title: "Error",
-        type: "error",
-        message: "Something went wrong, Try again later",
+        title: 'Error',
+        type: 'error',
+        message: 'Something went wrong, Try again later',
       });
-      setLoadingStatus("free");
+      setLoadingStatus('free');
     }
   };
 
   return (
     <div>
       {isLoading ? (
-        <p>loading....</p>
+        <CourseUpdatePageSkeleton />
       ) : (
         <CourseCreationUpdate
           MODE={MODE}

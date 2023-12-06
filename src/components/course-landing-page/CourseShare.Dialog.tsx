@@ -1,18 +1,20 @@
-import React from "react";
+'use client';
+
+import React from 'react';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/Dialog";
-import TooltipComponent from "../ui/TooltipComponent";
-import { FcShare } from "react-icons/fc";
-import { Button } from "../ui/Button";
+} from '@/components/ui/Dialog';
+import TooltipComponent from '../ui/TooltipComponent';
+import { FcShare } from 'react-icons/fc';
+import { Button } from '../ui/Button';
 
-import { Label } from "../ui/Label";
-import Paragraph from "../ui/Paragraph";
-import CopyToClipboardComp from "../ui/CopyToClipboard.Comp";
-import ShareOnSocialsComp from "./ShareOnSocials.Comp";
+import { Label } from '../ui/Label';
+import Paragraph from '../ui/Paragraph';
+import CopyToClipboardComp from '../ui/CopyToClipboard.Comp';
+import ShareOnSocialsComp from './ShareOnSocials.Comp';
 
 const CourseShareDialog = ({ url }: { url: string }) => {
   return (

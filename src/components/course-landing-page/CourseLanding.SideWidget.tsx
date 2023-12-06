@@ -1,26 +1,21 @@
-import React from "react";
-import { FcBookmark, FcSettings } from "react-icons/fc";
-import TooltipComponent from "../ui/TooltipComponent";
-import { ICourse } from "@/types/course";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { IUser } from "@/types/user";
-import CourseShareDialog from "./CourseShare.Dialog";
-import { mainEndPoint } from "@/utils/apiEndpoints";
-import CourseInvitationDialog from "./CourseInvitation.Dialog";
+import React from 'react';
+import { FcBookmark, FcSettings } from 'react-icons/fc';
+import TooltipComponent from '../ui/TooltipComponent';
+import { ICourse } from '@/types/course';
+import { IUser } from '@/types/user';
+import CourseShareDialog from './CourseShare.Dialog';
+import { mainEndPoint } from '@/utils/apiEndpoints';
+import CourseInvitationDialog from './CourseInvitation.Dialog';
+import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 
-const CourseLandingSideWidget = ({ course }: { course: ICourse }) => {
-  const { data: session } = useSession();
+const CourseLandingSideWidget = async ({ course }: { course: ICourse }) => {
+  const session = await getServerSession(authOptions);
   const creator = course.creator as IUser;
 
-  const router = useRouter();
-
   const styles = {
-    icon: "w-8 h-8 cursor-pointer",
-  };
-
-  const handleSettings = () => {
-    router.push(`/course-update/${course.slug}`);
+    icon: 'w-8 h-8 cursor-pointer',
   };
 
   return (
@@ -40,9 +35,9 @@ const CourseLandingSideWidget = ({ course }: { course: ICourse }) => {
         </TooltipComponent>
         {creator.email === session?.user?.email && (
           <TooltipComponent content="Settings">
-            <div onClick={handleSettings}>
+            <Link href={`/course-update/${course.slug}`}>
               <FcSettings className={styles.icon} />
-            </div>
+            </Link>
           </TooltipComponent>
         )}
       </div>

@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import LargeHeading from "../ui/LargeHeading";
-import { useQuery } from "@tanstack/react-query";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { ICourse } from "@/types/course";
-import SwiperComp from "../ui/SwiperComp";
-import { useAppSelector } from "@/redux/store";
-import CourseCardShort from "../course-cards/Course.Card.Short";
-import CourseCardShortSkeleton from "../skeletons/CourseCardShort.Skeleton";
-import { ICourseTopic } from "@/types/courseTopic";
-import { IUser } from "@/types/user";
+import React from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import { useQuery } from '@tanstack/react-query';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { ICourse } from '@/types/course';
+import SwiperComp from '../ui/SwiperComp';
+import CourseCardShort from '../course-cards/Course.Card.Short';
+import CourseCardShortSkeleton from '../skeletons/CourseCardShort.Skeleton';
+import { ICourseTopic } from '@/types/courseTopic';
+import { IUser } from '@/types/user';
 
 const FinishedCourses = ({ user }: { user: IUser | null }) => {
   const { data: courses, isLoading } = useQuery({
@@ -22,7 +21,7 @@ const FinishedCourses = ({ user }: { user: IUser | null }) => {
       const { data } = await (
         await fetch(
           `${nextApiEndPoint}/courses/enrolledCourses/finished/${user?.id}`,
-          { cache: "no-store" }
+          { cache: 'no-store' }
         )
       ).json();
 

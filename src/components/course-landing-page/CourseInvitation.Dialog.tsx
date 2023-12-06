@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
-import TooltipComponent from "../ui/TooltipComponent";
-import { FcGoodDecision, FcInvite } from "react-icons/fc";
-import { Button } from "../ui/Button";
-import { useAppSelector } from "@/redux/store";
-import { mainEndPoint, nextApiEndPoint } from "@/utils/apiEndpoints";
-import axios from "axios";
-import { Label } from "../ui/Label";
-import Paragraph from "../ui/Paragraph";
-import CopyToClipboardComp from "../ui/CopyToClipboard.Comp";
-import ShareOnSocialsComp from "./ShareOnSocials.Comp";
-import { Input } from "../ui/Input";
-import ErrorMessage from "../ui/ErrorMessage";
+'use client';
+
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
+import TooltipComponent from '../ui/TooltipComponent';
+import { FcGoodDecision, FcInvite } from 'react-icons/fc';
+import { Button } from '../ui/Button';
+import { useAppSelector } from '@/redux/store';
+import { mainEndPoint, nextApiEndPoint } from '@/utils/apiEndpoints';
+import axios from 'axios';
+import { Label } from '../ui/Label';
+import Paragraph from '../ui/Paragraph';
+import CopyToClipboardComp from '../ui/CopyToClipboard.Comp';
+import ShareOnSocialsComp from './ShareOnSocials.Comp';
+import { Input } from '../ui/Input';
+import ErrorMessage from '../ui/ErrorMessage';
 
 const CourseInvitationDialog = ({
   courseSlug,
@@ -29,7 +31,7 @@ const CourseInvitationDialog = ({
   const [expiresIn, setExpiresIn] = useState<number>(7);
   const [maxCapacity, setMaxCapacity] = useState<number>(100);
 
-  const [url, setUrl] = useState<string>("");
+  const [url, setUrl] = useState<string>('');
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -39,7 +41,7 @@ const CourseInvitationDialog = ({
     if (!signedInUser || isLoading) return;
 
     setIsLoading(true);
-    setUrl("");
+    setUrl('');
 
     const payload = {
       creator: signedInUser.id,
@@ -95,14 +97,14 @@ const CourseInvitationDialog = ({
         )}
 
         <p className="text-xs font-semibold">
-          The link will expire within{" "}
+          The link will expire within{' '}
           <span className="text-rose-500">{expiresIn}</span> Days and can invite
-          upto <span className="text-rose-500">{maxCapacity}</span> users{" "}
+          upto <span className="text-rose-500">{maxCapacity}</span> users{' '}
           <span
             className="text-rose-500 cursor-pointer underline"
             onClick={() => setOpenModifyPanel(!openModifyPanel)}
           >
-            {openModifyPanel ? "Done?" : "Change"}
+            {openModifyPanel ? 'Done?' : 'Change'}
           </span>
         </p>
 
@@ -111,10 +113,10 @@ const CourseInvitationDialog = ({
           isLoading={isLoading}
           onClick={createInvitationLink}
         >
-          Generate {url !== "" && "another"} Invitation Link
+          Generate {url !== '' && 'another'} Invitation Link
         </Button>
 
-        {url !== "" && (
+        {url !== '' && (
           <React.Fragment>
             <Label>Copy Invitation Link</Label>
             <div className="flex items-center justify-center w-full border-2 border-gray-950 dark:border-slate-100 rounded mb-2 p-2">

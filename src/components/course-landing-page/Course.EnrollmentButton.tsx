@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/Button";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
-import { useAppSelector } from "@/redux/store";
-import { ICourse } from "@/types/course";
-import { IEnrollState } from "@/types/enrollState";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Button } from '../ui/Button';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import { useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
+import { useAppSelector } from '@/redux/store';
+import { ICourse } from '@/types/course';
+import { IEnrollState } from '@/types/enrollState';
 
 const CourseEnrollmentButton = ({
   course,
@@ -19,10 +21,10 @@ const CourseEnrollmentButton = ({
   const router = useRouter();
 
   const [loadingStatus, setLoadingStatus] = useState<
-    "free" | "Processing" | "Redirecting"
-  >("free");
+    'free' | 'Processing' | 'Redirecting'
+  >('free');
 
-  const [isEnrolled, setIsEnrolled] = useState<string>("loading");
+  const [isEnrolled, setIsEnrolled] = useState<string>('loading');
 
   const { data: session } = useSession();
 
@@ -32,16 +34,16 @@ const CourseEnrollmentButton = ({
 
   useEffect(() => {
     if (!signedInUser?.id || !enrollState) {
-      setIsEnrolled("no");
+      setIsEnrolled('no');
     } else {
-      setIsEnrolled("yes");
+      setIsEnrolled('yes');
     }
   }, [course, signedInUser?.id, enrollState]);
 
   const handleEnrollment = async () => {
-    if (loadingStatus !== "free" || !signedInUser?.id) return;
+    if (loadingStatus !== 'free' || !signedInUser?.id) return;
 
-    setLoadingStatus("Processing");
+    setLoadingStatus('Processing');
 
     try {
       const data = {
@@ -53,43 +55,43 @@ const CourseEnrollmentButton = ({
 
       // window.location.reload();
       router.push(`/course/${course.slug}?topicId=1`);
-      setLoadingStatus("Redirecting");
+      setLoadingStatus('Redirecting');
       toast({
-        title: "Course Enrolled",
-        type: "success",
+        title: 'Course Enrolled',
+        type: 'success',
         message: `${course.title} Enrolled Successfully`,
       });
     } catch (error) {
       toast({
-        title: "error",
-        type: "error",
+        title: 'error',
+        type: 'error',
         message: `Try again later`,
       });
-      setLoadingStatus("free");
+      setLoadingStatus('free');
     }
   };
 
   const handleBackToCourse = () => {
     router.push(`/course/${course.slug}`);
-    setLoadingStatus("Redirecting");
+    setLoadingStatus('Redirecting');
   };
 
   const buttonText =
-    loadingStatus === "free"
-      ? isEnrolled === "yes"
-        ? "Back to Course"
-        : "Enroll"
+    loadingStatus === 'free'
+      ? isEnrolled === 'yes'
+        ? 'Back to Course'
+        : 'Enroll'
       : loadingStatus;
 
   return (
     <div>
-      {isEnrolled !== "loading" && (
+      {isEnrolled !== 'loading' && (
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
             {!session?.user ? (
               <Button
                 className="w-full py-6 text-lg font-bold"
-                isLoading={loadingStatus !== "free"}
+                isLoading={loadingStatus !== 'free'}
                 onClick={() => signIn()}
               >
                 Enroll
@@ -97,9 +99,9 @@ const CourseEnrollmentButton = ({
             ) : (
               <Button
                 className="w-full py-6 text-lg font-bold"
-                isLoading={loadingStatus !== "free"}
+                isLoading={loadingStatus !== 'free'}
                 onClick={() =>
-                  isEnrolled === "yes"
+                  isEnrolled === 'yes'
                     ? handleBackToCourse()
                     : handleEnrollment()
                 }

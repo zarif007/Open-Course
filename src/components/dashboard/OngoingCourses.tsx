@@ -1,19 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import LargeHeading from "../ui/LargeHeading";
-import { useQuery } from "@tanstack/react-query";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { ICourse } from "@/types/course";
-import CourseCardSkeleton from "../skeletons/CourseCard.Skeleton";
-import SwiperComp from "../ui/SwiperComp";
-import { useAppSelector } from "@/redux/store";
-import CourseCardShort from "../course-cards/Course.Card.Short";
-import CourseCardShortSkeleton from "../skeletons/CourseCardShort.Skeleton";
-import CourseCardDashboard from "../course-cards/Course.Card.Dashboard";
-import { ICourseTopic } from "@/types/courseTopic";
-import CourseCardDashboardSkeleton from "../skeletons/CourseCardDashboard.Skeleton";
-import { IUser } from "@/types/user";
+import React from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import { useQuery } from '@tanstack/react-query';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { ICourse } from '@/types/course';
+import SwiperComp from '../ui/SwiperComp';
+import CourseCardDashboard from '../course-cards/Course.Card.Dashboard';
+import { ICourseTopic } from '@/types/courseTopic';
+import CourseCardDashboardSkeleton from '../skeletons/CourseCardDashboard.Skeleton';
+import { IUser } from '@/types/user';
 
 const OngoingCourses = ({ user }: { user: IUser | null }) => {
   const { data: courses, isLoading } = useQuery({
@@ -25,7 +21,7 @@ const OngoingCourses = ({ user }: { user: IUser | null }) => {
       const { data } = await (
         await fetch(
           `${nextApiEndPoint}/courses/enrolledCourses/onGoing/${user?.id}`,
-          { cache: "no-store" }
+          { cache: 'no-store' }
         )
       ).json();
       return data.map(

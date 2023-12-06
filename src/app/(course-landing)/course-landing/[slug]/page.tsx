@@ -1,16 +1,24 @@
-import CourseLandingPage from "@/components/course-landing-page/CourseLanding.Page";
-import { ICourse } from "@/types/course";
-import { IEnrollState } from "@/types/enrollState";
-import { IUser } from "@/types/user";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import constructMetadata from "@/utils/constructMetadata";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import sortCourseBasedOnTopicsSortID from "@/utils/sortCourseBasedOnTopicsSortID";
-import { Metadata } from "next";
-import { getServerSession } from "next-auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import React from "react";
+import CourseDetails from '@/components/course-details/CourseDetails';
+import CourseEnrollmentButton from '@/components/course-landing-page/Course.EnrollmentButton';
+import CourseLandingSideWidget from '@/components/course-landing-page/CourseLanding.SideWidget';
+import CourseRatings from '@/components/course-landing-page/CourseRatings';
+import CourseReviews from '@/components/course-landing-page/CourseReviews';
+import CourseTopicsAccordion from '@/components/course-landing-page/CourseTopics.Accordion';
+import LargeHeading from '@/components/ui/LargeHeading';
+import { ICourse } from '@/types/course';
+import { ICourseTopic } from '@/types/courseTopic';
+import { IEnrollState } from '@/types/enrollState';
+import { IUser } from '@/types/user';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import constructMetadata from '@/utils/constructMetadata';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import sortCourseBasedOnTopicsSortID from '@/utils/sortCourseBasedOnTopicsSortID';
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import React from 'react';
+import { PiStackDuotone } from 'react-icons/pi';
 
 interface PageParams {
   params: {
@@ -26,8 +34,8 @@ const getCourseAndEnrollState = async (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       {
-        cache: "no-store",
-        method: "GET",
+        cache: 'no-store',
+        method: 'GET',
         headers: new Headers(headers()),
       }
     )
@@ -65,13 +73,27 @@ const CourseLanding = async ({ params }: PageParams) => {
     session?.user?.email ?? null
   );
 
-  if (!course) redirect("/404");
+  if (!course) redirect('/404');
+
+  const sortedCourse = sortCourseBasedOnTopicsSortID(course);
+
+  const courseTopics = course.topics as ICourseTopic[];
 
   return (
-    <CourseLandingPage
-      course={sortCourseBasedOnTopicsSortID(course)}
-      enrollState={enrollState}
-    />
+    <div className="max-w-5xl w-full mx-auto">
+      <CourseLandingSideWidget course={sortedCourse} />
+      <CourseDetails course={sortedCourse} />
+      <CourseRatings reviews={sortedCourse.reviews ?? []} />
+      <div className="flex space-x-2 items-center justify-center mt-8">
+        <LargeHeading size="sm" className="text-center">
+          Course Topics ({sortedCourse.topics.length})
+        </LargeHeading>
+        <PiStackDuotone className="w-10 h-10" />
+      </div>
+      <CourseTopicsAccordion courseTopics={courseTopics} />
+      <CourseReviews reviews={sortedCourse.reviews ?? []} />
+      <CourseEnrollmentButton course={sortedCourse} enrollState={enrollState} />
+    </div>
   );
 };
 

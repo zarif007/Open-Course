@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import OngoingCourses from "@/components/dashboard/OngoingCourses";
-import React from "react";
-import FinishedCourses from "@/components/dashboard/FinishedCourses";
-import { useAppSelector } from "@/redux/store";
+import OngoingCourses from '@/components/dashboard/OngoingCourses';
+import React from 'react';
+import FinishedCourses from '@/components/dashboard/FinishedCourses';
+import { useAppSelector } from '@/redux/store';
 
 const Dashboard = () => {
   const signedInUser = useAppSelector(

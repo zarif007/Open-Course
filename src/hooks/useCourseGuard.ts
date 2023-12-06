@@ -1,19 +1,17 @@
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { IEnrollState } from "@/types/enrollState";
-import { ICourseTopic } from "@/types/courseTopic";
-import { ICourse } from "@/types/course";
-import canBeParsedToInt from "@/utils/canBeParsedToInt";
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { IEnrollState } from '@/types/enrollState';
+import { ICourseTopic } from '@/types/courseTopic';
+import { ICourse } from '@/types/course';
+import canBeParsedToInt from '@/utils/canBeParsedToInt';
 import {
   setCourseForView,
   setCurrentCourseTopicForView,
   setEnrollState,
-} from "@/redux/features/course-view-slice";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { EnrollState } from "@/lib/models/enrollState.model";
-import sortCompareBasedOnSortID from "@/utils/sortCompareBasedOnSortID";
+} from '@/redux/features/course-view-slice';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
 
 const useCourseGuard = (
   course: ICourse,
@@ -23,7 +21,7 @@ const useCourseGuard = (
   const dispatch = useDispatch<AppDispatch>();
 
   const searchParams = useSearchParams();
-  const topicId = searchParams?.get("topicId");
+  const topicId = searchParams?.get('topicId');
 
   const router = useRouter();
 

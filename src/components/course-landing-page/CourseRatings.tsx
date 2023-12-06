@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import LargeHeading from "../ui/LargeHeading";
-import Paragraph from "../ui/Paragraph";
-import { PiShootingStarDuotone, PiStarDuotone } from "react-icons/pi";
-import { RiUserStarFill } from "react-icons/ri";
-import { Progress } from "@/components/ui/Progress";
-import calculateAvgRating from "@/utils/calculateAvgRating";
-import { IUser } from "@/types/user";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import Paragraph from '../ui/Paragraph';
+import { PiShootingStarDuotone, PiStarDuotone } from 'react-icons/pi';
+import { RiUserStarFill } from 'react-icons/ri';
+import { Progress } from '@/components/ui/Progress';
+import calculateAvgRating from '@/utils/calculateAvgRating';
+import { IUser } from '@/types/user';
 
 const CourseRatings = ({
   reviews,
