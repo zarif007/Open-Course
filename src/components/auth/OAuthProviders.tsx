@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/Button";
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import { FaDiscord, FaSquareFacebook } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
-import { IoLogoGithub } from "react-icons/io";
+import { Button } from '@/components/ui/Button';
+import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { FaDiscord, FaSquareFacebook } from 'react-icons/fa6';
+import { FcGoogle } from 'react-icons/fc';
+import { IoLogoGithub } from 'react-icons/io';
 
 const providers = [
   {
-    name: "google",
-    title: "Google",
+    name: 'google',
+    title: 'Google',
     icon: <FcGoogle className="w-7 h-7" />,
   },
   //   {
@@ -22,11 +22,11 @@ const providers = [
   //     title: "Facebook",
   //     icon: <FaSquareFacebook className="w-7 h-7 text-[#4267B2]" />,
   //   },
-  //   {
-  //     name: "github",
-  //     title: "Github",
-  //     icon: <IoLogoGithub className="w-7 h-7" />,
-  //   },
+  {
+    name: 'github',
+    title: 'Github',
+    icon: <IoLogoGithub className="w-7 h-7" />,
+  },
 ];
 
 const OAuthProviders = () => {
@@ -48,7 +48,7 @@ const Provider = ({
 
   const searchParams = useSearchParams();
 
-  const callbackUrl = searchParams?.get("callbackUrl") ?? "/";
+  const callbackUrl = searchParams?.get('callbackUrl') ?? '/';
 
   return (
     <Button
