@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import LargeHeading from '../ui/LargeHeading';
-import ErrorMessage from '../ui/ErrorMessage';
-import { Textarea } from '../ui/Textarea';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useForm } from 'react-hook-form';

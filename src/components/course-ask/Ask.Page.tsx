@@ -6,9 +6,7 @@ import { ICourseAsk } from '@/types/courseAsk';
 import { IUser } from '@/types/user';
 import formatDate from '@/utils/formatDate';
 import React from 'react';
-import DOMPurify from 'dompurify';
 import SelectedTopics from '../course-details/SelectedTopics';
-import VotingHandler from './VotingHandler';
 import ContentController from './Content.Controller';
 
 const AskPage = ({ ask }: { ask: ICourseAsk }) => {
@@ -36,6 +34,7 @@ const AskPage = ({ ask }: { ask: ICourseAsk }) => {
           </div>
         </div>
       </div>
+
       <SelectedTopics mode="view" selectedTopics={ask.tags} />
 
       <div

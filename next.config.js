@@ -2,11 +2,11 @@
 
 const nextConfig = {
   images: {
-    domains: ["i.ibb.co"],
+    domains: ['i.ibb.co'],
   },
   experimental: {
     serverActions: true,
-    serverActionsBodySizeLimit: "2mb",
+    serverActionsBodySizeLimit: '2mb',
   },
 };
 

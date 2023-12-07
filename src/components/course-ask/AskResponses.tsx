@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Paragraph from '../ui/Paragraph';
 import { IAskResponse } from '@/types/courseAsk/response';

@@ -1,16 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import { ICourseAsk } from "@/types/courseAsk";
-import React from "react";
-import { BiSolidDownvote, BiSolidUpvote } from "react-icons/bi";
-import LargeHeading from "../ui/LargeHeading";
-import Paragraph from "../ui/Paragraph";
-import { Button } from "../ui/Button";
-import { IUser } from "@/types/user";
-import { MdQuestionAnswer } from "react-icons/md";
-import formatDate from "@/utils/formatDate";
-import Link from "next/link";
+import { ICourseAsk } from '@/types/courseAsk';
+import React from 'react';
+import { BiSolidUpvote } from 'react-icons/bi';
+import { IUser } from '@/types/user';
+import { MdQuestionAnswer } from 'react-icons/md';
+import formatDate from '@/utils/formatDate';
+import Link from 'next/link';
 
 const AskShort = ({ ask }: { ask: ICourseAsk }) => {
   const author = ask.author as IUser;
@@ -40,7 +37,7 @@ const AskShort = ({ ask }: { ask: ICourseAsk }) => {
           <div className="flex flex-col space-y-1">
             <p className="text-xs font-semibold">{author.name}</p>
             <p className="text-xs font-bold text-slate-400 dark:text-gray-700">
-              {formatDate(ask.updatedAt ?? "")}
+              {formatDate(ask.updatedAt ?? '')}
             </p>
           </div>
         </div>

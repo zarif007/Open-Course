@@ -1,17 +1,24 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { cookies, headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-export { default } from "next-auth/middleware";
+export { default } from 'next-auth/middleware';
 
-const allowedOrigins = ["https://www.my-frontend.com"];
+const allowedOrigins = ['https://www.my-frontend.com'];
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://www.my-frontend.com',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
 
 export const middleware = async (request: NextRequest) => {
   const protectedPages = [
-    "/course-creation",
-    "/course-update",
-    "/dashboard",
-    "/course",
-    "/course-completion",
+    '/course-creation',
+    '/course-update',
+    '/dashboard',
+    '/course',
+    '/course-completion',
   ];
 
   const token = await getToken({ req: request });
@@ -31,7 +38,15 @@ export const middleware = async (request: NextRequest) => {
     return !(isPrivate && !token);
   };
 
-  if (pathName.startsWith("/api")) {
+  if (pathName.startsWith('/api')) {
+    if (request.method === 'OPTIONS') {
+      return NextResponse.json({}, { headers: corsHeaders });
+    }
+    const response = NextResponse.next();
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      response.headers.append(key, value);
+    });
+    return response;
   } else {
     if (!canAccess(protectedPages)) {
       return NextResponse.redirect(
@@ -43,11 +58,11 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
-    "/course/:path*",
-    "/course-update/:path*",
-    "/course-completion/:path*",
-    "/course-creation",
-    "/dashboard",
-    "/api/:path*",
+    '/course/:path*',
+    '/course-update/:path*',
+    '/course-completion/:path*',
+    '/course-creation',
+    '/dashboard',
+    '/api/:path*',
   ],
 };

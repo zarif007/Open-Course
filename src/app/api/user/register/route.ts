@@ -1,8 +1,8 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import User from "@/lib/models/user.model";
-import registerInputsSchema from "@/validations/auth/register";
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import { connectToDB } from '@/lib/connectToMongoose';
+import User from '@/lib/models/user.model';
+import registerInputsSchema from '@/validations/auth/register';
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
         data: null,
         status: 400,
         success: false,
-        message: "Invalid data",
+        message: 'Invalid data',
       });
     }
 
@@ -23,18 +23,19 @@ export const POST = async (req: NextRequest) => {
 
     await connectToDB();
 
-    const isExits = await User.findOne({ email }).select("_id");
+    const isExits = await User.findOne({ email }).select('_id');
 
     if (isExits) {
       return NextResponse.json({
         data: null,
         status: 400,
         success: false,
-        message: "User with this email already exits",
+        message: 'User with this email already exits',
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 11);
+    const salt = process.env.SALT!;
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({ name, email, password: hashedPassword });
 
@@ -42,14 +43,14 @@ export const POST = async (req: NextRequest) => {
       data: user,
       status: 201,
       success: true,
-      message: "Created Successfully",
+      message: 'Created Successfully',
     });
   } catch {
     return NextResponse.json({
       data: null,
       status: 400,
       success: false,
-      message: "Something went wrong",
+      message: 'Something went wrong',
     });
   }
 };
