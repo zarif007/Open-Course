@@ -44,6 +44,7 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
     return NextResponse.json({
       status: 401,
       message: 'Unauthorized to do this action',
+      success: false,
     });
   }
 
@@ -89,5 +90,5 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
 
   revalidatePath(`/course/${payload.slug}`);
 
-  return NextResponse.json({ data: course });
+  return NextResponse.json({ data: course, success: false, status: 201 });
 };

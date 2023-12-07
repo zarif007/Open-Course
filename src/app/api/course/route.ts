@@ -1,12 +1,12 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import Activity from "@/lib/models/activity.mode";
-import Course from "@/lib/models/course.model";
-import CourseTopic from "@/lib/models/courseTopic.model";
-import User from "@/lib/models/user.model";
-import getCurrentTime from "@/utils/getCurrentTime";
-import { Types } from "mongoose";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import Activity from '@/lib/models/activity.mode';
+import Course from '@/lib/models/course.model';
+import CourseTopic from '@/lib/models/courseTopic.model';
+import User from '@/lib/models/user.model';
+import getCurrentTime from '@/utils/getCurrentTime';
+import { Types } from 'mongoose';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
   const token = await getToken({ req });
@@ -14,7 +14,8 @@ export const POST = async (req: NextRequest) => {
   if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: 'Unauthorized: Login required',
+      success: false,
     });
   }
   await connectToDB();
@@ -39,12 +40,12 @@ export const POST = async (req: NextRequest) => {
   });
 
   await course.populate({
-    path: "topics",
+    path: 'topics',
     model: CourseTopic,
   });
 
   await course.populate({
-    path: "creator",
+    path: 'creator',
     model: User,
   });
 
@@ -58,8 +59,8 @@ export const POST = async (req: NextRequest) => {
     date: getCurrentTime(),
     link: `/course/${payload.slug}`,
     text: `Created the course ${payload.slug}`,
-    type: "created",
+    type: 'created',
   });
 
-  return NextResponse.json({ data: course });
+  return NextResponse.json({ data: course, success: true });
 };

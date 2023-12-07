@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export interface ICourseTopic {
   id?: number | string;
@@ -8,15 +8,15 @@ export interface ICourseTopic {
   views?: number;
   // versions: {
   //   type: "free_source_content" | "doc_content" | "quiz";
-  //   data: IFreeSourceContent;
+  //   data: IEmbedContent;
   // }[];
   versions: {} & (
     | {
-        type: "free_source_content";
-        data: IFreeSourceContent;
+        type: 'free_source_content';
+        data: IEmbedContent;
       }
     | {
-        type: "doc_content";
+        type: 'doc_content';
         data: IDocContent;
       }
   )[];
@@ -25,7 +25,7 @@ export interface ICourseTopic {
   _v?: number;
 }
 
-export interface IFreeSourceContent {
+export interface IEmbedContent {
   title: string;
   url: string;
   source: string;

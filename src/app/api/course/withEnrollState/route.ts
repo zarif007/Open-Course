@@ -12,7 +12,11 @@ export const GET = async (req: NextRequest) => {
   const courseSlug = req.nextUrl.searchParams.get('courseSlug');
 
   if (!courseSlug) {
-    return NextResponse.json({ course: null, enrollState: null });
+    return NextResponse.json({
+      course: null,
+      enrollState: null,
+      success: false,
+    });
   }
 
   let userId = null;
@@ -52,5 +56,5 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  return NextResponse.json({ course, enrollState });
+  return NextResponse.json({ course, enrollState, success: true });
 };

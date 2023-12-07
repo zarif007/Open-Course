@@ -1,9 +1,9 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import Course from "@/lib/models/course.model";
-import CourseTopic from "@/lib/models/courseTopic.model";
-import User from "@/lib/models/user.model";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import Course from '@/lib/models/course.model';
+import CourseTopic from '@/lib/models/courseTopic.model';
+import User from '@/lib/models/user.model';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface PageParams {
   params: {
@@ -17,7 +17,8 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
   if (!token) {
     return NextResponse.json({
       status: 401,
-      message: "Unauthorized: Login required",
+      message: 'Unauthorized: Login required',
+      success: false,
     });
   }
 
@@ -32,15 +33,15 @@ export const PUT = async (req: NextRequest, { params }: PageParams) => {
 
   if (course) {
     await course.populate({
-      path: "topics",
+      path: 'topics',
       model: CourseTopic,
     });
 
     await course.populate({
-      path: "creator",
+      path: 'creator',
       model: User,
     });
   }
 
-  return NextResponse.json({ data: course });
+  return NextResponse.json({ data: course, success: true });
 };

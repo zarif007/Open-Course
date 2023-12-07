@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '../ui/Button';
-import { ICourseTopic, IFreeSourceContent } from '@/types/courseTopic';
+import { ICourseTopic, IEmbedContent } from '@/types/courseTopic';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AppDispatch, useAppSelector } from '@/redux/store';
@@ -11,7 +11,7 @@ import { Textarea } from '../ui/Textarea';
 import ErrorMessage from '../ui/ErrorMessage';
 import { topicInputFields } from '@/constants/courseTopics';
 import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
-import { FreeSourceContentSchema } from '@/validations/freeSourceContent';
+import { embedContentSchema } from '@/validations/freeSourceContent';
 
 const CourseEmbedLinkCreationForm = ({
   submitData,
@@ -43,7 +43,7 @@ const CourseEmbedLinkCreationForm = ({
     url: string;
     description: string;
     duration: number;
-  }>({ resolver: zodResolver(FreeSourceContentSchema) });
+  }>({ resolver: zodResolver(embedContentSchema) });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
@@ -127,7 +127,7 @@ const CourseEmbedLinkCreationForm = ({
   };
 
   const defaultData = defaultValue.versions[defaultValue.versions.length - 1]
-    .data as IFreeSourceContent;
+    .data as IEmbedContent;
 
   return (
     <form
@@ -159,7 +159,7 @@ const CourseEmbedLinkCreationForm = ({
                       data: {
                         ...currentCourseTopic.versions[0].data,
                         [field.key]: field.value(e),
-                      } as IFreeSourceContent,
+                      } as IEmbedContent,
                     },
                   ],
                 };

@@ -1,4 +1,4 @@
-import { ICourseTopic, IFreeSourceContent } from '@/types/courseTopic';
+import { ICourseTopic, IEmbedContent } from '@/types/courseTopic';
 import React, { useRef, useState } from 'react';
 import createEmbeddableUrls from '@/utils/getEmbedableUrl';
 import CourseEmbedLinkFullscreenDialog from './CourseEmbedLinkFullscreen.Dialog';
@@ -16,7 +16,7 @@ const CourseEmbedLinkDisplay = ({
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const content = courseTopic.versions[courseTopic.versions.length - 1]
-    .data as IFreeSourceContent;
+    .data as IEmbedContent;
 
   const contentUrl = content.url;
 

@@ -1,8 +1,8 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import Course from "@/lib/models/course.model";
-import CourseTopic from "@/lib/models/courseTopic.model";
-import User from "@/lib/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import Course from '@/lib/models/course.model';
+import CourseTopic from '@/lib/models/courseTopic.model';
+import User from '@/lib/models/user.model';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface PageParams {
   params: {
@@ -15,15 +15,15 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
 
   const courses = await Course.find({ creator: params.id })
     .populate({
-      path: "topics",
+      path: 'topics',
       model: CourseTopic,
       select:
-        "versions.type versions.data.title versions.data.description versions.data.source versions.data.duration",
+        'versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
     })
     .populate({
-      path: "creator",
+      path: 'creator',
       model: User,
-      select: "name image userName",
+      select: 'name image userName',
     })
     .limit(10);
 
@@ -34,5 +34,6 @@ export const GET = async (req: NextRequest, { params }: PageParams) => {
       total: 10,
     },
     data: courses,
+    success: true,
   });
 };
