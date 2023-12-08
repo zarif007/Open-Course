@@ -29,42 +29,6 @@ const CourseCreation = () => {
 
   const router = useRouter();
 
-  const showErrorToast = (errorMsg: string) => {
-    toast({
-      title: 'Complete required fields',
-      type: 'error',
-      message: errorMsg,
-    });
-  };
-
-  const validateCourseDetails = (): boolean => {
-    if (!course.title) {
-      showErrorToast('Title is required');
-      return false;
-    }
-    if (course.categories.length === 0) {
-      showErrorToast('Must add at least one Category');
-      return false;
-    }
-    if (course.levels.length === 0) {
-      showErrorToast('Must add at least one Level');
-      return false;
-    }
-    if (course.languages.length === 0) {
-      showErrorToast('Must add at least one Languages');
-      return false;
-    }
-
-    const courseTopics = course.topics as ICourseTopic[];
-
-    if (courseTopics.filter((topic) => topic.topicID !== 0).length === 0) {
-      showErrorToast('Must add at least one Course Topic');
-      return false;
-    }
-
-    return true;
-  };
-
   const errorToast = (errMsg: string) => {
     setLoadingStatus('free');
     toast({
@@ -72,6 +36,34 @@ const CourseCreation = () => {
       type: 'error',
       message: errMsg,
     });
+  };
+
+  const validateCourseDetails = (): boolean => {
+    if (!course.title) {
+      errorToast('Title is required');
+      return false;
+    }
+    if (course.categories.length === 0) {
+      errorToast('Must add at least one Category');
+      return false;
+    }
+    if (course.levels.length === 0) {
+      errorToast('Must add at least one Level');
+      return false;
+    }
+    if (course.languages.length === 0) {
+      errorToast('Must add at least one Languages');
+      return false;
+    }
+
+    const courseTopics = course.topics as ICourseTopic[];
+
+    if (courseTopics.filter((topic) => topic.topicID !== 0).length === 0) {
+      errorToast('Must add at least one Course Topic');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async () => {
@@ -113,7 +105,7 @@ const CourseCreation = () => {
         message: 'Course Created Successfully',
       });
       setLoadingStatus('Redirecting');
-      router.push(`course-landing/${data.data.slug}`);
+      router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
       errorToast('Something went wrong, Try again later');
     }

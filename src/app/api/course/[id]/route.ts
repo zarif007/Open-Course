@@ -3,7 +3,6 @@ import Course from '@/lib/models/course.model';
 import CourseTopic from '@/lib/models/courseTopic.model';
 import User from '@/lib/models/user.model';
 import { ICourseTopic } from '@/types/courseTopic';
-import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
@@ -88,13 +87,13 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
 
     revalidatePath(`/course/${payload.slug}`);
 
-    return NextResponse.json({ data: course, success: false, status: 201 });
+    return NextResponse.json({ data: course, success: true, status: 201 });
   } catch (error) {
     let status = 500;
     let message = 'Internal server error';
     if (error instanceof z.ZodError) {
       status = 422;
-      message = error.issues.join('');
+      message = 'Invalid data';
     }
     return NextResponse.json({
       data: null,

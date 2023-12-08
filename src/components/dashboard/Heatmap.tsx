@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import ActivityCalendar, {
   Activity as IActivityHeatmap,
   ColorScale,
   ThemeInput,
   Level,
-} from "react-activity-calendar";
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
-import LargeHeading from "../ui/LargeHeading";
-import { useTheme } from "next-themes";
-import { useQuery } from "@tanstack/react-query";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { IActivity } from "@/types/actvity";
-import getCurrentTime from "@/utils/getCurrentTime";
-import Link from "next/link";
-import Points from "../ui/Points";
-import HeatmapSkeleton from "../skeletons/Heatmap.Skeleton";
-import { IUser } from "@/types/user";
+} from 'react-activity-calendar';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
+import LargeHeading from '../ui/LargeHeading';
+import { useTheme } from 'next-themes';
+import { useQuery } from '@tanstack/react-query';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { IActivity } from '@/types/actvity';
+import getCurrentTime from '@/utils/getCurrentTime';
+import Link from 'next/link';
+import Points from '../ui/Points';
+import HeatmapSkeleton from '../skeletons/Heatmap.Skeleton';
+import { IUser } from '@/types/user';
 
 const populateDates = (
   startDate: string,
@@ -54,8 +54,8 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
 
   const formatActivities = (activities: IActivity[]) => {
     const updated: IActivityHeatmap[] = populateDates(
-      "2023-01-01",
-      getCurrentTime() ?? "2023-12-31"
+      '2023-01-01',
+      getCurrentTime() ?? '2023-12-31'
     );
 
     const activityMap = new Map<string, IActivityHeatmap>();
@@ -108,11 +108,11 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
   const { theme } = useTheme();
 
   const colors: ColorScale = [
-    theme === "dark" ? "#f1f5f9" : "#020617",
-    "#fda4af",
-    "#f43f5e",
-    "#be123c",
-    "#881337",
+    theme === 'dark' ? '#f1f5f9' : '#020617',
+    '#fda4af',
+    '#f43f5e',
+    '#be123c',
+    '#881337',
   ];
 
   const explicitTheme: ThemeInput = {
@@ -142,8 +142,8 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
           }}
           renderBlock={(block, activity) => {
             return React.cloneElement(block, {
-              "data-tooltip-id": "react-tooltip",
-              "data-tooltip-html": `${activity.count} activities on ${activity.date}`,
+              'data-tooltip-id': 'react-tooltip',
+              'data-tooltip-html': `${activity.count} activities on ${activity.date}`,
             });
           }}
         />
@@ -156,8 +156,8 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
           <p className="font-semibold">
             <span className="text-rose-500">
               {selectedDate.activities.length}
-            </span>{" "}
-            Activities On{" "}
+            </span>{' '}
+            Activities On{' '}
             <span className="text-rose-500">{selectedDate.date}</span>
           </p>
 
@@ -174,7 +174,7 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
                 >
                   {activity.text}
                 </Link>
-                <Points points={activity.type === "created" ? 10 : 2} />
+                <Points points={activity.type === 'created' ? 10 : 2} />
               </div>
             );
           })}

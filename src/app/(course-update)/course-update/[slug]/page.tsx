@@ -60,34 +60,35 @@ const CourseUpdate = ({ params }: PageParams) => {
     (state) => state.courseUpdateReducer.value.course
   );
 
-  const showErrorToast = (errorMsg: string) => {
+  const errorToast = (errMsg: string) => {
+    setLoadingStatus('free');
     toast({
-      title: 'Complete required fields',
+      title: 'Error',
       type: 'error',
-      message: errorMsg,
+      message: errMsg,
     });
   };
 
   const validateCourseDetails = (): boolean => {
     const courseTopics = course.topics as ICourseTopic[];
     if (!course.title) {
-      showErrorToast('Title is required');
+      errorToast('Title is required');
       return false;
     }
     if (course.categories.length === 0) {
-      showErrorToast('Must add at least one Category');
+      errorToast('Must add at least one Category');
       return false;
     }
     if (course.levels.length === 0) {
-      showErrorToast('Must add at least one Level');
+      errorToast('Must add at least one Level');
       return false;
     }
     if (course.languages.length === 0) {
-      showErrorToast('Must add at least one Languages');
+      errorToast('Must add at least one Languages');
       return false;
     }
     if (courseTopics.filter((topic) => topic.id !== 0).length === 0) {
-      showErrorToast('Must add at least one Course Topic');
+      errorToast('Must add at least one Course Topic');
       return false;
     }
 
@@ -119,20 +120,20 @@ const CourseUpdate = ({ params }: PageParams) => {
         `${nextApiEndPoint}/course/${course.id}`,
         courseData
       );
+      if (!data.success) {
+        errorToast(data.message);
+        return;
+      }
       toast({
         title: 'Course Updated',
         type: 'success',
         message: 'Course Updated Successfully',
       });
       setLoadingStatus('Redirecting');
+
       router.push(`/course-landing/${data.data.slug}`);
-    } catch (error) {
-      toast({
-        title: 'Error',
-        type: 'error',
-        message: 'Something went wrong, Try again later',
-      });
-      setLoadingStatus('free');
+    } catch {
+      errorToast('Something went wrong, Try again later');
     }
   };
 
