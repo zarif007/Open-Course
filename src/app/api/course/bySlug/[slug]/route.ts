@@ -15,31 +15,46 @@ export const GET = async (
   req: NextRequest,
   { params }: PageParams
 ): Promise<NextResponse> => {
-  const slug = params.slug;
+  try {
+    const slug = params.slug;
 
-  const token = await getToken({ req });
+    const token = await getToken({ req });
 
-  if (!token) {
+    if (!token) {
+      return NextResponse.json({
+        status: 401,
+        message: 'Unauthorized: Login required!!!',
+        data: null,
+        success: false,
+      });
+    }
+
+    await connectToDB();
+
+    const course = await Course.findOne({ slug })
+      .populate({
+        path: 'topics',
+        model: CourseTopic,
+      })
+      .populate({
+        path: 'creator',
+        model: User,
+        select: 'name image userName',
+      });
+
+    return NextResponse.json({ status: 200, data: course, success: true });
+  } catch (error) {
+    let status = 500;
+    let message = 'Internal server error';
+    // if (error instanceof z.ZodError) {
+    //   status = 422;
+    //   message = error.issues.join('');
+    // }
     return NextResponse.json({
-      status: 401,
-      message: 'Unauthorized: Login required!!!',
       data: null,
+      status,
+      message,
       success: false,
     });
   }
-
-  await connectToDB();
-
-  const course = await Course.findOne({ slug })
-    .populate({
-      path: 'topics',
-      model: CourseTopic,
-    })
-    .populate({
-      path: 'creator',
-      model: User,
-      select: 'name image userName',
-    });
-
-  return NextResponse.json({ status: 200, data: course, success: true });
 };
