@@ -79,6 +79,8 @@ export const GET = async (req: NextRequest) => {
       .skip(skip)
       .limit(limit);
 
+    console.log(courses);
+
     const total = await Course.countDocuments(whereConditions)
       .sort(sortConditions)
       .skip(skip)
@@ -93,7 +95,6 @@ export const GET = async (req: NextRequest) => {
       data: courses,
     });
   } catch (error) {
-    console.log(error);
     let status = 500;
     let message = 'Internal server error';
     // if (error instanceof z.ZodError) {
