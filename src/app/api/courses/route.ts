@@ -93,12 +93,13 @@ export const GET = async (req: NextRequest) => {
       data: courses,
     });
   } catch (error) {
+    console.log(error);
     let status = 500;
     let message = 'Internal server error';
-    if (error instanceof z.ZodError) {
-      status = 422;
-      message = error.issues.join('');
-    }
+    // if (error instanceof z.ZodError) {
+    //   status = 422;
+    //   message = error.issues.join('');
+    // }
     return NextResponse.json({
       data: null,
       status,
