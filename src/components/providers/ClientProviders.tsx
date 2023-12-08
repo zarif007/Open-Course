@@ -9,6 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const queryClient = new QueryClient();
+
 const ClientProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
