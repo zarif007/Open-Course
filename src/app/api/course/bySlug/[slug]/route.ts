@@ -46,10 +46,7 @@ export const GET = async (
   } catch (error) {
     let status = 500;
     let message = 'Internal server error';
-    // if (error instanceof z.ZodError) {
-    //   status = 422;
-    //   message = error.issues.join('');
-    // }
+
     return NextResponse.json({
       data: null,
       status,

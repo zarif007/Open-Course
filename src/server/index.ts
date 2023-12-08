@@ -5,9 +5,9 @@ import { courseAskSchema } from '@/validations/courseAsk';
 import { ICourseAsk } from '@/types/courseAsk';
 import { IAskResponse } from '@/types/courseAsk/response';
 import AskResponse from '@/lib/models/askResponse.model';
-import { askResponseSchema } from '@/validations/AskResponse';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { askResponseSchema } from '@/validations/askResponse';
 
 export const appRouter = router({
   getCourseAsks: publicProcedure

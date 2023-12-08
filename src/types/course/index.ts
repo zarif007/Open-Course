@@ -1,17 +1,17 @@
-import { Model, Types } from "mongoose";
-import { ICourseTopic } from "../courseTopic";
-import { IUser } from "../user";
-import { ICheckPoint } from "../checkPoint";
+import { Model, Types } from 'mongoose';
+import { ICourseTopic } from '../courseTopic';
+import { IUser } from '../user';
+import { ICheckPoint } from '../checkPoint';
 
 export interface ICourse {
   id?: string;
   _id?: string;
   title: string;
-  type: "gn" | "org";
+  type: 'gn' | 'org';
   version: number;
   enabled: boolean;
   creator: IUser | Types.ObjectId | string;
-  contributors: IUser[] | Types.ObjectId[];
+  contributors: IUser[] | Types.ObjectId[] | string[];
   enrolledUsers: IUser[] | string[];
   categories: string[] | [];
   levels: string[] | [];
@@ -19,7 +19,7 @@ export interface ICourse {
   description: string;
   banner: string;
   slug: string;
-  topics: ICourseTopic[] | Types.ObjectId[];
+  topics: ICourseTopic[] | Types.ObjectId[] | string[];
   tags: string[];
   status: string;
   reviews?:
@@ -30,8 +30,8 @@ export interface ICourse {
       }[]
     | [];
   checkPoints: ICheckPoint[] | [];
-  coursePrivacy: "public" | "private";
-  topicPrivacy: "open" | "locked";
+  coursePrivacy: 'public' | 'private';
+  topicPrivacy: 'open' | 'locked';
   createdAt?: Date;
   updatedAt?: Date;
   _v?: number;

@@ -3,20 +3,20 @@ import {
   courseStatuses,
   courseTypes,
   topicPrivacy,
-} from "@/constants/course";
-import { ICourse, ICourseModel } from "@/types/course";
-import { Schema, model, models } from "mongoose";
+} from '@/constants/course';
+import { ICourse, ICourseModel } from '@/types/course';
+import { Schema, model, models } from 'mongoose';
 
 const CourseSchema = new Schema<ICourse, ICourseModel>(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, 'Title is required'],
     },
     type: {
       type: String,
       enum: courseTypes,
-      default: "gn",
+      default: 'gn',
     },
     version: {
       type: Number,
@@ -28,12 +28,12 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
     },
     creator: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Author is required"],
+      ref: 'User',
+      required: [true, 'Author is required'],
     },
     contributors: {
       type: [Schema.Types.ObjectId],
-      ref: "User",
+      ref: 'User',
       default: [],
     },
     enrolledUsers: {
@@ -54,24 +54,24 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
     },
     description: {
       type: String,
-      default: "",
+      default: '',
     },
     slug: {
       type: String,
-      required: [true, "Slug is required"],
+      required: [true, 'Slug is required'],
     },
     banner: {
       type: String,
-      default: "",
+      default: '',
     },
     status: {
       type: String,
       enum: courseStatuses,
-      default: "published",
+      default: 'published',
     },
     topics: {
       type: [Schema.Types.ObjectId],
-      ref: "CourseTopic",
+      ref: 'CourseTopic',
       default: [],
     },
     tags: {
@@ -83,10 +83,10 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
         {
           user: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
           },
           rating: { type: Number, default: 5 },
-          comment: { type: String, default: "" },
+          comment: { type: String, default: '' },
         },
       ],
       default: [],
@@ -104,12 +104,12 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
     coursePrivacy: {
       type: String,
       enum: coursePrivacy,
-      default: "public",
+      default: 'public',
     },
     topicPrivacy: {
       type: String,
       enum: topicPrivacy,
-      default: "open",
+      default: 'open',
     },
   },
   {
@@ -126,6 +126,6 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
 // });
 
 const Course =
-  models.Course || model<ICourse, ICourseModel>("Course", CourseSchema);
+  models.Course || model<ICourse, ICourseModel>('Course', CourseSchema);
 
 export default Course;

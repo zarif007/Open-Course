@@ -6,10 +6,6 @@ export interface ICourseTopic {
   topicID: number;
   sortID?: number;
   views?: number;
-  // versions: {
-  //   type: "free_source_content" | "doc_content" | "quiz";
-  //   data: IEmbedContent;
-  // }[];
   versions: {} & (
     | {
         type: 'free_source_content';

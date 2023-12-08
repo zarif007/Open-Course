@@ -11,7 +11,7 @@ import { Textarea } from '../ui/Textarea';
 import ErrorMessage from '../ui/ErrorMessage';
 import { topicInputFields } from '@/constants/courseTopics';
 import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
-import { embedContentSchema } from '@/validations/freeSourceContent';
+import { embedContentSchema } from '@/validations/embedContent';
 
 const CourseEmbedLinkCreationForm = ({
   submitData,
