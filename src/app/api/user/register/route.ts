@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     const salt = process.env.SALT!;
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, parseInt(salt));
 
     const user = await User.create({ name, email, password: hashedPassword });
 
@@ -45,7 +45,8 @@ export const POST = async (req: NextRequest) => {
       success: true,
       message: 'Created Successfully',
     });
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json({
       data: null,
       status: 400,

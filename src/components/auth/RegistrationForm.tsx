@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Input } from "../ui/Input";
+import React, { useState } from 'react';
+import { Input } from '../ui/Input';
 import {
   Form,
   FormControl,
@@ -7,16 +7,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/Form";
-import { useForm } from "react-hook-form";
-import registerInputsSchema from "@/validations/auth/register";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/Button";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/Form';
+import { useForm } from 'react-hook-form';
+import registerInputsSchema from '@/validations/auth/register';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../ui/Button';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
   const router = useRouter();
@@ -29,8 +29,8 @@ const RegistrationForm = () => {
 
   const errorToast = (errorMsg: string) => {
     toast({
-      title: "Complete required fields",
-      type: "error",
+      title: 'Complete required fields',
+      type: 'error',
       message: errorMsg,
     });
   };
@@ -56,21 +56,21 @@ const RegistrationForm = () => {
       }
 
       toast({
-        title: "Success",
-        type: "success",
-        message: "User Created Successfully",
+        title: 'Success',
+        type: 'success',
+        message: 'User Created Successfully',
       });
 
-      router.push("/login");
+      router.push('/login');
     } catch {
-      errorToast("Something went wrong!");
+      errorToast('Something went wrong!');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto px-1">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

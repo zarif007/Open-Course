@@ -7,7 +7,6 @@ import { Toaster } from '../components/ui/Toast';
 import constructMetadata from '@/utils/constructMetadata';
 import TrpcProviders from './_trpc/TrpcProviders';
 import NextTopLoader from 'nextjs-toploader';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,7 +35,7 @@ export default async function RootLayout({
               speed={200}
               shadow="0 0 10px #9f1239,0 0 5px #9f1239"
             />
-            <SpeedInsights />
+
             <NavBar />
             {children}
             <Toaster position="bottom-right" />
