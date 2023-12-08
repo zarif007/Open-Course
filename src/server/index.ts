@@ -7,7 +7,7 @@ import { IAskResponse } from '@/types/courseAsk/response';
 import AskResponse from '@/lib/models/askResponse.model';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { askResponseSchema } from '@/validations/askResponse';
+import { askResponseSchema } from '@/validations/AskResponse';
 
 export const appRouter = router({
   getCourseAsks: publicProcedure
