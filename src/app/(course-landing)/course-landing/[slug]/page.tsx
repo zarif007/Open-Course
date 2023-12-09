@@ -34,7 +34,7 @@ const getCourseAndEnrollState = async (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       {
-        cache: 'no-store',
+        next: { revalidate: 3600 },
         method: 'GET',
         headers: new Headers(headers()),
       }
@@ -75,24 +75,24 @@ const CourseLanding = async ({ params }: PageParams) => {
 
   if (!course) redirect('/404');
 
-  const sortedCourse = sortCourseBasedOnTopicsSortID(course);
+  // const sortedCourse = sortCourseBasedOnTopicsSortID(course);
 
   const courseTopics = course.topics as ICourseTopic[];
 
   return (
     <div className="max-w-5xl w-full mx-auto">
-      <CourseLandingSideWidget course={sortedCourse} />
-      <CourseDetails course={sortedCourse} />
-      <CourseRatings reviews={sortedCourse.reviews ?? []} />
+      <CourseLandingSideWidget course={course} />
+      <CourseDetails course={course} />
+      <CourseRatings reviews={course.reviews ?? []} />
       <div className="flex space-x-2 items-center justify-center mt-8">
         <LargeHeading size="sm" className="text-center">
-          Course Topics ({sortedCourse.topics.length})
+          Course Topics ({course.topics.length})
         </LargeHeading>
         <PiStackDuotone className="w-10 h-10" />
       </div>
       <CourseTopicsAccordion courseTopics={courseTopics} />
-      <CourseReviews reviews={sortedCourse.reviews ?? []} />
-      <CourseEnrollmentButton course={sortedCourse} enrollState={enrollState} />
+      <CourseReviews reviews={course.reviews ?? []} />
+      <CourseEnrollmentButton course={course} enrollState={enrollState} />
     </div>
   );
 };
