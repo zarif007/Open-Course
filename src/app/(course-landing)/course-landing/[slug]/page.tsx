@@ -32,8 +32,7 @@ const getCourseAndEnrollState = async (
 ): Promise<{ course: ICourse | null; enrollState: IEnrollState | null }> => {
   const data = await (
     await fetch(
-      `${nextApiEndPoint}/course/withEnrollState?
-      courseSlug=${slug}&userEmail=${userEmail}`,
+      `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       {
         cache: 'no-store',
         method: 'GET',
