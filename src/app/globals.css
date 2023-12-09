@@ -2,17 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   @apply bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100;
 }
 
 .tw-gradient-text {
-  @apply bg-gradient-to-r from-pink-600 via-rose-500 to-red-500 bg-clip-text text-transparent
+  @apply bg-gradient-to-r from-pink-600 via-rose-500 to-red-500 bg-clip-text text-transparent;
 }
 
 .gradient-text {
-  background: linear-gradient(to right, #ffaf00, #ff9900, #f59e0b, #ff8c00, #ff7d0a, #f97316, #ff6633);
+  background: linear-gradient(
+    to right,
+    #ffaf00,
+    #ff9900,
+    #f59e0b,
+    #ff8c00,
+    #ff7d0a,
+    #f97316,
+    #ff6633
+  );
   -webkit-background-clip: text; /* For Safari */
   -webkit-text-fill-color: transparent; /* For Safari */
   background-clip: text;
@@ -20,7 +28,16 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(to right, #ffaf00, #ff9900, #f59e0b, #ff8c00, #ff7d0a, #f97316, #ff6633);
+  background: linear-gradient(
+    to right,
+    #ffaf00,
+    #ff9900,
+    #f59e0b,
+    #ff8c00,
+    #ff7d0a,
+    #f97316,
+    #ff6633
+  );
 }
 
 /* linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(238, 130, 238, 1) 93%) */
@@ -58,3 +75,13 @@ body {
   background-color: #f43f5e;
 }
 
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

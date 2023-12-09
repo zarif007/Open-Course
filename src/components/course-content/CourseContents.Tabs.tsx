@@ -1,33 +1,38 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import { TbMessageQuestion } from "react-icons/tb";
-import LargeHeading from "../ui/LargeHeading";
-import { BiSolidUpvote } from "react-icons/bi";
-import { MdOutlineVideoLibrary } from "react-icons/md";
-import CourseDiscussion from "../course-discussion/CourseDiscussion";
-import CourseAsks from "../course-ask/CourseAsks";
-import CourseContentController from "./CourseContent.Controller";
-import { useAppSelector } from "@/redux/store";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { TbMessageQuestion, TbVersions } from 'react-icons/tb';
+import LargeHeading from '../ui/LargeHeading';
+import { BiSolidUpvote } from 'react-icons/bi';
+import { MdOutlineVideoLibrary } from 'react-icons/md';
+import CourseDiscussion from '../course-discussion/CourseDiscussion';
+import CourseAsks from '../course-ask/CourseAsks';
+import CourseContentController from './CourseContent.Controller';
+import { useAppSelector } from '@/redux/store';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const tabElements = [
   {
-    name: "Content",
-    value: "content",
+    name: 'Content',
+    value: 'content',
     icon: <MdOutlineVideoLibrary className="w-5 h-5" />,
   },
   {
-    name: "Discuss",
-    value: "discuss",
+    name: 'Discuss',
+    value: 'discuss',
     icon: <TbMessageQuestion className="w-5 h-5" />,
   },
   {
-    name: "Ask",
-    value: "ask",
+    name: 'Ask',
+    value: 'ask',
     icon: <BiSolidUpvote className="w-5 h-5" />,
+  },
+  {
+    name: 'Version',
+    value: 'version',
+    icon: <TbVersions className="w-5 h-5" />,
   },
 ];
 
@@ -39,9 +44,9 @@ const CourseContentsTabs = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const tab = searchParams?.get("tab");
+  const tab = searchParams?.get('tab');
 
-  const currentTab: string = tab ?? "content";
+  const currentTab: string = tab ?? 'content';
 
   return (
     <Tabs defaultValue={currentTab} className="w-full mx-auto px-2 md:px-6">
@@ -49,29 +54,31 @@ const CourseContentsTabs = () => {
         size="sm"
         className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
       >
-        {currentCourseTopic?.topicID}.{" "}
+        {currentCourseTopic?.topicID}.{' '}
         {
           currentCourseTopic?.versions[currentCourseTopic?.versions.length - 1]
             .data.title
         }
       </LargeHeading>
-      <TabsList className="mt-4">
-        {tabElements.map((element) => (
-          <TabsTrigger
-            key={element.name}
-            className="font-semibold flex items-center space-x-1"
-            value={element.value}
-            onClick={() =>
-              router.push(
-                `?topicId=${currentCourseTopic?.topicID}&tab=${element.value}`
-              )
-            }
-          >
-            {element.icon}
-            <span>{element.name}</span>
-          </TabsTrigger>
-        ))}
-      </TabsList>
+      <div className="overflow-y-scroll scrollbar-hide">
+        <TabsList className="mt-4">
+          {tabElements.map((element) => (
+            <TabsTrigger
+              key={element.name}
+              className="font-semibold flex items-center space-x-1"
+              value={element.value}
+              onClick={() =>
+                router.push(
+                  `?topicId=${currentCourseTopic?.topicID}&tab=${element.value}`
+                )
+              }
+            >
+              {element.icon}
+              <span>{element.name}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </div>
       <TabsContent value="content">
         <CourseContentController />
       </TabsContent>
@@ -79,6 +86,9 @@ const CourseContentsTabs = () => {
         <CourseDiscussion />
       </TabsContent>
       <TabsContent value="ask">
+        <CourseAsks />
+      </TabsContent>
+      <TabsContent value="version">
         <CourseAsks />
       </TabsContent>
     </Tabs>
