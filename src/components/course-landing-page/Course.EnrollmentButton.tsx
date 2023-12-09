@@ -10,6 +10,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useAppSelector } from '@/redux/store';
 import { ICourse } from '@/types/course';
 import { IEnrollState } from '@/types/enrollState';
+import AuthDialog from '../auth/Auth.Dialog';
 
 const CourseEnrollmentButton = ({
   course,
@@ -89,13 +90,9 @@ const CourseEnrollmentButton = ({
         <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
             {!session?.user ? (
-              <Button
-                className="w-full py-6 text-lg font-bold"
-                isLoading={loadingStatus !== 'free'}
-                onClick={() => signIn()}
-              >
-                Enroll
-              </Button>
+              <div className="w-full">
+                <AuthDialog loadingStatus={loadingStatus} />
+              </div>
             ) : (
               <Button
                 className="w-full py-6 text-lg font-bold"

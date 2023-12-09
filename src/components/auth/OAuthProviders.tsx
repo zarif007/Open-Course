@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { FaDiscord, FaSquareFacebook } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 import { IoLogoGithub } from 'react-icons/io';
+import { toast } from '../ui/Toast';
 
 const providers = [
   {
@@ -50,14 +51,27 @@ const Provider = ({
 
   const callbackUrl = searchParams?.get('callbackUrl') ?? '/';
 
+  const oAuthSignIn = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      await signIn(provider.name, { callbackUrl });
+    } catch {
+      toast({
+        title: 'Error',
+        type: 'error',
+        message: 'Logged in failed, Try again!',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Button
       isLoading={isLoading}
       className="w-full py-6 flex space-x-2 justify-center items-center focus:ring-0"
-      onClick={() => {
-        signIn(provider.name, { callbackUrl });
-        setIsLoading(true);
-      }}
+      onClick={oAuthSignIn}
     >
       {provider.icon}
       <p className="font-bold text-lg">{provider.title}</p>

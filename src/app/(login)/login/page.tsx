@@ -1,6 +1,6 @@
 'use client';
 
-import CommonComps from '@/components/auth/CommonComps';
+import AuthForm from '@/components/auth/Auth.Form';
 import { useAppSelector } from '@/redux/store';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen mx-auto my-auto">
-      <CommonComps type="signIn" />
+      <AuthForm type="signIn" isModal={false} />
     </div>
   );
 };

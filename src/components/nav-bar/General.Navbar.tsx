@@ -1,21 +1,21 @@
-import React from "react";
-import { useTheme } from "next-themes";
-import Image from "next/image";
-import { PiSunDuotone } from "react-icons/pi";
-import { PiMoonStarsDuotone } from "react-icons/pi";
-import Link from "next/link";
-import AvatarDropdown from "./Avatar.Dropdown";
-import { Button } from "../ui/Button";
-import Paragraph from "../ui/Paragraph";
-import routeElements from "@/constants/navBar";
-import ElementsDropdown from "./Elements.Dropdown";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Skeleton } from "../ui/Skeleton";
+import React from 'react';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import { PiSunDuotone } from 'react-icons/pi';
+import { PiMoonStarsDuotone } from 'react-icons/pi';
+import Link from 'next/link';
+import AvatarDropdown from './Avatar.Dropdown';
+import { Button, buttonVariants } from '../ui/Button';
+import Paragraph from '../ui/Paragraph';
+import routeElements from '@/constants/navBar';
+import ElementsDropdown from './Elements.Dropdown';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { Skeleton } from '../ui/Skeleton';
 import {
   PiHouseDuotone,
   PiListPlusDuotone,
   PiStackDuotone,
-} from "react-icons/pi";
+} from 'react-icons/pi';
 
 const routeIcons = {
   Home: <PiHouseDuotone className="w-6 h-6" />,
@@ -27,7 +27,7 @@ const GeneralNavbar = () => {
   const styles = {
     icon: `h-8 w-8 cursor-pointer`,
     menuBarItems:
-      "cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold",
+      'cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold',
   };
 
   const session = useSession();
@@ -39,7 +39,7 @@ const GeneralNavbar = () => {
       {theme ? (
         <Link href="/" className="flex items-center space-x-1">
           <Image
-            src={theme === "dark" ? "/dark1.png" : "/light1.png"}
+            src={theme === 'dark' ? '/dark1.png' : '/light1.png'}
             priority
             quality={100}
             height="100"
@@ -59,21 +59,28 @@ const GeneralNavbar = () => {
         {/* Theme */}
         <div
           onClick={() =>
-            theme === "dark" ? setTheme("light") : setTheme("dark")
+            theme === 'dark' ? setTheme('light') : setTheme('dark')
           }
         >
-          {theme === "dark" ? (
+          {theme === 'dark' ? (
             <PiSunDuotone className={styles.icon} />
           ) : (
             theme && <PiMoonStarsDuotone className={styles.icon} />
           )}
         </div>
 
-        {session.status !== "loading" ? (
+        {session.status !== 'loading' ? (
           session.data?.user ? (
             <AvatarDropdown />
           ) : (
-            <Button onClick={() => signIn()}>login</Button>
+            <Link
+              href="/login"
+              className={`${buttonVariants({
+                variant: 'default',
+              })}`}
+            >
+              Sign In
+            </Link>
           )
         ) : (
           <Skeleton className="rounded-full h-12 w-12" />
@@ -95,7 +102,7 @@ const GeneralNavbar = () => {
                 href={route.redirectTo}
                 className="flex justify-center items-center space-x-1 block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 px-4 py-2 md:dark:hover:text-rose-500 dark:hover:bg-gray-900 hover:bg-slate-300"
               >
-                {routeIcons[route.name as "Home" | "Create" | "Courses"]}
+                {routeIcons[route.name as 'Home' | 'Create' | 'Courses']}
                 <p>{route.name}</p>
               </Link>
             </li>

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import CommonComps from "@/components/auth/CommonComps";
-import { useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import CommonComps from '@/components/auth/Auth.Form';
+import { useAppSelector } from '@/redux/store';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const Register = () => {
   const router = useRouter();
@@ -14,7 +14,7 @@ const Register = () => {
 
   useEffect(() => {
     if (signedInUser?.id) {
-      router.push("/");
+      router.push('/');
     }
   }, [signedInUser]);
 
