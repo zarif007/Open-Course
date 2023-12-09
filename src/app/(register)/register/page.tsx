@@ -20,7 +20,7 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen mx-auto my-auto">
-      <CommonComps type="signUp" />
+      <CommonComps type="signUp" isModal={false} />
     </div>
   );
 };
