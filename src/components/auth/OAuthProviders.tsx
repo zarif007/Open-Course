@@ -30,11 +30,19 @@ const providers = [
   },
 ];
 
-const OAuthProviders = () => {
+const OAuthProviders = ({
+  manualCallbackUrl,
+}: {
+  manualCallbackUrl: string | undefined;
+}) => {
   return (
     <div className="w-full h-full flex flex-col space-y-3 items-center justify-center mx-auto">
       {providers.map((provider) => (
-        <Provider key={provider.name} provider={provider} />
+        <Provider
+          key={provider.name}
+          provider={provider}
+          manualCallbackUrl={manualCallbackUrl}
+        />
       ))}
     </div>
   );
@@ -42,14 +50,17 @@ const OAuthProviders = () => {
 
 const Provider = ({
   provider,
+  manualCallbackUrl,
 }: {
   provider: { name: string; title: string; icon: React.JSX.Element };
+  manualCallbackUrl: string | undefined;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
-  const callbackUrl = searchParams?.get('callbackUrl') ?? '/';
+  const callbackUrl =
+    manualCallbackUrl ?? searchParams?.get('callbackUrl') ?? '/';
 
   const oAuthSignIn = async () => {
     if (isLoading) return;

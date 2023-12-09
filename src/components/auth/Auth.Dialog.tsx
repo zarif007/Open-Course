@@ -5,8 +5,10 @@ import { Button } from '../ui/Button';
 
 const AuthDialog = ({
   loadingStatus,
+  manualCallbackUrl,
 }: {
   loadingStatus: 'free' | 'Processing' | 'Redirecting';
+  manualCallbackUrl: string;
 }) => {
   return (
     <Dialog>
@@ -20,7 +22,11 @@ const AuthDialog = ({
       </DialogTrigger>
       <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-gray-950 bg-slate-200">
         <div className="w-full">
-          <AuthForm type="signIn" isModal={true} />
+          <AuthForm
+            type="signIn"
+            isModal={true}
+            manualCallbackUrl={manualCallbackUrl}
+          />
         </div>
       </DialogContent>
     </Dialog>

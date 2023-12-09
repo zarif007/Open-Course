@@ -16,6 +16,7 @@ import {
   PiListPlusDuotone,
   PiStackDuotone,
 } from 'react-icons/pi';
+import { usePathname } from 'next/navigation';
 
 const routeIcons = {
   Home: <PiHouseDuotone className="w-6 h-6" />,
@@ -33,6 +34,8 @@ const GeneralNavbar = () => {
   const session = useSession();
 
   const { theme, setTheme } = useTheme();
+
+  const pathname = usePathname();
 
   return (
     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
@@ -74,7 +77,7 @@ const GeneralNavbar = () => {
             <AvatarDropdown />
           ) : (
             <Link
-              href="/login"
+              href={`/login?callbackUrl=${pathname}`}
               className={`${buttonVariants({
                 variant: 'default',
               })}`}

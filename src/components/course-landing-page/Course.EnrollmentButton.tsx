@@ -91,7 +91,10 @@ const CourseEnrollmentButton = ({
           <div className="m-4 md:mx-6 mt-8">
             {!session?.user ? (
               <div className="w-full">
-                <AuthDialog loadingStatus={loadingStatus} />
+                <AuthDialog
+                  loadingStatus={loadingStatus}
+                  manualCallbackUrl={`/course-landing/${course.slug}`}
+                />
               </div>
             ) : (
               <Button

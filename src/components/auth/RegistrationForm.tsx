@@ -18,7 +18,13 @@ import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { toast } from '../ui/Toast';
 import { useRouter } from 'next/navigation';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({
+  isModal,
+  setAuthType,
+}: {
+  isModal: boolean;
+  setAuthType: React.Dispatch<React.SetStateAction<'signIn' | 'signUp'>>;
+}) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +67,11 @@ const RegistrationForm = () => {
         message: 'User Created Successfully',
       });
 
-      router.push('/login');
+      if (isModal) {
+        setAuthType('signIn');
+      } else {
+        router.push('/login');
+      }
     } catch {
       errorToast('Something went wrong!');
     } finally {

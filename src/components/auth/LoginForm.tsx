@@ -17,9 +17,19 @@ import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { toast } from '../ui/Toast';
 import loginInputsSchema from '@/validations/auth/login';
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 
-const LoginForm = () => {
+const LoginForm = ({
+  manualCallbackUrl,
+}: {
+  manualCallbackUrl: string | undefined;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+
+  const callbackUrl =
+    manualCallbackUrl ?? searchParams?.get('callbackUrl') ?? '/';
 
   const form = useForm<z.infer<typeof loginInputsSchema>>({
     resolver: zodResolver(loginInputsSchema),
@@ -41,7 +51,6 @@ const LoginForm = () => {
 
       const { data: response } = await axios.post(
         `${nextApiEndPoint}/user/checkUser`,
-
         {
           email,
           password,
@@ -56,6 +65,7 @@ const LoginForm = () => {
       const signInResponse = await signIn('credentials', {
         email,
         password,
+        callbackUrl,
       });
 
       if (signInResponse?.error) {
