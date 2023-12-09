@@ -12,6 +12,7 @@ import CourseContentController from './CourseContent.Controller';
 import { useAppSelector } from '@/redux/store';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import CourseVersion from '../course-version/CourseVersion';
 
 const tabElements = [
   {
@@ -89,7 +90,7 @@ const CourseContentsTabs = () => {
         <CourseAsks />
       </TabsContent>
       <TabsContent value="version">
-        <CourseAsks />
+        <CourseVersion />
       </TabsContent>
     </Tabs>
   );
