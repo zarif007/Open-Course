@@ -4,7 +4,7 @@ import { ZodType, z } from 'zod';
 export const embedContentSchema: ZodType<IEmbedContent> = z.object({
   title: z.string().min(2).max(200),
   url: z.string().refine((url) => validateURL(url), { message: 'Invalid URL' }),
-  description: z.string().min(0).max(500),
+  description: z.string().min(0).max(500).or(z.undefined()),
   duration: z.number().min(0).max(10000),
   source: z.string(),
 });

@@ -25,7 +25,7 @@ export interface IEmbedContent {
   title: string;
   url: string;
   source: string;
-  description: string;
+  description?: string;
   duration: number;
 }
 

@@ -8,7 +8,6 @@ import { AppDispatch, useAppSelector } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setCurrentCourseTopicForCreation } from '@/redux/features/course-creation-slice';
 import { Textarea } from '../ui/Textarea';
-import ErrorMessage from '../ui/ErrorMessage';
 import { topicInputFields } from '@/constants/courseTopics';
 import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
 import { embedContentSchema } from '@/validations/embedContent';
@@ -34,12 +33,16 @@ const CourseEmbedLinkCreationForm = ({
   const currentCourseTopic = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
-      : state.courseUpdateReducer.value.currentCourseTopic
+      : mode === 'edit'
+        ? state.courseUpdateReducer.value.currentCourseTopic
+        : null
   );
   const course = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.course
-      : state.courseUpdateReducer.value.course
+      : mode === 'edit'
+        ? state.courseUpdateReducer.value.course
+        : null
   );
 
   const form = useForm<z.infer<typeof embedContentSchema>>({
@@ -64,6 +67,7 @@ const CourseEmbedLinkCreationForm = ({
   });
 
   useEffect(() => {
+    if (!currentCourseTopic || !course || mode === 'contribution') return;
     setDefaultValue(currentCourseTopic);
     form.reset(
       currentCourseTopic.versions[currentCourseTopic.versions.length - 1].data
@@ -97,33 +101,49 @@ const CourseEmbedLinkCreationForm = ({
   const onSubmit = (data: {
     title: string;
     url: string;
-    description: string;
+    description?: string;
     duration: number;
   }) => {
-    const courseTopics = course.topics as ICourseTopic[];
-
     const source = new URL(data.url).origin;
+    if (!course || !currentCourseTopic || mode === 'contribution') {
+      submitData({
+        id: '',
+        _id: '',
+        versions: [
+          {
+            type: 'free_source_content',
+            data: { ...data, source },
+          },
+        ],
+        topicID: 1,
+        sortID: 1,
+        createdAt: '',
+        updatedAt: '',
+      });
+    } else {
+      const courseTopics = course.topics as ICourseTopic[];
 
-    const topicID =
-      currentCourseTopic.topicID && currentCourseTopic.topicID > 0
-        ? currentCourseTopic.topicID
-        : courseTopics && courseTopics.length > 0
-          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
-          : 1;
-    submitData({
-      id: currentCourseTopic.id ?? '',
-      _id: currentCourseTopic._id ?? '',
-      versions: [
-        {
-          type: 'free_source_content',
-          data: { ...data, source },
-        },
-      ],
-      topicID,
-      sortID: topicID,
-      createdAt: currentCourseTopic.createdAt ?? '',
-      updatedAt: currentCourseTopic.updatedAt ?? '',
-    });
+      const topicID =
+        currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+          ? currentCourseTopic.topicID
+          : courseTopics && courseTopics.length > 0
+            ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
+            : 1;
+      submitData({
+        id: currentCourseTopic.id ?? '',
+        _id: currentCourseTopic._id ?? '',
+        versions: [
+          {
+            type: 'free_source_content',
+            data: { ...data, source },
+          },
+        ],
+        topicID,
+        sortID: topicID,
+        createdAt: currentCourseTopic.createdAt ?? '',
+        updatedAt: currentCourseTopic.updatedAt ?? '',
+      });
+    }
     form.reset();
     resetCourseTopic();
   };
@@ -179,7 +199,8 @@ const CourseEmbedLinkCreationForm = ({
                   {...field}
                   placeholder="Huh I don't know"
                   className="text-sm font-semibold"
-                  defaultValue={defaultData['description']}
+                  defaultValue=""
+                  required={false}
                 />
               </FormControl>
               <FormMessage />
@@ -188,7 +209,9 @@ const CourseEmbedLinkCreationForm = ({
         />
 
         <div className="flex space-x-2 justify-start w-full max-w-md">
-          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
+          {currentCourseTopic &&
+          currentCourseTopic.topicID &&
+          currentCourseTopic.topicID > 0 ? (
             <Button
               type="button"
               variant="outline"
@@ -205,7 +228,9 @@ const CourseEmbedLinkCreationForm = ({
             variant="general"
             className="dark:bg-slate-100 dark:text-gray-900 w-full"
           >
-            {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+            {currentCourseTopic &&
+            currentCourseTopic.topicID &&
+            currentCourseTopic.topicID > 0
               ? 'Update'
               : 'Add'}
           </Button>

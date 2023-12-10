@@ -33,13 +33,16 @@ const DocCreationForm = ({
   const currentCourseTopic = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
-      : state.courseUpdateReducer.value.currentCourseTopic
+      : mode === 'edit'
+        ? state.courseUpdateReducer.value.currentCourseTopic
+        : null
   );
-
   const course = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.course
-      : state.courseUpdateReducer.value.course
+      : mode === 'edit'
+        ? state.courseUpdateReducer.value.course
+        : null
   );
 
   const form = useForm<z.infer<typeof docContentSchema>>({
@@ -62,6 +65,7 @@ const DocCreationForm = ({
   });
 
   useEffect(() => {
+    if (!currentCourseTopic || !course || mode === 'contribution') return;
     setDefaultValue(currentCourseTopic);
     form.reset(
       currentCourseTopic.versions[currentCourseTopic.versions.length - 1].data
@@ -100,29 +104,46 @@ const DocCreationForm = ({
       duration: Math.ceil(readingTime),
     };
 
-    const courseTopics = course.topics as ICourseTopic[];
+    if (!currentCourseTopic || !course || mode === 'contribution') {
+      submitData({
+        id: '',
+        _id: '',
+        versions: [
+          {
+            type: 'doc_content',
+            data: topic,
+          },
+        ],
+        topicID: 1,
+        sortID: 1,
+        createdAt: '',
+        updatedAt: '',
+      });
+    } else {
+      const courseTopics = course.topics as ICourseTopic[];
 
-    const topicID =
-      currentCourseTopic.topicID && currentCourseTopic.topicID > 0
-        ? currentCourseTopic.topicID
-        : courseTopics && courseTopics.length > 0
-          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
-          : 1;
+      const topicID =
+        currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+          ? currentCourseTopic.topicID
+          : courseTopics && courseTopics.length > 0
+            ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
+            : 1;
 
-    submitData({
-      id: currentCourseTopic.id ?? '',
-      _id: currentCourseTopic._id ?? '',
-      versions: [
-        {
-          type: 'doc_content',
-          data: topic,
-        },
-      ],
-      topicID,
-      sortID: topicID,
-      createdAt: currentCourseTopic.createdAt ?? '',
-      updatedAt: currentCourseTopic.updatedAt ?? '',
-    });
+      submitData({
+        id: currentCourseTopic.id ?? '',
+        _id: currentCourseTopic._id ?? '',
+        versions: [
+          {
+            type: 'doc_content',
+            data: topic,
+          },
+        ],
+        topicID,
+        sortID: topicID,
+        createdAt: currentCourseTopic.createdAt ?? '',
+        updatedAt: currentCourseTopic.updatedAt ?? '',
+      });
+    }
 
     resetCourseTopic();
     form.reset();
