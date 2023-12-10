@@ -1,5 +1,6 @@
 import { connectToDB } from '@/lib/connectToMongoose';
 import TopicVersion from '@/lib/models/topicVersion.model';
+import User from '@/lib/models/user.model';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -33,6 +34,12 @@ export const POST = async (req: NextRequest) => {
     await connectToDB();
 
     const newVersion = await TopicVersion.create(payload);
+
+    await newVersion.populate({
+      path: 'creator',
+      model: User,
+      select: 'name image userName',
+    });
 
     return NextResponse.json({
       data: newVersion,

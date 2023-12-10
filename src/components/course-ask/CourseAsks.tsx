@@ -19,6 +19,8 @@ const CourseAsks = () => {
     version,
   });
 
+  const courseAsk = asks as ICourseAsk[];
+
   return (
     <div>
       <div className="flex justify-end mb-2">
@@ -27,10 +29,14 @@ const CourseAsks = () => {
 
       {isLoading ? (
         <AsksSkeleton />
-      ) : (
+      ) : asks?.length ? (
         <div className="flex flex-col space-y-2">
-          {asks?.map((ask: ICourseAsk) => <AskShort key={ask.id} ask={ask} />)}
+          {courseAsk?.map((ask: ICourseAsk, index: number) => (
+            <AskShort key={index} ask={ask} />
+          ))}
         </div>
+      ) : (
+        <></>
       )}
     </div>
   );

@@ -17,8 +17,8 @@ const DisplayVersions = ({ versions }: { versions: ITopicVersion[] }) => {
             className="p-4 cursor-pointer flex items-center justify-between rounded border-2 border-slate-300 dark:border-gray-900"
           >
             <div className="flex justify-start space-x-2 items-center">
-              <div className="flex items-center space-x-1">
-                {/* <ContentLogos topics={[version.version.data]} withDuration={false} /> */}
+              <div className="flex items-center space-x-2">
+                <ContentLogos topics={[version]} withDuration={false} />
                 <img
                   src={author.image}
                   alt="author"
