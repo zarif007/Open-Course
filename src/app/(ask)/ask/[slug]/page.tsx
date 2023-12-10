@@ -6,6 +6,8 @@ import { trpc } from '@/app/_trpc/client';
 import { useRouter } from 'next/navigation';
 import AskPage from '@/components/course-ask/Ask.Page';
 import AskResponsePage from '@/components/course-ask/AskResponse.Page';
+import { ICourseAsk } from '@/types/courseAsk';
+import { IUser } from '@/types/user';
 
 interface PageParams {
   params: {
@@ -14,12 +16,7 @@ interface PageParams {
 }
 
 const Ask = ({ params }: PageParams) => {
-  const router = useRouter();
-  const { data: ask, isLoading } = trpc.getAskBySlug.useQuery(params.slug, {
-    onSuccess(data) {
-      if (!data) router.push('/404');
-    },
-  });
+  const { data: ask, isLoading } = trpc.getAskBySlug.useQuery(params.slug);
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -29,7 +26,7 @@ const Ask = ({ params }: PageParams) => {
         <p>Not Found</p>
       ) : (
         <div className="flex flex-col space-y-4">
-          <AskPage ask={ask} />
+          <AskPage ask={ask as ICourseAsk} />
           <AskResponsePage
             questionId={ask.id as string}
             topic={ask.topic as string}
