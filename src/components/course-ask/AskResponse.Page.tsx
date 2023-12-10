@@ -2,6 +2,7 @@ import React from 'react';
 import AskResponses from './AskResponses';
 import AskResponseForm from './AskResponse.Form';
 import { trpc } from '@/app/_trpc/client';
+import { IAskResponse } from '@/types/courseAsk/response';
 
 const AskResponsePage = ({
   questionId,
@@ -23,7 +24,7 @@ const AskResponsePage = ({
       {isLoading ? (
         <p>Loading....</p>
       ) : (
-        <AskResponses responses={responses ?? []} />
+        <AskResponses responses={(responses as IAskResponse[]) ?? []} />
       )}
       <AskResponseForm
         questionId={questionId}

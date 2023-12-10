@@ -1,71 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui/Button';
 import { MdOutlineAddToPhotos } from 'react-icons/md';
-import CourseTopicCreation from '../course-topic/CourseTopicCreation';
+import VersionCreation from './Version.Creation';
 import { useAppSelector } from '@/redux/store';
-import { ICourseTopic } from '@/types/courseTopic';
-import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
-import { toast } from '../ui/Toast';
+import DisplayVersions from './DisplayVersions';
 import { ITopicVersion } from '@/types/topicVersion';
 
 const CourseVersion = () => {
-  const selectedTopicType = useAppSelector(
-    (state) => state.selectedTopicType.value.selectedType
-  );
+  const [openPanel, setOpenPanel] = useState<boolean>(false);
 
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const currentCourseTopic = useAppSelector(
     (state) => state.courseViewReducer.value.currentCourseTopic
   );
 
-  const [openPanel, setOpenPanel] = useState<boolean>(false);
+  const [versions, setVersions] = useState<ITopicVersion[]>([]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const errorToast = (errMsg: string) => {
-    setIsLoading(false);
-    toast({
-      title: 'Error',
-      type: 'error',
-      message: errMsg,
-    });
-  };
-
-  const handleAddToContrib = async (courseTopic: ICourseTopic) => {
-    if (isLoading || !signedInUser?.id) return;
-    setIsLoading(true);
-    setOpenPanel(false);
-    try {
-      const version = courseTopic.versions[0];
-      const reqData: ITopicVersion = {
-        version,
-        creator: signedInUser.id,
-        stage: 'pending',
-        topicId: currentCourseTopic.id as string,
-      };
-      const { data } = await axios.post(
-        `${nextApiEndPoint}/topicVersion`,
-        reqData
-      );
-
-      if (!data.success) {
-        errorToast(data.message);
-        return;
-      }
-      toast({
-        title: 'Success',
-        type: 'success',
-        message: 'Uploaded successfully',
-      });
-      setIsLoading(false);
-    } catch {
-      errorToast('Something went wrong');
-    }
-  };
+  const { data } = useQuery({
+    queryKey: [`versions-${currentCourseTopic.id}`],
+    queryFn: async () => {
+      const { data } = await (
+        await fetch(
+          `${nextApiEndPoint}/topicVersion/byTopicId/${currentCourseTopic.id}`
+        )
+      ).json();
+      setVersions(data);
+      return data;
+    },
+  });
 
   return (
     <div>
@@ -80,13 +45,15 @@ const CourseVersion = () => {
       </div>
       <p>{isLoading && 'Uploading....'}</p>
       {openPanel ? (
-        <CourseTopicCreation
-          mode="contribution"
-          selectedTopicType={selectedTopicType}
-          handleAddToContrib={handleAddToContrib}
+        <VersionCreation
+          isLoading={isLoading}
+          setOpenPanel={setOpenPanel}
+          setIsLoading={setIsLoading}
+          versions={versions}
+          setVersions={setVersions}
         />
       ) : (
-        <></>
+        <DisplayVersions versions={versions} />
       )}
     </div>
   );
