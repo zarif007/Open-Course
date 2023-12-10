@@ -1,12 +1,12 @@
-import { topicTypes } from "@/constants/courseTopics";
-import { ICourseTopic, ICourseTopicModel } from "@/types/courseTopic";
-import { Schema, model, models } from "mongoose";
+import { topicTypes } from '@/constants/courseTopics';
+import { ICourseTopic, ICourseTopicModel } from '@/types/courseTopic';
+import { Schema, model, models } from 'mongoose';
 
 const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
   {
     topicID: {
       type: Number,
-      required: [true, "Topic ID is required"],
+      required: [true, 'Topic ID is required'],
     },
     sortID: {
       type: Number,
@@ -16,12 +16,17 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
       type: Number,
       default: 0,
     },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'User is required'],
+    },
     versions: [
       {
         type: {
           type: String,
           enum: topicTypes,
-          default: "free_source_content",
+          default: 'free_source_content',
         },
         data: { type: Schema.Types.Mixed, required: true },
       },
@@ -37,6 +42,6 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
 
 const CourseTopic =
   models.CourseTopic ||
-  model<ICourseTopic, ICourseTopicModel>("CourseTopic", CourseTopicSchema);
+  model<ICourseTopic, ICourseTopicModel>('CourseTopic', CourseTopicSchema);
 
 export default CourseTopic;

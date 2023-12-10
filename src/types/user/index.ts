@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export interface IUser {
   id?: string;
@@ -8,11 +8,14 @@ export interface IUser {
   password?: string;
   isEmailVerified?: boolean;
   image: string;
-  role?: "super_admin" | "admin" | "user" | "pro_User";
+  role?: 'super_admin' | 'admin' | 'user' | 'pro_User';
   preferences?: string[];
   userName?: string;
   bio?: string;
   points?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  _v?: number;
 }
 
 export type IUserModel = Model<IUser, Record<string, unknown>>;

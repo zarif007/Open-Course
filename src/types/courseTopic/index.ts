@@ -1,4 +1,6 @@
+import { Schema } from 'mongoose';
 import { Model } from 'mongoose';
+import { IUser } from '../user';
 
 export interface ICourseTopic {
   id?: number | string;
@@ -6,6 +8,7 @@ export interface ICourseTopic {
   topicID: number;
   sortID?: number;
   views?: number;
+  creator: Schema.Types.ObjectId | string | IUser;
   versions: {} & (
     | {
         type: 'free_source_content';
@@ -24,7 +27,7 @@ export interface ICourseTopic {
 export interface IEmbedContent {
   title: string;
   url: string;
-  source: string;
+  source?: string;
   description?: string;
   duration: number;
 }

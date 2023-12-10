@@ -112,7 +112,7 @@ const CourseEmbedLinkCreationForm = ({
         versions: [
           {
             type: 'free_source_content',
-            data: { ...data, source },
+            data: { ...data, source, description: data.description ?? '' },
           },
         ],
         topicID: 1,
@@ -135,7 +135,7 @@ const CourseEmbedLinkCreationForm = ({
         versions: [
           {
             type: 'free_source_content',
-            data: { ...data, source },
+            data: { ...data, source, description: data.description ?? '' },
           },
         ],
         topicID,

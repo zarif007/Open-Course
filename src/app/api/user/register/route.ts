@@ -3,6 +3,7 @@ import User from '@/lib/models/user.model';
 import registerInputsSchema from '@/validations/auth/register';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -46,12 +47,17 @@ export const POST = async (req: NextRequest) => {
       message: 'Created Successfully',
     });
   } catch (error) {
-    console.log(error);
+    let status = 500;
+    let message = 'Internal server error';
+    if (error instanceof z.ZodError) {
+      status = 422;
+      message = 'Invalid data';
+    }
     return NextResponse.json({
       data: null,
-      status: 400,
+      status,
+      message,
       success: false,
-      message: 'Something went wrong',
     });
   }
 };

@@ -1,30 +1,29 @@
-import { IActivity, IActivityModel } from "@/types/actvity";
-import { ICourseTopic, ICourseTopicModel } from "@/types/courseTopic";
-import { Schema, model, models } from "mongoose";
+import { IActivity, IActivityModel } from '@/types/actvity';
+import { Schema, model, models } from 'mongoose';
 
 const ActivitySchema = new Schema<IActivity, IActivityModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "User is required"],
+      ref: 'User',
+      required: [true, 'User is required'],
     },
     date: {
       type: String,
-      required: [true, "Date is required"],
+      required: [true, 'Date is required'],
     },
     link: {
       type: String,
-      required: [true, "Link is required"],
+      required: [true, 'Link is required'],
     },
     text: {
       type: String,
-      required: [true, "Text is required"],
+      required: [true, 'Text is required'],
     },
     type: {
       type: String,
-      enum: ["commented", "created", "enrolled", "completed"],
-      required: [true, "Type is required"],
+      enum: ['commented', 'created', 'enrolled', 'completed'],
+      required: [true, 'Type is required'],
     },
   },
   {
@@ -37,6 +36,6 @@ const ActivitySchema = new Schema<IActivity, IActivityModel>(
 
 const Activity =
   models.Activity ||
-  model<IActivity, IActivityModel>("Activity", ActivitySchema);
+  model<IActivity, IActivityModel>('Activity', ActivitySchema);
 
 export default Activity;
