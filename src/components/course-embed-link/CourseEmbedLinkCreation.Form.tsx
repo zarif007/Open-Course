@@ -12,13 +12,22 @@ import ErrorMessage from '../ui/ErrorMessage';
 import { topicInputFields } from '@/constants/courseTopics';
 import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
 import { embedContentSchema } from '@/validations/embedContent';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/Form';
+import { z } from 'zod';
 
 const CourseEmbedLinkCreationForm = ({
   submitData,
   mode,
 }: {
   submitData: (data: ICourseTopic) => void;
-  mode: 'creation' | 'edit';
+  mode: 'creation' | 'edit' | 'contribution';
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,17 +42,10 @@ const CourseEmbedLinkCreationForm = ({
       : state.courseUpdateReducer.value.course
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<{
-    title: string;
-    url: string;
-    description: string;
-    duration: number;
-  }>({ resolver: zodResolver(embedContentSchema) });
+  const form = useForm<z.infer<typeof embedContentSchema>>({
+    resolver: zodResolver(embedContentSchema),
+    mode: 'onChange',
+  });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
@@ -63,10 +65,10 @@ const CourseEmbedLinkCreationForm = ({
 
   useEffect(() => {
     setDefaultValue(currentCourseTopic);
-    reset(
+    form.reset(
       currentCourseTopic.versions[currentCourseTopic.versions.length - 1].data
     );
-  }, [currentCourseTopic, reset]);
+  }, [currentCourseTopic, form.reset]);
 
   const resetCourseTopic = () => {
     const resetValue: ICourseTopic = {
@@ -122,7 +124,7 @@ const CourseEmbedLinkCreationForm = ({
       createdAt: currentCourseTopic.createdAt ?? '',
       updatedAt: currentCourseTopic.updatedAt ?? '',
     });
-    reset();
+    form.reset();
     resetCourseTopic();
   };
 
@@ -130,90 +132,86 @@ const CourseEmbedLinkCreationForm = ({
     .data as IEmbedContent;
 
   return (
-    <form
-      className="flex flex-col justify-center items-center space-y-6 my-12 w-full"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      {topicInputFields.map((field) => {
-        return (
-          <div
-            key={field.label}
-            className="grid w-full max-w-md items-center gap-1.5"
-          >
-            <label htmlFor="text" className="font-bold">
-              {field.label}
-            </label>
-            <Input
-              type={field.type}
-              placeholder="How to train your Dragon Part-4565"
-              {...register(
-                field.key,
-                field.type === 'number' ? { valueAsNumber: true } : {}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col justify-center items-center space-y-3 my-12 w-full max-w-md mx-auto"
+      >
+        {topicInputFields.map((inputField) => {
+          return (
+            <FormField
+              key={inputField.key}
+              control={form.control}
+              name={inputField.key}
+              render={({ field }) => (
+                <FormItem className="my-2 w-full">
+                  <FormLabel>{inputField.label}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...form.register(
+                        inputField.key,
+                        inputField.type === 'number'
+                          ? { valueAsNumber: true }
+                          : {}
+                      )}
+                      placeholder="How to train your Dragon Part-4565"
+                      className="text-sm font-semibold"
+                      defaultValue={defaultData[inputField.key]}
+                      type={inputField.type}
+                      required
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              onChange={(e) => {
-                const updated: ICourseTopic = {
-                  ...currentCourseTopic,
-                  versions: [
-                    {
-                      type: 'free_source_content',
-                      data: {
-                        ...currentCourseTopic.versions[0].data,
-                        [field.key]: field.value(e),
-                      } as IEmbedContent,
-                    },
-                  ],
-                };
-                dispatch(
-                  mode === 'creation'
-                    ? setCurrentCourseTopicForCreation(updated)
-                    : setCurrentCourseTopicForUpdate(updated)
-                );
-              }}
-              defaultValue={defaultData[field.key]}
-              required
             />
-            <ErrorMessage text={errors[field.key]?.message} className="" />
-          </div>
-        );
-      })}
+          );
+        })}
 
-      <div className="grid w-full max-w-md items-center gap-1.5">
-        <label htmlFor="url" className="font-bold">
-          Description (Optional)
-        </label>
-        <Textarea
-          {...register('description')}
-          defaultValue=""
-          placeholder="Huh!! I don't know"
-          className="text-sm font-semibold"
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="my-2 w-full">
+              <FormLabel>Description (Optional)</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  placeholder="Huh I don't know"
+                  className="text-sm font-semibold"
+                  defaultValue={defaultData['description']}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <ErrorMessage text={errors.url?.message} className="" />
-      </div>
 
-      <div className="flex space-x-2 justify-start w-full max-w-md">
-        {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
+        <div className="flex space-x-2 justify-start w-full max-w-md">
+          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0 ? (
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={resetCourseTopic}
+            >
+              Add Another
+            </Button>
+          ) : (
+            <></>
+          )}
           <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={resetCourseTopic}
+            type="submit"
+            variant="general"
+            className="dark:bg-slate-100 dark:text-gray-900 w-full"
           >
-            Add Another
+            {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
+              ? 'Update'
+              : 'Add'}
           </Button>
-        ) : (
-          <></>
-        )}
-        <Button
-          type="submit"
-          variant="general"
-          className="dark:bg-slate-100 dark:text-gray-900 w-full"
-        >
-          {currentCourseTopic.topicID && currentCourseTopic.topicID > 0
-            ? 'Update'
-            : 'Add'}
-        </Button>
-      </div>
-    </form>
+        </div>
+      </form>
+    </Form>
   );
 };
 

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import LargeHeading from "../ui/LargeHeading";
-import RichTextEditor from "../ui/RichTextEditor";
-import { z } from "zod";
+import React, { useEffect, useState } from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import RichTextEditor from '../ui/RichTextEditor';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -9,51 +9,51 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/Form";
-import { Input } from "../ui/Input";
-import { useForm } from "react-hook-form";
-import { docContentSchema } from "@/validations/docContent";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/Button";
-import { ICourseTopic, IDocContent } from "@/types/courseTopic";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { setCurrentCourseTopicForCreation } from "@/redux/features/course-creation-slice";
-import { setCurrentCourseTopicForUpdate } from "@/redux/features/course-update-slice";
+} from '@/components/ui/Form';
+import { Input } from '../ui/Input';
+import { useForm } from 'react-hook-form';
+import { docContentSchema } from '@/validations/docContent';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../ui/Button';
+import { ICourseTopic, IDocContent } from '@/types/courseTopic';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { setCurrentCourseTopicForCreation } from '@/redux/features/course-creation-slice';
+import { setCurrentCourseTopicForUpdate } from '@/redux/features/course-update-slice';
 
 const DocCreationForm = ({
   submitData,
   mode,
 }: {
   submitData: (data: ICourseTopic) => void;
-  mode: "creation" | "edit";
+  mode: 'creation' | 'edit' | 'contribution';
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const currentCourseTopic = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
       : state.courseUpdateReducer.value.currentCourseTopic
   );
 
   const course = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.course
       : state.courseUpdateReducer.value.course
   );
 
   const form = useForm<z.infer<typeof docContentSchema>>({
     resolver: zodResolver(docContentSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const [defaultValue, setDefaultValue] = useState<ICourseTopic>({
     versions: [
       {
-        type: "doc_content",
+        type: 'doc_content',
         data: {
-          title: "",
-          content: "",
+          title: '',
+          content: '',
           duration: 0,
         },
       },
@@ -72,18 +72,18 @@ const DocCreationForm = ({
     const resetValue: ICourseTopic = {
       versions: [
         {
-          type: "doc_content",
+          type: 'doc_content',
           data: {
-            title: "",
+            title: '',
             duration: 0,
-            content: "",
+            content: '',
           },
         },
       ],
       topicID: -1,
     };
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCurrentCourseTopicForCreation(resetValue)
         : setCurrentCourseTopicForUpdate(resetValue)
     );
@@ -106,22 +106,22 @@ const DocCreationForm = ({
       currentCourseTopic.topicID && currentCourseTopic.topicID > 0
         ? currentCourseTopic.topicID
         : courseTopics && courseTopics.length > 0
-        ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
-        : 1;
+          ? (courseTopics[courseTopics.length - 1]?.topicID || 0) + 1
+          : 1;
 
     submitData({
-      id: currentCourseTopic.id ?? "",
-      _id: currentCourseTopic._id ?? "",
+      id: currentCourseTopic.id ?? '',
+      _id: currentCourseTopic._id ?? '',
       versions: [
         {
-          type: "doc_content",
+          type: 'doc_content',
           data: topic,
         },
       ],
       topicID,
       sortID: topicID,
-      createdAt: currentCourseTopic.createdAt ?? "",
-      updatedAt: currentCourseTopic.updatedAt ?? "",
+      createdAt: currentCourseTopic.createdAt ?? '',
+      updatedAt: currentCourseTopic.updatedAt ?? '',
     });
 
     resetCourseTopic();

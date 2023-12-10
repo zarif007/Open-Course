@@ -1,21 +1,21 @@
-import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import { ICourseTopic } from "@/types/courseTopic";
-import CourseEmbedLinkCreationForm from "./CourseEmbedLinkCreation.Form";
-import { MdPreview } from "react-icons/md";
-import { IoIosCreate } from "react-icons/io";
-import { useAppSelector } from "@/redux/store";
-import CourseContent from "../course-content/CourseContent";
+import React from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { ICourseTopic } from '@/types/courseTopic';
+import CourseEmbedLinkCreationForm from './CourseEmbedLinkCreation.Form';
+import { MdPreview } from 'react-icons/md';
+import { IoIosCreate } from 'react-icons/io';
+import { useAppSelector } from '@/redux/store';
+import CourseContent from '../course-content/CourseContent';
 
 const CourseEmbedLinkCreationTabs = ({
   submitData,
   mode,
 }: {
   submitData: (data: ICourseTopic) => void;
-  mode: "creation" | "edit";
+  mode: 'creation' | 'edit' | 'contribution';
 }) => {
   const currentCourseTopic = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
       : state.courseUpdateReducer.value.currentCourseTopic
   );
