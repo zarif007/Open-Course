@@ -141,9 +141,12 @@ const CourseContentController = () => {
     }
   };
 
+  const version = currentCourseTopic.versions.length - 1;
+  const content = currentCourseTopic.versions[version].data;
+
   return (
     <div>
-      <CourseContent courseTopic={currentCourseTopic} />
+      <CourseContent content={content} />
       <div className="mt-[40px] flex justify-end">
         {!isLastTopic ? (
           <Button

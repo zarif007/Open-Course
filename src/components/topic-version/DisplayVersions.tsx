@@ -4,6 +4,8 @@ import { IUser } from '@/types/user';
 import formatDate from '@/utils/formatDate';
 import React from 'react';
 import ContentLogos from '../course-content/ContentLogos';
+import { MdOutlinePreview } from 'react-icons/md';
+import TopicPreviewDialog from './TopicPreview.Dialog';
 
 const DisplayVersions = ({ versions }: { versions: ITopicVersion[] }) => {
   return (
@@ -14,7 +16,7 @@ const DisplayVersions = ({ versions }: { versions: ITopicVersion[] }) => {
         return (
           <div
             key={version.id}
-            className="p-4 cursor-pointer flex items-center justify-between rounded border-2 border-slate-300 dark:border-gray-900"
+            className="p-4 flex items-center justify-between rounded border-2 border-slate-300 dark:border-gray-900"
           >
             <div className="flex justify-start space-x-2 items-center">
               <div className="flex items-center space-x-2">
@@ -32,16 +34,19 @@ const DisplayVersions = ({ versions }: { versions: ITopicVersion[] }) => {
                 </p>
               </div>
             </div>
-            <div
-              className={`rounded-lg p-1 px-3 text-sm font-semibold ${
-                stage === 'pending'
-                  ? 'bg-yellow-600'
-                  : stage === 'accepted'
-                    ? 'bg-green-500'
-                    : 'bg-red-500'
-              }`}
-            >
-              {stage}
+            <div className="flex space-x-2 items-center">
+              <div
+                className={`rounded-lg p-1 px-3 text-sm font-semibold ${
+                  stage === 'pending'
+                    ? 'bg-yellow-600'
+                    : stage === 'accepted'
+                      ? 'bg-green-500'
+                      : 'bg-red-500'
+                }`}
+              >
+                {stage}
+              </div>
+              <TopicPreviewDialog version={version} />
             </div>
           </div>
         );

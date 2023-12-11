@@ -6,17 +6,10 @@ import CourseEmbedRawUrl from './CourseEmbedRawUrl';
 import { FiLink } from 'react-icons/fi';
 import { MdOutlineVideoLibrary } from 'react-icons/md';
 
-const CourseEmbedLinkDisplay = ({
-  courseTopic,
-}: {
-  courseTopic: ICourseTopic;
-}) => {
+const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-
-  const content = courseTopic.versions[courseTopic.versions.length - 1]
-    .data as IEmbedContent;
 
   const contentUrl = content.url;
 

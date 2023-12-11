@@ -121,7 +121,11 @@ const CourseTopicCreation = (props: Props) => {
       className="mx-2 animate-in slide-in-from-right duration-300"
       key={selectedTopicType}
     >
-      <LargeHeading className="mt-4 mb-12">Course Topic Creation</LargeHeading>
+      {mode !== 'contribution' && (
+        <LargeHeading className="mt-4 mb-12">
+          Course Topic Creation
+        </LargeHeading>
+      )}
 
       {selectedTopicType !== '' && (
         <div

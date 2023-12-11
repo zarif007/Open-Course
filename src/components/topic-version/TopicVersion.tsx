@@ -8,7 +8,7 @@ import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import DisplayVersions from './DisplayVersions';
 import { ITopicVersion } from '@/types/topicVersion';
 
-const CourseVersion = () => {
+const TopicVersion = () => {
   const [openPanel, setOpenPanel] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -19,7 +19,7 @@ const CourseVersion = () => {
 
   const [versions, setVersions] = useState<ITopicVersion[]>([]);
 
-  const { data } = useQuery({
+  const { isLoading: isFetching } = useQuery({
     queryKey: [`versions-${currentCourseTopic.id}`],
     queryFn: async () => {
       const { data } = await (
@@ -28,7 +28,6 @@ const CourseVersion = () => {
         )
       ).json();
       setVersions(data);
-      return data;
     },
   });
 
@@ -53,10 +52,16 @@ const CourseVersion = () => {
           setVersions={setVersions}
         />
       ) : (
-        <DisplayVersions versions={versions} />
+        <div>
+          {isFetching ? (
+            <p>loading...</p>
+          ) : (
+            <DisplayVersions versions={versions} />
+          )}
+        </div>
       )}
     </div>
   );
 };
 
-export default CourseVersion;
+export default TopicVersion;

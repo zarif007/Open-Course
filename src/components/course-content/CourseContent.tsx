@@ -1,18 +1,22 @@
-"use client";
+'use client';
 
-import { ICourseTopic } from "@/types/courseTopic";
-import React from "react";
-import CourseEmbedLinkDisplay from "../course-embed-link/CourseEmbedLink.Display";
-import DocDisplay from "../course-doc/Doc.Display";
+import { ICourseTopic, IDocContent, IEmbedContent } from '@/types/courseTopic';
+import React from 'react';
+import CourseEmbedLinkDisplay from '../course-embed-link/CourseEmbedLink.Display';
+import DocDisplay from '../course-doc/Doc.Display';
 
-function CourseContent({ courseTopic }: { courseTopic: ICourseTopic }) {
-  const topicType = {
-    free_source_content: <CourseEmbedLinkDisplay courseTopic={courseTopic} />,
-    doc_content: <DocDisplay courseTopic={courseTopic} />,
-    quiz: <p>Quiz</p>,
+function CourseContent({ content }: { content: IEmbedContent | IDocContent }) {
+  const toDisplay = () => {
+    if ('source' in content) {
+      return <CourseEmbedLinkDisplay content={content} />;
+    } else if ('content' in content) {
+      return <DocDisplay content={content} />;
+    }
+
+    return <p>Nothing...</p>;
   };
-  const version = courseTopic.versions.length - 1;
-  return <div>{topicType[courseTopic.versions[version].type]}</div>;
+
+  return <div>{toDisplay()}</div>;
 }
 
 export default CourseContent;
