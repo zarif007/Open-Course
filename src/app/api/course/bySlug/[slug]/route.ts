@@ -40,6 +40,15 @@ export const GET = async (
         path: 'creator',
         model: User,
         select: 'name image userName',
+      })
+      .populate({
+        path: 'topics',
+        model: CourseTopic,
+        populate: {
+          path: 'creator',
+          model: User,
+          select: 'name image userName',
+        },
       });
 
     return NextResponse.json({ status: 200, data: course, success: true });

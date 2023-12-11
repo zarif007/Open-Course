@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Types } from 'mongoose';
 import { Model } from 'mongoose';
 import { IUser } from '../user';
 
@@ -8,7 +8,7 @@ export interface ICourseTopic {
   topicID: number;
   sortID?: number;
   views?: number;
-  creator: Schema.Types.ObjectId | string | IUser;
+  creator: IUser | Types.ObjectId | string;
   versions: {} & (
     | {
         type: 'free_source_content';

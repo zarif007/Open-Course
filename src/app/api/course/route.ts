@@ -35,6 +35,7 @@ export const POST = async (req: NextRequest) => {
         versions: topic.versions,
         topicID: topic.topicID,
         sortID: topic.sortID,
+        creator: topic.creator,
       });
       topicIds.push(new Types.ObjectId(res._id.toString()));
     }

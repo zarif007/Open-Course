@@ -30,6 +30,10 @@ const DocCreationForm = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
   const currentCourseTopic = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
@@ -62,6 +66,7 @@ const DocCreationForm = ({
       },
     ],
     topicID: -1,
+    creator: '',
   });
 
   useEffect(() => {
@@ -84,6 +89,7 @@ const DocCreationForm = ({
           },
         },
       ],
+      creator: '',
       topicID: -1,
     };
     dispatch(
@@ -95,6 +101,8 @@ const DocCreationForm = ({
   };
 
   const onSubmit = async (data: z.infer<typeof docContentSchema>) => {
+    if (!signedInUser?.id) return;
+
     const wordsPerMinute = 250;
     const contentLength = data.content?.length ?? 250;
     const readingTime = contentLength / wordsPerMinute;
@@ -115,6 +123,7 @@ const DocCreationForm = ({
           },
         ],
         topicID: 1,
+        creator: signedInUser.id,
         sortID: 1,
         createdAt: '',
         updatedAt: '',
@@ -140,6 +149,7 @@ const DocCreationForm = ({
         ],
         topicID,
         sortID: topicID,
+        creator: signedInUser.id,
         createdAt: currentCourseTopic.createdAt ?? '',
         updatedAt: currentCourseTopic.updatedAt ?? '',
       });

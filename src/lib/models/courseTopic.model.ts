@@ -19,7 +19,7 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
     creator: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'User is required'],
+      required: [true, 'Author is required'],
     },
     versions: [
       {

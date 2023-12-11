@@ -98,6 +98,7 @@ const CourseTopicCreation = (props: Props) => {
         },
       ],
       topicID: -1,
+      creator: '',
     };
     dispatch(
       mode === 'creation'

@@ -30,6 +30,10 @@ const CourseEmbedLinkCreationForm = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
+
   const currentCourseTopic = useAppSelector((state) =>
     mode === 'creation'
       ? state.courseCreationReducer.value.currentCourseTopic
@@ -54,6 +58,7 @@ const CourseEmbedLinkCreationForm = ({
     versions: [
       {
         type: 'free_source_content',
+
         data: {
           title: '',
           url: '',
@@ -64,6 +69,7 @@ const CourseEmbedLinkCreationForm = ({
       },
     ],
     topicID: -1,
+    creator: '',
   });
 
   useEffect(() => {
@@ -88,6 +94,7 @@ const CourseEmbedLinkCreationForm = ({
           },
         },
       ],
+      creator: '',
       topicID: -1,
     };
     dispatch(
@@ -104,11 +111,14 @@ const CourseEmbedLinkCreationForm = ({
     description?: string;
     duration: number;
   }) => {
+    if (!signedInUser?.id) return;
+
     const source = new URL(data.url).origin;
     if (!course || !currentCourseTopic || mode === 'contribution') {
       submitData({
         id: '',
         _id: '',
+        creator: signedInUser.id,
         versions: [
           {
             type: 'free_source_content',
@@ -132,6 +142,7 @@ const CourseEmbedLinkCreationForm = ({
       submitData({
         id: currentCourseTopic.id ?? '',
         _id: currentCourseTopic._id ?? '',
+        creator: signedInUser.id,
         versions: [
           {
             type: 'free_source_content',
