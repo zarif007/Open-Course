@@ -58,7 +58,7 @@ const CourseEmbedLinkCreationForm = ({
     versions: [
       {
         type: 'free_source_content',
-
+        creator: '',
         data: {
           title: '',
           url: '',
@@ -69,7 +69,6 @@ const CourseEmbedLinkCreationForm = ({
       },
     ],
     topicID: -1,
-    creator: '',
   });
 
   useEffect(() => {
@@ -85,6 +84,7 @@ const CourseEmbedLinkCreationForm = ({
       versions: [
         {
           type: 'free_source_content',
+          creator: '',
           data: {
             title: '',
             url: '',
@@ -94,7 +94,6 @@ const CourseEmbedLinkCreationForm = ({
           },
         },
       ],
-      creator: '',
       topicID: -1,
     };
     dispatch(
@@ -118,10 +117,10 @@ const CourseEmbedLinkCreationForm = ({
       submitData({
         id: '',
         _id: '',
-        creator: signedInUser.id,
         versions: [
           {
             type: 'free_source_content',
+            creator: signedInUser.id,
             data: { ...data, source, description: data.description ?? '' },
           },
         ],
@@ -142,10 +141,10 @@ const CourseEmbedLinkCreationForm = ({
       submitData({
         id: currentCourseTopic.id ?? '',
         _id: currentCourseTopic._id ?? '',
-        creator: signedInUser.id,
         versions: [
           {
             type: 'free_source_content',
+            creator: signedInUser.id,
             data: { ...data, source, description: data.description ?? '' },
           },
         ],

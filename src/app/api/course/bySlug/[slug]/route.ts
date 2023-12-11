@@ -45,7 +45,7 @@ export const GET = async (
         path: 'topics',
         model: CourseTopic,
         populate: {
-          path: 'creator',
+          path: 'versions.creator',
           model: User,
           select: 'name image userName',
         },

@@ -11,11 +11,13 @@ export const courseTopicSchema: ZodType<ICourseTopic> = z.object({
     z
       .object({
         type: z.literal('free_source_content'),
+        creator: z.string(),
         data: embedContentSchema,
       })
       .or(
         z.object({
           type: z.literal('doc_content'),
+          creator: z.string(),
           data: docContentSchema,
         })
       )

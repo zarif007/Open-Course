@@ -58,6 +58,7 @@ const DocCreationForm = ({
     versions: [
       {
         type: 'doc_content',
+        creator: '',
         data: {
           title: '',
           content: '',
@@ -66,7 +67,6 @@ const DocCreationForm = ({
       },
     ],
     topicID: -1,
-    creator: '',
   });
 
   useEffect(() => {
@@ -82,6 +82,7 @@ const DocCreationForm = ({
       versions: [
         {
           type: 'doc_content',
+          creator: '',
           data: {
             title: '',
             duration: 0,
@@ -89,7 +90,6 @@ const DocCreationForm = ({
           },
         },
       ],
-      creator: '',
       topicID: -1,
     };
     dispatch(
@@ -119,11 +119,11 @@ const DocCreationForm = ({
         versions: [
           {
             type: 'doc_content',
+            creator: signedInUser.id,
             data: topic,
           },
         ],
         topicID: 1,
-        creator: signedInUser.id,
         sortID: 1,
         createdAt: '',
         updatedAt: '',
@@ -144,12 +144,12 @@ const DocCreationForm = ({
         versions: [
           {
             type: 'doc_content',
+            creator: signedInUser.id,
             data: topic,
           },
         ],
         topicID,
         sortID: topicID,
-        creator: signedInUser.id,
         createdAt: currentCourseTopic.createdAt ?? '',
         updatedAt: currentCourseTopic.updatedAt ?? '',
       });

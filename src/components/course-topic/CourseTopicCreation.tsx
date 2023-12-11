@@ -90,6 +90,7 @@ const CourseTopicCreation = (props: Props) => {
       versions: [
         {
           type: 'doc_content',
+          creator: '',
           data: {
             title: '',
             duration: 0,
@@ -98,7 +99,6 @@ const CourseTopicCreation = (props: Props) => {
         },
       ],
       topicID: -1,
-      creator: '',
     };
     dispatch(
       mode === 'creation'

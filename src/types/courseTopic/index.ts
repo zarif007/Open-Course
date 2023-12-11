@@ -8,14 +8,15 @@ export interface ICourseTopic {
   topicID: number;
   sortID?: number;
   views?: number;
-  creator: IUser | Types.ObjectId | string;
   versions: {} & (
     | {
         type: 'free_source_content';
+        creator: IUser | Types.ObjectId | string;
         data: IEmbedContent;
       }
     | {
         type: 'doc_content';
+        creator: IUser | Types.ObjectId | string;
         data: IDocContent;
       }
   )[];

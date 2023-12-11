@@ -13,6 +13,7 @@ import { useAppSelector } from '@/redux/store';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import CourseVersion from '../course-version/CourseVersion';
+import TopicContributors from '../course-topic/TopicContributors';
 
 const tabElements = [
   {
@@ -82,6 +83,13 @@ const CourseContentsTabs = () => {
       </div>
       <TabsContent value="content">
         <CourseContentController />
+        <hr
+          className="my-8"
+          style={{
+            borderTop: '2px solid #f43f5e',
+          }}
+        />
+        <TopicContributors />
       </TabsContent>
       <TabsContent value="discuss">
         <CourseDiscussion />

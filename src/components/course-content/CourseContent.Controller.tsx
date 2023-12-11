@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
-import CourseContent from "./CourseContent";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import { Button } from "../ui/Button";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import CourseContent from './CourseContent';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { useRouter } from 'next/navigation';
+import { Button } from '../ui/Button';
+import { useDispatch } from 'react-redux';
 import {
   setCurrentCourseTopicForView,
   setEnrollState,
-} from "@/redux/features/course-view-slice";
-import { IEnrollState } from "@/types/enrollState";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import { ICourseTopic } from "@/types/courseTopic";
-import sortCompareBasedOnSortID from "@/utils/sortCompareBasedOnSortID";
+} from '@/redux/features/course-view-slice';
+import { IEnrollState } from '@/types/enrollState';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import { ICourseTopic } from '@/types/courseTopic';
 
 const CourseContentController = () => {
   const currentCourseTopic = useAppSelector(
@@ -104,9 +103,9 @@ const CourseContentController = () => {
       router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
     } catch (error) {
       toast({
-        title: "Error",
+        title: 'Error',
         message: `Something went wrong`,
-        type: "error",
+        type: 'error',
       });
     } finally {
       setIsLoading(false);
@@ -126,16 +125,16 @@ const CourseContentController = () => {
       await updateEnrollState(nextTopic, true);
 
       toast({
-        title: "Success",
+        title: 'Success',
         message: `Course completed successfully`,
-        type: "success",
+        type: 'success',
       });
       router.push(`/course-completion/${course.slug}`);
     } catch (error) {
       toast({
-        title: "Error",
+        title: 'Error',
         message: `Something went wrong, try again`,
-        type: "error",
+        type: 'error',
       });
     } finally {
       setIsLoading(false);

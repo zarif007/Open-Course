@@ -16,17 +16,18 @@ const CourseTopicSchema = new Schema<ICourseTopic, ICourseTopicModel>(
       type: Number,
       default: 0,
     },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Author is required'],
-    },
+
     versions: [
       {
         type: {
           type: String,
           enum: topicTypes,
           default: 'free_source_content',
+        },
+        creator: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: [true, 'Author is required'],
         },
         data: { type: Schema.Types.Mixed, required: true },
       },
