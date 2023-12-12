@@ -1,10 +1,11 @@
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const useGetDiscussions = (
   version: number | undefined,
-  topicId: string | undefined
+  topicId: string | undefined,
+  parentId: string
 ) => {
   return useQuery({
     queryKey: [`discussions-${version}-${topicId}`],
@@ -12,7 +13,7 @@ const useGetDiscussions = (
     refetchInterval: 1000,
     queryFn: async () => {
       const { data } = await axios.get(
-        `${nextApiEndPoint}/discussion?topicId=${topicId}&version=${version}`
+        `${nextApiEndPoint}/discussion?topicId=${topicId}&version=${version}&parentId=${parentId}`
       );
       return data.data;
     },

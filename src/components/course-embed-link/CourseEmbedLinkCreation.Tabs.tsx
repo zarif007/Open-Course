@@ -19,6 +19,7 @@ const CourseEmbedLinkCreationTabs = ({
       ? state.courseCreationReducer.value.currentCourseTopic
       : state.courseUpdateReducer.value.currentCourseTopic
   );
+  const version = currentCourseTopic.versions.length - 1;
   return (
     <Tabs defaultValue="create" className="w-full mx-auto px-2 md:px-4">
       <TabsList className="">
@@ -35,7 +36,7 @@ const CourseEmbedLinkCreationTabs = ({
         <CourseEmbedLinkCreationForm submitData={submitData} mode={mode} />
       </TabsContent>
       <TabsContent value="preview">
-        <CourseContent courseTopic={currentCourseTopic} />
+        <CourseContent content={currentCourseTopic.versions[version].data} />
       </TabsContent>
     </Tabs>
   );

@@ -1,24 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import { IDiscussion } from "@/types/discussion";
-import { IUser } from "@/types/user";
-import formatDate from "@/utils/formatDate";
-import React, { useEffect, useState } from "react";
-import DiscussDropdown from "./Discuss.Dropdown";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import DiscussionEdit from "./Discussion.Edit";
-import { useAppSelector } from "@/redux/store";
+import { IDiscussion } from '@/types/discussion';
+import { IUser } from '@/types/user';
+import formatDate from '@/utils/formatDate';
+import React, { useEffect, useState } from 'react';
+import DiscussDropdown from './Discuss.Dropdown';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import DiscussionEdit from './Discussion.Edit';
+import { useAppSelector } from '@/redux/store';
+import DiscussionCreationForm from './DiscussionCreation.Form';
+import { PiArrowLineDownDuotone } from 'react-icons/pi';
+import { FaChevronDown } from 'react-icons/fa6';
 
-const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
+const Discussion = ({
+  discussion,
+  level,
+}: {
+  discussion: IDiscussion;
+  level: number;
+}) => {
+  console.log('first--------', discussion);
   const [isHovering, setIsHovering] = useState<boolean>(false);
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
+  const [openReplyPanel, setOpenReplyPanel] = useState<boolean>(false);
+
+  const [showReplies, setShowReplies] = useState<boolean>(true);
+
   const [editingStatus, setEditingStatus] = useState<
-    "no" | "editing" | "processing"
-  >("no");
+    'no' | 'editing' | 'processing'
+  >('no');
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -40,6 +54,10 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     } catch (error) {
       throw error;
     }
+  };
+
+  const onSubmitFunction = () => {
+    setOpenReplyPanel(false);
   };
 
   const handleAddEmoji = async (emoji: string) => {
@@ -65,16 +83,32 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
     }
   };
 
+  const replies = discussion.replies as IDiscussion[];
+
   return (
     <div
       key={currentDiscussion.id}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      style={{ position: "relative" }}
-      className={`${isDeleting && "opacity-25"} w-full`}
+      style={{ position: 'relative' }}
+      className={`${
+        isDeleting && 'opacity-25'
+      } w-full animate-in slide-in-from-right duration-300`}
     >
-      <div className="my-3 p-3 flex space-x-3 w-full">
-        <img src={sender.image} alt="dp" className="rounded-full h-10 w-10" />
+      <div className="my-0 p-3 flex space-x-3 w-full">
+        <div className="flex space-x-1 items-center">
+          <FaChevronDown
+            className={`h-6 w-6 text-slate-300 dark:text-gray-700 cursor-pointer ${
+              !showReplies && 'rotate-180'
+            }`}
+            onClick={() => setShowReplies(!showReplies)}
+          />
+          <img
+            src={sender.image}
+            alt="dp"
+            className="rounded-full h-10 w-10 "
+          />
+        </div>
         <div className="flex flex-col space-y-1 w-full">
           <div className="flex items-end space-x-2">
             <p className="text-md font-bold underline decoration-rose-500 decoration-2 truncate">
@@ -85,7 +119,7 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
             </p>
           </div>
           <div className="w-full">
-            {editingStatus !== "no" ? (
+            {editingStatus !== 'no' ? (
               <DiscussionEdit
                 discussion={currentDiscussion}
                 editingStatus={editingStatus}
@@ -104,8 +138,8 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
                 className={`border rounded px-1 cursor-pointer
                   flex space-x-1 items-center justify-center ${
                     currentDiscussion.reactions[key].includes(signedInUser?.id!)
-                      ? "bg-rose-500 bg-opacity-25 border-rose-500"
-                      : "border-slate-300 dark:border-gray-800"
+                      ? 'bg-rose-500 bg-opacity-25 border-rose-500'
+                      : 'border-slate-300 dark:border-gray-800'
                   }`}
               >
                 <p>{key}</p>
@@ -117,9 +151,38 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
           </div>
         </div>
       </div>
+
+      {/* Reply Creation */}
+
+      <div className="ml-8 my-0">
+        {openReplyPanel && (
+          <DiscussionCreationForm
+            parentId={discussion.id as string}
+            onSubmitFunction={onSubmitFunction}
+          />
+        )}
+
+        {replies.length > 0 &&
+          showReplies &&
+          replies.map((reply) => {
+            return (
+              <div key={reply.id}>
+                {level >= 2 ? (
+                  <p>Load more...</p>
+                ) : (
+                  <div className="">
+                    <div className="h-8 w-0 -mb-8 -mt-4 border p-0 ml-5 border-slate-300 dark:border-gray-700" />
+                    <Discussion discussion={reply} level={level + 1} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+
       <div
         className={`flex justify-end`}
-        style={{ position: "absolute", top: "0", right: "0" }}
+        style={{ position: 'absolute', top: '0', right: '0' }}
       >
         {!isDeleting && isHovering && (
           <DiscussDropdown
@@ -127,6 +190,8 @@ const Discussion = ({ discussion }: { discussion: IDiscussion }) => {
             handleDelete={handleDelete}
             setEditingStatus={setEditingStatus}
             handleAddEmoji={handleAddEmoji}
+            setOpenReplyPanel={setOpenReplyPanel}
+            openReplyPanel={openReplyPanel}
           />
         )}
       </div>

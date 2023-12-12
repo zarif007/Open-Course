@@ -1,6 +1,6 @@
-import { Model, Types } from "mongoose";
-import { IUser } from "../user";
-import { ICourseTopic } from "../courseTopic";
+import { Model, Types } from 'mongoose';
+import { IUser } from '../user';
+import { ICourseTopic } from '../courseTopic';
 
 export interface IDiscussion {
   id?: number | string;
@@ -9,6 +9,7 @@ export interface IDiscussion {
   topicId: ICourseTopic | string;
   version: number;
   comment: string;
+  parentId: string;
   replies: IDiscussion[] | [] | Types.ObjectId[];
   reactions: {
     [key: string]: string[];
