@@ -34,7 +34,7 @@ const getCourseAndEnrollState = async (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       {
-        cache: 'no-store',
+        cache: 'force-cache',
         method: 'GET',
         headers: new Headers(headers()),
       }

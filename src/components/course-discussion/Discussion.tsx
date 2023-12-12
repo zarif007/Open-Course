@@ -13,6 +13,7 @@ import { useAppSelector } from '@/redux/store';
 import DiscussionCreationForm from './DiscussionCreation.Form';
 import { PiArrowLineDownDuotone } from 'react-icons/pi';
 import { FaChevronDown } from 'react-icons/fa6';
+import LoadNextDiscuss from './LoadNextDiscuss';
 
 const Discussion = ({
   discussion,
@@ -84,6 +85,17 @@ const Discussion = ({
 
   const replies = discussion.replies as IDiscussion[];
 
+  const ifSomethingToLoad = (): boolean => {
+    let flag = false;
+    replies.map((reply) => {
+      if (typeof reply === 'string') {
+        flag = true;
+        return;
+      }
+    });
+    return flag;
+  };
+
   return (
     <div
       key={currentDiscussion.id}
@@ -92,7 +104,7 @@ const Discussion = ({
       style={{ position: 'relative' }}
       className={`${
         isDeleting && 'opacity-25'
-      } w-full animate-in slide-in-from-right duration-300 overflow-y-scroll scrollbar-hide`}
+      } w-full animate-in slide-in-from-right duration-300 overflow-y-scroll md:overflow-y-hidden scrollbar-hide`}
     >
       <div className="my-0 p-3 flex space-x-3 w-full">
         <div className="flex space-x-1 items-center">
@@ -166,14 +178,15 @@ const Discussion = ({
             {replies.map((reply) => {
               return (
                 <div key={reply.id}>
-                  {typeof reply === 'object' ? (
+                  {typeof reply === 'object' && (
                     <Discussion discussion={reply} level={level + 1} />
-                  ) : (
-                    <p>Load more...</p>
                   )}
                 </div>
               );
             })}
+            {ifSomethingToLoad() && (
+              <LoadNextDiscuss parentId={discussion.parentId} />
+            )}
           </div>
         )}
       </div>
