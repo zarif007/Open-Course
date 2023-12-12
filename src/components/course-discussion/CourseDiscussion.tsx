@@ -32,7 +32,7 @@ const CourseDiscussion = () => {
   const onSubmitFunction = () => {};
 
   return (
-    <main>
+    <main className="w-full">
       <DiscussionCreationForm
         parentId="none"
         onSubmitFunction={onSubmitFunction}
@@ -41,17 +41,14 @@ const CourseDiscussion = () => {
         <DiscussionSkeleton />
       ) : (
         <React.Fragment>
-          {discussions && (
-            <div>
-              {discussions.map((discussion: IDiscussion) => (
-                <Discussion
-                  key={discussion.id}
-                  discussion={discussion}
-                  level={0}
-                />
-              ))}
-            </div>
-          )}
+          {discussions &&
+            discussions.map((discussion, index) => (
+              <Discussion
+                key={index}
+                discussion={discussion as IDiscussion}
+                level={0}
+              />
+            ))}
         </React.Fragment>
       )}
     </main>

@@ -92,7 +92,7 @@ const Discussion = ({
       style={{ position: 'relative' }}
       className={`${
         isDeleting && 'opacity-25'
-      } w-full animate-in slide-in-from-right duration-300`}
+      } w-full animate-in slide-in-from-right duration-300 overflow-y-scroll scrollbar-hide`}
     >
       <div className="my-0 p-3 flex space-x-3 w-full">
         <div className="flex space-x-1 items-center">
@@ -153,7 +153,7 @@ const Discussion = ({
 
       {/* Reply Creation */}
 
-      <div className="ml-10 my-0">
+      <div className="ml-10 my-0 w-full">
         {openReplyPanel && (
           <DiscussionCreationForm
             parentId={discussion.id as string}
@@ -162,7 +162,7 @@ const Discussion = ({
         )}
 
         {replies.length > 0 && showReplies && (
-          <div>
+          <div className="w-full">
             {replies.map((reply) => {
               return (
                 <div key={reply.id}>

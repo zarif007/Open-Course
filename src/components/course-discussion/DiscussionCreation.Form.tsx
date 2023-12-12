@@ -41,15 +41,15 @@ const DiscussionCreationForm = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const findAndUpdateDiscussion = (
-    discussionDocs: IDiscussion[] | (IDiscussion | string)[],
+    discussionDocs: (IDiscussion | string)[],
     discussion: IDiscussion
-  ): IDiscussion[] | (IDiscussion | string)[] => {
+  ): (IDiscussion | string)[] => {
     if (discussionDocs.length === 0) return [];
 
     let updatedDD: any = discussionDocs.map((dd) => {
       if (typeof dd === 'string') return dd;
 
-      const objReplies = dd.replies.filter((dp) => typeof dp === 'object');
+      // const objReplies = dd.replies.filter((dp) => typeof dp === 'object');
 
       if (dd.id === discussion.parentId) {
         return {
@@ -58,7 +58,7 @@ const DiscussionCreationForm = ({
         };
       } else {
         const updatedReplies = findAndUpdateDiscussion(
-          dd.replies as IDiscussion[] | (IDiscussion | string)[],
+          dd.replies as (IDiscussion | string)[],
           discussion
         );
         return {
@@ -108,9 +108,7 @@ const DiscussionCreationForm = ({
       return;
     }
 
-    let discussionDocs: IDiscussion[] | (string | IDiscussion)[] = [
-      ...discussions,
-    ];
+    let discussionDocs: (string | IDiscussion)[] = [...discussions];
 
     if (response.data.parentId === 'none') {
       discussionDocs = [response.data, ...discussionDocs];
@@ -127,7 +125,7 @@ const DiscussionCreationForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="px-2">
       <Textarea
         {...register('comment')}
         placeholder="Comment"
