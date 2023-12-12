@@ -21,7 +21,6 @@ const Discussion = ({
   discussion: IDiscussion;
   level: number;
 }) => {
-  console.log('first--------', discussion);
   const [isHovering, setIsHovering] = useState<boolean>(false);
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -154,7 +153,7 @@ const Discussion = ({
 
       {/* Reply Creation */}
 
-      <div className="ml-8 my-0">
+      <div className="ml-10 my-0">
         {openReplyPanel && (
           <DiscussionCreationForm
             parentId={discussion.id as string}
@@ -162,22 +161,21 @@ const Discussion = ({
           />
         )}
 
-        {replies.length > 0 &&
-          showReplies &&
-          replies.map((reply) => {
-            return (
-              <div key={reply.id}>
-                {level >= 2 ? (
-                  <p>Load more...</p>
-                ) : (
-                  <div className="">
-                    <div className="h-8 w-0 -mb-8 -mt-4 border p-0 ml-5 border-slate-300 dark:border-gray-700" />
+        {replies.length > 0 && showReplies && (
+          <div>
+            {replies.map((reply) => {
+              return (
+                <div key={reply.id}>
+                  {typeof reply === 'object' ? (
                     <Discussion discussion={reply} level={level + 1} />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  ) : (
+                    <p>Load more...</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <div

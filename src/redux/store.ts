@@ -1,10 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import courseCreationReducer from "./features/course-creation-slice";
-import courseViewReducer from "./features/course-view-slice";
-import courseUpdateReducer from "./features/course-update-slice";
-import signedInUserReducer from "./features/signed-In-user-slice";
-import selectedTopicType from "./features/selected-topic-type";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
+import { configureStore } from '@reduxjs/toolkit';
+import courseCreationReducer from './features/course-creation-slice';
+import courseViewReducer from './features/course-view-slice';
+import courseUpdateReducer from './features/course-update-slice';
+import signedInUserReducer from './features/signed-In-user-slice';
+import selectedTopicType from './features/selected-topic-type';
+import discussionsReducer from './features/topic-discuss-slice';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     courseViewReducer,
     courseUpdateReducer,
     signedInUserReducer,
+    discussionsReducer,
     selectedTopicType,
   },
 });

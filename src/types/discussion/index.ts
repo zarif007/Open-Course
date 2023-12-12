@@ -10,7 +10,11 @@ export interface IDiscussion {
   version: number;
   comment: string;
   parentId: string;
-  replies: IDiscussion[] | [] | Types.ObjectId[];
+  replies:
+    | IDiscussion[]
+    | []
+    | Types.ObjectId[]
+    | (Types.ObjectId | IDiscussion)[];
   reactions: {
     [key: string]: string[];
   };

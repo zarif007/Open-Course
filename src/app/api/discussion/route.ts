@@ -5,24 +5,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const GET = async (req: NextRequest) => {
-  const token = await getToken({ req });
-
-  if (!token) {
-    return NextResponse.json({
-      status: 401,
-      message: 'Unauthorized: Login required',
-    });
-  }
-
-  await connectToDB();
-
-  const topicId = req.nextUrl.searchParams.get('topicId');
-  const version = req.nextUrl.searchParams.get('version');
-  const parentId = req.nextUrl.searchParams.get('parentId');
-
+const getDiscussions = async (
+  version: number,
+  topicId: string,
+  parentId: string
+) => {
   const discussions = await Discussion.find({
-    version: parseInt(version ?? ''),
+    version,
     topicId,
     parentId,
   })
@@ -67,6 +56,41 @@ export const GET = async (req: NextRequest) => {
     })
 
     .sort({ createdAt: -1 });
+
+  return discussions;
+};
+
+export const GET = async (req: NextRequest) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return NextResponse.json({
+      status: 401,
+      message: 'Unauthorized: Login required',
+    });
+  }
+
+  await connectToDB();
+
+  const topicId = req.nextUrl.searchParams.get('topicId');
+  const version = req.nextUrl.searchParams.get('version');
+  const parentId = req.nextUrl.searchParams.get('parentId');
+
+  if (!topicId || !version || !parentId) {
+    return NextResponse.json({
+      status: 404,
+      message: 'Not found',
+      data: [],
+      success: false,
+    });
+  }
+
+  const discussions = await getDiscussions(
+    parseInt(version),
+    topicId,
+    parentId
+  );
+
   return NextResponse.json({ data: discussions });
 };
 
@@ -94,8 +118,17 @@ export const POST = async (req: NextRequest) => {
         { $push: { replies: discussion.id } }
       );
     }
+    await discussion.populate({
+      path: 'sender',
+      model: User,
+      select: 'name image userName email',
+    });
 
-    return NextResponse.json({ data: discussion, success: true, status: true });
+    return NextResponse.json({
+      data: discussion,
+      success: true,
+      status: true,
+    });
   } catch (error) {
     return NextResponse.json({
       status: 500,

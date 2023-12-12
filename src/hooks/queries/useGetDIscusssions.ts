@@ -10,7 +10,7 @@ const useGetDiscussions = (
   return useQuery({
     queryKey: [`discussions-${version}-${topicId}`],
     enabled: version !== undefined && !!topicId,
-    refetchInterval: 1000,
+    // refetchInterval: 1000,
     queryFn: async () => {
       const { data } = await axios.get(
         `${nextApiEndPoint}/discussion?topicId=${topicId}&version=${version}&parentId=${parentId}`

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector } from '@/redux/store';
+import { AppDispatch, useAppSelector } from '@/redux/store';
 import { IDiscussion } from '@/types/discussion';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { commentCreationSchema } from '@/validations/discussion';
@@ -13,6 +13,8 @@ import ErrorMessage from '../ui/ErrorMessage';
 import { BsEmojiLaughing } from 'react-icons/bs';
 import { Button } from '../ui/Button';
 import { toast } from '../ui/Toast';
+import { useDispatch } from 'react-redux';
+import { setDiscussions } from '@/redux/features/topic-discuss-slice';
 
 const DiscussionCreationForm = ({
   parentId,
@@ -29,8 +31,45 @@ const DiscussionCreationForm = ({
     (state) => state.courseViewReducer.value.currentCourseTopic
   );
 
+  const discussions = useAppSelector(
+    (state) => state.discussionsReducer.value.discussions
+  );
+
   const version = currentCourseTopic.versions.length - 1;
   const topicId = currentCourseTopic.id as string;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const findAndUpdateDiscussion = (
+    discussionDocs: IDiscussion[] | (IDiscussion | string)[],
+    discussion: IDiscussion
+  ): IDiscussion[] | (IDiscussion | string)[] => {
+    if (discussionDocs.length === 0) return [];
+
+    let updatedDD: any = discussionDocs.map((dd) => {
+      if (typeof dd === 'string') return dd;
+
+      const objReplies = dd.replies.filter((dp) => typeof dp === 'object');
+
+      if (dd.id === discussion.parentId) {
+        return {
+          ...dd,
+          replies: [discussion, ...dd.replies],
+        };
+      } else {
+        const updatedReplies = findAndUpdateDiscussion(
+          dd.replies as IDiscussion[] | (IDiscussion | string)[],
+          discussion
+        );
+        return {
+          ...dd,
+          replies: updatedReplies,
+        };
+      }
+    });
+
+    return updatedDD;
+  };
 
   const {
     register,
@@ -66,9 +105,25 @@ const DiscussionCreationForm = ({
         type: 'error',
         message: response.message,
       });
-
       return;
     }
+
+    let discussionDocs: IDiscussion[] | (string | IDiscussion)[] = [
+      ...discussions,
+    ];
+
+    if (response.data.parentId === 'none') {
+      discussionDocs = [response.data, ...discussionDocs];
+    } else {
+      discussionDocs = findAndUpdateDiscussion(
+        [...discussionDocs],
+        response.data
+      );
+    }
+
+    dispatch(setDiscussions(discussionDocs));
+
+    // response.data
   };
 
   return (
