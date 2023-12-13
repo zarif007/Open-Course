@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const TextAppearAnimation = ({ text }: { text: string }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,8 +12,9 @@ const TextAppearAnimation = ({ text }: { text: string }) => {
 
   return (
     <div
+      data-testid="cy-free-landing-title"
       className={`text-container transition-opacity duration-1000 ${
-        isVisible ? "opacity-100" : "opacity-0"
+        isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
       {text}

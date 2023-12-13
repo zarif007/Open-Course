@@ -1,13 +1,13 @@
-import React from "react";
-import SocialMediaLogoBar from "./SocialMediaLogo.Bar";
-import NotifyBar from "./Notify.Bar";
-import LargeHeading from "../ui/LargeHeading";
-import TextAppearAnimation from "../ui/TextAppearAnimation";
-import CourseCategoriesRotation from "./CourseCategoriesRotation";
-import Link from "next/link";
-import { buttonVariants } from "../ui/Button";
-import Image from "next/image";
-import StarOnGithub from "./StarOnGithub";
+import React from 'react';
+import SocialMediaLogoBar from './SocialMediaLogo.Bar';
+import NotifyBar from './Notify.Bar';
+import LargeHeading from '../ui/LargeHeading';
+import TextAppearAnimation from '../ui/TextAppearAnimation';
+import CourseCategoriesRotation from './CourseCategoriesRotation';
+import Link from 'next/link';
+import { buttonVariants } from '../ui/Button';
+import Image from 'next/image';
+import StarOnGithub from './StarOnGithub';
 
 const LandingPage = () => {
   return (
@@ -20,16 +20,27 @@ const LandingPage = () => {
           </div>
           <StarOnGithub />
           <LargeHeading size="lg" className="three-d text-center">
-            <span className="tw-gradient-text">Join any Course</span> <br />
+            <span
+              className="tw-gradient-text"
+              data-testid="cy-join-landing-title"
+            >
+              Join any Course
+            </span>{' '}
+            <br />
             <TextAppearAnimation text="All for Free" />
             <div
               className=""
               style={{
-                borderTop: "2px dashed #f43f5e",
-                margin: "12px 0",
+                borderTop: '2px dashed #f43f5e',
+                margin: '12px 0',
               }}
             />
-            <span className="tw-gradient-text">Curate, Create & Share</span>{" "}
+            <span
+              className="tw-gradient-text"
+              data-testid="cy-create-landing-title"
+            >
+              Curate, Create & Share
+            </span>{' '}
             <br />
           </LargeHeading>
           <CourseCategoriesRotation />
@@ -37,7 +48,7 @@ const LandingPage = () => {
             <Link
               href="/course-creation"
               className={`${buttonVariants({
-                variant: "bigButton",
+                variant: 'bigButton',
               })} mt-4 bg-[#0c10ed]`}
             >
               <span className="font-semibold">Create</span>
@@ -45,7 +56,7 @@ const LandingPage = () => {
             <Link
               href="/courses"
               className={`${buttonVariants({
-                variant: "bigButtonOutline",
+                variant: 'bigButtonOutline',
               })} mt-4`}
             >
               <span className="font-semibold">Enroll</span>

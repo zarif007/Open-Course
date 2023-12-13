@@ -126,6 +126,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/favico.js": "^0.0.29",
     "@types/shortid": "^0.0.29",
+    "cypress": "^13.6.1",
     "daisyui": "^3.5.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
