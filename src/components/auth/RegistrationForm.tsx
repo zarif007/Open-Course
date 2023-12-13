@@ -35,7 +35,7 @@ const RegistrationForm = ({
 
   const errorToast = (errorMsg: string) => {
     toast({
-      title: 'Complete required fields',
+      title: 'Error',
       type: 'error',
       message: errorMsg,
     });
@@ -137,7 +137,7 @@ const RegistrationForm = ({
           />
 
           <Button type="submit" className="w-full mt-4" isLoading={loading}>
-            Register
+            Sign Up
           </Button>
         </form>
       </Form>

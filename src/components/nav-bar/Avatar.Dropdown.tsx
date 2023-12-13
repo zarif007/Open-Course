@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Menubar,
   MenubarContent,
@@ -9,21 +9,21 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
-} from "@/components/ui/Menu.Bar";
+} from '@/components/ui/Menu.Bar';
 
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useDispatch } from "react-redux";
-import { setSignedInUser } from "@/redux/features/signed-In-user-slice";
-import { useRouter } from "next/navigation";
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { useDispatch } from 'react-redux';
+import { setSignedInUser } from '@/redux/features/signed-In-user-slice';
+import { useRouter } from 'next/navigation';
 
 const AvatarDropdown = () => {
   const styles = {
     menuBarItems:
-      "cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold",
+      'cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold',
   };
 
   const { data: session } = useSession();
@@ -47,7 +47,7 @@ const AvatarDropdown = () => {
         );
 
         if (!data.data) {
-          router.push("/login");
+          router.push('/login');
           return;
         }
 

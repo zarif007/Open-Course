@@ -9,7 +9,7 @@ import { Button, buttonVariants } from '../ui/Button';
 import Paragraph from '../ui/Paragraph';
 import routeElements from '@/constants/navBar';
 import ElementsDropdown from './Elements.Dropdown';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Skeleton } from '../ui/Skeleton';
 import {
   PiHouseDuotone,

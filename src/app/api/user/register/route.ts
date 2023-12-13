@@ -47,6 +47,7 @@ export const POST = async (req: NextRequest) => {
       message: 'Created Successfully',
     });
   } catch (error) {
+    console.log(error);
     let status = 500;
     let message = 'Internal server error';
     if (error instanceof z.ZodError) {
