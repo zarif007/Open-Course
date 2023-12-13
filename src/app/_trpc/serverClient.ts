@@ -1,6 +1,6 @@
-import { appRouter } from "@/server";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { httpBatchLink } from "@trpc/client";
+import { appRouter } from '@/trpc_server';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { httpBatchLink } from '@trpc/client';
 
 const url = `${nextApiEndPoint}/trpc`;
 

@@ -22,8 +22,9 @@ const ContentLogos = ({
     index: number
   ): ReactNode => {
     let topicInfo = null;
-    if ('views' in topic) topicInfo = topic.versions[topic.versions.length - 1];
-    else if ('stage' in topic) topicInfo = topic.version;
+    if ('versions' in topic)
+      topicInfo = topic.versions[topic.versions.length - 1];
+    else if ('version' in topic) topicInfo = topic.version;
 
     // console.log(topicInfo.type);
     if (topicInfo?.type === 'free_source_content') {
