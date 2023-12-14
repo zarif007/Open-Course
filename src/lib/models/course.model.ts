@@ -78,19 +78,6 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       type: [String],
       default: [],
     },
-    reviews: {
-      type: [
-        {
-          user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-          },
-          rating: { type: Number, default: 5 },
-          comment: { type: String, default: '' },
-        },
-      ],
-      default: [],
-    },
     checkPoints: {
       type: [
         {

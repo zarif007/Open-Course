@@ -22,13 +22,6 @@ export interface ICourse {
   topics: ICourseTopic[] | Types.ObjectId[] | string[];
   tags: string[];
   status: string;
-  reviews?:
-    | {
-        user: string | IUser;
-        rating: number;
-        comment: string;
-      }[]
-    | [];
   checkPoints: ICheckPoint[] | [];
   coursePrivacy: 'public' | 'private';
   topicPrivacy: 'open' | 'locked';

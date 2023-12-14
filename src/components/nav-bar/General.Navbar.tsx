@@ -5,7 +5,7 @@ import { PiSunDuotone } from 'react-icons/pi';
 import { PiMoonStarsDuotone } from 'react-icons/pi';
 import Link from 'next/link';
 import AvatarDropdown from './Avatar.Dropdown';
-import { Button, buttonVariants } from '../ui/Button';
+import { buttonVariants } from '../ui/Button';
 import Paragraph from '../ui/Paragraph';
 import routeElements from '@/constants/navBar';
 import ElementsDropdown from './Elements.Dropdown';
@@ -17,6 +17,7 @@ import {
   PiStackDuotone,
 } from 'react-icons/pi';
 import { usePathname } from 'next/navigation';
+import { MdOutlineNotificationsNone } from 'react-icons/md';
 
 const routeIcons = {
   Home: <PiHouseDuotone className="w-6 h-6" />,
@@ -59,6 +60,7 @@ const GeneralNavbar = () => {
       )}
 
       <div className="flex md:order-2 items-center justify-center space-x-2">
+        <MdOutlineNotificationsNone className={styles.icon} />
         {/* Theme */}
         <div
           onClick={() =>

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { Rating } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
-import LargeHeading from "../ui/LargeHeading";
-import { ICourse } from "@/types/course";
-import { Button } from "../ui/Button";
-import axios from "axios";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { toast } from "../ui/Toast";
-import Paragraph from "../ui/Paragraph";
-import { useAppSelector } from "@/redux/store";
-import { Textarea } from "../ui/Textarea";
-import { LucideHeartHandshake } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { Rating } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
+import LargeHeading from '../ui/LargeHeading';
+import { ICourse } from '@/types/course';
+import { Button } from '../ui/Button';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { toast } from '../ui/Toast';
+import Paragraph from '../ui/Paragraph';
+import { useAppSelector } from '@/redux/store';
+import { Textarea } from '../ui/Textarea';
+import { LucideHeartHandshake } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -20,14 +20,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/Form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { courseReviewSchema } from "@/validations/courseReview";
-import { z } from "zod";
-import { IUser } from "@/types/user";
-import { FaStar } from "react-icons/fa6";
-import { Skeleton } from "../ui/Skeleton";
+} from '@/components/ui/Form';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { courseReviewSchema } from '@/validations/courseReview';
+import { z } from 'zod';
+import { IUser } from '@/types/user';
+import { FaStar } from 'react-icons/fa6';
+import { Skeleton } from '../ui/Skeleton';
+import { ICourseReview } from '@/types/courseReview';
 
 const StarDrawing = (
   <path
@@ -38,40 +39,48 @@ const StarDrawing = (
 
 export default function CourseReviewTaker({ course }: { course: ICourse }) {
   const [isAlreadyReviewed, setIsAlreadyReviewed] = useState<
-    "loading" | "no" | { rating: number; comment: string }
-  >("loading");
+    'loading' | 'no' | { rating: number; comment: string }
+  >('loading');
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
   useEffect(() => {
-    if (!course.id || !signedInUser) return;
+    if (!course.id || !signedInUser?.id) return;
 
-    let flag = false;
-    course.reviews?.map((review) => {
-      const user = review.user as IUser;
-
-      if (user.id === signedInUser.id) {
-        setIsAlreadyReviewed({
-          rating: review.rating,
-          comment: review.comment,
-        });
-        flag = true;
-        return;
+    const getReview = async () => {
+      try {
+        const { data } = await axios.get(
+          `${nextApiEndPoint}/courseReview?courseId=${course.id}&userId=${signedInUser.id}`
+        );
+        if (data.data.rating) {
+          setIsAlreadyReviewed({
+            comment: data.data.comment,
+            rating: data.data.rating,
+          });
+        } else {
+          setIsAlreadyReviewed('no');
+        }
+      } catch (error) {
+        console.log(error);
+        setIsAlreadyReviewed('no');
       }
-    });
+    };
 
-    !flag && setIsAlreadyReviewed("no");
+    getReview();
   }, [course, signedInUser]);
 
   return (
     <div className="mx-auto my-16 w-[75%] md:w-[50%]">
-      {typeof isAlreadyReviewed === "string" ? (
-        isAlreadyReviewed === "loading" ? (
+      {typeof isAlreadyReviewed === 'string' ? (
+        isAlreadyReviewed === 'loading' ? (
           <Skeleton className="w-full h-40" />
         ) : (
-          <ReviewTakingForm course={course} />
+          <ReviewTakingForm
+            course={course}
+            setIsAlreadyReviewed={setIsAlreadyReviewed}
+          />
         )
       ) : (
         <CurrentUserReview
@@ -83,7 +92,22 @@ export default function CourseReviewTaker({ course }: { course: ICourse }) {
   );
 }
 
-const ReviewTakingForm = ({ course }: { course: ICourse }) => {
+const ReviewTakingForm = ({
+  course,
+  setIsAlreadyReviewed,
+}: {
+  course: ICourse;
+  setIsAlreadyReviewed: React.Dispatch<
+    React.SetStateAction<
+      | 'loading'
+      | 'no'
+      | {
+          rating: number;
+          comment: string;
+        }
+    >
+  >;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
@@ -91,53 +115,54 @@ const ReviewTakingForm = ({ course }: { course: ICourse }) => {
 
   const form = useForm<z.infer<typeof courseReviewSchema>>({
     resolver: zodResolver(courseReviewSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       user: signedInUser?.id,
+      courseId: course?.id,
       rating: 1,
-      comment: "",
+      comment: '',
     },
   });
 
   const customStyles = {
     itemShapes: StarDrawing,
-    activeFillColor: "#f43f5e",
-    inactiveFillColor: "#fda4af",
+    activeFillColor: '#f43f5e',
+    inactiveFillColor: '#fda4af',
   };
 
   const handleSubmit = async (data: z.infer<typeof courseReviewSchema>) => {
-    if (isLoading || !signedInUser) return;
+    if (isLoading || !signedInUser?.id || !course.id) return;
 
     setIsLoading(true);
 
     try {
-      const review: ICourse = {
-        ...course,
-        reviews: [
-          ...(course.reviews || []),
-          {
-            user: signedInUser.id as string,
-            rating: data.rating,
-            comment: data.comment,
-          },
-        ],
+      const review: ICourseReview = {
+        courseId: course.id,
+        user: signedInUser.id,
+        comment: data.comment!,
+        rating: data.rating!,
       };
 
-      await axios.put(
-        `${nextApiEndPoint}/course/updateRatings/${course.id}`,
+      const { data: response } = await axios.post(
+        `${nextApiEndPoint}/courseReview`,
         review
       );
 
+      setIsAlreadyReviewed({
+        comment: response.data.comment,
+        rating: response.data.rating,
+      });
+
       toast({
-        title: "Success",
+        title: 'Success',
         message: `Rated successfully`,
-        type: "success",
+        type: 'success',
       });
     } catch (error) {
       toast({
-        title: "Error",
-        message: `Something `,
-        type: "error",
+        title: 'Error',
+        message: `Something went wrong`,
+        type: 'error',
       });
     } finally {
       setIsLoading(false);
@@ -162,7 +187,7 @@ const ReviewTakingForm = ({ course }: { course: ICourse }) => {
                       {...field}
                       style={{ maxWidth: 220 }}
                       itemStyles={customStyles}
-                      value={field.value}
+                      value={field.value ?? 0}
                       onChange={field.onChange}
                     />
                     <p className="font-bold p-2 px-3 rounded bg-slate-300 dark:bg-gray-800">

@@ -1,31 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import React, { ReactNode } from "react";
-import Paragraph from "../ui/Paragraph";
+import React, { ReactNode } from 'react';
+import Paragraph from '../ui/Paragraph';
 import {
   FcApproval,
   FcDeleteRow,
   FcDocument,
   FcLock,
   FcSportsMode,
-} from "react-icons/fc";
-import TooltipComponent from "../ui/TooltipComponent";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { ICourseTopic } from "@/types/courseTopic";
-import { getFavicon } from "@/utils/getFavicon";
-import { useDispatch } from "react-redux";
+} from 'react-icons/fc';
+import TooltipComponent from '../ui/TooltipComponent';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { ICourseTopic } from '@/types/courseTopic';
+import { getFavicon } from '@/utils/getFavicon';
+import { useDispatch } from 'react-redux';
 import {
   setCourseForCreation,
   setCurrentCourseTopicForCreation,
-} from "@/redux/features/course-creation-slice";
+} from '@/redux/features/course-creation-slice';
 import {
   setCourseForUpdate,
   setCurrentCourseTopicForUpdate,
-} from "@/redux/features/course-update-slice";
-import { useRouter } from "next/navigation";
-import { setCurrentCourseTopicForView } from "@/redux/features/course-view-slice";
-import { setSelectedTopicType } from "@/redux/features/selected-topic-type";
+} from '@/redux/features/course-update-slice';
+import { useRouter } from 'next/navigation';
+import { setCurrentCourseTopicForView } from '@/redux/features/course-view-slice';
+import { setSelectedTopicType } from '@/redux/features/selected-topic-type';
 
 const CourseTopic = ({
   index,
@@ -34,15 +34,15 @@ const CourseTopic = ({
 }: {
   index: number;
   courseTopic: ICourseTopic;
-  mode: "creation" | "edit" | "view";
+  mode: 'creation' | 'edit' | 'view';
 }) => {
   const styles = {
-    icon: "w-10 h-10 rounded p-1 hover:bg-slate-300 hover:dark:bg-gray-800",
+    icon: 'w-10 h-10 rounded p-1 hover:bg-slate-300 hover:dark:bg-gray-800',
   };
 
   const favIcon = (): ReactNode => {
-    if (topic.type === "free_source_content") {
-      const favIconUrl = getFavicon(topic.data.source ?? "");
+    if (topic.type === 'free_source_content') {
+      const favIconUrl = getFavicon(topic.data.source ?? '');
 
       return <img src={favIconUrl} className="h-7 w-7" alt="og" />;
     } else {
@@ -51,19 +51,19 @@ const CourseTopic = ({
   };
 
   const course = useAppSelector((state) =>
-    mode === "view"
+    mode === 'view'
       ? state.courseViewReducer.value.course
-      : mode === "creation"
-      ? state.courseCreationReducer.value.course
-      : state.courseUpdateReducer.value.course
+      : mode === 'creation'
+        ? state.courseCreationReducer.value.course
+        : state.courseUpdateReducer.value.course
   );
 
   const currentCourseTopic = useAppSelector((state) =>
-    mode === "view"
+    mode === 'view'
       ? state.courseViewReducer.value.currentCourseTopic
-      : mode === "creation"
-      ? state.courseCreationReducer.value.currentCourseTopic
-      : state.courseUpdateReducer.value.currentCourseTopic
+      : mode === 'creation'
+        ? state.courseCreationReducer.value.currentCourseTopic
+        : state.courseUpdateReducer.value.currentCourseTopic
   );
 
   const enrollState = useAppSelector(
@@ -100,17 +100,17 @@ const CourseTopic = ({
     };
 
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCourseForCreation(updated)
         : setCourseForUpdate(updated)
     );
   };
 
   const handleOnClick = () => {
-    mode === "view"
+    mode === 'view'
       ? redirectToCurrentCourseTopic(courseTopic)
       : dispatch(
-          mode === "creation"
+          mode === 'creation'
             ? setCurrentCourseTopicForCreation(courseTopic)
             : setCurrentCourseTopicForUpdate(courseTopic)
         );
@@ -124,8 +124,8 @@ const CourseTopic = ({
       onClick={handleOnClick}
       className={`m-2 border-2 ${
         courseTopic.topicID === currentCourseTopic.topicID
-          ? "dark:border-rose-500 border-rose-500"
-          : "border-slate-300 dark:border-gray-800"
+          ? 'dark:border-rose-500 border-rose-500'
+          : 'border-slate-300 dark:border-gray-800'
       } bg-slate-100 dark:bg-gray-950 px-3 md:px-4 py-2 rounded cursor-pointer
       hover:border-rose-500 hover:dark:border-rose-500`}
     >
@@ -133,10 +133,10 @@ const CourseTopic = ({
         <div>
           <TooltipComponent content={courseTopic.versions[version].data.title}>
             <Paragraph className="truncate-text-1-line text-start">
-              {index}.{" "}
+              {index + 1}.{' '}
               <span className="font-bold">
                 {courseTopic.versions[version].data.title}
-              </span>{" "}
+              </span>{' '}
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
@@ -147,7 +147,7 @@ const CourseTopic = ({
           </div>
         </div>
 
-        {mode === "view" ? (
+        {mode === 'view' ? (
           courseTopic.topicID === currentCourseTopic.topicID ? (
             <TooltipComponent content="Going">
               <FcSportsMode className={styles.icon} />
