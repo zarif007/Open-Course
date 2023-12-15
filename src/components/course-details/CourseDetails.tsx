@@ -39,7 +39,7 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
         </Avatar>
         <Paragraph className="font-bold text-md">{creator.name}</Paragraph>
       </div>
-      <div className="flex items-center justify-center space-x-3 text-slate-300 dark:text-gray-700 my-2 font-bold">
+      <div className="flex items-center justify-center space-x-3 text-slate-500 dark:text-gray-600 my-2 font-bold">
         <FaUsers className="w-6 h-6" />
         <p>{course.enrolledUsers.length}</p>
       </div>

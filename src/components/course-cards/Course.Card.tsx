@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import React from "react";
-import Paragraph from "../ui/Paragraph";
-import { ICourse } from "@/types/course";
-import SelectedTopics from "../course-details/SelectedTopics";
-import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { Button, buttonVariants } from "../ui/Button";
+import React from 'react';
+import Paragraph from '../ui/Paragraph';
+import { ICourse } from '@/types/course';
+import SelectedTopics from '../course-details/SelectedTopics';
+import { formatSelectedLevels } from '@/utils/formatSelectedLevels';
+import { Button, buttonVariants } from '../ui/Button';
 import {
   PiChatsDuotone,
   PiUsersThreeDuotone,
   PiShootingStarDuotone,
-} from "react-icons/pi";
-import ContentLogos from "../course-content/ContentLogos";
-import calculateAvgRating from "@/utils/calculateAvgRating";
-import { IUser } from "@/types/user";
-import BlurredImage from "../ui/BlurredImage";
-import formatDate from "@/utils/formatDate";
-import getLastUpdatedTopicDate from "@/utils/getLastUpdatedTopicDate";
-import courseDurationCalculator from "@/utils/courseDurationCalculator";
-import Link from "next/link";
-import { ICourseTopic } from "@/types/courseTopic";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
+} from 'react-icons/pi';
+import ContentLogos from '../course-content/ContentLogos';
+import calculateAvgRating from '@/utils/calculateAvgRating';
+import { IUser } from '@/types/user';
+import BlurredImage from '../ui/BlurredImage';
+import formatDate from '@/utils/formatDate';
+import getLastUpdatedTopicDate from '@/utils/getLastUpdatedTopicDate';
+import courseDurationCalculator from '@/utils/courseDurationCalculator';
+import Link from 'next/link';
+import { ICourseTopic } from '@/types/courseTopic';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import { useRouter } from 'next/navigation';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover';
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -34,7 +34,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
         <Link href={`/course-landing/${course.slug}`}>
           <BlurredImage
-            src={course.banner === "" ? generatedBanner : course.banner}
+            src={course.banner === '' ? generatedBanner : course.banner}
             alt="blog"
             dimension="h-48 w-full"
             className="h-48 w-full rounded object-cover object-center border border-rose-500"
@@ -52,7 +52,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                   key={lang}
                   className="px-1 rounded bg-slate-100 text-gray-950"
                 >
-                  {lang.split(" ")[0]}
+                  {lang.split(' ')[0]}
                 </div>
               }
             />
@@ -62,7 +62,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         <div className="p-6">
           <div className="flex justify-between items-center">
             <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
-              By <span className="text-rose-500">{creator.name ?? ""}</span>
+              By <span className="text-rose-500">{creator.name ?? ''}</span>
             </h2>
             <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
               {formatDate(
@@ -88,7 +88,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           <div
             className="w-full max-w-5xl mx-auto"
             style={{
-              borderTop: "2px dashed #f43f5e",
+              borderTop: '2px dashed #f43f5e',
             }}
           />
 
@@ -101,7 +101,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                 trigger={
                   <SelectedTopics
                     mode="view"
-                    selectedTopics={[category.split(" ")[0]]}
+                    selectedTopics={[category.split(' ')[0]]}
                   />
                 }
               />
@@ -119,7 +119,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
-            <div className="flex space-x-1 items-center">
+            {/* <div className="flex space-x-1 items-center">
               <PiShootingStarDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">
                 {calculateAvgRating(course.reviews ?? [])}
@@ -130,14 +130,14 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             </div>
             <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
               |
-            </p>
+            </p> */}
             <div className="flex space-x-1 items-center">
               <PiUsersThreeDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">
                 {course.enrolledUsers.length}
               </p>
             </div>
-            <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
+            {/* <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
               |
             </p>
             <div className="flex space-x-1 items-center">
@@ -145,13 +145,13 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               <p className="font-semibold text-md">
                 {course.enrolledUsers.length}
               </p>
-            </div>
+            </div> */}
           </div>
 
           <Link
             href={`/course-landing/${course.slug}`}
             className={`${buttonVariants({
-              variant: "default",
+              variant: 'default',
             })} w-full mt-3 font-semibold`}
           >
             Enroll
@@ -181,7 +181,7 @@ const PopoverComponent = ({
           className="px-2 w-full focus:ring-0"
           onClick={() => router.push(`/courses?${routerName}=${topic}`)}
         >
-          View {topic.split(" ")[0]} Courses
+          View {topic.split(' ')[0]} Courses
         </Button>
       </PopoverContent>
     </Popover>

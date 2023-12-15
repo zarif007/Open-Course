@@ -9,6 +9,7 @@ import CourseInvitationDialog from './CourseInvitation.Dialog';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { AiTwotoneDelete } from 'react-icons/ai';
 
 const CourseLandingSideWidget = async ({ course }: { course: ICourse }) => {
   const session = await getServerSession(authOptions);
@@ -34,11 +35,21 @@ const CourseLandingSideWidget = async ({ course }: { course: ICourse }) => {
           <FcBookmark className={styles.icon} />
         </TooltipComponent>
         {creator.email === session?.user?.email && (
-          <TooltipComponent content="Settings">
-            <Link href={`/course-update/${course.slug}`}>
-              <FcSettings className={styles.icon} />
-            </Link>
-          </TooltipComponent>
+          <div className="flex flex-col space-y-4">
+            <TooltipComponent content="Settings">
+              <Link href={`/course-update/${course.slug}`}>
+                <FcSettings className={styles.icon} />
+              </Link>
+            </TooltipComponent>
+            <TooltipComponent content="Delete">
+              <Link
+                href={`/course-update/${course.slug}`}
+                className="text-red-500"
+              >
+                <AiTwotoneDelete className={styles.icon} />
+              </Link>
+            </TooltipComponent>
+          </div>
         )}
       </div>
     </div>
