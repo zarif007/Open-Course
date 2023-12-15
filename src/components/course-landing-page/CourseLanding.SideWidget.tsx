@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { AiTwotoneDelete } from 'react-icons/ai';
+import CourseDeleteDialog from './CourseDelete.Dialog';
 
 const CourseLandingSideWidget = async ({ course }: { course: ICourse }) => {
   const session = await getServerSession(authOptions);
@@ -42,12 +43,7 @@ const CourseLandingSideWidget = async ({ course }: { course: ICourse }) => {
               </Link>
             </TooltipComponent>
             <TooltipComponent content="Delete">
-              <Link
-                href={`/course-update/${course.slug}`}
-                className="text-red-500"
-              >
-                <AiTwotoneDelete className={styles.icon} />
-              </Link>
+              <CourseDeleteDialog courseId={course.id as string} />
             </TooltipComponent>
           </div>
         )}

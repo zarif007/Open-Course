@@ -37,7 +37,7 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
       '_id'
     );
 
-    if (requestedUser._id !== payload.creator) {
+    if (!requestedUser._id.equals(payload.creator)) {
       return NextResponse.json({
         status: 401,
         message: 'Unauthorized for this action',
@@ -119,13 +119,13 @@ export const DELETE = async (req: NextRequest, { params }: IParams) => {
 
     const id = params.id;
 
-    const payload = await req.json();
+    const course = await Course.findById(id);
 
     const requestedUser = await User.findOne({ email: token.email }).select(
       '_id'
     );
 
-    if (requestedUser._id !== payload.creator) {
+    if (!requestedUser._id.equals(course.creator)) {
       return NextResponse.json({
         status: 401,
         message: 'Unauthorized for this action',
@@ -134,11 +134,11 @@ export const DELETE = async (req: NextRequest, { params }: IParams) => {
     }
 
     // Creating or Updating topics and storing at the course
-    for (const topic of payload.topics) {
-      await CourseTopic.findOneAndDelete({ _id: topic._id });
+    for (const topic of course.topics) {
+      await CourseTopic.findByIdAndDelete(topic._id);
     }
 
-    await Course.findOneAndDelete({ _id: id });
+    await Course.findByIdAndDelete(id);
 
     return NextResponse.json({ data: null, success: true, status: 201 });
   } catch (error) {
