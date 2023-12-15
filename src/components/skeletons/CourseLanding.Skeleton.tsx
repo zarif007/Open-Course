@@ -1,6 +1,6 @@
-import React from "react";
-import { Accordion } from "@/components/ui/Accordion";
-import { Skeleton } from "@/components/ui/Skeleton";
+import React from 'react';
+import { Accordion } from '@/components/ui/Accordion';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const CourseLandingSkeleton = () => {
   return (
@@ -29,7 +29,7 @@ const CourseLandingSkeleton = () => {
         {Array.from({ length: 6 }).map((_, index) => (
           <Skeleton
             key={index}
-            className={`h-7 w-7 rounded-full ${index !== 0 && "-ml-2"}`}
+            className={`h-7 w-7 rounded-full ${index !== 0 && '-ml-2'}`}
           />
         ))}
       </div>
@@ -41,14 +41,6 @@ const CourseLandingSkeleton = () => {
       </div>
 
       <Skeleton className="text-center underline decoration-rose-500 decoration-4 h-8 w-[70%] md:w-[30%] my-4 mx-auto" />
-      <div className="mx-auto">
-        {[1, 2, 3, 4, 5].map((_, index) => (
-          <Skeleton
-            key={index}
-            className="mx-auto my-2 h-5 w-[80%] md:w-[50%]"
-          />
-        ))}
-      </div>
 
       <Accordion type="single" collapsible>
         {[1, 2, 3].map((_, index) => (

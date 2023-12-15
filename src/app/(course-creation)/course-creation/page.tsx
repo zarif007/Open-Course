@@ -81,7 +81,6 @@ const CourseCreation = () => {
       version: 0,
       contributors: [],
       enrolledUsers: [],
-      reviews: [],
       status: 'published',
       slug: course.slug ? course.slug : createSlug(course.title),
       topics: courseTopics.filter((topic) => topic.topicID !== 0),

@@ -9,6 +9,7 @@ import ContentLogos from '@/components/course-content/ContentLogos';
 import { ICourse } from '@/types/course';
 import { ICourseTopic } from '@/types/courseTopic';
 import { AiOutlineLock, AiOutlineUnlock } from 'react-icons/ai';
+import { FaUsers } from 'react-icons/fa6';
 
 const CourseDetails = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -37,6 +38,10 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
           <AvatarFallback>DP</AvatarFallback>
         </Avatar>
         <Paragraph className="font-bold text-md">{creator.name}</Paragraph>
+      </div>
+      <div className="flex items-center justify-center space-x-3 text-slate-300 dark:text-gray-700 my-2 font-bold">
+        <FaUsers className="w-6 h-6" />
+        <p>{course.enrolledUsers.length}</p>
       </div>
       <div className="flex flex-wrap mx-auto">
         <div className="m-1">

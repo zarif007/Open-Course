@@ -1,5 +1,6 @@
 import CourseDetails from '@/components/course-details/CourseDetails';
 import CourseEnrollmentButton from '@/components/course-landing-page/Course.EnrollmentButton';
+import CourseFeedbacks from '@/components/course-landing-page/CourseFeedbacks';
 import CourseLandingSideWidget from '@/components/course-landing-page/CourseLanding.SideWidget';
 import CourseRatings from '@/components/course-landing-page/CourseRatings';
 import CourseReviews from '@/components/course-landing-page/CourseReviews';
@@ -83,7 +84,6 @@ const CourseLanding = async ({ params }: PageParams) => {
     <div className="max-w-5xl w-full mx-auto">
       <CourseLandingSideWidget course={course} />
       <CourseDetails course={course} />
-      {/* <CourseRatings reviews={course.reviews ?? []} /> */}
       <div className="flex space-x-2 items-center justify-center mt-8">
         <LargeHeading size="sm" className="text-center">
           Course Topics ({course.topics.length})
@@ -91,7 +91,7 @@ const CourseLanding = async ({ params }: PageParams) => {
         <PiStackDuotone className="w-10 h-10" />
       </div>
       <CourseTopicsAccordion courseTopics={courseTopics} />
-      {/* <CourseReviews reviews={course.reviews ?? []} /> */}
+      <CourseFeedbacks courseId={course.id as string} />
       <CourseEnrollmentButton course={course} enrollState={enrollState} />
     </div>
   );
