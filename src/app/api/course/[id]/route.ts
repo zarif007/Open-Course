@@ -103,3 +103,56 @@ export const PUT = async (req: NextRequest, { params }: IParams) => {
     });
   }
 };
+
+export const DELETE = async (req: NextRequest, { params }: IParams) => {
+  try {
+    const token = await getToken({ req });
+
+    if (!token) {
+      return NextResponse.json({
+        status: 401,
+        message: 'Unauthorized: Login required',
+      });
+    }
+
+    await connectToDB();
+
+    const id = params.id;
+
+    const payload = await req.json();
+
+    const requestedUser = await User.findOne({ email: token.email }).select(
+      '_id'
+    );
+
+    if (requestedUser._id !== payload.creator) {
+      return NextResponse.json({
+        status: 401,
+        message: 'Unauthorized for this action',
+        success: false,
+      });
+    }
+
+    // Creating or Updating topics and storing at the course
+    for (const topic of payload.topics) {
+      await CourseTopic.findOneAndDelete({ _id: topic._id });
+    }
+
+    await Course.findOneAndDelete({ _id: id });
+
+    return NextResponse.json({ data: null, success: true, status: 201 });
+  } catch (error) {
+    let status = 500;
+    let message = 'Internal server error';
+    if (error instanceof z.ZodError) {
+      status = 422;
+      message = 'Invalid data';
+    }
+    return NextResponse.json({
+      data: null,
+      status,
+      message,
+      success: false,
+    });
+  }
+};
