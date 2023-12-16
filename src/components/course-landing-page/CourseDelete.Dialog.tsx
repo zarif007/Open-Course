@@ -7,12 +7,12 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/Dialog';
-import { AiTwotoneDelete } from 'react-icons/ai';
 import { Button } from '../ui/Button';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { toast } from '../ui/Toast';
+import { MdOutlineDeleteForever } from 'react-icons/md';
 
 const CourseDeleteDialog = ({ courseId }: { courseId: string }) => {
   const router = useRouter();
@@ -55,11 +55,11 @@ const CourseDeleteDialog = ({ courseId }: { courseId: string }) => {
   return (
     <Dialog>
       <DialogTrigger className="flex space-x-1 items-center w-full">
-        <AiTwotoneDelete className="w-8 h-8 cursor-pointer text-red-500" />
+        <MdOutlineDeleteForever className="w-8 h-8 cursor-pointer text-red-500" />
       </DialogTrigger>
       <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-gray-950 bg-slate-200">
         <div className="w-full p-4 flex flex-col items-center justify-center">
-          <AiTwotoneDelete className="w-16 h-16 cursor-pointer mt-2 text-red-500" />
+          <MdOutlineDeleteForever className="w-16 h-16 cursor-pointer mt-2 text-red-500" />
           <p className="font-semibold text-md text-center w-full mb-6">
             Are you sure to delete this course?
           </p>
