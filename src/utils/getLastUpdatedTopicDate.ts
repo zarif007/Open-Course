@@ -1,4 +1,4 @@
-import { ICourseTopic } from "@/types/courseTopic";
+import { ICourseTopic } from '@/types/courseTopic';
 
 const getLastUpdatedTopicDate = (
   courseTopics: ICourseTopic[]
@@ -7,12 +7,13 @@ const getLastUpdatedTopicDate = (
     .slice()
     .sort(
       (a: ICourseTopic, b: ICourseTopic) =>
-        new Date(b.updatedAt ?? "").getTime() -
-        new Date(a.updatedAt ?? "").getTime()
+        new Date(b.updatedAt ?? '').getTime() -
+        new Date(a.updatedAt ?? '').getTime()
     );
 
   // The first element in the sorted array has the latest updatedAt date
-  return sortedData[0].updatedAt ?? "";
+  console.log(courseTopics);
+  return sortedData[0].updatedAt ?? '';
 };
 
 export default getLastUpdatedTopicDate;

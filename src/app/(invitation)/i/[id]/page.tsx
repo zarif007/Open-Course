@@ -65,7 +65,7 @@ const CourseInvitation = async ({ params }: PageParams) => {
             alt="course banner"
             className="w-full h-60 rounded"
           />
-          <Paragraph className="font-bold">
+          <Paragraph className="font-bold text-xl">
             {invitationData.courseTitle}
           </Paragraph>
 

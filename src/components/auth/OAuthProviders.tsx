@@ -23,11 +23,11 @@ const providers = [
   //     title: "Facebook",
   //     icon: <FaSquareFacebook className="w-7 h-7 text-[#4267B2]" />,
   //   },
-  {
-    name: 'github',
-    title: 'Github',
-    icon: <IoLogoGithub className="w-7 h-7" />,
-  },
+  // {
+  //   name: 'github',
+  //   title: 'Github',
+  //   icon: <IoLogoGithub className="w-7 h-7" />,
+  // },
 ];
 
 const OAuthProviders = ({

@@ -24,8 +24,6 @@ const InvitationHandlerButton = ({ id }: { id: string }) => {
 
   const session = useSession();
 
-  // session.status === "loading" && signedInUser === null
-
   const errorOnToast = (message: string) => {
     setLoadingStatus('free');
     toast({
