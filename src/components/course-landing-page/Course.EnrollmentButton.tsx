@@ -92,9 +92,15 @@ const CourseEnrollmentButton = ({
             {!session?.user ? (
               <div className="w-full">
                 <AuthDialog
-                  loadingStatus={loadingStatus}
                   manualCallbackUrl={`/course-landing/${course.slug}`}
-                />
+                >
+                  <Button
+                    className="w-full py-6 text-lg font-bold"
+                    isLoading={loadingStatus !== 'free'}
+                  >
+                    Enroll
+                  </Button>
+                </AuthDialog>
               </div>
             ) : (
               <Button

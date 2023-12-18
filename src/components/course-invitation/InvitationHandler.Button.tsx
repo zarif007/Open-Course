@@ -10,6 +10,7 @@ import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import IInvitationLink from '@/types/invitationLink';
 import { Skeleton } from '../ui/Skeleton';
 import { Button } from '../ui/Button';
+import AuthDialog from '../auth/Auth.Dialog';
 
 const InvitationHandlerButton = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -73,16 +74,18 @@ const InvitationHandlerButton = ({ id }: { id: string }) => {
       {session.status === 'loading' ||
       (session.status === 'authenticated' && !signedInUser) ? (
         <Skeleton className="w-full h-10" />
-      ) : (
+      ) : session.status === 'authenticated' ? (
         <Button
           className="w-full my-1"
-          onClick={() => {
-            session.status === 'authenticated' ? handleEnrollment() : signIn();
-          }}
+          onClick={handleEnrollment}
           isLoading={loadingStatus !== 'free'}
         >
           {loadingStatus === 'free' ? 'Enroll' : loadingStatus}
         </Button>
+      ) : (
+        <AuthDialog manualCallbackUrl="">
+          <Button className="w-full my-1">Enroll</Button>
+        </AuthDialog>
       )}
     </div>
   );

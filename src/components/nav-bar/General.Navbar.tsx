@@ -18,6 +18,7 @@ import {
 } from 'react-icons/pi';
 import { usePathname } from 'next/navigation';
 import { MdOutlineNotificationsNone } from 'react-icons/md';
+import NotificationDropdown from './Notification.Dropdown';
 
 const routeIcons = {
   Home: <PiHouseDuotone className="w-6 h-6" />,
@@ -60,7 +61,6 @@ const GeneralNavbar = () => {
       )}
 
       <div className="flex md:order-2 items-center justify-center space-x-2">
-        <MdOutlineNotificationsNone className={styles.icon} />
         {/* Theme */}
         <div
           onClick={() =>
@@ -73,6 +73,8 @@ const GeneralNavbar = () => {
             theme && <PiMoonStarsDuotone className={styles.icon} />
           )}
         </div>
+
+        <NotificationDropdown />
 
         {session.status !== 'loading' ? (
           session.data?.user ? (

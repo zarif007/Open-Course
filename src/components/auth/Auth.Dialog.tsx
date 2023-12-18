@@ -4,21 +4,16 @@ import AuthForm from './Auth.Form';
 import { Button } from '../ui/Button';
 
 const AuthDialog = ({
-  loadingStatus,
+  children,
   manualCallbackUrl,
 }: {
-  loadingStatus: 'free' | 'Processing' | 'Redirecting';
+  children: React.ReactNode;
   manualCallbackUrl: string;
 }) => {
   return (
     <Dialog>
       <DialogTrigger className="flex space-x-1 items-center w-full">
-        <Button
-          className="w-full py-6 text-lg font-bold"
-          isLoading={loadingStatus !== 'free'}
-        >
-          Enroll
-        </Button>
+        {children}
       </DialogTrigger>
       <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-gray-950 bg-slate-200">
         <div className="w-full">
