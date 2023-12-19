@@ -17,7 +17,10 @@ import { signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { useDispatch } from 'react-redux';
-import { setSignedInUser } from '@/redux/features/signed-In-user-slice';
+import {
+  setIsLoaded,
+  setSignedInUser,
+} from '@/redux/features/signed-In-user-slice';
 import { useRouter } from 'next/navigation';
 
 const AvatarDropdown = () => {
@@ -54,6 +57,8 @@ const AvatarDropdown = () => {
         dispatch(setSignedInUser(data.data));
       } catch (error) {
         // Handle error
+      } finally {
+        dispatch(setIsLoaded(true));
       }
     };
 

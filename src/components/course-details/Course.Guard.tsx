@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import CourseTopicsBar from "../course-topic/CourseTopics.Bar";
-import CourseContentsTabs from "../course-content/CourseContents.Tabs";
-import CourseSkeleton from "../skeletons/Course.Skeleton";
-import useCourseGuard from "@/hooks/useCourseGuard";
-import React, { useState } from "react";
-import { ICourse } from "@/types/course";
+import CourseTopicsBar from '../course-topic/CourseTopics.Bar';
+import CourseContentsTabs from '../course-content/CourseContents.Tabs';
+import CourseSkeleton from '../skeletons/Course.Skeleton';
+import useCourseGuard from '@/hooks/useCourseGuard';
+import React, { useState } from 'react';
+import { ICourse } from '@/types/course';
 
-const MODE = "view";
+const MODE = 'view';
 
-const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
+const CourseGuard = ({ course }: { course: ICourse }) => {
   const [showCourseTopics, setShowCourseTopics] = useState(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useCourseGuard(course, slug, setIsLoading);
+  useCourseGuard(course, setIsLoading);
 
   return (
     <section className="w-full max-w-8xl mx-auto h-full flex flex-col">
@@ -30,7 +30,7 @@ const CourseGuard = ({ course, slug }: { course: ICourse; slug: string }) => {
           {/* Right */}
           <div
             className={`${
-              showCourseTopics ? "w-full md:w-9/12" : "w-full"
+              showCourseTopics ? 'w-full md:w-9/12' : 'w-full'
             }  ml-auto rounded mt-6`}
           >
             <CourseContentsTabs />

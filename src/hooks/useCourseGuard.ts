@@ -15,7 +15,6 @@ import { nextApiEndPoint } from '@/utils/apiEndpoints';
 
 const useCourseGuard = (
   course: ICourse,
-  slug: string,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +28,10 @@ const useCourseGuard = (
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
+  const isUserLoaded = useAppSelector(
+    (state) => state.signedInUserReducer.value.isLoaded
+  );
+
   const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
     const currentTopic = enrollState.currentTopic as ICourseTopic;
 
@@ -38,7 +41,7 @@ const useCourseGuard = (
     );
   };
 
-  // Incase the next topic based on sequence is deleted
+  // Incase the next topic based on sequence is deleted or altered
   const findTheNextTopic = (
     potentialTopicID: number,
     enrollState: IEnrollState
@@ -71,7 +74,7 @@ const useCourseGuard = (
       ).json();
 
       if (!enrollState) {
-        router.push(`/course-landing/${slug}`);
+        router.push(`/course-landing/${course.slug}`);
       } else {
         if (
           !topicId ||
@@ -84,12 +87,12 @@ const useCourseGuard = (
             topic 0 will be the next topic 
           */
           const nextTopic = findTheNextTopic(currentTopic.topicID, enrollState);
-          router.push(`/course/${slug}?topicId=${nextTopic.topicID}`);
+          router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
           dispatch(setCurrentCourseTopicForView(nextTopic));
         } else {
           const nextTopic = findTheNextTopic(parseInt(topicId), enrollState);
           if (parseInt(topicId) !== nextTopic.topicID) {
-            router.push(`/course/${slug}?topicId=${nextTopic.topicID}`);
+            router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
           }
           dispatch(setCurrentCourseTopicForView(nextTopic));
         }
@@ -100,17 +103,19 @@ const useCourseGuard = (
         dispatch(setCourseForView(course));
       }
     } catch {
-      router.push(`/course-landing/${slug}`);
+      router.push(`/course-landing/${course.slug}`);
     }
   };
 
   useEffect(() => {
+    if (!isUserLoaded) return;
+
     if (!signedInUser?.id) {
-      router.push(`/course-landing/${slug}`);
+      router.push(`/course-landing/${course.slug}`);
     } else {
       actionBasedOnEnrollState();
     }
-  }, [topicId, course, signedInUser?.id]);
+  }, [topicId, course, signedInUser?.id, isUserLoaded]);
 };
 
 export default useCourseGuard;
