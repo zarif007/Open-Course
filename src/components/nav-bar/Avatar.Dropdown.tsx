@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Menubar,
   MenubarContent,
@@ -11,17 +11,9 @@ import {
   MenubarTrigger,
 } from '@/components/ui/Menu.Bar';
 
-import { AppDispatch, useAppSelector } from '@/redux/store';
+import { useAppSelector } from '@/redux/store';
 import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
-import axios from 'axios';
-import { nextApiEndPoint } from '@/utils/apiEndpoints';
-import { useDispatch } from 'react-redux';
-import {
-  setIsLoaded,
-  setSignedInUser,
-} from '@/redux/features/signed-In-user-slice';
-import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const AvatarDropdown = () => {
   const styles = {
@@ -29,43 +21,9 @@ const AvatarDropdown = () => {
       'cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold',
   };
 
-  const { data: session } = useSession();
-
-  const router = useRouter();
-
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    if (!session?.user?.email) {
-      dispatch(setSignedInUser(null));
-      return;
-    }
-    const getUserInfo = async () => {
-      try {
-        const { data } = await axios.get(
-          `${nextApiEndPoint}/user/byEmail/${session?.user?.email}`
-        );
-
-        if (!data.data) {
-          router.push('/login');
-          return;
-        }
-
-        dispatch(setSignedInUser(data.data));
-      } catch (error) {
-        // Handle error
-      } finally {
-        dispatch(setIsLoaded(true));
-      }
-    };
-
-    if (!signedInUser || signedInUser.email !== session.user.email) {
-      getUserInfo();
-    }
-  }, [session, signedInUser]);
 
   return (
     <Menubar>
