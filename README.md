@@ -50,71 +50,54 @@
 </p>
 
 <!-- Contributing -->
-<h1 align="center">Contributing to Open Course</h1>
 
-  <p align="center">Welcome to Open Course! We appreciate your interest in contributing. Whether you want to report a bug,
-    suggest a feature, or contribute code, your help is greatly appreciated.</p>
+# Contributing to Open Course
 
-  <h2 align="center">Bug Reports and Feature Requests</h2>
+Welcome to Open Course! We appreciate your interest in contributing. Whether you want to report a bug, suggest a feature, or contribute code, your help is greatly appreciated.
 
-  <p align="center">If you come across a bug or have a feature request, please open an <a
-      href="https://github.com/zarif007/Open-Course/issues">issue</a>. Make sure to check if a similar issue or feature
-    request has already been submitted.</p>
+## Bug Reports and Feature Requests
 
-  <h2 align="center">Contributing Code</h2>
+If you come across a bug or have a feature request, please open an [issue](https://github.com/zarif007/Open-Course/issues). Make sure to check if a similar issue or feature request has already been submitted.
 
-  <ol align="center">
-    <li>Fork the repository to your GitHub account.</li>
-    <li>Clone your forked repository to your local machine:
-      <br>
-      <code>git clone https://github.com/your-username/Open-Course.git</code>
-    </li>
-    <li>Create a new branch for your contribution:
-      <br>
-      <code>git checkout -b feature/your-feature</code>
-    </li>
-    <li>Make your changes and commit them:
-      <br>
-      <code>
-        git add .
-        <br>
-        git commit -m "Add your feature or fix"
-      </code>
-    </li>
-    <li>Push your changes to your forked repository:
-      <br>
-      <code>git push origin feature/your-feature</code>
-    </li>
-    <li>Open a pull request from your forked repository to the <code>main</code> branch of the original repository.</li>
-  </ol>
+## Contributing Code
 
-  <h2 align="center">Development Setup</h2>
+1. Fork the repository to your GitHub account.
+2. Clone your forked repository to your local machine:
 
-  <p align="center">To set up the project locally for development:</p>
+   ```bash
+   git clone https://github.com/your-username/Open-Course.git
+   ```
 
-  <ol align="center">
-    <li>Install dependencies:
-      <br>
-      <code>npm install</code>
-    </li>
-    <li>Start the development server:
-      <br>
-      <code>npm run dev</code>
-    </li>
-    <li>Open your browser and visit <a href="http://localhost:3000">http://localhost:3000</a> to see the changes.</li>
-  </ol>
+3. Install dependencies
 
-  <h2 align="center">Code Style</h2>
+   ```bash
+   npm i
+   ```
 
-  <p align="center">Please follow the coding conventions and style guidelines used in the project. Consider running linting
-    tools or format checks before submitting your code.</p>
+4. Start the development server
 
-  <h2 align="center">License</h2>
+   ```bash
+   npm run dev
+   ```
 
-  <p align="center">By contributing to Open Course, you agree that your contributions will be licensed under the <a
-      href="LICENSE">MIT License</a>.</p>
+5. Create a new branch for your contribution
 
-  <p align="center">Thank you for your contribution!</p>
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+
+6. Make your changes and commit them
+
+   ```bash
+   git add .
+   git commit -m "Add your feature or fix"
+   ```
+
+7. Push your changes to your forked repository
+
+   ```bash
+   git push origin feature/your-feature
+   ```
 
 <!-- License -->
 <h2 align="center">License</h2>
