@@ -50,9 +50,71 @@
 </p>
 
 <!-- Contributing -->
-<h2 align="center">Contributing</h2>
+<h1 align="center">Contributing to Open Course</h1>
 
-<p align="center">We welcome contributions! If you have ideas for new features, improvements, or find any issues, feel free to open an <a href="https://github.com/your-username/open-course/issues">issue</a> or submit a <a href="https://github.com/your-username/open-course/pulls">pull request</a>.</p>
+  <p align="center">Welcome to Open Course! We appreciate your interest in contributing. Whether you want to report a bug,
+    suggest a feature, or contribute code, your help is greatly appreciated.</p>
+
+  <h2 align="center">Bug Reports and Feature Requests</h2>
+
+  <p align="center">If you come across a bug or have a feature request, please open an <a
+      href="https://github.com/zarif007/Open-Course/issues">issue</a>. Make sure to check if a similar issue or feature
+    request has already been submitted.</p>
+
+  <h2 align="center">Contributing Code</h2>
+
+  <ol align="center">
+    <li>Fork the repository to your GitHub account.</li>
+    <li>Clone your forked repository to your local machine:
+      <br>
+      <code>git clone https://github.com/your-username/Open-Course.git</code>
+    </li>
+    <li>Create a new branch for your contribution:
+      <br>
+      <code>git checkout -b feature/your-feature</code>
+    </li>
+    <li>Make your changes and commit them:
+      <br>
+      <code>
+        git add .
+        <br>
+        git commit -m "Add your feature or fix"
+      </code>
+    </li>
+    <li>Push your changes to your forked repository:
+      <br>
+      <code>git push origin feature/your-feature</code>
+    </li>
+    <li>Open a pull request from your forked repository to the <code>main</code> branch of the original repository.</li>
+  </ol>
+
+  <h2 align="center">Development Setup</h2>
+
+  <p align="center">To set up the project locally for development:</p>
+
+  <ol align="center">
+    <li>Install dependencies:
+      <br>
+      <code>npm install</code>
+    </li>
+    <li>Start the development server:
+      <br>
+      <code>npm run dev</code>
+    </li>
+    <li>Open your browser and visit <a href="http://localhost:3000">http://localhost:3000</a> to see the changes.</li>
+  </ol>
+
+  <h2 align="center">Code Style</h2>
+
+  <p align="center">Please follow the coding conventions and style guidelines used in the project. Consider running linting
+    tools or format checks before submitting your code.</p>
+
+  <h2 align="center">License</h2>
+
+  <p align="center">By contributing to Open Course, you agree that your contributions will be licensed under the <a
+      href="LICENSE">MIT License</a>.</p>
+
+  <p align="center">Thank you for your contribution!</p>
 
 <!-- License -->
 <h2 align="center">License</h2>
