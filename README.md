@@ -4,7 +4,7 @@
 </h1>
 
 <h1 align="center">
-  <a href="https://open-course.vercel.app/">Open Course</a>
+  <a target="_blank" href="https://open-course.vercel.app/">Open Course</a>
 </h1>
 
 <!-- Project Description -->
@@ -15,12 +15,12 @@
 
 <ul align="center">
   <li>
-   <a href="https://open-course.vercel.app/course-creation">
+   <a target="_blank" href="https://open-course.vercel.app/course-creation">
       <strong>Create Courses:</strong> Users can easily create their own courses and share knowledge with the community.
    </a>
   </li>
   <li>
-   <a href="https://open-course.vercel.app/courses">
+   <a target="_blank" href="https://open-course.vercel.app/courses">
       <strong>Enroll in Courses:</strong> Browse through a variety of free courses and enroll to enhance your skills.
    </a>
   </li>
@@ -58,6 +58,10 @@ Welcome to Open Course! We appreciate your interest in contributing. Whether you
 ## Bug Reports and Feature Requests
 
 If you come across a bug or have a feature request, please open an [issue](https://github.com/zarif007/Open-Course/issues). Make sure to check if a similar issue or feature request has already been submitted.
+
+## Contributing Code
+
+<a target="_blank" href="https://i.ibb.co/kKgxqpt/Screenshot-2023-12-23-eee044024.png">ER Diagram</a>
 
 ## Contributing Code
 
