@@ -59,7 +59,7 @@ Welcome to Open Course! We appreciate your interest in contributing. Whether you
 
 If you come across a bug or have a feature request, please open an [issue](https://github.com/zarif007/Open-Course/issues). Make sure to check if a similar issue or feature request has already been submitted.
 
-## Contributing Code
+## Diagrams
 
 <a target="_blank" href="https://i.ibb.co/kKgxqpt/Screenshot-2023-12-23-eee044024.png">ER Diagram</a>
 
