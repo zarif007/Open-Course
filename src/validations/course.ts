@@ -23,15 +23,6 @@ export const courseSchema: ZodType<Partial<ICourse>> = z.object({
     .or(z.array(z.never())),
   tags: z.array(z.string()).optional(),
   status: z.string(),
-  reviews: z
-    .array(
-      z.object({
-        user: userSchema.or(z.string()),
-        rating: z.number(),
-        comment: z.string(),
-      })
-    )
-    .or(z.array(z.never())),
   coursePrivacy: z.literal('public').or(z.literal('private')),
   topicPrivacy: z.literal('open').or(z.literal('locked')),
 });

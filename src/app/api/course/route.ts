@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
 
     const payload = await req.json();
 
-    // courseSchema.parse(payload);
+    courseSchema.parse(payload);
 
     const topicIds: Types.ObjectId[] = [];
 

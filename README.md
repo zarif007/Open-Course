@@ -49,6 +49,10 @@
   <img src="https://img.shields.io/badge/Validation-Zod-informational?style=flat&logo=zod&logoColor=white&color=EE7A3B">
 </p>
 
+# Notification Server
+
+<a href="https://github.com/zarif007/Open-Course-Notification">https://github.com/zarif007/Open-Course-Notification</a>
+
 <!-- Contributing -->
 
 # Contributing to Open Course
