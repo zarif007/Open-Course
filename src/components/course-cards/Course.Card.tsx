@@ -23,6 +23,7 @@ import { ICourseTopic } from '@/types/courseTopic';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import { useRouter } from 'next/navigation';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover';
+import CourseRating from './Course.Rating';
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -119,18 +120,9 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
-            {/* <div className="flex space-x-1 items-center">
-              <PiShootingStarDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">
-                {calculateAvgRating(course.reviews ?? [])}
-                {" ("}
-                {(course.reviews ?? []).length}
-                {")"}
-              </p>
-            </div>
-            <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
-              |
-            </p> */}
+            {/*
+             */}
+            <CourseRating courseId={course.id as string} />
             <div className="flex space-x-1 items-center">
               <PiUsersThreeDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">
