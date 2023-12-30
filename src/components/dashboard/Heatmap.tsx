@@ -73,6 +73,11 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
     activityMap.forEach((activity) => {
       updated.push(activity);
     });
+
+    updated.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
     setActivitiesForHeatmap(updated);
   };
 

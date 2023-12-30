@@ -12,7 +12,6 @@ const CourseRating = ({ courseId }: { courseId: string }) => {
         await fetch(`${nextApiEndPoint}/courseReview/forCard/${courseId}`)
       ).json();
 
-      console.log(data);
       return data;
     },
   });
