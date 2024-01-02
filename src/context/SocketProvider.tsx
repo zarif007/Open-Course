@@ -1,11 +1,17 @@
 'use client';
 
+import { notificationToast } from '@/components/ui/Notification.Toast';
 import { useAppSelector } from '@/redux/store';
+import { INotification } from '@/types/notification';
+import {
+  notificationApiEndpoint,
+  notificationApiEndpointDevelopment,
+} from '@/utils/apiEndpoints';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 interface ISocketContext {
-  postNotification: (msg: string) => any;
+  postNotification: (msg: INotification) => any;
   messages: string[];
 }
 
@@ -25,24 +31,31 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const postNotification: ISocketContext['postNotification'] = useCallback(
-    (msg) => {
+    (notification) => {
       if (socket) {
         socket.emit('event: postNotification', {
-          message: msg,
+          message: notification,
+          receiver: notification.receiver,
         });
       }
     },
     [socket]
   );
 
-  const onMessageRec = useCallback((msg: string) => {
-    console.log('from Server', msg);
+  const onMessageRec = useCallback((notification: string) => {
+    const data = JSON.parse(notification).message;
+    notificationToast({
+      title: 'Replied',
+      message: data.text,
+      link: data.link,
+      image: data.initiator.image,
+    });
   }, []);
 
   useEffect(() => {
     if (!signedInUser?.id) return;
 
-    const _socket = io('http://localhost:5001', {
+    const _socket = io(notificationApiEndpoint, {
       query: { userId: signedInUser.id },
     });
     _socket.on('message', onMessageRec);

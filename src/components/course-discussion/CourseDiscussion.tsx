@@ -35,6 +35,7 @@ const CourseDiscussion = () => {
     <main className="w-full">
       <DiscussionCreationForm
         parentId="none"
+        parentAuthor={null}
         onSubmitFunction={onSubmitFunction}
       />
       {isLoading ? (

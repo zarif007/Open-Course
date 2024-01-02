@@ -15,20 +15,30 @@ import { Button } from '../ui/Button';
 import { toast } from '../ui/Toast';
 import { useDispatch } from 'react-redux';
 import { setDiscussions } from '@/redux/features/topic-discuss-slice';
+import constructNotification from '@/utils/constructNotification';
+import { useSocket } from '@/context/SocketProvider';
 
 const DiscussionCreationForm = ({
   parentId,
+  parentAuthor,
   onSubmitFunction,
 }: {
   parentId: string;
+  parentAuthor: null | string;
   onSubmitFunction: () => void;
 }) => {
+  const socket = useSocket();
+
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
   const currentCourseTopic = useAppSelector(
     (state) => state.courseViewReducer.value.currentCourseTopic
+  );
+
+  const currentCourse = useAppSelector(
+    (state) => state.courseViewReducer.value.course
   );
 
   const discussions = useAppSelector(
@@ -119,9 +129,18 @@ const DiscussionCreationForm = ({
       );
     }
 
-    dispatch(setDiscussions(discussionDocs));
+    // Generating Notification
+    if (parentAuthor && parentAuthor !== signedInUser.id && socket) {
+      const notification = constructNotification(
+        { name: signedInUser.name, image: signedInUser.image },
+        parentAuthor,
+        `/course/${currentCourse.slug}?topicId=${currentCourseTopic.topicID}&tab=discuss`,
+        'Replied'
+      );
+      socket.postNotification(notification);
+    }
 
-    // response.data
+    dispatch(setDiscussions(discussionDocs));
   };
 
   return (

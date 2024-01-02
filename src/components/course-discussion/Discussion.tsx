@@ -169,6 +169,7 @@ const Discussion = ({
         {openReplyPanel && (
           <DiscussionCreationForm
             parentId={discussion.id as string}
+            parentAuthor={sender.id as string}
             onSubmitFunction={onSubmitFunction}
           />
         )}

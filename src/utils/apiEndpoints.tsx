@@ -12,4 +12,6 @@ export const mainEndPoint =
     : 'https://open-course.vercel.app';
 
 export const notificationApiEndpoint =
-  'https://open-course-notification.onrender.com/api/v1/notification';
+  'https://open-course-notification.onrender.com';
+
+export const notificationApiEndpointDevelopment = 'http://localhost:5001';

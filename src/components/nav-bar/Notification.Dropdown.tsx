@@ -12,7 +12,7 @@ const NotificationDropdown = () => {
 
   const handleClick = async () => {
     if (!socket) return;
-    socket.postNotification('Hi!!!');
+    // socket.postNotification('Hi!!!');
   };
 
   return (
