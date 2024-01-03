@@ -45,7 +45,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const onMessageRec = useCallback((notification: string) => {
     const data = JSON.parse(notification).message;
     notificationToast({
-      title: 'Replied',
+      title: data.initiator.name,
       message: data.text,
       link: data.link,
       image: data.initiator.image,
@@ -60,6 +60,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     });
     _socket.on('message', onMessageRec);
     setSocket(_socket);
+    console.log(_socket);
 
     return () => {
       _socket.disconnect();
