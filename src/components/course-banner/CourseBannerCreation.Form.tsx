@@ -1,51 +1,75 @@
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import React, { useEffect, useState } from "react";
-import BlurredImage from "../ui/BlurredImage";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
-import { useDispatch } from "react-redux";
-import { setCourseForCreation } from "@/redux/features/course-creation-slice";
-import { toast } from "../ui/Toast";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import React, { useEffect, useState } from 'react';
+import BlurredImage from '../ui/BlurredImage';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button';
+import { useDispatch } from 'react-redux';
+import { setCourseForCreation } from '@/redux/features/course-creation-slice';
+import { toast } from '../ui/Toast';
+import { setCourseForUpdate } from '@/redux/features/course-update-slice';
+import detectNSFW from '@/utils/detectNsfw';
 
-const CourseBannerCreationForm = ({ mode }: { mode: "creation" | "edit" }) => {
+const CourseBannerCreationForm = ({ mode }: { mode: 'creation' | 'edit' }) => {
   const course = useAppSelector((state) =>
-    mode === "creation"
+    mode === 'creation'
       ? state.courseCreationReducer.value.course
       : state.courseUpdateReducer.value.course
   );
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
-  const [banner, setBanner] = useState<string>("");
+  const [banner, setBanner] = useState<string>('');
 
   useEffect(() => {
     if (!course.title) return;
     setBanner(
-      !course.banner || course.banner === ""
-        ? generateBannerFromCourse(course, signedInUser?.name ?? "")
+      !course.banner || course.banner === ''
+        ? generateBannerFromCourse(course, signedInUser?.name ?? '')
         : course.banner
     );
   }, [course]);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSetBanner = () => {
-    const updated = {
-      ...course,
-      banner,
-    };
-    dispatch(
-      mode === "creation"
-        ? setCourseForCreation(updated)
-        : setCourseForUpdate(updated)
-    );
-    toast({
-      title: "Banner Added",
-      type: "success",
-      message: "Banner Added",
-    });
+  const handleSetBanner = async () => {
+    try {
+      const res = await detectNSFW(banner);
+      let isNSFW = true;
+      res.outputs[0].data.concepts.map((r: any) => {
+        if (r.name === 'nsfw' && r.value < 0.3) {
+          isNSFW = false;
+        }
+      });
+      if (isNSFW) {
+        toast({
+          title: 'Error',
+          type: 'error',
+          message: 'Can not use this image, try different image',
+        });
+      } else {
+        const updated = {
+          ...course,
+          banner,
+        };
+        dispatch(
+          mode === 'creation'
+            ? setCourseForCreation(updated)
+            : setCourseForUpdate(updated)
+        );
+        toast({
+          title: 'Banner Added',
+          type: 'success',
+          message: 'Banner Added',
+        });
+      }
+    } catch {
+      toast({
+        title: 'Error',
+        type: 'error',
+        message: 'Something went wrong, try again or try different image',
+      });
+    }
   };
 
   return (
@@ -64,7 +88,7 @@ const CourseBannerCreationForm = ({ mode }: { mode: "creation" | "edit" }) => {
             Set
           </Button>
         </div>
-        {banner !== "" && (
+        {banner !== '' && (
           <BlurredImage
             src={banner}
             alt="banner"
