@@ -65,6 +65,7 @@
     "@vercel/speed-insights": "^1.0.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "bad-words": "^3.0.4",
     "bcryptjs": "^2.4.3",
     "clarifai": "^2.9.1",
     "class-variance-authority": "^0.6.1",
@@ -91,6 +92,7 @@
     "nextjs-cors": "^2.1.2",
     "nextjs-toploader": "^1.6.4",
     "npm": "^9.8.1",
+    "obscenity": "^0.1.4",
     "postcss": "8.4.26",
     "react": "18.2.0",
     "react-activity-calendar": "^2.0.2",
@@ -124,6 +126,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bad-words": "^3.0.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/dompurify": "^3.0.5",
     "@types/favico.js": "^0.0.29",

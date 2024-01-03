@@ -33,41 +33,28 @@ const CourseBannerCreationForm = ({ mode }: { mode: 'creation' | 'edit' }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSetBanner = async () => {
-    try {
-      const res = await detectNSFW(banner);
-      let isNSFW = true;
-      res.outputs[0].data.concepts.map((r: any) => {
-        if (r.name === 'nsfw' && r.value < 0.3) {
-          isNSFW = false;
-        }
-      });
-      if (isNSFW) {
-        toast({
-          title: 'Error',
-          type: 'error',
-          message: 'Can not use this image, try different image',
-        });
-      } else {
-        const updated = {
-          ...course,
-          banner,
-        };
-        dispatch(
-          mode === 'creation'
-            ? setCourseForCreation(updated)
-            : setCourseForUpdate(updated)
-        );
-        toast({
-          title: 'Banner Added',
-          type: 'success',
-          message: 'Banner Added',
-        });
-      }
-    } catch {
+    const isNSFW = await detectNSFW(banner);
+
+    if (isNSFW) {
       toast({
         title: 'Error',
         type: 'error',
-        message: 'Something went wrong, try again or try different image',
+        message: 'Can not use this image, try different image',
+      });
+    } else {
+      const updated = {
+        ...course,
+        banner,
+      };
+      dispatch(
+        mode === 'creation'
+          ? setCourseForCreation(updated)
+          : setCourseForUpdate(updated)
+      );
+      toast({
+        title: 'Banner Added',
+        type: 'success',
+        message: 'Banner Added',
       });
     }
   };

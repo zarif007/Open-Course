@@ -11,6 +11,7 @@ import { ICourseTopic } from '@/types/courseTopic';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import CourseCreationUpdate from '@/components/course-details/Course.CreationUpdate';
 import { courseSchema } from '@/validations/course';
+import validateText from '@/utils/validations/validateText';
 
 const MODE = 'creation';
 
@@ -41,6 +42,10 @@ const CourseCreation = () => {
   const validateCourseDetails = (): boolean => {
     if (!course.title) {
       errorToast('Title is required');
+      return false;
+    }
+    if (!validateText(course.title)) {
+      errorToast('Invalid Title');
       return false;
     }
     if (course.categories.length === 0) {

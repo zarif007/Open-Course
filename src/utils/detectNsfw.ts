@@ -10,10 +10,16 @@ const detectNSFW = async (imageUrl: string) => {
       Clarifai.NSFW_MODEL,
       imageUrl
     );
-    return response;
-  } catch (error) {
-    console.error('Clarifai API error:', error);
-    throw new Error('Error communicating with Clarifai');
+
+    response.outputs[0].data.concepts.map((r: any) => {
+      if (r.name === 'nsfw' && r.value < 0.3) {
+        return false;
+      }
+    });
+
+    return true;
+  } catch {
+    return false;
   }
 };
 
