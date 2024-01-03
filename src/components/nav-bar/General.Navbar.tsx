@@ -52,9 +52,6 @@ const GeneralNavbar = () => {
             alt="logo"
             className="h-16 w-16"
           />
-          <Paragraph className="px-2 font-semibold rounded bg-gray-950 text-slate-100 dark:text-gray-950 dark:bg-slate-100">
-            Beta
-          </Paragraph>
         </Link>
       ) : (
         <div className="h-16 w-16"></div>
@@ -74,11 +71,12 @@ const GeneralNavbar = () => {
           )}
         </div>
 
-        <NotificationDropdown />
-
         {session.status !== 'loading' ? (
           session.data?.user ? (
-            <AvatarDropdown />
+            <div className="flex space-x-2 items-center justify-center">
+              <NotificationDropdown />
+              <AvatarDropdown />
+            </div>
           ) : (
             <Link
               href={`/login?callbackUrl=${pathname}`}

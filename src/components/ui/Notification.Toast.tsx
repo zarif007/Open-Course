@@ -50,7 +50,7 @@ interface ToastOpts {
 }
 
 export function notificationToast(opts: ToastOpts) {
-  const { title, message, link, image, duration = 3000 } = opts;
+  const { title, message, link, image, duration = 6000 } = opts;
 
   return hotToast.custom(
     ({ visible }) => (

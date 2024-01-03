@@ -58,9 +58,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const _socket = io(notificationApiEndpoint, {
       query: { userId: signedInUser.id },
     });
+
     _socket.on('message', onMessageRec);
     setSocket(_socket);
-    console.log(_socket);
 
     return () => {
       _socket.disconnect();
