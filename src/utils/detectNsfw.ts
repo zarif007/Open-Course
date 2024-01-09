@@ -4,6 +4,8 @@ const clarifaiApp = new Clarifai.App({
   apiKey: process.env.NEXT_PUBLIC_CLARIFAI_API_KEY as string,
 });
 
+const THRESH_HOLD = 0.5;
+
 const detectNSFW = async (imageUrl: string) => {
   try {
     let isNSFW = true;
@@ -13,7 +15,7 @@ const detectNSFW = async (imageUrl: string) => {
     );
 
     response.outputs[0].data.concepts.map((r: any) => {
-      if (r.name === 'nsfw' && r.value < 0.3) {
+      if (r.name === 'nsfw' && r.value < THRESH_HOLD) {
         isNSFW = false;
       }
     });
