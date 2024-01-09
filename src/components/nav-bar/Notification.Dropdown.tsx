@@ -15,8 +15,8 @@ import {
   notificationApiEndpoint,
   notificationApiEndpointDevelopment,
 } from '@/utils/apiEndpoints';
-import { Link } from 'lucide-react';
 import { INotification } from '@/types/notification';
+import Link from 'next/link';
 
 const NotificationDropdown = () => {
   const signedInUser = useAppSelector(
@@ -29,7 +29,7 @@ const NotificationDropdown = () => {
     queryFn: async () => {
       const { data } = await (
         await fetch(
-          `${notificationApiEndpointDevelopment}/api/v1/notification/${signedInUser?.id}`
+          `${notificationApiEndpoint}/api/v1/notification/${signedInUser?.id}`
         )
       ).json();
       // http://localhost:5001/api/v1/notification/657da9bb6aee60b5250517ab
@@ -49,29 +49,38 @@ const NotificationDropdown = () => {
       <MenubarMenu>
         <MenubarTrigger className="!bg-transparent">
           {signedInUser && (
-            <MdOutlineNotificationsNone className="h-8 w-8 cursor-pointer" />
+            <div className="relative flex flex-col space-x-1 items-center justify-center cursor-pointer">
+              <MdOutlineNotificationsNone className="h-8 w-8" />
+              {notifications && (
+                <p className="absolute top-0 right-0 mb-2 p-[2px] px-1 text-xs font-semibold rounded bg-rose-500">
+                  {notifications.length}
+                </p>
+              )}
+            </div>
           )}
         </MenubarTrigger>
         <MenubarContent
           align="center"
           className="bg-slate-100 mx-2 mt-1 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 w-[300px] rounded"
         >
-          {/* {notifications &&
+          {notifications &&
             notifications.map((notification: INotification, index: number) => (
-              <MenubarItem key={index} className={styles.menuBarItems}>
-                <Link
-                  className="flex space-x-3 items-center justify-center"
-                  href={notification.link}
-                >
-                  <img
-                    src={notification.initiator.image}
-                    className="w-12 h-12 rounded"
-                  />
-                  <p>{notification.text}</p>
-                </Link>
-              </MenubarItem>
-            ))} */}
-          <MenubarSeparator />
+              <div key={index}>
+                <MenubarItem className={styles.menuBarItems}>
+                  <Link
+                    className="flex space-x-3 items-center justify-center"
+                    href={notification.link}
+                  >
+                    <img
+                      src={notification.initiator.image}
+                      className="w-12 h-12 rounded"
+                    />
+                    <p>{notification.text}</p>
+                  </Link>
+                </MenubarItem>
+                {index !== notifications.length - 1 && <MenubarSeparator />}
+              </div>
+            ))}
         </MenubarContent>
       </MenubarMenu>
     </Menubar>

@@ -21,6 +21,7 @@ export const POST = async (req: NextRequest) => {
         success: false,
       });
     }
+
     await connectToDB();
 
     const payload = await req.json();

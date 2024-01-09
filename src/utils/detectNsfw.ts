@@ -6,6 +6,7 @@ const clarifaiApp = new Clarifai.App({
 
 const detectNSFW = async (imageUrl: string) => {
   try {
+    let isNSFW = true;
     const response = await clarifaiApp.models.predict(
       Clarifai.NSFW_MODEL,
       imageUrl
@@ -13,11 +14,11 @@ const detectNSFW = async (imageUrl: string) => {
 
     response.outputs[0].data.concepts.map((r: any) => {
       if (r.name === 'nsfw' && r.value < 0.3) {
-        return false;
+        isNSFW = false;
       }
     });
 
-    return true;
+    return isNSFW;
   } catch {
     return false;
   }
