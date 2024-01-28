@@ -129,15 +129,6 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                 {course.enrolledUsers.length}
               </p>
             </div>
-            {/* <p className="font-semibold text-lg text-slate-300 dark:text-gray-800">
-              |
-            </p>
-            <div className="flex space-x-1 items-center">
-              <PiChatsDuotone className="w-6 h-6" />
-              <p className="font-semibold text-md">
-                {course.enrolledUsers.length}
-              </p>
-            </div> */}
           </div>
 
           <Link
@@ -146,7 +137,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
               variant: 'default',
             })} w-full mt-3 font-semibold`}
           >
-            Enroll
+            Details
           </Link>
         </div>
       </div>
