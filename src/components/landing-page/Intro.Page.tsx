@@ -1,10 +1,11 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import { useTheme } from "next-themes";
-import Paragraph from "../ui/Paragraph";
-import LargeHeading from "../ui/LargeHeading";
-import { Button } from "../ui/Button";
+'use client';
+import Image from 'next/image';
+import React from 'react';
+import { useTheme } from 'next-themes';
+import Paragraph from '../ui/Paragraph';
+import LargeHeading from '../ui/LargeHeading';
+import { Button } from '../ui/Button';
+import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
 
 const IntroPage = () => {
   const { theme } = useTheme();
@@ -26,11 +27,11 @@ const IntroPage = () => {
         </svg>
         <blockquote className="bg-gray-100 dark:bg-gray-950">
           <Paragraph className="font-bold">
-            A platform where users can{" "}
+            A platform where users can{' '}
             <span className="bg-rose-500 px-1">create courses</span> on a Topic
-            by collecting{" "}
+            by collecting{' '}
             <span className="bg-rose-500 px-1">free contents</span> from the
-            internet and arranging them in a{" "}
+            internet and arranging them in a{' '}
             <span className="bg-rose-500 px-1">sequential manner</span> to share
             with others <span className="bg-rose-500 px-1">for free.</span>
           </Paragraph>
@@ -51,7 +52,7 @@ const IntroPage = () => {
       <div className="my-4">
         <Image
           className=""
-          src={theme === "dark" ? "/whatisit-dark.png" : "/whatisit-light.png"}
+          src={theme === 'dark' ? '/whatisit-dark.png' : '/whatisit-light.png'}
           alt="banner"
           width={800}
           height={800}
@@ -64,6 +65,8 @@ const IntroPage = () => {
       >
         Watch a Video?
       </Button>
+
+      <BackgroundBeams />
     </main>
   );
 };
