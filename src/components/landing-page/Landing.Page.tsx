@@ -11,7 +11,7 @@ import StarOnGithub from './StarOnGithub';
 
 const LandingPage = () => {
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:mb-12 md:mt-12 dark:bg-grid-white/[0.1] bg-grid-black/[0.1]">
+    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:mb-12 md:mt-12 dark:bg-grid-small-white/[0.1] bg-grid-small-black/[0.1]">
       <div className="container my-auto max-w-7xl w-full h-full ">
         <div className="h-full gap-4 flex flex-col justify-center items-center ">
           <SocialMediaLogoBar />
