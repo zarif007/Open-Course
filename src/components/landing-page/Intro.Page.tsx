@@ -6,11 +6,13 @@ import Paragraph from '../ui/Paragraph';
 import LargeHeading from '../ui/LargeHeading';
 import { Button } from '../ui/Button';
 import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
+import LandingPageFigureBeam from './LandingPageFigure.Beam';
+import Ripple from '../ui/animation/Ripple';
 
 const IntroPage = () => {
   const { theme } = useTheme();
   return (
-    <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-24 md:mb-40 w-full max-w-5xl mx-auto">
+    <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-24 md:mb-40 mx-auto">
       <LargeHeading className="underline decoration-rose-500">
         What is It?
       </LargeHeading>
@@ -48,8 +50,8 @@ const IntroPage = () => {
           </div>
         </figcaption>
       </figure>
-
-      <div className="my-4">
+      <LandingPageFigureBeam />
+      {/* <div className="my-4">
         <Image
           className=""
           src={theme === 'dark' ? '/whatisit-dark.png' : '/whatisit-light.png'}
@@ -57,7 +59,7 @@ const IntroPage = () => {
           width={800}
           height={800}
         />
-      </div>
+      </div> */}
 
       <Button
         variant="generalRose"
@@ -65,8 +67,6 @@ const IntroPage = () => {
       >
         Watch a Video?
       </Button>
-
-      <BackgroundBeams />
     </main>
   );
 };
