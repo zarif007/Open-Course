@@ -48,31 +48,31 @@ function LandingPageFigureBeam({ className }: { className?: string }) {
             ref={div1Ref}
             className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
           >
-            <Icons.googleDrive />
+            <img src="https://cdn.iconscout.com/icon/free/png-512/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png?f=webp&w=256" />
           </Circle>
           <Circle
             ref={div2Ref}
             className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
           >
-            <Icons.googleDocs />
+            <img src="https://freelogopng.com/images/all_img/1656152266logo-twitch.png" />
           </Circle>
           <Circle
             ref={div3Ref}
             className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
           >
-            <Icons.whatsapp />
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/2048px-Facebook_f_logo_%282021%29.svg.png" />
           </Circle>
           <Circle
             ref={div4Ref}
             className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
           >
-            <Icons.messenger />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" />
           </Circle>
           <Circle
             ref={div5Ref}
             className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
           >
-            <Icons.notion />
+            <img src="https://cdn-icons-png.flaticon.com/512/2504/2504780.png" />
           </Circle>
         </div>
         <div className="flex flex-col justify-center">

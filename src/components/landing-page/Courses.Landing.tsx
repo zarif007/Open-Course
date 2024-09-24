@@ -12,6 +12,9 @@ import { Button, buttonVariants } from '../ui/Button';
 import Link from 'next/link';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
+import DotPattern from '../ui/animation/DotPattern';
+import { cn } from '@/lib/utils';
+import HyperText from '../ui/HyperText';
 
 const CoursesLanding = () => {
   const { data: courses, isLoading } = useQuery({
@@ -30,9 +33,10 @@ const CoursesLanding = () => {
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center overflow-x-hidden mx-auto">
-      <LargeHeading className="underline decoration-rose-500">
+      {/* <LargeHeading className="underline decoration-rose-500">
         Courses
-      </LargeHeading>
+      </LargeHeading> */}
+      <HyperText text="Courses" className="underline decoration-rose-500" />
       <div className="container px-5 py-24 pb-12 w-full max-w-7xl mx-auto">
         <div className="flex flex-wrap -m-4"></div>
         {isLoading ? (
@@ -54,7 +58,11 @@ const CoursesLanding = () => {
       >
         More Courses?
       </Link>
-      <BackgroundBeams />
+      <DotPattern
+        className={cn(
+          '[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] '
+        )}
+      />
     </main>
   );
 };

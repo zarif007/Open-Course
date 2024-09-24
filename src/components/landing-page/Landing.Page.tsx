@@ -6,28 +6,26 @@ import TextAppearAnimation from '../ui/TextAppearAnimation';
 import CourseCategoriesRotation from './CourseCategoriesRotation';
 import Link from 'next/link';
 import { buttonVariants } from '../ui/Button';
-import Image from 'next/image';
-import StarOnGithub from './StarOnGithub';
 import GridPattern from '../ui/animation/GridPattern';
+import StarOnGithub from './StarOnGithub';
 
 const LandingPage = () => {
   return (
     <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:mb-12 md:mt-12">
       <div className="absolute inset-0 z-0 hidden md:block">
-        <GridPattern numSquares={12} />
+        <GridPattern strokeDasharray={'4 2'} numSquares={12} />
       </div>
 
       <div className="absolute inset-0 z-0 md:hidden">
-        <GridPattern numSquares={4} />
+        <GridPattern strokeDasharray={'4 2'} numSquares={4} />
       </div>
-
       <div className="container my-auto max-w-7xl w-full h-full z-10">
         <div className="h-full gap-4 flex flex-col justify-center items-center">
           <SocialMediaLogoBar />
           <div className="w-full flex justify-center items-center px-2">
             <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
           </div>
-          {/* <StarOnGithub /> */}
+          <StarOnGithub />
           <LargeHeading size="lg" className="three-d text-center">
             <span
               className="tw-gradient-text"

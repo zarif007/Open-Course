@@ -8,14 +8,19 @@ import { Button } from '../ui/Button';
 import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
 import LandingPageFigureBeam from './LandingPageFigure.Beam';
 import Ripple from '../ui/animation/Ripple';
+import HyperText from '../ui/HyperText';
 
 const IntroPage = () => {
   const { theme } = useTheme();
   return (
     <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-24 md:mb-40 mx-auto">
-      <LargeHeading className="underline decoration-rose-500">
+      {/* <LargeHeading className="underline decoration-rose-500">
         What is It?
-      </LargeHeading>
+      </LargeHeading> */}
+      <HyperText
+        text=" What is It?"
+        className="underline decoration-rose-500"
+      />
 
       <figure className="max-w-screen-md mx-auto text-center">
         <svg
