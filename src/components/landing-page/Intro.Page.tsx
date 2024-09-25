@@ -34,7 +34,9 @@ const IntroPage = () => {
         </svg>
         <blockquote className="bg-gray-100 dark:bg-gray-950">
           <Paragraph className="font-bold">
-            A platform where users can{' '}
+            A{' '}
+            <span className="bg-rose-500 px-1">community driven platform</span>{' '}
+            where users can{' '}
             <span className="bg-rose-500 px-1">create courses</span> on a Topic
             by collecting{' '}
             <span className="bg-rose-500 px-1">free contents</span> from the

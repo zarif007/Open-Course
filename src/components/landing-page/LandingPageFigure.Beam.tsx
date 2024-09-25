@@ -13,7 +13,7 @@ const Circle = forwardRef<
     <div
       ref={ref}
       className={cn(
-        'z-10 flex size-2 items-center justify-center rounded-full border-2 border-border bg-white p-3',
+        'z-10 flex size-2 items-center justify-center rounded-full border-2 border-border bg-white p-2',
         className
       )}
     >
@@ -37,40 +37,40 @@ function LandingPageFigureBeam({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'relative flex items-center justify-center overflow-hidden rounded-lg p-4 md:p-8 lg:p-10',
+        'relative flex items-center justify-center overflow-hidden rounded-lg p-2 md:p-6 lg:p-8',
         className
       )}
       ref={containerRef}
     >
-      <div className="flex flex-row items-stretch justify-between gap-16 sm:gap-24 md:gap-32 lg:gap-40">
+      <div className="flex flex-row items-stretch justify-between gap-20 sm:gap-24 md:gap-32 lg:gap-40">
         <div className="flex flex-col justify-center gap-2 sm:gap-6 md:gap-12">
           <Circle
             ref={div1Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18"
           >
             <img src="https://cdn.iconscout.com/icon/free/png-512/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png?f=webp&w=256" />
           </Circle>
           <Circle
             ref={div2Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18"
           >
             <img src="https://freelogopng.com/images/all_img/1656152266logo-twitch.png" />
           </Circle>
           <Circle
             ref={div3Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18"
           >
             <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/2048px-Facebook_f_logo_%282021%29.svg.png" />
           </Circle>
           <Circle
             ref={div4Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18"
           >
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" />
           </Circle>
           <Circle
             ref={div5Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18"
           >
             <img src="https://cdn-icons-png.flaticon.com/512/2504/2504780.png" />
           </Circle>
