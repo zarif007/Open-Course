@@ -7,7 +7,6 @@ import LargeHeading from '../ui/LargeHeading';
 import { Button } from '../ui/Button';
 import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
 import LandingPageFigureBeam from './LandingPageFigure.Beam';
-import Ripple from '../ui/animation/Ripple';
 import HyperText from '../ui/HyperText';
 
 const IntroPage = () => {

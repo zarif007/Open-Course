@@ -10,7 +10,6 @@ import createSlug from '@/utils/createSlug';
 import { ICourseTopic } from '@/types/courseTopic';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import CourseCreationUpdate from '@/components/course-details/Course.CreationUpdate';
-import { courseSchema } from '@/validations/course';
 import validateText from '@/utils/validations/validateText';
 
 const MODE = 'creation';

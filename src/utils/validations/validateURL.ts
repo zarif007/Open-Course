@@ -1,8 +1,7 @@
-const bannedList = [];
+const bannedList: string[] = [];
 
 const validateURL = (url: string) => {
-  const urlRegex =
-    /^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/;
+  const urlRegex = /^https?:\/\/(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?:\/[^\s]*)?$/;
 
   if (!urlRegex.test(url)) {
     return false; // Invalid URL format
