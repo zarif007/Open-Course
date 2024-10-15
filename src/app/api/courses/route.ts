@@ -28,22 +28,21 @@ export const GET = async (req: NextRequest) => {
     );
 
   const andConditions = [];
+
   // Search needs $or for searching in specified fields
   if (searchTerm && searchTerm.length > 0) {
-    const constraints = [
-      ...courseSearchableFields.map((field) => ({
-        [field]: {
-          $regex: searchTerm[0],
-          $options: 'i',
-        },
-      })),
-    ];
+    const constraints = courseSearchableFields.map((field) => ({
+      [field]: {
+        $regex: searchTerm[0],
+        $options: 'i',
+      },
+    }));
     andConditions.push({
       $or: constraints,
     });
   }
 
-  // Filters needs $and to full fill all the conditions
+  // Filters need $and to fulfill all the conditions
   if (Object.keys(filtersData).length) {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
@@ -54,34 +53,66 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  // Dynamic  Sort needs  field to  do sorting
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
+
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const courses = await Course.find(whereConditions)
-    .populate({
-      path: 'topics',
-      model: CourseTopic,
-      select:
-        'updatedAt versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
-    })
-    .populate({
-      path: 'creator',
-      model: User,
-      select: 'name image userName',
-    })
-    .sort(sortConditions)
-    .skip(skip)
-    .limit(limit);
+  const courses = await Course.aggregate([
+    // Match documents based on filters
+    { $match: whereConditions },
 
-  const total = await Course.countDocuments(whereConditions)
-    .sort(sortConditions)
-    .skip(skip)
-    .limit(limit);
+    {
+      $addFields: {
+        enrolledUsersLength: { $size: '$enrolledUsers' },
+      },
+    },
+
+    {
+      $lookup: {
+        from: 'coursetopics',
+        localField: 'topics',
+        foreignField: '_id',
+        as: 'topics',
+      },
+    },
+
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'creator',
+        foreignField: '_id',
+        as: 'creator',
+      },
+    },
+
+    {
+      $replaceRoot: {
+        newRoot: {
+          $mergeObjects: [
+            '$$ROOT',
+            { enrolledUsersLength: '$enrolledUsersLength' },
+          ],
+        },
+      },
+    },
+
+    {
+      $sort: {
+        // ...sortConditions,
+        enrolledUsersLength: -1,
+      },
+    },
+
+    // Pagination stages
+    { $skip: skip },
+    { $limit: limit },
+  ]);
+
+  const total = await Course.countDocuments(whereConditions);
 
   return NextResponse.json({
     meta: {
