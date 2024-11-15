@@ -30,10 +30,12 @@ import { setSelectedTopicType } from '@/redux/features/selected-topic-type';
 const CourseTopic = ({
   index,
   courseTopic,
+  topicPrivacy,
   mode,
 }: {
   index: number;
   courseTopic: ICourseTopic;
+  topicPrivacy: 'open' | 'locked';
   mode: 'creation' | 'edit' | 'view';
 }) => {
   const styles = {
@@ -79,7 +81,10 @@ const CourseTopic = ({
 
   const isValidTopic = (): boolean => {
     const currentCourseTopic = courseTopic.topicID as number;
-    return enrollState.finishedTopics.includes(currentCourseTopic.toString());
+    return (
+      topicPrivacy === 'open' ||
+      enrollState.finishedTopics.includes(currentCourseTopic.toString())
+    );
   };
 
   const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {

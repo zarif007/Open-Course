@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Paragraph from "../ui/Paragraph";
-import { ICourseTopic } from "@/types/courseTopic";
-import CourseTopic from "./CourseTopic";
-import { useAppSelector } from "@/redux/store";
-import { Button } from "../ui/Button";
-import { BiSolidFlagCheckered } from "react-icons/bi";
-import CheckPoints from "./CheckPoints";
-import { Input } from "../ui/Input";
+import React, { useEffect, useState } from 'react';
+import Paragraph from '../ui/Paragraph';
+import { ICourseTopic } from '@/types/courseTopic';
+import CourseTopic from './CourseTopic';
+import { useAppSelector } from '@/redux/store';
+import { Button } from '../ui/Button';
+import { BiSolidFlagCheckered } from 'react-icons/bi';
+import CheckPoints from './CheckPoints';
+import { Input } from '../ui/Input';
 
 interface IHiddenRanges {
   [key: number]: { start: number; end: number; isHidden: boolean };
 }
 
-const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
+const CourseTopics = ({ mode }: { mode: 'creation' | 'edit' | 'view' }) => {
   const [courseTopics, setCourseTopics] = useState<ICourseTopic[] | []>([]);
   const [isAddCheckPointButtonClicked, setIsAddCheckPointButtonClicked] =
     useState<boolean>(false);
@@ -24,11 +24,11 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
   );
 
   const course = useAppSelector((state) =>
-    mode === "view"
+    mode === 'view'
       ? state.courseViewReducer.value.course
-      : mode === "creation"
-      ? state.courseCreationReducer.value.course
-      : state.courseUpdateReducer.value.course
+      : mode === 'creation'
+        ? state.courseCreationReducer.value.course
+        : state.courseUpdateReducer.value.course
   );
 
   const handleSettingHiddenRanges = (checkPointID: number) => {
@@ -85,7 +85,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
 
   const handleFilterTopics = (e: React.ChangeEvent<HTMLInputElement>) => {
     const allTopics = course.topics as ICourseTopic[];
-    if (e.target.value === "") {
+    if (e.target.value === '') {
       setCourseTopics(allTopics);
       return;
     }
@@ -102,7 +102,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
     <React.Fragment>
       <Paragraph className="mx-2 font-bold">Course Topics</Paragraph>
       <div className="m-2">
-        {mode === "view" ? (
+        {mode === 'view' ? (
           <Input
             placeholder="Search Topic"
             onChange={(e) => handleFilterTopics(e)}
@@ -114,7 +114,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
             }
             className="w-full flex space-x-2 focus:ring-0"
           >
-            <p>{isAddCheckPointButtonClicked ? "Done" : "Add Checkpoints"}</p>
+            <p>{isAddCheckPointButtonClicked ? 'Done' : 'Add Checkpoints'}</p>
             <BiSolidFlagCheckered />
           </Button>
         )}
@@ -135,6 +135,7 @@ const CourseTopics = ({ mode }: { mode: "creation" | "edit" | "view" }) => {
               <CourseTopic
                 index={index}
                 courseTopic={courseTopic}
+                topicPrivacy={course.topicPrivacy}
                 mode={mode}
               />
             )}

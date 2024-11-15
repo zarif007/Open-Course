@@ -37,6 +37,7 @@ const useCourseGuard = (
 
     return (
       topicId === currentTopic.topicID ||
+      course.topicPrivacy == 'open' ||
       enrollState.finishedTopics.includes(topicId.toString())
     );
   };
