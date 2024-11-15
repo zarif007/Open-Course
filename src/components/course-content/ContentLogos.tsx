@@ -14,7 +14,7 @@ const ContentLogos = ({
 }) => {
   const logoStyle = (
     index: number
-  ) => `h-7 w-7 rounded-full border-2 border-rose-500 bg-slate-100 dark:bg-gray-950
+  ) => `h-7 w-7 rounded-full border-2 border-rose-500 bg-slate-100 dark:bg-[#0a0a0a]
   ${index !== 0 && '-ml-2'}`;
 
   const favIcon = (

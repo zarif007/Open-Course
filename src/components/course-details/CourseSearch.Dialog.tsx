@@ -1,29 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
+'use client';
 
-import { TbFilterSearch } from "react-icons/tb";
-import { Button } from "@/components/ui/Button";
+import { TbFilterSearch } from 'react-icons/tb';
+import { Button } from '@/components/ui/Button';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/Dialog";
-import React, { useEffect, useState } from "react";
-import { Input } from "../ui/Input";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Combobox } from "../ui/Combobox";
-import { courseCategories, courseLevels, languages } from "@/constants/course";
-import SelectedTopics from "./SelectedTopics";
+} from '@/components/ui/Dialog';
+import React, { useEffect, useState } from 'react';
+import { Input } from '../ui/Input';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Combobox } from '../ui/Combobox';
+import { courseCategories, courseLevels, languages } from '@/constants/course';
+import SelectedTopics from './SelectedTopics';
 
 const CourseSearchDialog = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const searchTermFromParams = searchParams?.get("searchTerm") ?? "";
-  const categoriesFromParams = searchParams?.get("categories") ?? "";
-  const levelsFromParams = searchParams?.get("levels") ?? "";
-  const languagesFromParams = searchParams?.get("languages") ?? "";
+  const searchTermFromParams = searchParams?.get('searchTerm') ?? '';
+  const categoriesFromParams = searchParams?.get('categories') ?? '';
+  const levelsFromParams = searchParams?.get('levels') ?? '';
+  const languagesFromParams = searchParams?.get('languages') ?? '';
 
   const [searchTerm, setSearchTerm] = useState<string>(searchTermFromParams);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -32,34 +32,34 @@ const CourseSearchDialog = () => {
 
   useEffect(() => {
     setSelectedCategories(
-      categoriesFromParams !== "" ? categoriesFromParams.split(",") : []
+      categoriesFromParams !== '' ? categoriesFromParams.split(',') : []
     );
     setSelectedLevels(
-      levelsFromParams !== "" ? levelsFromParams.split(",") : []
+      levelsFromParams !== '' ? levelsFromParams.split(',') : []
     );
     setSelectedLanguages(
-      languagesFromParams !== "" ? languagesFromParams.split(",") : []
+      languagesFromParams !== '' ? languagesFromParams.split(',') : []
     );
   }, [categoriesFromParams, levelsFromParams, languagesFromParams]);
 
   const constructUrlAndSearch = () => {
-    let url = "";
+    let url = '';
 
-    if (searchTerm !== "") url += `?searchTerm=${searchTerm}`;
+    if (searchTerm !== '') url += `?searchTerm=${searchTerm}`;
 
     if (selectedCategories.length) {
-      url += url.length ? "&" : "?";
-      url += `categories=${selectedCategories.join(",")}`;
+      url += url.length ? '&' : '?';
+      url += `categories=${selectedCategories.join(',')}`;
     }
     if (selectedLevels.length) {
-      url += url.length ? "&" : "?";
-      url += `levels=${selectedLevels.join(",")}`;
+      url += url.length ? '&' : '?';
+      url += `levels=${selectedLevels.join(',')}`;
     }
     if (selectedLanguages.length) {
-      url += url.length ? "&" : "?";
-      url += `languages=${selectedLanguages.join(",")}`;
+      url += url.length ? '&' : '?';
+      url += `languages=${selectedLanguages.join(',')}`;
     }
-    url = url !== "" ? url : "/courses";
+    url = url !== '' ? url : '/courses';
     router.push(url);
   };
 
@@ -71,7 +71,7 @@ const CourseSearchDialog = () => {
           <p className="font-semibold">Search or Filter</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-2xl w-full md:top-[25%]">
+      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border border-slate-300 dark:border-gray-800 max-w-2xl w-full md:top-[25%]">
         <label htmlFor="text" className="font-bold">
           Search or Filter Courses
         </label>
@@ -80,12 +80,12 @@ const CourseSearchDialog = () => {
           placeholder="Search Courses"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {searchTermFromParams !== "" && (
+        {searchTermFromParams !== '' && (
           <React.Fragment>
             <label htmlFor="text" className="font-bold">
               Searching for
             </label>
-            <p className="px-2 dark:bg-slate-100 bg-gray-950 w-fit rounded text-slate-100 dark:text-gray-950 font-semibold text-md">
+            <p className="px-2 dark:bg-slate-100 bg-[#0a0a0a] w-fit rounded text-slate-100 dark:text-gray-950 font-semibold text-md">
               {searchTermFromParams}
             </p>
           </React.Fragment>

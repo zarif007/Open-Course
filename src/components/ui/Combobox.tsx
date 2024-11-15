@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import * as React from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/Button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/Command";
+} from '@/components/ui/Command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
+} from '@/components/ui/Popover';
 
 function capitalizeFirstLetter(string: string) {
-  const words = string.split(" ");
+  const words = string.split(' ');
   const capitalizedWords = words.map(function (word) {
     const firstCharacter = word.charAt(0);
     const isEmoji =
@@ -27,7 +27,7 @@ function capitalizeFirstLetter(string: string) {
       firstCharacter.charCodeAt(0) <= 127743;
     return isEmoji ? word : word.charAt(0).toUpperCase() + word.slice(1);
   });
-  return capitalizedWords.join(" ");
+  return capitalizedWords.join(' ');
 }
 
 export function Combobox({
@@ -44,7 +44,7 @@ export function Combobox({
   limit: number;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,7 +53,7 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
+          className="w-full justify-between bg-[#0a0a0a] dark:bg-slate-100 text-slate-100 dark:text-gray-950"
         >
           {value ? value : `Select ${title}`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -62,7 +62,7 @@ export function Combobox({
       <PopoverContent
         side="bottom"
         avoidCollisions={false}
-        className="w-full p-0 bg-gray-950 dark:bg-slate-100 text-slate-100 dark:text-gray-950"
+        className="w-full p-0 bg-[#0a0a0a] dark:bg-slate-100 text-slate-100 dark:text-gray-950"
       >
         <Command>
           <CommandInput placeholder={`Search ${title}...`} />
@@ -74,7 +74,7 @@ export function Combobox({
                 key={index}
                 onSelect={(currentValue) => {
                   const selectedTopic = capitalizeFirstLetter(currentValue);
-                  setValue(selectedTopic === value ? "" : selectedTopic);
+                  setValue(selectedTopic === value ? '' : selectedTopic);
                   currentValues.length < limit &&
                     setCurrentValuesFunction([
                       ...currentValues.filter((item) => item !== selectedTopic),
@@ -85,8 +85,8 @@ export function Combobox({
               >
                 <Check
                   className={cn(
-                    "mr-2 h-4 w-4",
-                    value === item ? "opacity-100" : "opacity-0"
+                    'mr-2 h-4 w-4',
+                    value === item ? 'opacity-100' : 'opacity-0'
                   )}
                 />
                 {item}

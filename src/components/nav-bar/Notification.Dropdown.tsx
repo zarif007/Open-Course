@@ -61,7 +61,7 @@ const NotificationDropdown = () => {
         </MenubarTrigger>
         <MenubarContent
           align="center"
-          className="bg-slate-100 mx-2 mt-1 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 w-[300px] rounded"
+          className="bg-slate-100 mx-2 mt-1 dark:bg-[#0a0a0a] border-2 border-slate-200 dark:border-gray-800 w-[300px] rounded"
         >
           {notifications &&
             notifications.map((notification: INotification, index: number) => (

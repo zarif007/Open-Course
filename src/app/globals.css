@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-100 text-gray-950 dark:bg-gray-950 dark:text-slate-100;
+  @apply bg-slate-100 text-gray-950 dark:bg-[#0a0a0a] dark:text-slate-100;
 }
 
 .tw-gradient-text {

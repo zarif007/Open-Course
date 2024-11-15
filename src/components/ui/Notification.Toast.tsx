@@ -57,7 +57,7 @@ export function notificationToast(opts: ToastOpts) {
       <Toast
         visible={visible}
         className={cn(
-          'bg-slate-100 dark:bg-gray-950 border-2 border-rose-500 text-gray-900 dark:text-white'
+          'bg-slate-100 dark:bg-[#0a0a0a] border-2 border-rose-500 text-gray-900 dark:text-white'
         )}
       >
         <Link

@@ -131,7 +131,7 @@ const CourseTopic = ({
         courseTopic.topicID === currentCourseTopic.topicID
           ? 'dark:border-rose-500 border-rose-500'
           : 'border-slate-300 dark:border-gray-800'
-      } bg-slate-100 dark:bg-gray-950 px-3 md:px-4 py-2 rounded cursor-pointer
+      } bg-slate-100 dark:bg-[#0a0a0a] px-3 md:px-4 py-2 rounded cursor-pointer
       hover:border-rose-500 hover:dark:border-rose-500`}
     >
       <div className="flex items-center justify-between">

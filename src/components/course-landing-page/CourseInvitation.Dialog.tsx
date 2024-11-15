@@ -70,7 +70,7 @@ const CourseInvitationDialog = ({
           <FcGoodDecision className="w-8 h-8 cursor-pointer" />
         </TooltipComponent>
       </DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-xl w-full">
+      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border border-slate-300 dark:border-gray-800 max-w-xl w-full">
         <FcInvite className="w-16 h-16 mx-auto" />
 
         {openModifyPanel && (

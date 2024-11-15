@@ -15,7 +15,7 @@ const AuthDialog = ({
       <DialogTrigger className="flex space-x-1 items-center w-full">
         {children}
       </DialogTrigger>
-      <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-gray-950 bg-slate-200">
+      <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-[#0a0a0a] bg-slate-200">
         <div className="w-full">
           <AuthForm
             type="signIn"

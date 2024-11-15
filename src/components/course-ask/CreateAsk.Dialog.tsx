@@ -14,7 +14,7 @@ const CreateAskDialog = () => {
           <BsFillQuestionOctagonFill className="w-6 h-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-gray-950 border-slate-300 dark:border-gray-800 max-w-3xl w-full p-2 md:px-8 py-8 mx-auto">
+      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border-slate-300 dark:border-gray-800 max-w-3xl w-full p-2 md:px-8 py-8 mx-auto">
         <div className="w-full">
           <CourseAskForm />
         </div>

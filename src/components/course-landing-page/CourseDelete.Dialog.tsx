@@ -57,7 +57,7 @@ const CourseDeleteDialog = ({ courseId }: { courseId: string }) => {
       <DialogTrigger className="flex space-x-1 items-center w-full">
         <MdOutlineDeleteForever className="w-8 h-8 cursor-pointer text-red-500" />
       </DialogTrigger>
-      <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-gray-950 bg-slate-200">
+      <DialogContent className="mx-auto p-0 border-2 border-rose-500 dark:bg-[#0a0a0a] bg-slate-200">
         <div className="w-full p-4 flex flex-col items-center justify-center">
           <MdOutlineDeleteForever className="w-16 h-16 cursor-pointer mt-2 text-red-500" />
           <p className="font-semibold text-md text-center w-full mb-6">

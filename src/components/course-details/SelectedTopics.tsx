@@ -1,21 +1,21 @@
-import React from "react";
-import { MdOutlineCancel } from "react-icons/md";
+import React from 'react';
+import { MdOutlineCancel } from 'react-icons/md';
 
 type Props = {
   selectedTopics: string[];
 } & (
   | {
-      mode: "view";
+      mode: 'view';
     }
   | {
-      mode: "creation";
+      mode: 'creation';
       setSelectedTopics: (values: string[]) => void;
     }
 );
 
 const SelectedTopics = (props: Props) => {
   const handleRemove = (selectedTopic: string) => {
-    if (props.mode === "creation") {
+    if (props.mode === 'creation') {
       props.setSelectedTopics(
         props.selectedTopics.filter((topic) => topic !== selectedTopic)
       );
@@ -27,10 +27,10 @@ const SelectedTopics = (props: Props) => {
         props.selectedTopics.map((selectedTopic, index) => (
           <div
             key={index}
-            className="w-fit p-1 m-1 ml-0 text-xs font-semibold bg-gray-950 text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md flex space-x-2 items-center"
+            className="w-fit p-1 m-1 ml-0 text-xs font-semibold bg-[#0a0a0a] text-slate-200  dark:bg-slate-200 dark:text-gray-950 rounded-md flex space-x-2 items-center"
           >
             <span>{selectedTopic}</span>
-            {props.mode === "creation" && (
+            {props.mode === 'creation' && (
               <MdOutlineCancel
                 onClick={() => handleRemove(selectedTopic)}
                 className="cursor-pointer h-4 w-4 text-slate-300 dark:text-gray-800"

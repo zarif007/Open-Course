@@ -41,7 +41,7 @@ const AvatarDropdown = () => {
             </div>
           )}
         </MenubarTrigger>
-        <MenubarContent className="bg-slate-100 mx-2 dark:bg-gray-950 border-2 border-slate-200 dark:border-gray-800 rounded">
+        <MenubarContent className="bg-slate-100 mx-2 dark:bg-[#0a0a0a] border-2 border-slate-200 dark:border-gray-800 rounded">
           <MenubarItem className={styles.menuBarItems}>
             <Link
               href={`/profile/${signedInUser?.userName}`}

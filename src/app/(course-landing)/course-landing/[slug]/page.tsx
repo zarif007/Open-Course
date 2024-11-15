@@ -5,6 +5,7 @@ import CourseLandingSideWidget from '@/components/course-landing-page/CourseLand
 import CourseRatings from '@/components/course-landing-page/CourseRatings';
 import CourseReviews from '@/components/course-landing-page/CourseReviews';
 import CourseTopicsAccordion from '@/components/course-landing-page/CourseTopics.Accordion';
+import DotPattern from '@/components/ui/animation/DotPattern';
 import LargeHeading from '@/components/ui/LargeHeading';
 import { ICourse } from '@/types/course';
 import { ICourseTopic } from '@/types/courseTopic';
@@ -82,9 +83,10 @@ const CourseLanding = async ({ params }: PageParams) => {
 
   return (
     <div className="max-w-5xl w-full mx-auto">
+      <DotPattern className="z-0" />
       <CourseLandingSideWidget course={course} />
       <CourseDetails course={course} />
-      <div className="flex space-x-2 items-center justify-center mt-8">
+      <div className="flex space-x-2 items-center justify-center mt-8 z-10">
         <LargeHeading size="sm" className="text-center">
           Course Topics ({course.topics.length})
         </LargeHeading>

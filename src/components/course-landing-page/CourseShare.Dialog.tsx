@@ -24,7 +24,7 @@ const CourseShareDialog = ({ url }: { url: string }) => {
           <FcShare className="w-8 h-8 cursor-pointer" />
         </TooltipComponent>
       </DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-gray-950 border border-slate-300 dark:border-gray-800 max-w-2xl w-full">
+      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border border-slate-300 dark:border-gray-800 max-w-2xl w-full">
         <ShareOnSocialsComp url={url} />
         <Label>Copy URL</Label>
         <div className="flex items-center justify-center w-full border-2 border-gray-950 dark:border-slate-100 rounded mb-2 p-2">

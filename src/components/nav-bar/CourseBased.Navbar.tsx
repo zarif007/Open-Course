@@ -46,7 +46,7 @@ const CourseBasedNavbar = () => {
         href={`/course-landing/${course.slug}`}
         className={`${buttonVariants({
           variant: 'default',
-        })} w-fit  mr-2 cursor-pointer fixed z-24 right-0  rounded dark:bg-slate-100 bg-gray-950 dark:text-gray-950 text-slate-100`}
+        })} w-fit  mr-2 cursor-pointer fixed z-24 right-0  rounded dark:bg-slate-100 bg-[#0a0a0a] dark:text-gray-950 text-slate-100`}
       >
         <BiArrowBack className="h-6 w-6 md:h-8 md:w-8" />
       </Link>

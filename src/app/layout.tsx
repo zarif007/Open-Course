@@ -22,7 +22,7 @@ export default async function RootLayout({
       <ClientProviders>
         <TrpcProviders>
           <body
-            className={`${inter.className} bg-slate-100 text-gray-900 dark:bg-gray-950 dark:text-slate-100 py-2 h-full overflow-x-hidden antialiased`}
+            className={`${inter.className} bg-slate-100 text-gray-900 dark:bg-[#0a0a0a] dark:text-slate-100 py-2 h-full overflow-x-hidden antialiased`}
           >
             <NextTopLoader
               color="#f43f5e"
