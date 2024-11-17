@@ -4,12 +4,38 @@ export const v1MainEndpoint =
 export const nextApiEndPoint =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000/api'
-    : 'https://open-course.vercel.app/api';
+    : getProdApiEndPoint();
 
 export const mainEndPoint =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://open-course.vercel.app';
+    : getProdMainEndPoint();
+
+function getProdApiEndPoint() {
+  if (typeof window !== 'undefined') {
+    const origin = window.location.origin;
+    if (origin === 'https://open-course.vercel.app') {
+      return 'https://open-course.vercel.app/api';
+    } else if (origin === 'https://www.open-course.net') {
+      return 'https://www.open-course.net/api';
+    }
+  }
+  // Fallback or default production endpoint
+  return 'https://open-course.vercel.app/api';
+}
+
+function getProdMainEndPoint() {
+  if (typeof window !== 'undefined') {
+    const origin = window.location.origin;
+    if (origin === 'https://open-course.vercel.app') {
+      return 'https://open-course.vercel.app';
+    } else if (origin === 'https://www.open-course.net') {
+      return 'https://www.open-course.net';
+    }
+  }
+  // Fallback or default production endpoint
+  return 'https://open-course.vercel.app';
+}
 
 export const notificationApiEndpoint =
   'https://open-course-notification.onrender.com';
