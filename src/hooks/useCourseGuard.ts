@@ -12,6 +12,7 @@ import {
   setEnrollState,
 } from '@/redux/features/course-view-slice';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import axios from 'axios';
 
 const useCourseGuard = (
   course: ICourse,
@@ -66,9 +67,33 @@ const useCourseGuard = (
     return currentTopic;
   };
 
+  const updateEnrollStateBasedOnTopicPrivacy = async (
+    topicId: string,
+    enrollState: IEnrollState
+  ) => {
+    if (
+      course.topicPrivacy === 'locked' ||
+      enrollState.finishedTopics.includes(topicId)
+    ) {
+      return enrollState;
+    }
+
+    const state: IEnrollState = {
+      ...enrollState,
+      currentTopic: topicId,
+      finishedTopics: [...enrollState.finishedTopics, topicId],
+    };
+
+    const updatedEnrollState = await axios.put(
+      `${nextApiEndPoint}/enrollState`,
+      state
+    );
+    return updatedEnrollState;
+  };
+
   const actionBasedOnEnrollState = async () => {
     try {
-      const { data: enrollState } = await (
+      let { data: enrollState } = await (
         await fetch(
           `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
         )
@@ -91,6 +116,10 @@ const useCourseGuard = (
           router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
           dispatch(setCurrentCourseTopicForView(nextTopic));
         } else {
+          enrollState = await updateEnrollStateBasedOnTopicPrivacy(
+            topicId,
+            enrollState
+          );
           const nextTopic = findTheNextTopic(parseInt(topicId), enrollState);
           if (parseInt(topicId) !== nextTopic.topicID) {
             router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);

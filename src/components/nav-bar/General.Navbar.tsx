@@ -74,7 +74,7 @@ const GeneralNavbar = () => {
         {session.status !== 'loading' ? (
           session.data?.user ? (
             <div className="flex space-x-2 items-center justify-center">
-              <NotificationDropdown />
+              {/* <NotificationDropdown /> */}
               <AvatarDropdown />
             </div>
           ) : (
