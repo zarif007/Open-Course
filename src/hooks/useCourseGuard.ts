@@ -38,7 +38,7 @@ const useCourseGuard = (
 
     return (
       topicId === currentTopic.topicID ||
-      course.topicPrivacy == 'open' ||
+      course.topicPrivacy === 'open' ||
       enrollState.finishedTopics.includes(topicId.toString())
     );
   };
@@ -59,7 +59,10 @@ const useCourseGuard = (
         return topic;
       }
 
-      if (enrollState.finishedTopics.includes(topic.topicID.toString())) {
+      if (
+        enrollState.finishedTopics.includes(topic.topicID.toString()) ||
+        course.topicPrivacy === 'open'
+      ) {
         currentTopic = topic;
       }
     }
@@ -72,23 +75,23 @@ const useCourseGuard = (
     enrollState: IEnrollState
   ) => {
     if (
-      course.topicPrivacy === 'locked' ||
-      enrollState.finishedTopics.includes(topicId)
+      course.topicPrivacy === 'open' &&
+      !enrollState.finishedTopics.includes(topicId)
     ) {
-      return enrollState;
+      const state: IEnrollState = {
+        ...enrollState,
+        currentTopic: findTheNextTopic(parseInt(topicId), enrollState),
+        finishedTopics: [...enrollState.finishedTopics, topicId],
+      };
+
+      try {
+        await axios.put(`${nextApiEndPoint}/enrollState`, state);
+        return state;
+      } catch (error) {
+        return enrollState;
+      }
     }
-
-    const state: IEnrollState = {
-      ...enrollState,
-      currentTopic: topicId,
-      finishedTopics: [...enrollState.finishedTopics, topicId],
-    };
-
-    const updatedEnrollState = await axios.put(
-      `${nextApiEndPoint}/enrollState`,
-      state
-    );
-    return updatedEnrollState;
+    return enrollState;
   };
 
   const actionBasedOnEnrollState = async () => {
@@ -98,7 +101,6 @@ const useCourseGuard = (
           `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
         )
       ).json();
-
       if (!enrollState) {
         router.push(`/course-landing/${course.slug}`);
       } else {

@@ -2,10 +2,7 @@ import CourseDetails from '@/components/course-details/CourseDetails';
 import CourseEnrollmentButton from '@/components/course-landing-page/Course.EnrollmentButton';
 import CourseFeedbacks from '@/components/course-landing-page/CourseFeedbacks';
 import CourseLandingSideWidget from '@/components/course-landing-page/CourseLanding.SideWidget';
-import CourseRatings from '@/components/course-landing-page/CourseRatings';
-import CourseReviews from '@/components/course-landing-page/CourseReviews';
 import CourseTopicsAccordion from '@/components/course-landing-page/CourseTopics.Accordion';
-import DotPattern from '@/components/ui/animation/DotPattern';
 import LargeHeading from '@/components/ui/LargeHeading';
 import { ICourse } from '@/types/course';
 import { ICourseTopic } from '@/types/courseTopic';
@@ -14,7 +11,6 @@ import { IUser } from '@/types/user';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import constructMetadata from '@/utils/constructMetadata';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
-import sortCourseBasedOnTopicsSortID from '@/utils/sortCourseBasedOnTopicsSortID';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
@@ -83,7 +79,6 @@ const CourseLanding = async ({ params }: PageParams) => {
 
   return (
     <div className="max-w-5xl w-full mx-auto">
-      <DotPattern className="z-0" />
       <CourseLandingSideWidget course={course} />
       <CourseDetails course={course} />
       <div className="flex space-x-2 items-center justify-center mt-8 z-10">
