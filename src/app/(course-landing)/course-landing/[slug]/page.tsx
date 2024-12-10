@@ -81,10 +81,9 @@ const CourseLanding = async ({ params }: PageParams) => {
   return (
     <div className="max-w-6xl w-full mx-auto">
       <Spotlight className="left-0 md:left-60 -top-20" fill="white" />
-      <CourseLandingSideWidget course={course} />
-      <div className="border border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] py-12 rounded-lg my-2 md:my-4 mx-4 md:mx-6 backdrop-blur-sm">
+      <div className="border border-slate-300 border-slate-300 dark:border-slate-800 py-12 rounded-lg my-2 md:my-4 mx-4 md:mx-6 backdrop-blur-sm">
         <CourseDetails course={course} />
-        <div className="w-full border-b border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] my-12" />
+        <div className="w-full border-b border-slate-300 border-slate-300 dark:border-slate-800 my-12" />
         <div className="flex space-x-2 items-center justify-center mt-8 z-10">
           <LargeHeading size="sm" className="text-center">
             Course Topics ({course.topics.length})
@@ -92,9 +91,10 @@ const CourseLanding = async ({ params }: PageParams) => {
           <PiStackDuotone className="w-10 h-10" />
         </div>
         <CourseTopicsAccordion courseTopics={courseTopics} />
-        <div className="w-full border-b border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] my-12" />
+        <div className="w-full border-b border-slate-300 border-slate-300 dark:border-slate-800 my-12" />
         <CourseFeedbacks courseId={course.id as string} />
       </div>
+      <CourseLandingSideWidget course={course} />
       <CourseEnrollmentButton course={course} enrollState={enrollState} />
     </div>
   );
