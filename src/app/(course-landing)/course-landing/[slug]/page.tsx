@@ -3,6 +3,7 @@ import CourseEnrollmentButton from '@/components/course-landing-page/Course.Enro
 import CourseFeedbacks from '@/components/course-landing-page/CourseFeedbacks';
 import CourseLandingSideWidget from '@/components/course-landing-page/CourseLanding.SideWidget';
 import CourseTopicsAccordion from '@/components/course-landing-page/CourseTopics.Accordion';
+import { Spotlight } from '@/components/ui/animation/Spotlight';
 import LargeHeading from '@/components/ui/LargeHeading';
 import { ICourse } from '@/types/course';
 import { ICourseTopic } from '@/types/courseTopic';
@@ -78,17 +79,22 @@ const CourseLanding = async ({ params }: PageParams) => {
   const courseTopics = course.topics as ICourseTopic[];
 
   return (
-    <div className="max-w-5xl w-full mx-auto">
+    <div className="max-w-6xl w-full mx-auto">
+      <Spotlight className="left-0 md:left-60 -top-20" fill="white" />
       <CourseLandingSideWidget course={course} />
-      <CourseDetails course={course} />
-      <div className="flex space-x-2 items-center justify-center mt-8 z-10">
-        <LargeHeading size="sm" className="text-center">
-          Course Topics ({course.topics.length})
-        </LargeHeading>
-        <PiStackDuotone className="w-10 h-10" />
+      <div className="border border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] py-12 rounded-lg my-2 md:my-4 mx-4 md:mx-6 backdrop-blur-sm">
+        <CourseDetails course={course} />
+        <div className="w-full border-b border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] my-12" />
+        <div className="flex space-x-2 items-center justify-center mt-8 z-10">
+          <LargeHeading size="sm" className="text-center">
+            Course Topics ({course.topics.length})
+          </LargeHeading>
+          <PiStackDuotone className="w-10 h-10" />
+        </div>
+        <CourseTopicsAccordion courseTopics={courseTopics} />
+        <div className="w-full border-b border-slate-300 border-[#E0E0E0] dark:border-[#2a2a2a] my-12" />
+        <CourseFeedbacks courseId={course.id as string} />
       </div>
-      <CourseTopicsAccordion courseTopics={courseTopics} />
-      <CourseFeedbacks courseId={course.id as string} />
       <CourseEnrollmentButton course={course} enrollState={enrollState} />
     </div>
   );

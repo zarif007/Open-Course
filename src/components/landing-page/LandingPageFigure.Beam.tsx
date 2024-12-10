@@ -42,7 +42,7 @@ function LandingPageFigureBeam({ className }: { className?: string }) {
       )}
       ref={containerRef}
     >
-      <div className="flex flex-row items-stretch justify-between gap-20 sm:gap-24 md:gap-32 lg:gap-40">
+      <div className="flex flex-row items-stretch justify-between gap-20 sm:gap-32 md:gap-40 lg:gap-60">
         <div className="flex flex-col justify-center gap-2 sm:gap-6 md:gap-12">
           <Circle
             ref={div1Ref}

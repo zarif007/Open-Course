@@ -87,7 +87,7 @@ const CourseEnrollmentButton = ({
   return (
     <div>
       {isEnrolled !== 'loading' && (
-        <div className="fixed bottom-0 w-full max-w-5xl mx-auto">
+        <div className="fixed bottom-0 w-full max-w-6xl mx-auto">
           <div className="m-4 md:mx-6 mt-8">
             {!session?.user ? (
               <div className="w-full">
