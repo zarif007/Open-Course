@@ -25,7 +25,7 @@ const LandingPage = () => {
           <div className="w-full flex justify-center items-center px-2">
             <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
           </div>
-          <StarOnGithub />
+          {/* <StarOnGithub /> */}
           <LargeHeading size="lg" className="three-d text-center">
             <span
               className="tw-gradient-text"
