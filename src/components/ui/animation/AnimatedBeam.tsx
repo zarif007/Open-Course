@@ -7,10 +7,9 @@ import { cn } from '@/lib/utils';
 
 export interface AnimatedBeamProps {
   className?: string;
-  containerRef: RefObject<HTMLElement>; // Container ref
+  containerRef: RefObject<HTMLElement>;
   fromRef: RefObject<HTMLElement>;
   toRef: RefObject<HTMLElement>;
-  curvature?: number;
   reverse?: boolean;
   pathColor?: string;
   pathWidth?: number;
@@ -23,6 +22,7 @@ export interface AnimatedBeamProps {
   startYOffset?: number;
   endXOffset?: number;
   endYOffset?: number;
+  turnStartOffset?: number;
 }
 
 const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
@@ -30,8 +30,7 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   containerRef,
   fromRef,
   toRef,
-  curvature = 0,
-  reverse = false, // Include the reverse prop
+  reverse = false,
   duration = Math.random() * 3 + 4,
   delay = 0,
   pathColor = 'gray',
@@ -43,12 +42,12 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   startYOffset = 0,
   endXOffset = 0,
   endYOffset = 0,
+  turnStartOffset = 0.6, // Controls where the turn begins (0-1), default 70% of the way
 }) => {
   const id = useId();
   const [pathD, setPathD] = useState('');
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
 
-  // Calculate the gradient coordinates based on the reverse prop
   const gradientCoordinates = reverse
     ? {
         x1: ['90%', '-10%'],
@@ -83,31 +82,29 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         const endY =
           rectB.top - containerRect.top + rectB.height / 2 + endYOffset;
 
-        const controlY = startY - curvature;
-        const d = `M ${startX},${startY} Q ${
-          (startX + endX) / 2
-        },${controlY} ${endX},${endY}`;
+        // Calculate the turn point at turnStartOffset% of the total horizontal distance
+        const totalXDistance = endX - startX;
+        const cornerX = startX + totalXDistance * turnStartOffset;
+        const cornerY = startY;
+
+        // Create path with earlier angled turn
+        const d = `M ${startX},${startY} L ${cornerX},${cornerY} L ${endX},${endY}`;
         setPathD(d);
       }
     };
 
-    // Initialize ResizeObserver
     const resizeObserver = new ResizeObserver((entries) => {
-      // For all entries, recalculate the path
       for (let entry of entries) {
         updatePath();
       }
     });
 
-    // Observe the container element
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current);
     }
 
-    // Call the updatePath initially to set the initial path
     updatePath();
 
-    // Clean up the observer on component unmount
     return () => {
       resizeObserver.disconnect();
     };
@@ -115,11 +112,11 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
     containerRef,
     fromRef,
     toRef,
-    curvature,
     startXOffset,
     startYOffset,
     endXOffset,
     endYOffset,
+    turnStartOffset,
   ]);
 
   return (
@@ -140,6 +137,7 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         strokeWidth={pathWidth}
         strokeOpacity={pathOpacity}
         strokeLinecap="round"
+        strokeDasharray="4 4"
       />
       <path
         d={pathD}
@@ -147,6 +145,7 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         stroke={`url(#${id})`}
         strokeOpacity="1"
         strokeLinecap="round"
+        strokeDasharray="4 4"
       />
       <defs>
         <motion.linearGradient
@@ -168,7 +167,7 @@ const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           transition={{
             delay,
             duration,
-            ease: [0.16, 1, 0.3, 1], // https://easings.net/#easeOutExpo
+            ease: [0.16, 1, 0.3, 1],
             repeat: Infinity,
             repeatDelay: 0,
           }}

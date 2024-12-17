@@ -8,12 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ICourse } from '@/types/course';
 import CourseCardSkeleton from '../skeletons/CourseCard.Skeleton';
-import { Button, buttonVariants } from '../ui/Button';
+import { buttonVariants } from '../ui/Button';
 import Link from 'next/link';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
-import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
-import DotPattern from '../ui/animation/DotPattern';
-import { cn } from '@/lib/utils';
 import HyperText from '../ui/HyperText';
 
 const CoursesLanding = () => {
@@ -37,7 +34,7 @@ const CoursesLanding = () => {
         Courses
       </LargeHeading> */}
       <HyperText text="Courses" className="underline decoration-rose-500" />
-      <div className="container px-5 py-24 pb-12 w-full max-w-7xl mx-auto">
+      <div className="container px-5 p-12 w-full max-w-7xl mx-auto">
         <div className="flex flex-wrap -m-4"></div>
         {isLoading ? (
           <div className="flex flex-wrap justify-between">
@@ -58,11 +55,6 @@ const CoursesLanding = () => {
       >
         More Courses?
       </Link>
-      <DotPattern
-        className={cn(
-          '[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] '
-        )}
-      />
     </main>
   );
 };

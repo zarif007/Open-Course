@@ -122,6 +122,8 @@ export const PUT = async (req: NextRequest) => {
 
   const payload: IEnrollState = await req.json();
 
+  console.log('payload===', payload);
+
   const enrollState = await EnrollState.findOneAndUpdate(
     { user: payload.user, course: payload.course },
     payload,

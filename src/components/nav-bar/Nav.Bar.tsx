@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import GeneralNavbar from './General.Navbar';
 import { usePathname, useRouter } from 'next/navigation';
 import CourseBasedNavbar from './CourseBased.Navbar';
 import { useSession } from 'next-auth/react';
@@ -13,6 +12,8 @@ import {
 } from '@/redux/features/signed-In-user-slice';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import axios from 'axios';
+import FloatingNavbar from './FloatingNavbar';
+import GeneralNavbar from './General.Navbar';
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -57,10 +58,17 @@ const NavBar = () => {
   }, [session, signedInUser]);
 
   return (
-    <nav className="backdrop-blur-sm bg-slate-100/75 dark:bg-[#0a0a0a]/75 fixed w-full z-50 top-0 left-0 overflow-x-hidden">
-      <div className="mx-auto p-4">
-        {isCoursePage ? <CourseBasedNavbar /> : <GeneralNavbar />}
-      </div>
+    <nav className="">
+      {isCoursePage ? (
+        <div className="mx-auto p-4 backdrop-blur-sm bg-slate-100/75 dark:bg-[#0a0a0a]/75 fixed w-full z-50 top-0 left-0 overflow-x-hidden">
+          <CourseBasedNavbar />
+        </div>
+      ) : (
+        // <FloatingNavbar />
+        <div className="mx-auto p-4 backdrop-blur-sm bg-slate-100/75 dark:bg-[#0a0a0a]/75 fixed w-full z-50 top-0 left-0 overflow-x-hidden">
+          <GeneralNavbar />
+        </div>
+      )}
     </nav>
   );
 };
