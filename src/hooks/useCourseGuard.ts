@@ -35,7 +35,6 @@ const useCourseGuard = (
 
   const isValid = (topicId: number, enrollState: IEnrollState): boolean => {
     const currentTopic = enrollState.currentTopic as ICourseTopic;
-    console.log(enrollState.finishedTopics, course.topicPrivacy);
     return (
       topicId === currentTopic.topicID ||
       course.topicPrivacy === 'open' ||
@@ -92,14 +91,7 @@ const useCourseGuard = (
       }
     }
 
-    const state: IEnrollState = {
-      ...enrollState,
-      currentTopic: topicId,
-      finishedTopics: [...enrollState.finishedTopics, topicId],
-    };
-
-    await axios.put(`${nextApiEndPoint}/enrollState`, state);
-    return state;
+    return enrollState;
   };
 
   const actionBasedOnEnrollState = async () => {
@@ -109,8 +101,6 @@ const useCourseGuard = (
           `${nextApiEndPoint}/enrollState?user=${signedInUser?.id}&course=${course.id}`
         )
       ).json();
-
-      console.log(enrollState);
 
       if (!enrollState) {
         router.push(`/course-landing/${course.slug}`);
@@ -129,10 +119,10 @@ const useCourseGuard = (
           router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);
           dispatch(setCurrentCourseTopicForView(nextTopic));
         } else {
-          // enrollState = await updateEnrollStateBasedOnTopicPrivacy(
-          //   topicId,
-          //   enrollState
-          // );
+          enrollState = await updateEnrollStateBasedOnTopicPrivacy(
+            topicId,
+            enrollState
+          );
           const nextTopic = findTheNextTopic(parseInt(topicId), enrollState);
           if (parseInt(topicId) !== nextTopic.topicID) {
             router.push(`/course/${course.slug}?topicId=${nextTopic.topicID}`);

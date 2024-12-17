@@ -9,6 +9,7 @@ import {
   FcDocument,
   FcLock,
   FcSportsMode,
+  FcUnlock,
 } from 'react-icons/fc';
 import TooltipComponent from '../ui/TooltipComponent';
 import { AppDispatch, useAppSelector } from '@/redux/store';
@@ -81,14 +82,11 @@ const CourseTopic = ({
 
   const isValidTopic = (): boolean => {
     const currentCourseTopic = courseTopic.topicID as number;
-    return (
-      topicPrivacy === 'open' ||
-      enrollState.finishedTopics.includes(currentCourseTopic.toString())
-    );
+    return enrollState.finishedTopics.includes(currentCourseTopic.toString());
   };
 
   const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
-    if (!isValidTopic()) return;
+    if (!isValidTopic() && topicPrivacy !== 'open') return;
     router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`);
     dispatch(setCurrentCourseTopicForView(courseTopic));
   };
@@ -158,9 +156,13 @@ const CourseTopic = ({
               <FcSportsMode className={styles.icon} />
             </TooltipComponent>
           ) : !isValidTopic() ? (
-            <TooltipComponent content="Locked">
-              <FcLock className={styles.icon} />
-            </TooltipComponent>
+            course.topicPrivacy === 'locked' ? (
+              <TooltipComponent content="Locked">
+                <FcLock className={styles.icon} />
+              </TooltipComponent>
+            ) : (
+              <></>
+            )
           ) : (
             <TooltipComponent content="Done">
               <FcApproval className={styles.icon} />
