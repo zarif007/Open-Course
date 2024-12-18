@@ -6,6 +6,7 @@ import CourseEmbedRawUrl from './CourseEmbedRawUrl';
 import { FiLink } from 'react-icons/fi';
 import { MdOutlineVideoLibrary } from 'react-icons/md';
 import { unEmbedAbleLinks } from '@/constants/unEmbedableLinks';
+import { BiFullscreen } from 'react-icons/bi';
 
 const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
@@ -38,7 +39,12 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
               </div>
             )}
           </div>
-          <CourseEmbedLinkFullscreenDialog url={contentUrl} />
+          <CourseEmbedLinkFullscreenDialog url={contentUrl}>
+            <div className="flex space-x-1 items-center">
+              <BiFullscreen />
+              <p>Full Screen</p>
+            </div>
+          </CourseEmbedLinkFullscreenDialog>
         </div>
       )}
       {!showUrl && checkIfEmbedable ? (

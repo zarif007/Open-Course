@@ -81,6 +81,7 @@
     "eslint-config-next": "13.4.10",
     "flowbite": "^1.8.1",
     "framer-motion": "^10.16.7",
+    "groq-sdk": "^0.9.1",
     "http-errors": "^2.0.0",
     "i": "^0.3.7",
     "install": "^0.13.0",

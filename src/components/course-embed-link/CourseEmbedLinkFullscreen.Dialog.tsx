@@ -1,15 +1,17 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
-import { BiFullscreen } from 'react-icons/bi';
 import createEmbeddableUrls from '@/utils/getEmbedableUrl';
 
-const CourseEmbedLinkFullscreenDialog = ({ url }: { url: string }) => {
+const CourseEmbedLinkFullscreenDialog = ({
+  url,
+  children,
+}: {
+  url: string;
+  children: React.ReactNode;
+}) => {
   return (
     <Dialog>
-      <DialogTrigger className="flex space-x-1 items-center">
-        <BiFullscreen />
-        <p>Full Screen</p>
-      </DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border-slate-300 dark:border-gray-800 max-w-7xl w-full h-[98vh] p-0 py-12">
         <iframe
           src={createEmbeddableUrls(url)}
