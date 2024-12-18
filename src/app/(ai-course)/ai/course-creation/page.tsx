@@ -141,7 +141,7 @@ const Page = () => {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isLoading ? 'Generating...' : 'Ask v0 a question...'}
+              placeholder={isLoading ? 'Generating...' : 'Create a course...'}
               disabled={isLoading}
               className="w-full p-4 pl-20 pr-32 rounded-lg bg-gray-100 dark:bg-neutral-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-neutral-400 border border-gray-300 dark:border-neutral-800 focus:outline-none focus:border-gray-400 dark:focus:border-neutral-700 focus:ring-1 focus:ring-gray-400 dark:focus:ring-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
             />

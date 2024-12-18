@@ -12,7 +12,7 @@ export const reqGroqAI = async (content: any) => {
         content,
       },
     ],
-    model: 'llama-3.3-70b-versatile',
+    model: 'mixtral-8x7b-32768',
   });
   return res;
 };
