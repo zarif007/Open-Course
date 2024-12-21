@@ -5,6 +5,7 @@ import { Mic } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getFavicon } from '@/utils/getFavicon';
 import CourseEmbedLinkFullscreenDialog from '@/components/course-embed-link/CourseEmbedLinkFullscreen.Dialog';
+import { Button } from '@/components/ui/Button';
 
 interface IAICourse {
   name: string;
@@ -44,7 +45,6 @@ const Page = () => {
       }
       return null;
     } catch (error) {
-      console.error('Failed to parse course data:', error);
       return null;
     }
   };
@@ -101,7 +101,6 @@ const Page = () => {
         responseText = getTheJSONFromLangFlowContent(
           await readStream(response.body)
         );
-        console.log(responseText);
       } else {
         const data = await response.json();
         responseText = data.content.trim();
@@ -110,22 +109,17 @@ const Page = () => {
       const parsedCourse = parseResponseContent(responseText);
 
       if (parsedCourse) {
-        console.log('Parsed course:', parsedCourse);
-        console.log('Topics:', parsedCourse.topics);
-        console.log('Total time:', parsedCourse.totalTimeTaken);
         setCourse(parsedCourse);
       } else {
-        console.error('Invalid course data format');
       }
     } catch (error) {
-      console.error('Error fetching or processing data:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-full">
       <div className="container mx-auto py-4 pb-24">
         {isLoading && (
           <motion.div
@@ -136,53 +130,63 @@ const Page = () => {
             Generating course outline...
           </motion.div>
         )}
-        <h2 className="pt-8 pb-2 text-5xl text-center font-bold">
-          {course?.name}
-        </h2>
-        <h4 className="pb-8 text-lg text-center font-semibold text-slate-500">
-          {course?.totalTimeTaken} {course?.totalTimeTaken && 'minutes'}
-        </h4>
-        <ul className="space-y-2">
-          <AnimatePresence mode="popLayout">
-            <div className="flex flex-col space-y-4">
-              {course?.topics.map((topic) => (
-                <CourseEmbedLinkFullscreenDialog key={topic.id} url={topic.url}>
-                  <motion.li
-                    key={topic.title}
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: topic.id * 0.15,
-                      type: 'spring',
-                      bounce: 0.3,
-                    }}
-                    className="p-4 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
-                  >
-                    <div className="block flex space-x-4 items-center text-start">
-                      <img
-                        src={getFavicon(topic.url ?? '')}
-                        className="w-12 h-12"
-                      />
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          {topic.id}. {topic.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
-                          Time to complete: {topic.timeToComplete} minutes
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 truncate">
-                          {topic.url}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.li>
-                </CourseEmbedLinkFullscreenDialog>
-              ))}
+        {course?.name && (
+          <div className="flex flex-col">
+            <h2 className="pt-8 pb-2 text-5xl text-center font-bold">
+              {course?.name}
+            </h2>
+            <h4 className="pb-8 text-lg text-center font-semibold text-slate-500">
+              {course?.totalTimeTaken} {course?.totalTimeTaken && 'minutes'}
+            </h4>
+            <div className="flex justify-end my-2">
+              <Button variant="general">Convert to a Course</Button>
             </div>
-          </AnimatePresence>
-        </ul>
+            <ul className="space-y-2">
+              <AnimatePresence mode="popLayout">
+                <div className="flex flex-col space-y-4">
+                  {course?.topics.map((topic) => (
+                    <CourseEmbedLinkFullscreenDialog
+                      key={topic.id}
+                      url={topic.url}
+                    >
+                      <motion.li
+                        key={topic.title}
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                        transition={{
+                          duration: 0.4,
+                          delay: topic.id * 0.15,
+                          type: 'spring',
+                          bounce: 0.3,
+                        }}
+                        className="break-words p-4 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
+                      >
+                        <div className="block flex space-x-4 items-center text-start">
+                          <img
+                            src={getFavicon(topic.url ?? '')}
+                            className="w-12 h-12"
+                          />
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {topic.id}. {topic.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
+                              Time to complete: {topic.timeToComplete} minutes
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1">
+                              {topic.url}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.li>
+                    </CourseEmbedLinkFullscreenDialog>
+                  ))}
+                </div>
+              </AnimatePresence>
+            </ul>
+          </div>
+        )}
       </div>
 
       <motion.div
