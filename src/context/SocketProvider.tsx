@@ -52,22 +52,22 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (!signedInUser?.id) return;
+  // useEffect(() => {
+  //   if (!signedInUser?.id) return;
 
-    const _socket = io(notificationApiEndpoint, {
-      query: { userId: signedInUser.id },
-    });
+  //   const _socket = io(notificationApiEndpoint, {
+  //     query: { userId: signedInUser.id },
+  //   });
 
-    _socket.on('message', onMessageRec);
-    setSocket(_socket);
+  //   _socket.on('message', onMessageRec);
+  //   setSocket(_socket);
 
-    return () => {
-      _socket.disconnect();
-      _socket.off('message', onMessageRec);
-      setSocket(undefined);
-    };
-  }, [signedInUser]);
+  //   return () => {
+  //     _socket.disconnect();
+  //     _socket.off('message', onMessageRec);
+  //     setSocket(undefined);
+  //   };
+  // }, [signedInUser]);
 
   return (
     <SocketContext.Provider value={{ postNotification, messages: [] }}>

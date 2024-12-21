@@ -1,21 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { reqGroqAI } from '@/utils/groq';
+import { getAI } from '@/utils/getAI';
 
-// Define the expected request body type
 interface RequestBody {
   content: string;
 }
 
-// Define the response type from Groq AI
-interface GroqAIResponse {
-  choices: Array<{
-    message?: {
-      content: string;
-    };
-  }>;
-}
-
-// Define the API response types
 interface SuccessResponse {
   content: string;
 }
@@ -25,20 +14,13 @@ interface ErrorResponse {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  if (req.method !== 'POST') {
-    return NextResponse.json(
-      { message: 'Only POST requests are allowed' } as ErrorResponse,
-      { status: 405 }
-    );
-  }
-
   try {
     const data = (await req.json()) as RequestBody;
 
-    const chatCompletion = (await reqGroqAI(data.content)) as GroqAIResponse;
-
+    const chatCompletion = (await getAI(data.content)) as string;
+    console.log(chatCompletion);
     return NextResponse.json({
-      content: chatCompletion.choices[0]?.message?.content || '',
+      content: chatCompletion,
     } as SuccessResponse);
   } catch (error) {
     console.error(error);

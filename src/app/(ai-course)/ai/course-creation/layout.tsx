@@ -7,7 +7,7 @@ export default function RootLayout({
 }) {
   // offset navbar height
   return (
-    <section className="py-32 h-full min-h-screen max-w-7xl mx-auto">
+    <section className="py-32 h-full min-h-screen max-w-6xl mx-auto">
       {children}
     </section>
   );
