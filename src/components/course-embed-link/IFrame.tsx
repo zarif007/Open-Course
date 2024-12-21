@@ -24,7 +24,7 @@ const IFrame = ({ contentUrl }: { contentUrl: string }) => {
     isUrlEmbeddable(contentUrl);
   }, [contentUrl]);
   return (
-    <div>
+    <div className="h-full">
       {isEmbeddable ? (
         <iframe
           src={createEmbeddableUrls(contentUrl)}

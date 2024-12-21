@@ -160,7 +160,7 @@ const Page = () => {
                           type: 'spring',
                           bounce: 0.3,
                         }}
-                        className="break-words p-4 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
+                        className="p-4 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
                       >
                         <div className="block flex space-x-4 items-center text-start">
                           <img
@@ -174,7 +174,7 @@ const Page = () => {
                             <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
                               Time to complete: {topic.timeToComplete} minutes
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1">
+                            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words">
                               {topic.url}
                             </p>
                           </div>

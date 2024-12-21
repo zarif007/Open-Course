@@ -13,7 +13,7 @@ const CourseEmbedLinkFullscreenDialog = ({
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border-slate-300 dark:border-gray-800 max-w-7xl w-full h-[98vh] p-0 py-12">
+      <DialogContent className="bg-slate-100 dark:bg-[#0a0a0a] border-slate-300 dark:border-gray-800 max-w-7xl w-full min-h-[650px] p-0">
         <IFrame contentUrl={url} />
       </DialogContent>
     </Dialog>
