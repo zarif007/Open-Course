@@ -79,29 +79,34 @@ If you come across a bug or have a feature request, please open an [issue](https
 3. Install dependencies
 
    ```bash
+   cd Open-Course
+
+4. Install dependencies
+
+   ```bash
    npm i
    ```
 
-4. Start the development server
+5. Start the development server
 
    ```bash
    npm run dev
    ```
 
-5. Create a new branch for your contribution
+6. Create a new branch for your contribution
 
    ```bash
    git checkout -b feature/your-feature
    ```
 
-6. Make your changes and commit them
+7. Make your changes and commit them
 
    ```bash
    git add .
    git commit -m "Add your feature or fix"
    ```
 
-7. Push your changes to your forked repository
+8. Push your changes to your forked repository
 
    ```bash
    git push origin feature/your-feature
