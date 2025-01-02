@@ -12,7 +12,7 @@ import HyperText from '../ui/HyperText';
 const IntroPage = () => {
   const { theme } = useTheme();
   return (
-    <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-24 md:mb-40 mx-auto">
+    <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-12 md:mb-20 mx-auto">
       {/* <LargeHeading className="underline decoration-rose-500">
         What is It?
       </LargeHeading> */}
