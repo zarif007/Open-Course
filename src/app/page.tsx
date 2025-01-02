@@ -11,6 +11,7 @@ export default function Home() {
       <IntroPage />
       <HorizontalLine />
       <CoursesLanding />
+      <HorizontalLine />
       <RoadmapLanding />
     </div>
   );
