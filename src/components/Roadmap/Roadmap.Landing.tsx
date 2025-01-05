@@ -6,7 +6,7 @@ import HyperText from '../ui/HyperText';
 
 const RoadmapLanding = () => {
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-start overflow-x-hidden mx-auto">
+    <main className="relative h-60 flex flex-col items-center justify-start overflow-x-hidden mx-auto">
       <HyperText text="Road Maps" className="underline decoration-rose-500" />
       <LargeHeading className="" size="sm">
         Coming Soon...

@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import LargeHeading from '../ui/LargeHeading';
 import CourseCard from '../course-cards/Course.Card';
 import SwiperComp from '../ui/SwiperComp';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { ICourse } from '@/types/course';
 import CourseCardSkeleton from '../skeletons/CourseCard.Skeleton';
 import { buttonVariants } from '../ui/Button';
@@ -29,9 +27,9 @@ const CoursesLanding = () => {
   });
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center overflow-x-hidden mb-12 md:mb-20 mx-auto">
+    <main className="flex flex-col items-center justify-center overflow-x-hidden mb-12 md:mb-20 mx-auto">
       <HyperText text="Courses" className="underline decoration-rose-500" />
-      <div className="container px-5 p-12 w-full max-w-7xl mx-auto">
+      <div className="container px-5 pb-8 pt-12 w-full max-w-7xl mx-auto">
         <div className="flex flex-wrap -m-4"></div>
         {isLoading ? (
           <div className="flex flex-wrap justify-between">

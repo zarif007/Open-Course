@@ -1,12 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { callLangFlowAPI } from '@/utils/langflow/callLangFlowAI';
+import { callLangFlowAPIWithRetry } from '@/utils/langflow/callLangFlowAI';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const message = await req.json();
 
-    const result = await callLangFlowAPI(
+    const result = await callLangFlowAPIWithRetry(
       message.content,
       process.env.LANGFLOW_API_TOKEN as string
     );
