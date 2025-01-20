@@ -1,12 +1,31 @@
-import axios from "axios";
-import Link from "next/link";
-import React from "react";
-import { PiGithubLogoDuotone, PiStarDuotone } from "react-icons/pi";
+'use client';
 
-const StarOnGithub = async () => {
-  const repo = await axios.get(
-    "https://api.github.com/repos/zarif007/Open-Course"
-  );
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { PiGithubLogoDuotone, PiStarDuotone } from 'react-icons/pi';
+
+const StarOnGithub = () => {
+  const [stars, setStars] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchStars = async () => {
+      try {
+        const response = await fetch(
+          'https://api.github.com/repos/zarif007/Open-Course'
+        );
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        setStars(data.stargazers_count);
+      } catch (err) {
+        console.error('Error fetching stars:', err);
+        setError(true);
+      }
+    };
+
+    fetchStars();
+  }, []);
+
   return (
     <Link
       href="https://github.com/zarif007/Open-Course"
@@ -19,7 +38,9 @@ const StarOnGithub = async () => {
         <PiGithubLogoDuotone className="w-6 h-6" />
       </div>
       <div className="rounded-r bg-slate-200 dark:bg-gray-700 px-2 py-1">
-        <p className="font-semibold ">{repo.data.stargazers_count}</p>
+        <p className="font-semibold">
+          {error ? '—' : stars === null ? '...' : stars}
+        </p>
       </div>
     </Link>
   );
