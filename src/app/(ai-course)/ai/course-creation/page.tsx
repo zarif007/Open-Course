@@ -7,6 +7,7 @@ import { getFavicon } from '@/utils/getFavicon';
 import CourseEmbedLinkFullscreenDialog from '@/components/course-embed-link/CourseEmbedLinkFullscreen.Dialog';
 import { Button } from '@/components/ui/Button';
 import { toast } from '@/components/ui/Toast';
+import generateAICourse from '@/actions/generateAICourse';
 
 interface IAICourse {
   name: string;
@@ -26,118 +27,6 @@ const Page = () => {
   const [course, setCourse] = useState<IAICourse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const parseResponseContent = (jsonContent: string): IAICourse | null => {
-    try {
-      const cleanUp = (str: string): string => {
-        return str
-          .replace(/,(\s*[}\]])/g, '$1')
-          .replace(/[\x00-\x1F\x7F-\x9F]/g, '')
-          .replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
-      };
-
-      console.log('Input JSON:', jsonContent);
-
-      const jsonMatch = jsonContent.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        console.error('No JSON object found in content');
-        return null;
-      }
-
-      const jsonString = cleanUp(jsonMatch[0]);
-
-      console.log('Cleaned JSON:', jsonString);
-
-      const parsedCourse = JSON.parse(jsonString);
-
-      if (!parsedCourse || typeof parsedCourse !== 'object') {
-        console.error('Parsed result is not an object');
-        return null;
-      }
-
-      if (
-        typeof parsedCourse.name !== 'string' ||
-        !Array.isArray(parsedCourse.topics) ||
-        parsedCourse.topics.length === 0
-      ) {
-        console.error('Missing or invalid required fields', {
-          hasName: typeof parsedCourse.name === 'string',
-          hasTopics: Array.isArray(parsedCourse.topics),
-          topicsLength: parsedCourse.topics?.length,
-        });
-        return null;
-      }
-
-      const validTopics = parsedCourse.topics.every(
-        (topic: ITopic) =>
-          typeof topic.id === 'number' &&
-          typeof topic.title === 'string' &&
-          typeof topic.timeToComplete === 'number' &&
-          typeof topic.url === 'string'
-      );
-
-      if (!validTopics) {
-        console.error('Invalid topic structure found');
-        return null;
-      }
-
-      const totalTimeTaken = parsedCourse.topics.reduce(
-        (curr: number, topic: ITopic) => curr + topic.timeToComplete,
-        0
-      );
-
-      return { ...parsedCourse, totalTimeTaken };
-    } catch (error) {
-      console.error('JSON parsing error:', {
-        error,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-        errorPosition:
-          error instanceof SyntaxError
-            ? error.message.match(/position (\d+)/)?.[1]
-            : null,
-        jsonSnippet:
-          error instanceof SyntaxError
-            ? jsonContent.slice(
-                Math.max(
-                  0,
-                  Number(error.message.match(/position (\d+)/)?.[1]) - 50
-                ),
-                Number(error.message.match(/position (\d+)/)?.[1]) + 50
-              )
-            : null,
-      });
-      return null;
-    }
-  };
-
-  async function readStream(stream: ReadableStream): Promise<string> {
-    const reader = stream.getReader();
-    let result = '';
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = new TextDecoder().decode(value, { stream: true });
-        result += chunk;
-      }
-    } finally {
-      reader.releaseLock();
-    }
-
-    return result;
-  }
-
-  const getTheJSONFromLangFlowContent = (responseText: any): string => {
-    const response = JSON.parse(responseText);
-    console.log(response);
-    const resLen = response.content.result.outputs.length;
-    const outputLen =
-      response.content.result.outputs[resLen - 1].outputs.length;
-    return response.content.result.outputs[resLen - 1].outputs[outputLen - 1]
-      .artifacts.message;
-  };
-
   const handleSubmit = async () => {
     if (!prompt.trim() || isLoading) return;
 
@@ -146,36 +35,10 @@ const Page = () => {
     setCourse(null);
 
     try {
-      const response = await fetch('/api/ai/agents/course-creation/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: prompt }),
-        cache: 'no-cache',
-      });
-
-      if (!response.ok) {
-        throw new Error(`API responded with status ${response.status}`);
-      }
-
-      let responseText: string;
-      if (response.body instanceof ReadableStream) {
-        responseText = getTheJSONFromLangFlowContent(
-          await readStream(response.body)
-        );
-      } else {
-        const data = await response.json();
-        responseText = data.content.trim();
-      }
-      const parsedCourse = parseResponseContent(responseText);
-      console.log(parsedCourse);
-
-      if (parsedCourse) {
-        setCourse(parsedCourse);
-      } else {
-      }
+      const course: IAICourse = await generateAICourse(prompt);
+      setCourse(course);
     } catch (error) {
+      console.log(error);
       toast({
         title: 'Something went wrong',
         type: 'error',

@@ -13,6 +13,8 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^1.1.6",
+    "@ai-sdk/openai": "^1.1.5",
     "@clerk/nextjs": "^4.22.0",
     "@clerk/themes": "^1.7.5",
     "@emoji-mart/data": "^1.1.2",
@@ -64,6 +66,7 @@
     "@vercel/analytics": "^1.1.1",
     "@vercel/og": "^0.5.9",
     "@vercel/speed-insights": "^1.0.0",
+    "ai": "^4.1.12",
     "autoprefixer": "10.4.14",
     "axios": "^1.7.7",
     "bad-words": "^3.0.4",
@@ -85,6 +88,7 @@
     "groq-sdk": "^0.9.1",
     "http-errors": "^2.0.0",
     "i": "^0.3.7",
+    "import": "^0.0.6",
     "install": "^0.13.0",
     "lucide-react": "^0.260.0",
     "mini-svg-data-uri": "^1.4.4",
