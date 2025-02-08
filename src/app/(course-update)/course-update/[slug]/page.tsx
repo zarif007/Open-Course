@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppDispatch, useAppSelector } from '@/redux/store';
 import axios from 'axios';
 import { toast } from '@/components/ui/Toast';
@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { ICourse } from '@/types/course';
 import createSlug from '@/utils/createSlug';
 import { ICourseTopic } from '@/types/courseTopic';
-import { useSession } from 'next-auth/react';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import CourseCreationUpdate from '@/components/course-details/Course.CreationUpdate';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
@@ -31,14 +30,17 @@ const CourseUpdate = ({ params }: PageParams) => {
   >('free');
 
   const dispatch = useDispatch<AppDispatch>();
-
   const router = useRouter();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
-  const { isLoading } = useQuery({
+  const course = useAppSelector(
+    (state) => state.courseUpdateReducer.value.course
+  );
+
+  const { isLoading, isFetching } = useQuery({
     queryKey: [`course-${params.slug}`],
     enabled: !!signedInUser?.id,
     queryFn: async () => {
@@ -52,13 +54,12 @@ const CourseUpdate = ({ params }: PageParams) => {
         dispatch(setCourseForUpdate(data));
       }
 
-      return;
+      return data;
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    cacheTime: 1000 * 60 * 10, // 10 minutes
+    keepPreviousData: true,
   });
-
-  const course = useAppSelector(
-    (state) => state.courseUpdateReducer.value.course
-  );
 
   const errorToast = (errMsg: string) => {
     setLoadingStatus('free');
@@ -139,7 +140,7 @@ const CourseUpdate = ({ params }: PageParams) => {
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <CourseUpdatePageSkeleton />
       ) : (
         <CourseCreationUpdate
