@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { generateObject } from 'ai';
 import { groq } from '@ai-sdk/groq';
 import { systemPrompt } from '@/constants/aiCourseCreation';
-import { openai } from '@ai-sdk/openai';
 
 const TopicSchema = z.object({
   id: z.number().describe('A unique identifier for the topic'),
