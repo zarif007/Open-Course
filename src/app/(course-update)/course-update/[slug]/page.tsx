@@ -56,8 +56,8 @@ const CourseUpdate = ({ params }: PageParams) => {
 
       return data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    cacheTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 20, // 5 minutes
+    cacheTime: 1000 * 60 * 30, // 10 minutes
     keepPreviousData: true,
   });
 
