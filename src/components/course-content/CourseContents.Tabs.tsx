@@ -14,6 +14,8 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import TopicVersion from '../topic-version/TopicVersion';
 import TopicContributors from '../course-topic/TopicContributors';
+import { FaRobot } from 'react-icons/fa6';
+import CourseAskAI from '../course-ai/CourseAskAI';
 
 const tabElements = [
   {
@@ -30,6 +32,11 @@ const tabElements = [
     name: 'Ask',
     value: 'ask',
     icon: <BiSolidUpvote className="w-5 h-5" />,
+  },
+  {
+    name: 'Ask AI',
+    value: 'ask_ai',
+    icon: <FaRobot className="w-5 h-5" />,
   },
   {
     name: 'Version',
@@ -96,6 +103,9 @@ const CourseContentsTabs = () => {
       </TabsContent>
       <TabsContent value="ask">
         <CourseAsks />
+      </TabsContent>
+      <TabsContent value="ask_ai">
+        <CourseAskAI />
       </TabsContent>
       <TabsContent value="version">
         <TopicVersion />
