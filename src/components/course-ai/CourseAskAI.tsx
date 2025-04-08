@@ -1,9 +1,11 @@
 import { scrapeWebsite } from '@/actions/scrapeWebsite';
 import { useAppSelector } from '@/redux/store';
-import { da } from 'date-fns/locale';
-import { Mic } from 'lucide-react';
+import { Mic, Send } from 'lucide-react';
 import React, { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import remarkGfm from 'remark-gfm';
 
 const CourseAskAI = () => {
   const currentCourseTopic = useAppSelector(
@@ -17,6 +19,10 @@ const CourseAskAI = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [scrapedContent, setScrapedContent] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages([]);
+  }, []);
 
   useEffect(() => {
     const scrapeWebsiteData = async () => {
@@ -109,35 +115,180 @@ const CourseAskAI = () => {
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`p-4 rounded-lg ${
-                    message.role === 'user'
-                      ? 'bg-rose-500 ml-auto max-w-[80%]'
-                      : 'bg-gray-100 dark:bg-neutral-800 mr-auto max-w-[80%]'
+                  className={`flex ${
+                    message.role === 'user' ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  {message.role === 'assistant' ? (
-                    <ReactMarkdown>{message.content}</ReactMarkdown>
-                  ) : (
-                    message.content
-                  )}
+                  <div
+                    className={`rounded-lg p-4 max-w-[85%] ${
+                      message.role === 'user'
+                        ? 'bg-rose-500 text-white'
+                        : 'bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-white'
+                    }`}
+                  >
+                    {message.role === 'assistant' ? (
+                      <div className="markdown-content">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            code({ node, className, children, ...props }) {
+                              const match = /language-(\w+)/.exec(
+                                className || ''
+                              );
+                              return match ? (
+                                <SyntaxHighlighter
+                                  style={vscDarkPlus}
+                                  language={match[1]}
+                                  PreTag="div"
+                                  customStyle={{
+                                    borderRadius: '0.375rem',
+                                    margin: '0.5rem 0',
+                                    fontSize: '0.875rem',
+                                  }}
+                                >
+                                  {String(children).replace(/\n$/, '')}
+                                </SyntaxHighlighter>
+                              ) : (
+                                <code
+                                  className={`${className} bg-gray-200 dark:bg-neutral-700 px-1 py-0.5 rounded text-sm`}
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              );
+                            },
+                            p({ children }) {
+                              return (
+                                <p className="mb-4 last:mb-0">{children}</p>
+                              );
+                            },
+                            a({ node, children, href, ...props }) {
+                              return (
+                                <a
+                                  className="text-blue-500 hover:text-blue-700 underline"
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  {...props}
+                                >
+                                  {children}
+                                </a>
+                              );
+                            },
+                            ul({ children }) {
+                              return (
+                                <ul className="list-disc ml-6 mb-4 space-y-1">
+                                  {children}
+                                </ul>
+                              );
+                            },
+                            ol({ children }) {
+                              return (
+                                <ol className="list-decimal ml-6 mb-4 space-y-1">
+                                  {children}
+                                </ol>
+                              );
+                            },
+                            li({ children }) {
+                              return <li className="mb-1">{children}</li>;
+                            },
+                            blockquote({ children }) {
+                              return (
+                                <blockquote className="border-l-4 border-gray-300 dark:border-neutral-600 pl-4 py-1 my-2 italic">
+                                  {children}
+                                </blockquote>
+                              );
+                            },
+                            h1({ children }) {
+                              return (
+                                <h1 className="text-2xl font-bold mb-4 mt-6">
+                                  {children}
+                                </h1>
+                              );
+                            },
+                            h2({ children }) {
+                              return (
+                                <h2 className="text-xl font-bold mb-3 mt-5">
+                                  {children}
+                                </h2>
+                              );
+                            },
+                            h3({ children }) {
+                              return (
+                                <h3 className="text-lg font-bold mb-2 mt-4">
+                                  {children}
+                                </h3>
+                              );
+                            },
+                            table({ children }) {
+                              return (
+                                <div className="overflow-x-auto mb-4">
+                                  <table className="min-w-full border-collapse border border-gray-300 dark:border-neutral-700">
+                                    {children}
+                                  </table>
+                                </div>
+                              );
+                            },
+                            thead({ children }) {
+                              return (
+                                <thead className="bg-gray-200 dark:bg-neutral-700">
+                                  {children}
+                                </thead>
+                              );
+                            },
+                            tbody({ children }) {
+                              return <tbody>{children}</tbody>;
+                            },
+                            tr({ children }) {
+                              return (
+                                <tr className="border-b border-gray-300 dark:border-neutral-700">
+                                  {children}
+                                </tr>
+                              );
+                            },
+                            th({ children }) {
+                              return (
+                                <th className="px-4 py-2 border-r border-gray-300 dark:border-neutral-700 last:border-0">
+                                  {children}
+                                </th>
+                              );
+                            },
+                            td({ children }) {
+                              return (
+                                <td className="px-4 py-2 border-r border-gray-300 dark:border-neutral-700 last:border-0">
+                                  {children}
+                                </td>
+                              );
+                            },
+                          }}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p>{message.content}</p>
+                    )}
+                  </div>
                 </div>
               ))}
               {isLoading && (
-                <div className="p-4 rounded-lg bg-gray-100 dark:bg-neutral-800 mr-auto max-w-[80%]">
-                  <div className="flex space-x-2">
-                    <div className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"></div>
-                    <div
-                      className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"
-                      style={{ animationDelay: '0.2s' }}
-                    ></div>
-                    <div
-                      className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"
-                      style={{ animationDelay: '0.4s' }}
-                    ></div>
+                <div className="flex justify-start">
+                  <div className="p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="flex space-x-2">
+                      <div className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"></div>
+                      <div
+                        className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"
+                        style={{ animationDelay: '0.2s' }}
+                      ></div>
+                      <div
+                        className="h-2 w-2 bg-gray-500 dark:bg-neutral-400 rounded-full animate-bounce"
+                        style={{ animationDelay: '0.4s' }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -175,6 +326,63 @@ const CourseAskAI = () => {
           </form>
         </div>
       </div>
+
+      {/* CSS for better markdown styling */}
+      <style jsx global>{`
+        .markdown-content ul {
+          list-style-type: disc;
+          margin-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content ol {
+          list-style-type: decimal;
+          margin-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content li {
+          margin-bottom: 0.25rem;
+        }
+        .markdown-content p {
+          margin-bottom: 1rem;
+        }
+        .markdown-content p:last-child {
+          margin-bottom: 0;
+        }
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4 {
+          font-weight: bold;
+          margin-top: 1.5rem;
+          margin-bottom: 0.75rem;
+        }
+        .markdown-content h1 {
+          font-size: 1.5rem;
+        }
+        .markdown-content h2 {
+          font-size: 1.25rem;
+        }
+        .markdown-content h3 {
+          font-size: 1.125rem;
+        }
+        .markdown-content h4 {
+          font-size: 1rem;
+        }
+        .markdown-content pre {
+          margin-bottom: 1rem;
+          border-radius: 0.375rem;
+          overflow: auto;
+        }
+        .markdown-content blockquote {
+          border-left: 4px solid #e2e8f0;
+          padding-left: 1rem;
+          margin: 1rem 0;
+          font-style: italic;
+        }
+        .dark .markdown-content blockquote {
+          border-left-color: #4b5563;
+        }
+      `}</style>
     </div>
   );
 };

@@ -205,25 +205,25 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    document.querySelectorAll('script, style').forEach((el) => el.remove());
+    document
+      .querySelectorAll(
+        'script, style, nav, footer, header, noscript, iframe, svg, form, button'
+      )
+      .forEach((el) => el.remove());
 
-    const bodyElement = document.querySelector('body');
-    let textContent = bodyElement
-      ? bodyElement.textContent?.replace(/\s+/g, ' ').trim()
-      : 'No text content found';
+    const textBlocks = Array.from(
+      document.body.querySelectorAll(
+        'p, h1, h2, h3, li, article, section, div, span'
+      )
+    )
+      .map((el) => el.textContent?.trim())
+      .filter((text) => text && text.length > 30);
 
-    if (!textContent) {
-      return {
-        success: true,
-        textContent: 'No text content found',
-        url,
-        timestamp: new Date().toISOString(),
-      };
-    }
+    const joined = textBlocks.join('\n\n').replace(/\s+/g, ' ').trim();
 
     return {
       success: true,
-      textContent,
+      textContent: joined || 'No meaningful content found.',
       url,
       timestamp: new Date().toISOString(),
     };
