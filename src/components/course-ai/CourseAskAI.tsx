@@ -22,7 +22,7 @@ const CourseAskAI = () => {
 
   useEffect(() => {
     setMessages([]);
-  }, []);
+  }, [currentCourseTopic._id]);
 
   useEffect(() => {
     const scrapeWebsiteData = async () => {

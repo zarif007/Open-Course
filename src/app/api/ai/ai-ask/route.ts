@@ -7,6 +7,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
 
+const MAX_GEMINI_TOKENS = 8000;
+const MAX_CHUNK_TOKENS = 800;
+const MAX_CHUNKS = 5;
+
 interface Message {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -53,12 +57,18 @@ export async function POST(
       );
     }
 
-    let contextChunks: string[];
+    const conversationHistory = messages
+      .slice(Math.max(0, messages.length - 3)) // Only keep the last 3 messages for context
+      .map(
+        (msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
+      )
+      .join('\n');
 
+    let fullContext: string;
     if (typeof context === 'string') {
-      contextChunks = splitTextIntoChunks(context, 1000);
+      fullContext = context;
     } else if (Array.isArray(context)) {
-      contextChunks = context;
+      fullContext = context.join('\n\n');
     } else {
       return NextResponse.json(
         {
@@ -68,6 +78,8 @@ export async function POST(
       );
     }
 
+    const contextChunks = createChunks(fullContext, MAX_CHUNK_TOKENS);
+
     const queryEmbeddingResponse = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: lastUserMessage.content,
@@ -75,7 +87,7 @@ export async function POST(
     const queryEmbedding = queryEmbeddingResponse.data[0].embedding;
 
     const contextEmbeddings = await Promise.all(
-      contextChunks.map(async (chunk) => {
+      contextChunks.map(async (chunk, index) => {
         const response = await openai.embeddings.create({
           model: 'text-embedding-3-small',
           input: chunk,
@@ -94,32 +106,20 @@ export async function POST(
       };
     });
 
-    const maxChunks = Math.min(3, similarities.length);
     const topChunks = similarities
       .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, maxChunks)
+      .slice(0, MAX_CHUNKS)
       .map((item) => item.chunk);
 
-    const relevantContext = topChunks.join('\n\n');
+    let relevantContext = topChunks.join('\n\n');
+    const estimatedContextTokens = estimateTokens(relevantContext);
 
-    const conversationHistory = messages
-      .slice(
-        0,
-        messages.length -
-          (messages[messages.length - 1].role === 'user' ? 1 : 2)
-      )
-      .map(
-        (msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
-      )
-      .join('\n');
-
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
-    const prompt = `
+    // Create base prompt template
+    const promptTemplate = `
 You are a helpful assistant answering questions based on retrieved information.
 
 RETRIEVED CONTEXT:
-${relevantContext}
+{context}
 
 ${
   conversationHistory
@@ -129,7 +129,7 @@ ${
 
 USER QUERY: ${lastUserMessage.content}
 
-Answer the user's query using the retrieved context. If the information cannot be found in the context, acknowledge that limitation politely.
+Answer the user's query using only the retrieved context. If the information cannot be found in the context, acknowledge that limitation politely.
 Your answer should:
 1. Be relevant to the user query
 2. Be based on the retrieved context
@@ -138,6 +138,24 @@ Your answer should:
 
 ANSWER:`;
 
+    const basePromptTokens = estimateTokens(
+      promptTemplate.replace('{context}', '')
+    );
+    const availableContextTokens = MAX_GEMINI_TOKENS - basePromptTokens;
+
+    if (estimatedContextTokens > availableContextTokens) {
+      console.log(
+        `Context too large (${estimatedContextTokens} tokens), trimming to fit ${availableContextTokens} tokens`
+      );
+      relevantContext = trimTextToTokenLimit(
+        relevantContext,
+        availableContextTokens
+      );
+    }
+
+    const prompt = promptTemplate.replace('{context}', relevantContext);
+
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
@@ -182,29 +200,104 @@ function cosineSimilarity(vecA: number[], vecB: number[]): number {
   return dotProduct / (normA * normB);
 }
 
-// Helper function to split text into chunks
-function splitTextIntoChunks(text: string, chunkSize: number): string[] {
+function createChunks(text: string, maxTokens: number): string[] {
   const chunks: string[] = [];
-  const sentences = text.split(/(?<=[.!?])\s+/);
+
+  const paragraphs = text.split(/\n\s*\n/);
   let currentChunk = '';
 
-  for (const sentence of sentences) {
-    // If adding this sentence would exceed chunk size, save the current chunk and start a new one
-    if (
-      currentChunk.length + sentence.length > chunkSize &&
+  for (const paragraph of paragraphs) {
+    const paragraphTokens = estimateTokens(paragraph);
+
+    if (paragraphTokens > maxTokens) {
+      if (currentChunk) {
+        chunks.push(currentChunk.trim());
+        currentChunk = '';
+      }
+
+      const sentences = paragraph.split(/(?<=[.!?])\s+/);
+      let sentenceChunk = '';
+
+      for (const sentence of sentences) {
+        const sentenceTokens = estimateTokens(sentence);
+        if (
+          estimateTokens(sentenceChunk + sentence) > maxTokens &&
+          sentenceChunk.length > 0
+        ) {
+          chunks.push(sentenceChunk.trim());
+          sentenceChunk = '';
+        }
+
+        if (sentenceTokens > maxTokens) {
+          if (sentenceChunk) {
+            chunks.push(sentenceChunk.trim());
+            sentenceChunk = '';
+          }
+
+          const words = sentence.split(/\s+/);
+          let wordChunk = '';
+
+          for (const word of words) {
+            if (
+              estimateTokens(wordChunk + ' ' + word) > maxTokens &&
+              wordChunk.length > 0
+            ) {
+              chunks.push(wordChunk.trim());
+              wordChunk = word;
+            } else {
+              wordChunk += (wordChunk ? ' ' : '') + word;
+            }
+          }
+
+          if (wordChunk) {
+            chunks.push(wordChunk.trim());
+          }
+        } else {
+          sentenceChunk += (sentenceChunk ? ' ' : '') + sentence;
+        }
+      }
+
+      if (sentenceChunk) {
+        chunks.push(sentenceChunk.trim());
+      }
+    } else if (
+      estimateTokens(currentChunk + paragraph) > maxTokens &&
       currentChunk.length > 0
     ) {
       chunks.push(currentChunk.trim());
-      currentChunk = '';
+      currentChunk = paragraph;
+    } else {
+      currentChunk += (currentChunk ? '\n\n' : '') + paragraph;
     }
-
-    currentChunk += sentence + ' ';
   }
 
-  // Add the last chunk if it's not empty
   if (currentChunk.trim().length > 0) {
     chunks.push(currentChunk.trim());
   }
 
   return chunks;
+}
+
+function estimateTokens(text: string): number {
+  if (!text) return 0;
+  return Math.ceil(text.length / 4);
+}
+
+function trimTextToTokenLimit(text: string, maxTokens: number): string {
+  if (estimateTokens(text) <= maxTokens) {
+    return text;
+  }
+
+  const paragraphs = text.split(/\n\s*\n/);
+  let result = '';
+
+  for (const paragraph of paragraphs) {
+    if (estimateTokens(result + '\n\n' + paragraph) <= maxTokens) {
+      result += (result ? '\n\n' : '') + paragraph;
+    } else {
+      break;
+    }
+  }
+
+  return result;
 }
