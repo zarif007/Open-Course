@@ -77,7 +77,7 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
         Accept: 'text/html,application/xhtml+xml,application/xml',
         'Accept-Language': 'en-US,en;q=0.9',
       },
-      timeout: 10000,
+      timeout: 15000,
     });
 
     let transcriptData = null;

@@ -22,6 +22,8 @@ const CourseAskAI = () => {
 
   useEffect(() => {
     const scrapeWebsiteData = async () => {
+      setScrapedContent('');
+      setMessages([]);
       try {
         const lastVersion = currentCourseTopic.versions.at(-1);
         if (lastVersion?.data && 'url' in lastVersion.data) {
@@ -38,11 +40,8 @@ const CourseAskAI = () => {
       }
     };
 
-    if (currentCourseTopic) {
-      scrapeWebsiteData();
-    }
-    setMessages([]);
-  }, [currentCourseTopic._id]);
+    scrapeWebsiteData();
+  }, [currentCourseTopic.id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -106,7 +105,6 @@ const CourseAskAI = () => {
     <div className="flex flex-col h-screen">
       <main className="flex-1 overflow-y-auto p-4">
         <div className="max-w-6xl mx-auto">
-          {scrapedContent}
           {messages.length === 0 ? (
             <div className="text-center h-full flex items-center justify-center">
               <p className="text-gray-500 dark:text-neutral-400">
