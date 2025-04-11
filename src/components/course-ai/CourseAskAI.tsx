@@ -21,30 +21,28 @@ const CourseAskAI = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMessages([]);
-  }, [currentCourseTopic._id]);
-
-  useEffect(() => {
     const scrapeWebsiteData = async () => {
       try {
         const lastVersion = currentCourseTopic.versions.at(-1);
         if (lastVersion?.data && 'url' in lastVersion.data) {
           const url = (lastVersion.data as { url: string }).url;
           const data = await scrapeWebsite(url);
-
-          if (data && typeof data === 'object' && 'textContent' in data) {
-            setScrapedContent(data.textContent as string);
+          if (data && typeof data === 'object' && 'content' in data) {
+            setScrapedContent(data.content as string);
           }
         }
       } catch (error) {
         console.error('Error scraping website:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     if (currentCourseTopic) {
       scrapeWebsiteData();
     }
-  }, [currentCourseTopic]);
+    setMessages([]);
+  }, [currentCourseTopic._id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

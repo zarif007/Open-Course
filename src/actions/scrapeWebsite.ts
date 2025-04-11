@@ -1,173 +1,205 @@
 'use server';
 
-import * as https from 'https';
-import * as http from 'http';
-import { JSDOM } from 'jsdom';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 import { URL } from 'url';
+import { YoutubeTranscript } from 'youtube-transcript';
 
 type ScrapeResult = {
   success: boolean;
-  textContent?: string;
+  content?: string;
   error?: string;
   url: string;
   timestamp: string;
   isYouTube?: boolean;
 };
 
-function fetchUrl(url: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    try {
-      const parsedUrl = new URL(url);
-      const requestModule = parsedUrl.protocol === 'https:' ? https : http;
-
-      const options = {
-        hostname: parsedUrl.hostname,
-        path: parsedUrl.pathname + parsedUrl.search,
-        method: 'GET',
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
-        },
-      };
-
-      const req = requestModule.request(options, (res) => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`Failed to fetch the website: ${res.statusCode}`));
-          return;
-        }
-
-        let data = '';
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          resolve(data);
-        });
-      });
-
-      req.on('error', (e) => {
-        reject(e);
-      });
-
-      req.end();
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
 function isYouTubeUrl(url: string): boolean {
-  const parsedUrl = new URL(url);
-  const hostname = parsedUrl.hostname;
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname;
 
-  return (
-    hostname === 'youtube.com' ||
-    hostname === 'www.youtube.com' ||
-    hostname === 'm.youtube.com' ||
-    hostname === 'youtu.be' ||
-    hostname.endsWith('.youtube.com')
-  );
+    return (
+      hostname === 'youtube.com' ||
+      hostname === 'www.youtube.com' ||
+      hostname === 'm.youtube.com' ||
+      hostname === 'youtu.be' ||
+      hostname.endsWith('.youtube.com')
+    );
+  } catch (e) {
+    return false;
+  }
 }
 
 function extractYouTubeVideoId(url: string): string | null {
-  const parsedUrl = new URL(url);
+  try {
+    const parsedUrl = new URL(url);
 
-  if (parsedUrl.hostname === 'youtu.be') {
-    return parsedUrl.pathname.substring(1);
+    if (parsedUrl.hostname === 'youtu.be') {
+      return parsedUrl.pathname.substring(1);
+    }
+
+    if (parsedUrl.searchParams.has('v')) {
+      return parsedUrl.searchParams.get('v');
+    }
+
+    if (parsedUrl.pathname.startsWith('/embed/')) {
+      return parsedUrl.pathname.split('/')[2];
+    }
+
+    if (parsedUrl.pathname.startsWith('/v/')) {
+      return parsedUrl.pathname.split('/')[2];
+    }
+
+    return null;
+  } catch (e) {
+    return null;
   }
-
-  if (parsedUrl.searchParams.has('v')) {
-    return parsedUrl.searchParams.get('v');
-  }
-
-  if (parsedUrl.pathname.startsWith('/embed/')) {
-    return parsedUrl.pathname.split('/')[2];
-  }
-
-  if (parsedUrl.pathname.startsWith('/v/')) {
-    return parsedUrl.pathname.split('/')[2];
-  }
-
-  return null;
 }
 
-async function fetchYouTubeTranscript(videoId: string): Promise<string> {
-  try {
-    const html = await fetchUrl(`https://www.youtube.com/watch?v=${videoId}`);
-
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-
-    let scriptContent = '';
-    const scripts = document.querySelectorAll('script');
-    for (let i = 0; i < scripts.length; i++) {
-      const script = scripts[i];
-      if (script.textContent?.includes('captionTracks')) {
-        scriptContent = script.textContent;
-        break;
-      }
-    }
-
-    if (scriptContent) {
-      const captionTrackMatch = scriptContent.match(
-        /"captionTracks":\s*(\[.*?\])/
-      );
-      if (captionTrackMatch && captionTrackMatch[1]) {
-        try {
-          const captionTracks = JSON.parse(
-            captionTrackMatch[1].replace(/\\"/g, '"')
-          );
-          if (captionTracks.length > 0 && captionTracks[0].baseUrl) {
-            const captionUrl = captionTracks[0].baseUrl;
-            const captionContent = await fetchUrl(captionUrl);
-
-            const captionDom = new JSDOM(captionContent, {
-              contentType: 'text/xml',
-            });
-            const captionDoc = captionDom.window.document;
-
-            const textElements = captionDoc.querySelectorAll('text');
-            const transcriptLines = Array.from(textElements).map(
-              (el) => el.textContent
-            );
-
-            return transcriptLines.join(' ');
-          }
-        } catch (e) {}
-      }
-    }
-
-    const transcriptPanel = document.querySelector('.ytd-transcript-renderer');
-    if (transcriptPanel) {
-      const transcriptLines = Array.from(
-        transcriptPanel.querySelectorAll('.ytd-transcript-segment-renderer')
-      )
-        .map((el) => el.textContent?.trim())
-        .filter(Boolean);
-
-      if (transcriptLines.length > 0) {
-        return transcriptLines.join(' ');
-      }
-    }
-
-    return 'YouTube transcript could not be extracted automatically. YouTube transcripts are typically loaded dynamically and may require browser interaction to access.';
-  } catch (error) {
-    return (
-      'Error fetching YouTube transcript: ' +
-      (error instanceof Error ? error.message : String(error))
-    );
+async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) {
+    return {
+      success: false,
+      error: 'Could not extract YouTube video ID from URL',
+      url,
+      timestamp: new Date().toISOString(),
+      isYouTube: true,
+    };
   }
+
+  try {
+    const [pageData, transcriptData] = await Promise.all([
+      axios.get(url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+          Accept: 'text/html,application/xhtml+xml,application/xml',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+        timeout: 10000,
+      }),
+      YoutubeTranscript.fetchTranscript(url).catch(() => null),
+    ]);
+
+    const $ = cheerio.load(pageData.data);
+    const title = $('title').text().trim();
+
+    const metadata: string[] = [];
+    $('meta').each((_, el) => {
+      const name = $(el).attr('name') || $(el).attr('property');
+      const content = $(el).attr('content');
+      if (name && content) {
+        metadata.push(`${name}: ${content}`);
+      }
+    });
+
+    let description = '';
+    const descriptionSelectors = [
+      '#description-text',
+      '#description',
+      'meta[name="description"]',
+      'meta[property="og:description"]',
+    ];
+
+    for (const selector of descriptionSelectors) {
+      if (selector.startsWith('meta')) {
+        description = $(selector).attr('content') || '';
+      } else {
+        description = $(selector).text().trim();
+      }
+      if (description) break;
+    }
+
+    let content = `Title: ${title}\n\n`;
+    if (description) content += `Description: ${description}\n\n`;
+    if (metadata.length > 0) content += `Metadata:\n${metadata.join('\n')}\n\n`;
+    content += `YouTube Video ID: ${videoId}\n\n`;
+
+    if (transcriptData) {
+      const transcript = transcriptData.map((item) => item.text).join(' ');
+      content += `Transcript:\n${transcript}`;
+    } else {
+      content += `Transcript: Not available for this video`;
+    }
+
+    return {
+      success: true,
+      content,
+      url,
+      timestamp: new Date().toISOString(),
+      isYouTube: true,
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred';
+    return {
+      success: false,
+      error: `Failed to scrape YouTube video: ${errorMessage}`,
+      url,
+      timestamp: new Date().toISOString(),
+      isYouTube: true,
+    };
+  }
+}
+
+function extractAllContent($: cheerio.CheerioAPI): string {
+  $(
+    'script, style, noscript, iframe, svg, form, header, footer, nav, aside'
+  ).remove();
+
+  const title = $('title').text().trim();
+
+  const metadata: string[] = [];
+  $('meta').each((_, el) => {
+    const name = $(el).attr('name') || $(el).attr('property');
+    const content = $(el).attr('content');
+    if (name && content) {
+      metadata.push(`${name}: ${content}`);
+    }
+  });
+
+  let mainContent = '';
+  const contentContainers = [
+    'article',
+    'main',
+    '.content',
+    '.article',
+    '.post',
+    '.entry',
+    '#content',
+    '#article',
+    '#main-content',
+    '#post',
+  ];
+
+  for (const selector of contentContainers) {
+    const container = $(selector).first();
+    if (container.length > 0) {
+      mainContent = container.text().trim();
+      break;
+    }
+  }
+
+  if (!mainContent) {
+    mainContent = $('body').text().trim();
+  }
+
+  mainContent = mainContent.replace(/\s+/g, ' ').replace(/\n+/g, '\n').trim();
+
+  let content = '';
+  if (title) content += `Title: ${title}\n\n`;
+  if (metadata.length > 0) content += `Metadata:\n${metadata.join('\n')}\n\n`;
+  if (mainContent) content += `Content:\n${mainContent}`;
+
+  return content;
 }
 
 export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
   try {
-    let validUrl: URL;
     try {
-      validUrl = new URL(url);
-      if (!['http:', 'https:'].includes(validUrl.protocol)) {
-        throw new Error('URL must use HTTP or HTTPS protocol');
-      }
+      new URL(url);
     } catch (e) {
       return {
         success: false,
@@ -178,62 +210,77 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
     }
 
     if (isYouTubeUrl(url)) {
-      const videoId = extractYouTubeVideoId(url);
+      return await scrapeYouTubeInfo(url);
+    }
 
-      if (!videoId) {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+          Accept: 'text/html,application/xhtml+xml,application/xml',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+        timeout: 15000,
+        maxContentLength: 10 * 1024 * 1024,
+      });
+
+      const contentType = response.headers['content-type'] || '';
+      if (!contentType.includes('text/html')) {
         return {
           success: false,
-          error: 'Could not extract YouTube video ID from URL',
+          error: `Received non-HTML content: ${contentType}`,
           url,
           timestamp: new Date().toISOString(),
-          isYouTube: true,
         };
       }
 
-      const transcript = await fetchYouTubeTranscript(videoId);
+      const html = response.data;
+      const $ = cheerio.load(html);
+
+      const content = extractAllContent($);
+
+      if (!content) {
+        return {
+          success: false,
+          error: 'Could not extract meaningful content from the website',
+          url,
+          timestamp: new Date().toISOString(),
+        };
+      }
 
       return {
         success: true,
-        textContent: transcript,
+        content,
         url,
         timestamp: new Date().toISOString(),
-        isYouTube: true,
       };
+    } catch (axiosError) {
+      if (axios.isAxiosError(axiosError)) {
+        if (axiosError.code === 'ECONNABORTED') {
+          return {
+            success: false,
+            error: 'Request timed out',
+            url,
+            timestamp: new Date().toISOString(),
+          };
+        }
+        if (axiosError.response) {
+          return {
+            success: false,
+            error: `Server responded with status code ${axiosError.response.status}`,
+            url,
+            timestamp: new Date().toISOString(),
+          };
+        }
+      }
+      throw axiosError;
     }
-
-    const html = await fetchUrl(url);
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-
-    document
-      .querySelectorAll(
-        'script, style, nav, footer, header, noscript, iframe, svg, form, button'
-      )
-      .forEach((el) => el.remove());
-
-    const textBlocks = Array.from(
-      document.body.querySelectorAll(
-        'p, h1, h2, h3, li, article, section, div, span'
-      )
-    )
-      .map((el) => el.textContent?.trim())
-      .filter((text) => text && text.length > 30);
-
-    const joined = textBlocks.join('\n\n').replace(/\s+/g, ' ').trim();
-
-    return {
-      success: true,
-      textContent: joined || 'No meaningful content found.',
-      url,
-      timestamp: new Date().toISOString(),
-    };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'An unknown error occurred';
-
     return {
       success: false,
-      error: errorMessage,
+      error:
+        error instanceof Error ? error.message : 'An unknown error occurred',
       url,
       timestamp: new Date().toISOString(),
     };
