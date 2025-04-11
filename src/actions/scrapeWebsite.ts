@@ -70,18 +70,28 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
   }
 
   try {
-    const [pageData, transcriptData] = await Promise.all([
-      axios.get(url, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
-          Accept: 'text/html,application/xhtml+xml,application/xml',
-          'Accept-Language': 'en-US,en;q=0.9',
-        },
-        timeout: 10000,
-      }),
-      YoutubeTranscript.fetchTranscript(url).catch(() => null),
-    ]);
+    const pageData = await axios.get(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+      timeout: 10000,
+    });
+
+    let transcriptData = null;
+    try {
+      transcriptData = await YoutubeTranscript.fetchTranscript(videoId);
+    } catch (transcriptError) {
+      console.log(
+        `Transcript fetch failed: ${
+          transcriptError instanceof Error
+            ? transcriptError.message
+            : 'Unknown error'
+        }`
+      );
+    }
 
     const $ = cheerio.load(pageData.data);
     const title = $('title').text().trim();
@@ -117,7 +127,11 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
     if (metadata.length > 0) content += `Metadata:\n${metadata.join('\n')}\n\n`;
     content += `YouTube Video ID: ${videoId}\n\n`;
 
-    if (transcriptData) {
+    if (
+      transcriptData &&
+      Array.isArray(transcriptData) &&
+      transcriptData.length > 0
+    ) {
       const transcript = transcriptData.map((item) => item.text).join(' ');
       content += `Transcript:\n${transcript}`;
     } else {
@@ -134,6 +148,8 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unknown error occurred';
+    console.error(`YouTube scraping error: ${errorMessage}`);
+
     return {
       success: false,
       error: `Failed to scrape YouTube video: ${errorMessage}`,
