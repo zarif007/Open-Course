@@ -83,7 +83,6 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
   };
 
   const addCodeLanguageClasses = (html: string) => {
-    // Find code blocks with language hints (```javascript, ```python, etc.)
     const regex =
       /<pre><code class="[^"]*">(?:\s*)([\s\S]*?)(?:\s*)<\/code><\/pre>/g;
     const codeLanguages = {
@@ -105,18 +104,14 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
       markdown: 'language-markdown',
     };
 
-    // Check for language hints at the beginning of code blocks
     return html.replace(regex, (match, codeContent) => {
-      // Extract first line to check for language indicator
       const firstLine = codeContent.trim().split('\n')[0];
       let language = 'language-none';
 
-      // Check if the first line is a language indicator
       if (firstLine.match(/^[a-zA-Z0-9+#]+$/)) {
         const langKey = firstLine.toLowerCase();
         if (codeLanguages[langKey as keyof typeof codeLanguages]) {
           language = codeLanguages[langKey as keyof typeof codeLanguages];
-          // Remove the language indicator line
           codeContent = codeContent.replace(firstLine + '\n', '');
         }
       }
@@ -126,7 +121,6 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
   };
 
   const formatContent = (rawContent: string) => {
-    // Basic HTML formatting
     let formatted = rawContent
       .replace(/<h1>/g, '<h1 class="text-3xl font-bold my-6">')
       .replace(/<h2>/g, '<h2 class="text-2xl font-bold my-5">')
@@ -179,13 +173,11 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
 
   useEffect(() => {
     if (contentRef.current) {
-      // Apply syntax highlighting to code blocks
       const codeBlocks = contentRef.current.querySelectorAll('pre code');
       codeBlocks.forEach((block) => {
         Prism.highlightElement(block);
       });
 
-      // Make external links open in new tab
       const links = contentRef.current.querySelectorAll('a');
       links.forEach((link) => {
         if (link.hostname !== window.location.hostname) {
@@ -194,7 +186,6 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
         }
       });
 
-      // Add click event for code block copy buttons
       const copyButtons = contentRef.current.querySelectorAll('pre button');
       copyButtons.forEach((button) => {
         button.addEventListener('click', (e) => {
@@ -204,7 +195,6 @@ const DocDisplay = ({ content }: { content: IDocContent }) => {
           if (codeBlock) {
             navigator.clipboard.writeText(codeBlock.textContent || '');
 
-            // Show "Copied!" feedback
             const originalText = (e.currentTarget as HTMLElement).textContent;
             (e.currentTarget as HTMLElement).textContent = 'Copied!';
             setTimeout(() => {
