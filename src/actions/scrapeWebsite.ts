@@ -65,82 +65,45 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
   }
 
   try {
-    // Fetch page data with a shorter timeout for Vercel
-    const pageData = await axios.get(url, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
-        Accept: 'text/html,application/xhtml+xml,application/xml',
-        'Accept-Language': 'en-US,en;q=0.9',
+    const options = {
+      method: 'GET',
+      url: `https://youtube-captions-transcript-subtitles-video-combiner.p.rapidapi.com/download-all/${videoId}`,
+      params: {
+        format_subtitle: 'srt',
+        format_answer: 'json',
       },
-      timeout: 8000, // Adjusted for Vercel Server Action limits
-    });
+      headers: {
+        'x-rapidapi-key': process.env.RAPID_API_KEY,
+        'x-rapidapi-host':
+          'youtube-captions-transcript-subtitles-video-combiner.p.rapidapi.com',
+      },
+    };
 
-    // Attempt transcript fetch with robust error handling
-    let transcriptData = null;
-    try {
-      transcriptData = await YoutubeTranscript.fetchTranscript(videoId, {
-        lang: 'en', // Specify English to avoid mismatches
-      });
-      console.log('Transcript fetch successful:', !!transcriptData); // Debug log
-    } catch (transcriptError) {
-      console.warn(
-        'Transcript fetch failed:',
-        transcriptError instanceof Error
-          ? transcriptError.message
-          : 'Unknown error'
-      );
+    const response = await axios.request(options);
+
+    const subtitleSrt = response.data[0]?.subtitle;
+
+    if (!subtitleSrt) {
+      return {
+        success: false,
+        error: 'No subtitle data found in API response',
+        url,
+        timestamp: new Date().toISOString(),
+        isYouTube: true,
+      };
     }
 
-    const $ = cheerio.load(pageData.data);
-    const title = $('title').text().trim();
+    const blocks = subtitleSrt.split('\n\n');
 
-    // Extract metadata
-    const metadata: string[] = [];
-    $('meta').each((_, el) => {
-      const name = $(el).attr('name') || $(el).attr('property');
-      const content = $(el).attr('content');
-      if (name && content) {
-        metadata.push(`${name}: ${content}`);
-      }
-    });
+    const transcript = blocks
+      .map((block: string) => {
+        const lines = block.split('\n');
+        return lines.slice(2).join(' ');
+      })
+      .filter((line: string) => line.trim() !== '')
+      .join(' ');
 
-    // Extract description
-    let description = '';
-    const descriptionSelectors = [
-      '#description-text',
-      '#description',
-      'meta[name="description"]',
-      'meta[property="og:description"]',
-    ];
-
-    for (const selector of descriptionSelectors) {
-      if (selector.startsWith('meta')) {
-        description = $(selector).attr('content') || '';
-      } else {
-        description = $(selector).text().trim();
-      }
-      if (description) break;
-    }
-
-    // Build content
-    let content = `Title: ${title}\n\n`;
-    if (description) content += `Description: ${description}\n\n`;
-    if (metadata.length > 0) content += `Metadata:\n${metadata.join('\n')}\n\n`;
-    content += `YouTube Video ID: ${videoId}\n\n`;
-
-    // Handle transcript
-    if (
-      transcriptData &&
-      Array.isArray(transcriptData) &&
-      transcriptData.length > 0
-    ) {
-      const transcript = transcriptData.map((item) => item.text).join(' ');
-      content += `Transcript:\n${transcript}`;
-    } else {
-      content += `Transcript: Not available or failed to fetch`;
-      console.log('Transcript unavailable for video:', videoId); // Debug log
-    }
+    const content = `YouTube Video ID: ${videoId}\n\nTranscript:\n${transcript}`;
 
     return {
       success: true,
@@ -152,11 +115,11 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unknown error occurred';
-    console.error('YouTube scraping error:', errorMessage);
+    console.error('YouTube API error:', errorMessage);
 
     return {
       success: false,
-      error: `Failed to scrape YouTube video: ${errorMessage}`,
+      error: `Failed to fetch transcript from API: ${errorMessage}`,
       url,
       timestamp: new Date().toISOString(),
       isYouTube: true,
