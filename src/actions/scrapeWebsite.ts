@@ -129,14 +129,12 @@ async function scrapeYouTubeInfo(url: string): Promise<ScrapeResult> {
 
 export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
   try {
-    // Validate URL
     new URL(url);
 
     if (isYouTubeUrl(url)) {
       return await scrapeYouTubeInfo(url);
     }
 
-    // Non-YouTube scraping logic (unchanged for brevity)
     const response = await axios.get(url, {
       headers: {
         'User-Agent':
@@ -144,7 +142,7 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
         Accept: 'text/html,application/xhtml+xml,application/xml',
         'Accept-Language': 'en-US,en;q=0.9',
       },
-      timeout: 8000,
+      timeout: 10000,
       maxContentLength: 10 * 1024 * 1024,
     });
 
@@ -161,15 +159,182 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
     const html = response.data;
     const $ = cheerio.load(html);
 
-    // Extract content (simplified for brevity)
+    $('script, style, noscript, iframe, svg').remove();
+
     const title = $('title').text().trim();
-    const content = title ? `Title: ${title}` : 'No content extracted';
+    const metaDescription = $('meta[name="description"]')
+      .attr('content')
+      ?.trim();
+
+    const allTextContent: { selector: string; text: string }[] = [];
+
+    const getElementText = (element: any): string => {
+      if (element.type === 'text') {
+        return $(element).text().trim();
+      }
+
+      const childrenText = $(element)
+        .contents()
+        .map((_, child) => getElementText(child))
+        .get()
+        .filter((text) => text.trim() !== '')
+        .join(' ');
+
+      return childrenText;
+    };
+
+    $('body *').each((_, element) => {
+      if (
+        [
+          'script',
+          'style',
+          'meta',
+          'link',
+          'noscript',
+          'iframe',
+          'svg',
+        ].includes(element.tagName)
+      ) {
+        return;
+      }
+
+      const $element = $(element);
+      const directText = $element
+        .clone()
+        .children()
+        .remove()
+        .end()
+        .text()
+        .trim();
+
+      if (directText) {
+        allTextContent.push({
+          selector: element.tagName,
+          text: directText,
+        });
+      }
+    });
+
+    // Extract structured data
+    const headings: { level: string; text: string }[] = [];
+    $('h1, h2, h3, h4, h5, h6').each((_, elem) => {
+      const text = $(elem).text().trim();
+      if (text) {
+        headings.push({
+          level: elem.tagName.toLowerCase(),
+          text,
+        });
+      }
+    });
+
+    // Extract paragraphs
+    const paragraphs: string[] = [];
+    $('p').each((_, elem) => {
+      const text = $(elem).text().trim();
+      if (text) paragraphs.push(text);
+    });
+
+    // Extract images
+    const images: { src: string; alt?: string }[] = [];
+    $('img').each((_, elem) => {
+      const src = $(elem).attr('src');
+      const alt = $(elem).attr('alt');
+      if (src) {
+        images.push({ src, alt: alt?.trim() });
+      }
+    });
+
+    // Extract links
+    const links: { href: string; text: string }[] = [];
+    $('a').each((_, elem) => {
+      const href = $(elem).attr('href');
+      const text = $(elem).text().trim();
+      if (href && text) {
+        links.push({ href, text });
+      }
+    });
+
+    // Extract meta tags
+    const metaTags: { name: string; content: string }[] = [];
+    $('meta').each((_, elem) => {
+      const name = $(elem).attr('name') || $(elem).attr('property');
+      const content = $(elem).attr('content');
+      if (name && content) {
+        metaTags.push({ name: name.trim(), content: content.trim() });
+      }
+    });
+
+    // Get full text content (remove extra whitespace and normalize)
+    const fullText = $('body').text().replace(/\s+/g, ' ').trim();
+
+    // Build the response
+    let content = '';
+
+    if (title) {
+      content += `Title: ${title}\n\n`;
+    }
+
+    if (metaDescription) {
+      content += `Meta Description: ${metaDescription}\n\n`;
+    }
+
+    content += `Full Text Content:\n${fullText}\n\n`;
+
+    if (headings.length) {
+      content += 'Headings:\n';
+      headings.forEach((h) => {
+        content += `  ${h.level.toUpperCase()}: ${h.text}\n`;
+      });
+      content += '\n';
+    }
+
+    if (paragraphs.length) {
+      content += 'Paragraphs:\n';
+      paragraphs.forEach((p, i) => {
+        content += `  ${i + 1}. ${p}\n`;
+      });
+      content += '\n';
+    }
+
+    if (links.length) {
+      content += 'Links:\n';
+      links.forEach((link, i) => {
+        content += `  ${i + 1}. [${link.text}] -> ${link.href}\n`;
+      });
+      content += '\n';
+    }
+
+    if (images.length) {
+      content += 'Images:\n';
+      images.forEach((img, i) => {
+        content += `  ${i + 1}. Src: ${img.src}${
+          img.alt ? `, Alt: ${img.alt}` : ''
+        }\n`;
+      });
+      content += '\n';
+    }
+
+    if (metaTags.length) {
+      content += 'Meta Tags:\n';
+      metaTags.forEach((meta, i) => {
+        content += `  ${i + 1}. Name: ${meta.name}, Content: ${meta.content}\n`;
+      });
+      content += '\n';
+    }
+
+    if (allTextContent.length) {
+      content += 'Detailed Text Elements:\n';
+      allTextContent.forEach((item, i) => {
+        content += `  Element [${item.selector}]: ${item.text}\n`;
+      });
+      content += '\n';
+    }
 
     return {
       success: true,
-      content,
       url,
       timestamp: new Date().toISOString(),
+      content: content.trim() || 'No content extracted',
     };
   } catch (error) {
     const errorMessage =
