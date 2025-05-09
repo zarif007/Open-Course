@@ -12,7 +12,6 @@ import {
   PiShootingStarDuotone,
 } from 'react-icons/pi';
 import ContentLogos from '../course-content/ContentLogos';
-import calculateAvgRating from '@/utils/calculateAvgRating';
 import { IUser } from '@/types/user';
 import BlurredImage from '../ui/BlurredImage';
 import formatDate from '@/utils/formatDate';
@@ -38,7 +37,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             src={course.banner === '' ? generatedBanner : course.banner}
             alt="blog"
             dimension="h-48 w-full"
-            className="h-48 w-full rounded object-cover object-center border border-rose-500"
+            className="h-48 w-full rounded object-cover object-center border-y-2"
           />
         </Link>
 
@@ -75,7 +74,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           <Link href={`/course-landing/${course.slug}`}>
             <Paragraph
               size="default"
-              className="font-bold underline decoration-rose-500 decoration-2 truncate"
+              className="font-bold decoration-2 truncate"
             >
               {course.title}
             </Paragraph>

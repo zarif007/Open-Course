@@ -65,9 +65,7 @@ const NavBar = () => {
         </div>
       ) : (
         // <FloatingNavbar />
-        <div className="mx-auto p-4 backdrop-blur-sm bg-slate-100/75 dark:bg-[#0a0a0a]/75 fixed w-full z-50 top-0 left-0 overflow-x-hidden">
-          <GeneralNavbar />
-        </div>
+        <GeneralNavbar />
       )}
     </nav>
   );

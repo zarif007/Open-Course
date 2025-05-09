@@ -1,31 +1,31 @@
-import { ImageResponse } from "@vercel/og";
-import { NextApiHandler, NextApiRequest } from "next";
+import { ImageResponse } from '@vercel/og';
+import { NextApiHandler, NextApiRequest } from 'next';
 
 export const config = {
-  runtime: "edge",
+  runtime: 'edge',
 };
 
 export const revalidate = 3600;
 
 const handler: NextApiHandler = async (req: NextApiRequest) => {
   const BebasNeueRegular = await fetch(
-    new URL("../../../public/BebasNeue-Regular.ttf", import.meta.url)
+    new URL('../../../public/BebasNeue-Regular.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer());
 
-  const { searchParams } = new URL(req.url || "");
-  const courseTitle = searchParams.get("courseTitle");
-  const slug = searchParams.get("slug");
+  const { searchParams } = new URL(req.url || '');
+  const courseTitle = searchParams.get('courseTitle');
+  const slug = searchParams.get('slug');
 
-  const creator = searchParams.get("creator");
-  const topics = searchParams.get("topics");
-  const imgUrl = searchParams.get("imgUrl");
+  const creator = searchParams.get('creator');
+  const topics = searchParams.get('topics');
+  const imgUrl = searchParams.get('imgUrl');
 
   try {
     const constructImage = new ImageResponse(
       (
         <div
           tw={`h-full w-full flex items-start justify-start
-          border-8 border-rose-500 rounded bg-[#030712]`}
+         rounded bg-[#030712]`}
         >
           <div tw="flex items-start justify-start h-full">
             <div tw="flex flex-col justify-center items-center px-20 w-full h-full text-center">
@@ -57,9 +57,9 @@ const handler: NextApiHandler = async (req: NextApiRequest) => {
         height: 800,
         fonts: [
           {
-            name: "Inter",
+            name: 'Inter',
             data: BebasNeueRegular,
-            style: "normal",
+            style: 'normal',
             weight: 700,
           },
         ],

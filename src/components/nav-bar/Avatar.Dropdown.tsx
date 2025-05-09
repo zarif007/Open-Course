@@ -31,7 +31,7 @@ const AvatarDropdown = () => {
         <MenubarTrigger className="!bg-transparent">
           {signedInUser && (
             <div className="flex items-center justify-center space-x-2 mx-1 cursor-pointer">
-              <div className="h-12 w-12 rounded-full border-2 p-[2px] border-rose-500">
+              <div className="h-10 w-10 rounded-full border-2 p-[2px]">
                 <img
                   className="rounded-full"
                   src={signedInUser.image}

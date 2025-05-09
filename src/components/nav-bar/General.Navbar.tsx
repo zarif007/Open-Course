@@ -1,120 +1,227 @@
+'use client';
+
 import React from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { PiSunDuotone } from 'react-icons/pi';
-import { PiMoonStarsDuotone } from 'react-icons/pi';
+import {
+  PiSunDuotone,
+  PiMoonStarsDuotone,
+  PiHouseDuotone,
+  PiListPlusDuotone,
+  PiStackDuotone,
+  PiComputerTower,
+  PiList,
+  PiRobotDuotone,
+} from 'react-icons/pi';
 import Link from 'next/link';
 import AvatarDropdown from './Avatar.Dropdown';
 import { buttonVariants } from '../ui/Button';
-import Paragraph from '../ui/Paragraph';
 import routeElements from '@/constants/navBar';
 import ElementsDropdown from './Elements.Dropdown';
 import { useSession } from 'next-auth/react';
 import { Skeleton } from '../ui/Skeleton';
-import {
-  PiHouseDuotone,
-  PiListPlusDuotone,
-  PiStackDuotone,
-} from 'react-icons/pi';
 import { usePathname } from 'next/navigation';
-import { MdOutlineNotificationsNone } from 'react-icons/md';
-import NotificationDropdown from './Notification.Dropdown';
+import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 
 const routeIcons = {
-  Home: <PiHouseDuotone className="w-6 h-6" />,
-  Create: <PiListPlusDuotone className="w-6 h-6" />,
-  Courses: <PiStackDuotone className="w-6 h-6" />,
+  Home: <PiHouseDuotone className="w-4 h-4" />,
+  Create: <PiListPlusDuotone className="w-4 h-4" />,
+  Courses: <PiStackDuotone className="w-4 h-4" />,
 };
 
 const GeneralNavbar = () => {
-  const styles = {
-    icon: `h-8 w-8 cursor-pointer`,
-    menuBarItems:
-      'cursor-pointer hover:bg-slate-200 hover:dark:bg-gray-800 font-semibold',
-  };
-
+  const [scrolled, setScrolled] = React.useState(false);
   const session = useSession();
-
   const { theme, setTheme } = useTheme();
-
   const pathname = usePathname();
 
-  return (
-    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-      {theme ? (
-        <Link href="/" className="flex items-center space-x-1">
-          <Image
-            src={theme === 'dark' ? '/dark1.png' : '/light1.png'}
-            priority
-            quality={100}
-            height="100"
-            width="100"
-            alt="logo"
-            className="h-16 w-16"
-          />
-        </Link>
-      ) : (
-        <div className="h-16 w-16"></div>
-      )}
+  React.useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-      <div className="flex md:order-2 items-center justify-center space-x-2">
-        {/* Theme */}
-        <div
-          onClick={() =>
-            theme === 'dark' ? setTheme('light') : setTheme('dark')
-          }
-        >
-          {theme === 'dark' ? (
-            <PiSunDuotone className={styles.icon} />
-          ) : (
-            theme && <PiMoonStarsDuotone className={styles.icon} />
-          )}
+  return (
+    <header
+      className={cn(
+        'fixed top-0 inset-x-0 z-50 w-full transition-all duration-200'
+      )}
+    >
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                <PiList className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              {routeElements
+                .filter((route) => route.name !== 'Create')
+                .map((route) => (
+                  <DropdownMenuItem key={route.name}>
+                    <Link
+                      href={route.redirectTo}
+                      className="flex items-center gap-1 w-full"
+                    >
+                      {routeIcons[route.name as 'Home' | 'Create' | 'Courses']}
+                      {route.name}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setTheme('light')}>
+                <PiSunDuotone className="mr-2 h-4 w-4" />
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('dark')}>
+                <PiMoonStarsDuotone className="mr-2 h-4 w-4" />
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('system')}>
+                <PiComputerTower className="mr-2 h-4 w-4" />
+                System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        {session.status !== 'loading' ? (
-          session.data?.user ? (
-            <div className="flex space-x-2 items-center justify-center">
-              {/* <NotificationDropdown /> */}
-              <AvatarDropdown />
-            </div>
-          ) : (
-            <Link
-              href={`/login?callbackUrl=${pathname}`}
-              className={`${buttonVariants({
-                variant: 'default',
-              })}`}
-            >
-              Sign In
+        <div
+          className={cn(
+            'hidden md:flex items-center gap-2 border px-4 py-1 rounded-md',
+            scrolled
+              ? 'border-b border-gray-200 bg-background/80 backdrop-blur dark:border-gray-800'
+              : 'bg-background'
+          )}
+        >
+          {theme ? (
+            <Link href="/" className="flex items-center">
+              <Image
+                src={theme === 'light' ? '/light1.png' : '/dark1.png'}
+                priority
+                quality={100}
+                height="40"
+                width="40"
+                alt="logo"
+                className="h-10 w-10"
+              />
             </Link>
-          )
-        ) : (
-          <Skeleton className="rounded-full h-12 w-12" />
-        )}
+          ) : (
+            <div className="h-10 w-10"></div>
+          )}
 
-        {/* Elements in Mobile view */}
-        <ElementsDropdown />
-      </div>
+          <div className="flex items-center gap-4 ml-4">
+            {routeElements.map((route) => {
+              if (route.name === 'Create') return null;
+              return (
+                <Link
+                  key={route.name}
+                  href={route.redirectTo}
+                  className="flex items-center gap-1 text-sm font-medium hover:underline"
+                >
+                  {routeIcons[route.name as 'Home' | 'Create' | 'Courses']}
+                  {route.name}
+                </Link>
+              );
+            })}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                  {theme === 'dark' ? (
+                    <PiSunDuotone className="h-5 w-5" />
+                  ) : (
+                    theme && <PiMoonStarsDuotone className="h-5 w-5" />
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme('light')}>
+                  <PiSunDuotone className="mr-2 h-4 w-4" />
+                  Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('dark')}>
+                  <PiMoonStarsDuotone className="mr-2 h-4 w-4" />
+                  Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('system')}>
+                  <PiComputerTower className="mr-2 h-4 w-4" />
+                  System
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
 
-      {/* Elements */}
-      <div
-        className="mt-2 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-        id="navbar-cta"
-      >
-        <ul className="flex flex-col font-lg font-bold p-4 md:p-0 mt-4  md:flex-row md:space-x-8 md:mt-0">
-          {routeElements.map((route) => (
-            <li key={route.name}>
+        {/* Theme and User */}
+        <div
+          className={cn(
+            'flex items-center md:gap-2 border px-2 py-1 rounded-md',
+            scrolled
+              ? 'border-b border-gray-200 bg-background/80 backdrop-blur dark:border-gray-800'
+              : 'bg-background'
+          )}
+        >
+          {/* Replace Create button with dropdown */}
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 text-sm font-medium hover:underline p-2">
+                  {routeIcons.Create}
+                  Create
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Link
+                    href="/course-creation"
+                    className="flex items-center gap-1 w-full"
+                  >
+                    <PiStackDuotone className="w-4 h-4" />
+                    Course
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="/ai/course-creation"
+                    className="flex items-center gap-1 w-full"
+                  >
+                    <PiRobotDuotone className="w-4 h-4" />
+                    AI Gen Course
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {session.status !== 'loading' ? (
+            session.data?.user ? (
+              <div className="flex items-center">
+                <AvatarDropdown />
+              </div>
+            ) : (
               <Link
-                href={route.redirectTo}
-                className="flex justify-center items-center space-x-1 block py-2 pl-3 pr-4 rounded text-gray-900 dark:text-slate-100 md:hover:text-rose-500 px-4 py-2 md:dark:hover:text-rose-500 dark:hover:bg-gray-900 hover:bg-slate-300"
+                href={`/login?callbackUrl=${pathname}`}
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'px-3 py-1 text-sm'
+                )}
               >
-                {routeIcons[route.name as 'Home' | 'Create' | 'Courses']}
-                <p>{route.name}</p>
+                Sign In
               </Link>
-            </li>
-          ))}
-        </ul>
+            )
+          ) : (
+            <Skeleton className="rounded-full h-8 w-8" />
+          )}
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
