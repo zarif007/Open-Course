@@ -140,7 +140,7 @@ const Page = () => {
                   <span className="font-bold text-[black] dark:text-[white]">
                     Free
                   </span>{' '}
-                  Internet's content and the power of{' '}
+                  Internet&#39;s content and the power of{' '}
                   <span className="font-bold text-[black] dark:text-[white]">
                     AI
                   </span>
