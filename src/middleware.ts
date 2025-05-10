@@ -11,7 +11,7 @@ export const middleware = async (request: NextRequest) => {
     '/dashboard',
     '/course',
     '/course-completion',
-    '/ai/course-completion',
+    '/ai/course-creation',
   ];
 
   const token = await getToken({ req: request });
@@ -49,5 +49,6 @@ export const config = {
     '/course-creation',
     '/dashboard',
     '/api/:path*',
+    '/ai/course-creation',
   ],
 };
