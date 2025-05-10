@@ -30,8 +30,6 @@ const generateTopics = async (prompt: string) => {
   return object;
 };
 
-export const runtime = 'nodejs';
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -48,7 +46,7 @@ export async function POST(req: NextRequest) {
         const result = await scrapeFirstSearchResult(topic.title, topic.from);
         if (result?.url) {
           return {
-            id: index,
+            id: index + 1,
             title: topic.title,
             timeToComplete: 0,
             url: result.url,

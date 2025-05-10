@@ -5,7 +5,15 @@ export async function scrapeFirstSearchResult(
   from: string = ''
 ): Promise<{ url: string } | null> {
   try {
-    const encodedSearch = encodeURIComponent(search);
+    let query = search;
+
+    if (from === 'Youtube Video') {
+      query += ' youtube';
+    } else if (from === 'Blog') {
+      query += ' blog OR article OR pdf';
+    }
+
+    const encodedSearch = encodeURIComponent(query);
 
     const searchUrl = `https://www.bing.com/search?q=${encodedSearch}`;
 
