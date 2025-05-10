@@ -1,30 +1,19 @@
-'use server';
-
 import { JSDOM } from 'jsdom';
 
-/**
- * Server action that takes a search query and returns the URL of the first search result
- * @param search The search query
- * @returns The URL of the first search result or null if not found
- */
 export async function scrapeFirstSearchResult(
-  search: string
+  search: string,
+  from: string = ''
 ): Promise<{ url: string } | null> {
   try {
-    // URL encode the search query
     const encodedSearch = encodeURIComponent(search);
 
-    // Choose a search engine that is more likely to work with scraping
-    // Using Mojeek, which tends to be more bot-friendly
     const searchUrl = `https://www.bing.com/search?q=${encodedSearch}`;
 
-    // Fetch the search results page with a randomized delay to mimic human behavior
     const randomDelay = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
     await new Promise((resolve) => setTimeout(resolve, randomDelay));
 
     const response = await fetch(searchUrl, {
       headers: {
-        // Set a user agent that looks like a normal browser
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
         Accept:
@@ -32,7 +21,7 @@ export async function scrapeFirstSearchResult(
         'Accept-Language': 'en-US,en;q=0.5',
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        DNT: '1', // Do Not Track
+        DNT: '1',
         'Upgrade-Insecure-Requests': '1',
       },
     });

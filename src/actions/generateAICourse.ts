@@ -3,9 +3,8 @@
 import { z } from 'zod';
 import { generateObject } from 'ai';
 import { groq } from '@ai-sdk/groq';
-import { systemPrompt } from '@/constants/systemPrompts/aiCourseCreation';
 import { topicGenerationSystemPrompt } from '@/constants/systemPrompts/courseTopicGeneration';
-import { scrapeFirstSearchResult } from './scrapeSearch';
+import { scrapeFirstSearchResult } from '../utils/scrapeSearch';
 
 interface Topic {
   id: number; // A unique identifier for the topic
@@ -52,9 +51,10 @@ const generateAICourse = async (prompt: string) => {
   const topics = res[0];
   console.log(topics);
   const urls: Topic[] = [];
+
   await Promise.all(
     topics.map(async (topic, index) => {
-      const searchResult = await scrapeFirstSearchResult(topic);
+      const searchResult = await scrapeFirstSearchResult(topic, '');
       if (searchResult?.url) {
         urls.push({
           id: index,

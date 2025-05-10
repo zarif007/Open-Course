@@ -36,10 +36,20 @@ const Page = () => {
     setCourse(null);
 
     try {
-      const course: IAICourse = await generateAICourse(prompt);
+      const response = await fetch('/api/ai/generate-course', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate course');
+      }
+
+      const course: IAICourse = await response.json();
       setCourse(course);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: 'Something went wrong',
         type: 'error',
@@ -67,9 +77,6 @@ const Page = () => {
               <h2 className="pt-8 pb-2 text-5xl text-center font-bold">
                 {course.name}
               </h2>
-              <h4 className="pb-8 text-lg text-center font-semibold text-slate-500">
-                {course.totalTimeTaken} {course.totalTimeTaken && 'minutes'}
-              </h4>
               <div className="flex justify-end my-2">
                 <Button variant="general">Convert to a Course</Button>
               </div>
@@ -106,7 +113,7 @@ const Page = () => {
                               <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
                                 Time to complete: {topic.timeToComplete} minutes
                               </p>
-                              <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words">
+                              <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words break-all">
                                 {topic.url}
                               </p>
                             </div>
