@@ -11,6 +11,7 @@ export const middleware = async (request: NextRequest) => {
     '/dashboard',
     '/course',
     '/course-completion',
+    '/ai/course-completion',
   ];
 
   const token = await getToken({ req: request });

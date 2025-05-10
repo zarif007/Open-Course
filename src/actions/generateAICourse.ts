@@ -8,12 +8,15 @@ import { topicGenerationSystemPrompt } from '@/constants/systemPrompts/courseTop
 const AICourseSchema = z.object({
   name: z.string(),
   totalTimeTaken: z.number(),
-  topics: z.array(
-    z.object({
-      title: z.string(),
-      from: z.string(),
-    })
-  ),
+  topics: z
+    .array(
+      z.object({
+        title: z.string(),
+        from: z.string(),
+      })
+    )
+    .min(12)
+    .max(20),
 });
 
 const model = groq('llama-3.3-70b-versatile');
