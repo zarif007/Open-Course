@@ -1,3 +1,5 @@
+'use server';
+
 import { JSDOM } from 'jsdom';
 
 export async function scrapeFirstSearchResult(
@@ -7,9 +9,9 @@ export async function scrapeFirstSearchResult(
   try {
     let query = search;
 
-    if (from === 'Youtube Video') {
-      query += ' youtube';
-    } else if (from === 'Blog') {
+    if (from === 'YouTube Video') {
+      query += ' site:youtube.com';
+    } else {
       query += ' blog OR article OR pdf';
     }
 
@@ -17,7 +19,7 @@ export async function scrapeFirstSearchResult(
 
     const searchUrl = `https://www.bing.com/search?q=${encodedSearch}`;
 
-    const randomDelay = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
+    const randomDelay = Math.floor(Math.random() * 2000) + 1000;
     await new Promise((resolve) => setTimeout(resolve, randomDelay));
 
     const response = await fetch(searchUrl, {
@@ -43,20 +45,13 @@ export async function scrapeFirstSearchResult(
 
     const html = await response.text();
 
-    // Parse the HTML
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    // Extract the first result URL
-    // Try multiple selector patterns to handle different search engines
-
-    // Common result selectors to try
     const selectors = [
-      // Mojeek specific selectors
       '.results-standard .result h2 a',
       '.results .result-title a',
 
-      // Generic result selectors that might work with various engines
       '.results a',
       '.search-results a',
       '.serp a',
@@ -70,7 +65,6 @@ export async function scrapeFirstSearchResult(
       'h2 a',
     ];
 
-    // Try each selector until we find a valid result
     for (const selector of selectors) {
       const elements = document.querySelectorAll(selector);
 
@@ -79,7 +73,6 @@ export async function scrapeFirstSearchResult(
         if (anchorElement.href) {
           const href = anchorElement.href;
 
-          // Skip search engine's own links, pagination, etc.
           if (
             href.startsWith('http') &&
             !href.includes('mojeek.com') &&
@@ -95,8 +88,6 @@ export async function scrapeFirstSearchResult(
       }
     }
 
-    // If the above selectors don't work, try a more generic approach
-    // Find all links and filter out ones that are likely to be navigation/internal links
     const allLinks = document.querySelectorAll('a');
     const externalLinks = Array.from(allLinks).filter((link) => {
       const href = link.href;

@@ -7,8 +7,9 @@ import { getFavicon } from '@/utils/getFavicon';
 import CourseEmbedLinkFullscreenDialog from '@/components/course-embed-link/CourseEmbedLinkFullscreen.Dialog';
 import { Button } from '@/components/ui/Button';
 import { toast } from '@/components/ui/Toast';
-import generateAICourse from '@/actions/generateAICourse';
 import { Textarea } from '@/components/ui/Textarea';
+import generateAICourse from '@/actions/generateAICourse';
+import { scrapeFirstSearchResult } from '@/actions/scrapeSearch';
 
 interface IAICourse {
   name: string;
@@ -36,20 +37,32 @@ const Page = () => {
     setCourse(null);
 
     try {
-      const response = await fetch('/api/ai/generate-course', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+      const courseMeta = await generateAICourse(prompt);
+
+      const enrichedTopics = await Promise.all(
+        courseMeta.topics.map(async (topic, index) => {
+          const result = await scrapeFirstSearchResult(topic.title, topic.from);
+          if (result?.url) {
+            return {
+              id: index + 1,
+              title: topic.title,
+              timeToComplete: 0,
+              url: result.url,
+            };
+          }
+          return null;
+        })
+      );
+
+      const filteredTopics = enrichedTopics.filter(Boolean);
+
+      setCourse({
+        name: courseMeta.name,
+        totalTimeTaken: courseMeta.totalTimeTaken,
+        topics: filteredTopics as ITopic[],
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate course');
-      }
-
-      const course: IAICourse = await response.json();
-      setCourse(course);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast({
         title: 'Something went wrong',
         type: 'error',
@@ -61,7 +74,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-full flex flex-col">
       <main className="flex-1 flex items-center justify-center p-4">
         {isLoading ? (
           <motion.div
@@ -127,39 +140,27 @@ const Page = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full h-full max-w-3xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <div className="text-center space-y-4">
-                <h1 className="text-3xl md:text-6xl font-bold tracking-tight">
-                  What Course you want to{' '}
-                  <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-violet-500 to-blue-500 dark:from-rose-800 dark:via-violet-800 dark:to-blue-800">
-                    build
-                  </span>{' '}
-                  today
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                  Develop Course with{' '}
-                  <span className="font-bold text-[black] dark:text-[white]">
-                    Free
-                  </span>{' '}
-                  Internet&#39;s content and the power of{' '}
-                  <span className="font-bold text-[black] dark:text-[white]">
-                    AI
-                  </span>
-                </p>
-              </div>
-            </motion.div>
-
+          <div className="w-full max-w-3xl">
+            <div className="text-center space-y-4 my-4">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+                What Course do you want to{' '}
+                <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-violet-500 to-blue-500 dark:from-rose-800 dark:via-violet-800 dark:to-blue-800">
+                  build
+                </span>{' '}
+                today
+              </h1>
+              <p className="text:sm md:text-xl text-muted-foreground">
+                Curate & Create any course with the power of{' '}
+                <span className="font-bold text-[black] dark:text-[white]">
+                  AI
+                </span>
+              </p>
+            </div>
             <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-violet-500 to-blue-500 dark:from-rose-800 dark:via-violet-800 dark:to-blue-800">
               <div className="bg-background rounded-md flex flex-col items-center gap-3">
                 <div className="relative w-full">
                   <Textarea
-                    placeholder="Example: 'Learn React in 7 days' or 'Advanced Python for Data Science'"
+                    placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -167,7 +168,8 @@ const Page = () => {
                         handleSubmit();
                       }
                     }}
-                    className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none"
+                    className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none
+               placeholder:text-sm md:placeholder:text-lg"
                   />
                   <Button
                     className="absolute right-3 bottom-3 h-12 w-12"
