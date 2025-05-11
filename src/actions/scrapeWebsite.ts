@@ -296,31 +296,31 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
       content += '\n';
     }
 
-    if (links.length) {
-      content += 'Links:\n';
-      links.forEach((link, i) => {
-        content += `  ${i + 1}. [${link.text}] -> ${link.href}\n`;
-      });
-      content += '\n';
-    }
+    // if (links.length) {
+    //   content += 'Links:\n';
+    //   links.forEach((link, i) => {
+    //     content += `  ${i + 1}. [${link.text}] -> ${link.href}\n`;
+    //   });
+    //   content += '\n';
+    // }
 
-    if (images.length) {
-      content += 'Images:\n';
-      images.forEach((img, i) => {
-        content += `  ${i + 1}. Src: ${img.src}${
-          img.alt ? `, Alt: ${img.alt}` : ''
-        }\n`;
-      });
-      content += '\n';
-    }
+    // if (images.length) {
+    //   content += 'Images:\n';
+    //   images.forEach((img, i) => {
+    //     content += `  ${i + 1}. Src: ${img.src}${
+    //       img.alt ? `, Alt: ${img.alt}` : ''
+    //     }\n`;
+    //   });
+    //   content += '\n';
+    // }
 
-    if (metaTags.length) {
-      content += 'Meta Tags:\n';
-      metaTags.forEach((meta, i) => {
-        content += `  ${i + 1}. Name: ${meta.name}, Content: ${meta.content}\n`;
-      });
-      content += '\n';
-    }
+    // if (metaTags.length) {
+    //   content += 'Meta Tags:\n';
+    //   metaTags.forEach((meta, i) => {
+    //     content += `  ${i + 1}. Name: ${meta.name}, Content: ${meta.content}\n`;
+    //   });
+    //   content += '\n';
+    // }
 
     if (allTextContent.length) {
       content += 'Detailed Text Elements:\n';

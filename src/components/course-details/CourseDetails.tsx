@@ -31,9 +31,7 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
           )}
           <p>{course.coursePrivacy}</p>
         </div> */}
-        <LargeHeading className="text-center underline decoration-rose-500 decoration-4">
-          {course.title}
-        </LargeHeading>
+        <LargeHeading className="text-center">{course.title}</LargeHeading>
         <div className="flex space-x-2 items-center mx-auto">
           <Paragraph className="font-bold text-md">By</Paragraph>
           <Avatar className="h-10 w-10 rounded-full border-2 p-[2px] border-rose-500 my-3">

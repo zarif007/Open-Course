@@ -95,7 +95,7 @@ const CourseLanding = async ({ params }: PageParams) => {
           <PiStackDuotone className="w-10 h-10" />
         </div>
         <CourseTopicsAccordion courseTopics={courseTopics} />
-        <div className="w-full border-b border-slate-300 border-slate-300 dark:border-slate-800 my-12" />
+        <div className="w-full border-b border-slate-300 dark:border-slate-800 my-12" />
         <CourseFeedbacks courseId={course.id as string} />
       </div>
       <CourseLandingSideWidget course={course} />

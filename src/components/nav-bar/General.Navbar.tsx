@@ -58,7 +58,14 @@ const GeneralNavbar = () => {
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+              <button
+                className={cn(
+                  'p-2 rounded-md',
+                  scrolled
+                    ? 'border-b border-gray-200 bg-background/80 backdrop-blur dark:border-gray-800'
+                    : 'bg-background'
+                )}
+              >
                 <PiList className="h-5 w-5" />
               </button>
             </DropdownMenuTrigger>
