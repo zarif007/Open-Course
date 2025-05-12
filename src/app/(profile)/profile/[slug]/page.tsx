@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
-import FinishedCourses from "@/components/dashboard/FinishedCourses";
-import Heatmap from "@/components/dashboard/Heatmap";
-import CreatedCourses from "@/components/profile/CreatedCourses";
-import LargeHeading from "@/components/ui/LargeHeading";
-import Points from "@/components/ui/Points";
-import { IUser } from "@/types/user";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import axios from "axios";
-import { redirect } from "next/navigation";
-import React from "react";
+import FinishedCourses from '@/components/dashboard/FinishedCourses';
+import Heatmap from '@/components/dashboard/Heatmap';
+import CreatedCourses from '@/components/profile/CreatedCourses';
+import LargeHeading from '@/components/ui/LargeHeading';
+import Points from '@/components/ui/Points';
+import { IUser } from '@/types/user';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import axios from 'axios';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 interface PageParams {
   params: {
@@ -24,7 +24,7 @@ const Profile = async ({ params }: PageParams) => {
 
   const user: IUser | null = data.data;
 
-  if (!user) redirect("/404");
+  if (!user) redirect('/404');
 
   return (
     <section className="mx-auto h-full flex flex-col items-center justify-center px-2">

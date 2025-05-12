@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { PiCopySimpleDuotone } from "react-icons/pi";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import React, { useEffect, useState } from 'react';
+import { PiCopySimpleDuotone } from 'react-icons/pi';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
-import Link from "next/link";
+} from '@/components/ui/Popover';
+import Link from 'next/link';
 
 const CopyToClipboardComp = ({ url }: { url: string }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -29,7 +29,7 @@ const CopyToClipboardComp = ({ url }: { url: string }) => {
       <PopoverTrigger>
         <CopyToClipboard text={url} onCopy={handleCopy}>
           <PiCopySimpleDuotone
-            className={`h-8 w-8 cursor-pointer ${isCopied && "text-rose-500"}`}
+            className={`h-8 w-8 cursor-pointer ${isCopied && 'text-rose-500'}`}
           />
         </CopyToClipboard>
       </PopoverTrigger>

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import React from "react";
-import Paragraph from "../ui/Paragraph";
-import { ICourse } from "@/types/course";
-import SelectedTopics from "../course-details/SelectedTopics";
-import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { Button, buttonVariants } from "../ui/Button";
-import { IUser } from "@/types/user";
-import BlurredImage from "../ui/BlurredImage";
-import courseDurationCalculator from "@/utils/courseDurationCalculator";
-import Link from "next/link";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
+import React from 'react';
+import Paragraph from '../ui/Paragraph';
+import { ICourse } from '@/types/course';
+import SelectedTopics from '../course-details/SelectedTopics';
+import { formatSelectedLevels } from '@/utils/formatSelectedLevels';
+import { Button, buttonVariants } from '../ui/Button';
+import { IUser } from '@/types/user';
+import BlurredImage from '../ui/BlurredImage';
+import courseDurationCalculator from '@/utils/courseDurationCalculator';
+import Link from 'next/link';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import { useRouter } from 'next/navigation';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover';
 
 const CourseCardShort = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
@@ -23,7 +23,7 @@ const CourseCardShort = ({ course }: { course: ICourse }) => {
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
         <BlurredImage
-          src={course.banner === "" ? generatedBanner : course.banner}
+          src={course.banner === '' ? generatedBanner : course.banner}
           alt="blog"
           dimension="h-36 w-full"
           className="h-36 w-full rounded object-cover object-center border border-rose-500"
@@ -45,7 +45,7 @@ const CourseCardShort = ({ course }: { course: ICourse }) => {
           <div
             className="w-full max-w-5xl mx-auto"
             style={{
-              borderTop: "2px dashed #f43f5e",
+              borderTop: '2px dashed #f43f5e',
             }}
           />
 
@@ -58,7 +58,7 @@ const CourseCardShort = ({ course }: { course: ICourse }) => {
                 trigger={
                   <SelectedTopics
                     mode="view"
-                    selectedTopics={[category.split(" ")[0]]}
+                    selectedTopics={[category.split(' ')[0]]}
                   />
                 }
               />
@@ -68,7 +68,7 @@ const CourseCardShort = ({ course }: { course: ICourse }) => {
           <Link
             href={`/course-landing/${course.slug}`}
             className={`${buttonVariants({
-              variant: "default",
+              variant: 'default',
             })} w-full mt-3 font-semibold`}
           >
             View
@@ -98,7 +98,7 @@ const PopoverComponent = ({
           className="px-2 w-full focus:ring-0"
           onClick={() => router.push(`/courses?${routerName}=${topic}`)}
         >
-          View {topic.split(" ")[0]} Courses
+          View {topic.split(' ')[0]} Courses
         </Button>
       </PopoverContent>
     </Popover>

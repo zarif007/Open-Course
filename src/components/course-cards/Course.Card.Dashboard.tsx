@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import React from "react";
-import Paragraph from "../ui/Paragraph";
-import { ICourse } from "@/types/course";
-import SelectedTopics from "../course-details/SelectedTopics";
-import { formatSelectedLevels } from "@/utils/formatSelectedLevels";
-import { Button, buttonVariants } from "../ui/Button";
+import React from 'react';
+import Paragraph from '../ui/Paragraph';
+import { ICourse } from '@/types/course';
+import SelectedTopics from '../course-details/SelectedTopics';
+import { formatSelectedLevels } from '@/utils/formatSelectedLevels';
+import { Button, buttonVariants } from '../ui/Button';
 
-import { IUser } from "@/types/user";
-import BlurredImage from "../ui/BlurredImage";
+import { IUser } from '@/types/user';
+import BlurredImage from '../ui/BlurredImage';
 
-import Link from "next/link";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
-import { ICourseTopic } from "@/types/courseTopic";
-import ContentLogos from "../course-content/ContentLogos";
+import Link from 'next/link';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import { useRouter } from 'next/navigation';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover';
+import { ICourseTopic } from '@/types/courseTopic';
+import ContentLogos from '../course-content/ContentLogos';
 
 const CourseCardDashboard = ({
   state,
@@ -37,7 +37,7 @@ const CourseCardDashboard = ({
     <div className="p-4">
       <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
         <BlurredImage
-          src={course.banner === "" ? generatedBanner : course.banner}
+          src={course.banner === '' ? generatedBanner : course.banner}
           alt="blog"
           dimension="h-36 w-full"
           className="h-36 w-full rounded object-cover object-center border border-rose-500"
@@ -78,7 +78,7 @@ const CourseCardDashboard = ({
           <Link
             href={`/course/${course.slug}?topicId=${currentTopic.topicID}`}
             className={`${buttonVariants({
-              variant: "default",
+              variant: 'default',
             })} w-full mt-3 font-semibold`}
           >
             Continue

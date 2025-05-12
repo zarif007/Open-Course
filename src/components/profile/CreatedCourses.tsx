@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import LargeHeading from "../ui/LargeHeading";
-import { useQuery } from "@tanstack/react-query";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { ICourse } from "@/types/course";
-import CourseCard from "../course-cards/Course.Card";
-import CourseCardSkeleton from "../skeletons/CourseCard.Skeleton";
-import SwiperComp from "../ui/SwiperComp";
+import React from 'react';
+import LargeHeading from '../ui/LargeHeading';
+import { useQuery } from '@tanstack/react-query';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { ICourse } from '@/types/course';
+import CourseCard from '../course-cards/Course.Card';
+import CourseCardSkeleton from '../skeletons/CourseCard.Skeleton';
+import SwiperComp from '../ui/SwiperComp';
 
 const CreatedCourses = ({ creatorId }: { creatorId: string }) => {
   const { data: courses, isLoading } = useQuery({

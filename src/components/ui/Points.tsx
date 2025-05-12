@@ -1,5 +1,5 @@
-import React from "react";
-import { BiCoinStack } from "react-icons/bi";
+import React from 'react';
+import { BiCoinStack } from 'react-icons/bi';
 
 const Points = ({ points }: { points: number }) => {
   return (

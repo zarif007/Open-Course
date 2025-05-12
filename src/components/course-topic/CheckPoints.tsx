@@ -1,15 +1,15 @@
-import { ICheckPoint } from "@/types/checkPoint";
-import React, { useState } from "react";
-import { BiSolidChevronDown, BiSolidFlagCheckered } from "react-icons/bi";
-import { MdCancel, MdOutlineCancelPresentation } from "react-icons/md";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setCourseForCreation } from "@/redux/features/course-creation-slice";
-import { setCourseForUpdate } from "@/redux/features/course-update-slice";
-import { IoIosAddCircle } from "react-icons/io";
-import { ICourse } from "@/types/course";
+import { ICheckPoint } from '@/types/checkPoint';
+import React, { useState } from 'react';
+import { BiSolidChevronDown, BiSolidFlagCheckered } from 'react-icons/bi';
+import { MdCancel, MdOutlineCancelPresentation } from 'react-icons/md';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button';
+import { AppDispatch, useAppSelector } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { setCourseForCreation } from '@/redux/features/course-creation-slice';
+import { setCourseForUpdate } from '@/redux/features/course-update-slice';
+import { IoIosAddCircle } from 'react-icons/io';
+import { ICourse } from '@/types/course';
 
 const CheckPoints = ({
   topicID,
@@ -20,7 +20,7 @@ const CheckPoints = ({
 }: {
   topicID: number;
   checkPoints: ICheckPoint[];
-  mode: "creation" | "edit" | "view";
+  mode: 'creation' | 'edit' | 'view';
   isAddCheckPointButtonClicked: boolean;
   handleSettingHiddenRanges: (checkPointID: number) => void;
 }) => {
@@ -31,11 +31,11 @@ const CheckPoints = ({
   };
 
   const course = useAppSelector((state) =>
-    mode === "view"
+    mode === 'view'
       ? state.courseViewReducer.value.course
-      : mode === "creation"
-      ? state.courseCreationReducer.value.course
-      : state.courseUpdateReducer.value.course
+      : mode === 'creation'
+        ? state.courseCreationReducer.value.course
+        : state.courseUpdateReducer.value.course
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -48,7 +48,7 @@ const CheckPoints = ({
       ),
     };
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCourseForCreation(updated)
         : setCourseForUpdate(updated)
     );
@@ -56,7 +56,7 @@ const CheckPoints = ({
 
   return (
     <div className="w-full">
-      {mode === "view" || !isAddCheckPointButtonClicked ? (
+      {mode === 'view' || !isAddCheckPointButtonClicked ? (
         checkForCheckPoints(topicID as number).map((cp) => {
           return (
             <div
@@ -68,7 +68,7 @@ const CheckPoints = ({
                 <BiSolidFlagCheckered />
                 <p className="truncate">{cp.name}</p>
               </div>
-              {mode !== "view" ? (
+              {mode !== 'view' ? (
                 <MdCancel
                   className="cursor-pointer w-4 h-4"
                   onClick={() => handleRemoveCheckPoint(cp.checkPointID)}
@@ -91,12 +91,12 @@ const CheckPointsAddition = ({
   course,
   topicID,
 }: {
-  mode: "creation" | "edit";
+  mode: 'creation' | 'edit';
   course: ICourse;
   topicID: number;
 }) => {
   const [isBarClicked, setIsBarClicked] = useState<boolean>(false);
-  const [checkPointName, setCheckPointName] = useState<string>("");
+  const [checkPointName, setCheckPointName] = useState<string>('');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -111,7 +111,7 @@ const CheckPointsAddition = ({
       checkPoints: [...(course.checkPoints ?? []), checkPoint],
     };
     dispatch(
-      mode === "creation"
+      mode === 'creation'
         ? setCourseForCreation(updated)
         : setCourseForUpdate(updated)
     );

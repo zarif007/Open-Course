@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
 import {
   PiYoutubeLogoDuotone,
   PiFigmaLogoDuotone,
@@ -7,11 +7,11 @@ import {
   PiDropboxLogoDuotone,
   PiPinterestLogoDuotone,
   PiSoundcloudLogoDuotone,
-} from "react-icons/pi";
+} from 'react-icons/pi';
 
 const SocialMediaLogoBar = () => {
   const styles = {
-    icon: "h-12 w-12 text-rose-500",
+    icon: 'h-12 w-12 text-rose-500',
   };
   return (
     <div className="flex space-x-3">

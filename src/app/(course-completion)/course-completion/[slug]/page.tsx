@@ -1,19 +1,19 @@
-import CourseReviewTaker from "@/components/course-details/CourseReviewTaker";
-import { buttonVariants } from "@/components/ui/Button";
-import LargeHeading from "@/components/ui/LargeHeading";
-import { PiArrowFatLinesLeftDuotone } from "react-icons/pi";
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import React from "react";
-import { ICourse } from "@/types/course";
-import { IUser } from "@/types/user";
-import { Metadata } from "next";
-import { getServerSession } from "next-auth";
-import constructMetadata from "@/utils/constructMetadata";
-import generateBannerFromCourse from "@/utils/generateBannerFromCourse";
-import { headers } from "next/headers";
-import { IEnrollState } from "@/types/enrollState";
+import CourseReviewTaker from '@/components/course-details/CourseReviewTaker';
+import { buttonVariants } from '@/components/ui/Button';
+import LargeHeading from '@/components/ui/LargeHeading';
+import { PiArrowFatLinesLeftDuotone } from 'react-icons/pi';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
+import React from 'react';
+import { ICourse } from '@/types/course';
+import { IUser } from '@/types/user';
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import constructMetadata from '@/utils/constructMetadata';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import { headers } from 'next/headers';
+import { IEnrollState } from '@/types/enrollState';
 
 interface PageParams {
   params: {
@@ -29,8 +29,8 @@ const getCourseAndEnrollState = async (
     await fetch(
       `${nextApiEndPoint}/course/withEnrollState?courseSlug=${slug}&userEmail=${userEmail}`,
       {
-        cache: "no-store",
-        method: "GET",
+        cache: 'no-store',
+        method: 'GET',
         headers: new Headers(headers()),
       }
     )
@@ -67,7 +67,7 @@ const CourseCompletion = async ({ params }: PageParams) => {
     session?.user?.email ?? null
   );
 
-  if (!course) redirect("/404");
+  if (!course) redirect('/404');
 
   if (!enrollState) redirect(`/course/${params.slug}`);
 
@@ -86,7 +86,7 @@ const CourseCompletion = async ({ params }: PageParams) => {
       <Link
         href={`/course/${params.slug}`}
         className={`${buttonVariants({
-          variant: "default",
+          variant: 'default',
         })} mx-auto w-[80%] md:w-[50%] flex items-center space-x-2`}
       >
         <PiArrowFatLinesLeftDuotone className="w-6 h-6" />

@@ -21,7 +21,7 @@ const CourseDetails = ({ course }: { course: ICourse }) => {
       <div className="z-10 flex flex-col justify-center items-center">
         {/* <div
           className={`rounded mx-auto flex items-center space-x-2 w-4 ${
-            course.coursePrivacy === 'public' ? 'bg-blue-500' : 'bg-violet-500'
+            course.coursePrivacy === 'public' ? 'bg-blue-500' : 'bg-rose-500'
           } text-sm font-semibold px-2 py-1`}
         >
           {course.coursePrivacy === 'public' ? (

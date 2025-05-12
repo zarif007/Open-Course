@@ -8,7 +8,7 @@ generate a structured learning course that includes:
 1. A **course name** (string) that represents the overall topic they want to learn.
 2. A **topics array**, ordered from beginner to advanced, where each item contains:
    - **title**: A clear and concise name for the sub-topic or lesson.
-   - **from**: A recommended source type for this topic, such as "YouTube Video", "Blog", or "Article".
+   - **from**: A recommended source type for this topic, such as "YouTube Video", "Blog", or "Article" (40% should be YouTube Video).
 
 3. An estimated **totalTimeTaken** (number in hours) to complete the entire course.
 

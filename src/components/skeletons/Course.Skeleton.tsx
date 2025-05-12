@@ -1,5 +1,5 @@
-import React from "react";
-import { Skeleton } from "@/components/ui/Skeleton";
+import React from 'react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const CourseSkeleton = () => {
   return (
@@ -9,7 +9,7 @@ const CourseSkeleton = () => {
           <Skeleton
             key={index}
             className={`h-20 w-full my-2 ${
-              index == 2 && "border-2 border-rose-500"
+              index == 2 && 'border-2 border-rose-500'
             }`}
           />
         ))}

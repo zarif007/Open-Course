@@ -39,28 +39,36 @@ const Page = () => {
     try {
       const courseMeta = await generateAICourse(prompt);
 
-      const enrichedTopics = await Promise.all(
-        courseMeta.topics.map(async (topic, index) => {
+      setCourse({
+        name: courseMeta.name,
+        totalTimeTaken: courseMeta.totalTimeTaken,
+        topics: [],
+      });
+
+      for (let i = 0; i < courseMeta.topics.length; i++) {
+        const topic = courseMeta.topics[i];
+        try {
           const result = await scrapeFirstSearchResult(topic.title, topic.from);
           if (result?.url) {
-            return {
-              id: index + 1,
+            const newTopic: ITopic = {
+              id: i + 1,
               title: topic.title,
               timeToComplete: 0,
               url: result.url,
             };
+
+            setCourse((prev) => {
+              if (!prev) return null;
+              return {
+                ...prev,
+                topics: [...prev.topics, newTopic],
+              };
+            });
           }
-          return null;
-        })
-      );
-
-      const filteredTopics = enrichedTopics.filter(Boolean);
-
-      setCourse({
-        name: courseMeta.name,
-        totalTimeTaken: courseMeta.totalTimeTaken,
-        topics: filteredTopics as ITopic[],
-      });
+        } catch (e) {
+          console.error(`Failed to scrape for ${topic.title}`, e);
+        }
+      }
     } catch (error) {
       console.log(error);
       toast({
@@ -144,7 +152,7 @@ const Page = () => {
             <div className="text-center space-y-4 my-4">
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
                 What Course do you want to{' '}
-                <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-violet-500 to-blue-500 dark:from-rose-800 dark:via-violet-800 dark:to-blue-800">
+                <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
                   build
                 </span>{' '}
                 today
@@ -156,7 +164,7 @@ const Page = () => {
                 </span>
               </p>
             </div>
-            <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-violet-500 to-blue-500 dark:from-rose-800 dark:via-violet-800 dark:to-blue-800">
+            <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
               <div className="bg-background rounded-md flex flex-col items-center gap-3">
                 <div className="relative w-full">
                   <Textarea
