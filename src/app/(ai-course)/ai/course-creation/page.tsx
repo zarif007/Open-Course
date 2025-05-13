@@ -10,6 +10,15 @@ import { toast } from '@/components/ui/Toast';
 import { Textarea } from '@/components/ui/Textarea';
 import generateAICourse from '@/actions/generateAICourse';
 import { scrapeFirstSearchResult } from '@/actions/scrapeSearch';
+import { useAppSelector } from '@/redux/store';
+import { ICourse } from '@/types/course';
+import createSlug from '@/utils/createSlug';
+import { version } from 'os';
+import { ICourseTopic } from '@/types/courseTopic';
+import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
+import axios from 'axios';
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { useRouter } from 'next/navigation';
 
 interface IAICourse {
   name: string;
@@ -28,6 +37,12 @@ const Page = () => {
   const [prompt, setPrompt] = useState('');
   const [course, setCourse] = useState<IAICourse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  const signedInUser = useAppSelector(
+    (state) => state.signedInUserReducer.value.signedInUser
+  );
 
   const handleSubmit = async () => {
     if (!prompt.trim() || isLoading) return;
@@ -81,6 +96,81 @@ const Page = () => {
     }
   };
 
+  const errorToast = (errMsg: string) => {
+    toast({
+      title: 'Error',
+      type: 'error',
+      message: errMsg,
+    });
+  };
+
+  const handleCourseCreation = async () => {
+    if (!course || !signedInUser?.id) return;
+
+    const courseTopics: ICourseTopic[] = course.topics.map((topic, index) => ({
+      id: topic.id,
+      title: topic.title,
+      timeToComplete: topic.timeToComplete,
+      url: topic.url,
+      topicID: index + 1,
+      sortID: index + 1,
+      versions: [
+        {
+          type: 'free_source_content',
+          creator: signedInUser.id ?? '',
+          data: {
+            title: topic.title,
+            url: topic.url,
+            source: topic.url,
+            duration: 0,
+          },
+        },
+      ],
+    }));
+
+    const courseData: ICourse = {
+      title: course.name,
+      type: 'gn',
+      version: 1,
+      enabled: true,
+      contributors: [],
+      enrolledUsers: [],
+      categories: [],
+      levels: [],
+      languages: [],
+      description: '',
+      slug: createSlug(course.name),
+      topics: courseTopics,
+      creator: signedInUser.id,
+      tags: [],
+      status: 'draft',
+      checkPoints: [],
+      coursePrivacy: 'public',
+      topicPrivacy: 'open',
+      banner: '',
+    };
+
+    courseData.banner = generateBannerFromCourse(courseData, signedInUser.name);
+
+    try {
+      const { data } = await axios.post(`api/course`, courseData);
+
+      if (!data.success) {
+        errorToast(data.message);
+        return;
+      }
+      toast({
+        title: 'Course Created',
+        type: 'success',
+        message: 'Course Created Successfully',
+      });
+      router.push(`/course-landing/${data.data.slug}`);
+    } catch (error) {
+      console.log(error);
+      errorToast('Something went wrong, Try again later');
+    }
+  };
+
   return (
     <div className="min-h-full flex flex-col">
       <main className="flex-1 flex items-center justify-center p-4">
@@ -98,8 +188,16 @@ const Page = () => {
               <h2 className="pt-8 pb-2 text-5xl text-center font-bold">
                 {course.name}
               </h2>
-              <div className="flex justify-end my-2">
-                <Button variant="general">Convert to a Course</Button>
+              <div className="flex justify-end my-2 space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => window.location.reload()}
+                >
+                  Try Another
+                </Button>
+                <Button variant="general" onClick={handleCourseCreation}>
+                  Convert to a Course
+                </Button>
               </div>
               <ul className="space-y-2">
                 <AnimatePresence mode="popLayout">

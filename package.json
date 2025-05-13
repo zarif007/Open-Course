@@ -13,6 +13,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.18",
     "@ai-sdk/groq": "^1.1.6",
     "@ai-sdk/openai": "^1.1.5",
     "@clerk/nextjs": "^4.22.0",
