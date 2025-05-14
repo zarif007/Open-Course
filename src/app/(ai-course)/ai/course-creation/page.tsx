@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, KeyboardEvent } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getFavicon } from '@/utils/getFavicon';
 import CourseEmbedLinkFullscreenDialog from '@/components/course-embed-link/CourseEmbedLinkFullscreen.Dialog';
@@ -13,15 +13,16 @@ import { scrapeFirstSearchResult } from '@/actions/scrapeSearch';
 import { useAppSelector } from '@/redux/store';
 import { ICourse } from '@/types/course';
 import createSlug from '@/utils/createSlug';
-import { version } from 'os';
 import { ICourseTopic } from '@/types/courseTopic';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import axios from 'axios';
-import { nextApiEndPoint } from '@/utils/apiEndpoints';
 import { useRouter } from 'next/navigation';
 
 interface IAICourse {
-  name: string;
+  title: string;
+  categories: string[];
+  levels: string[];
+  languages: string[];
   totalTimeTaken: number;
   topics: ITopic[];
 }
@@ -37,6 +38,7 @@ const Page = () => {
   const [prompt, setPrompt] = useState('');
   const [course, setCourse] = useState<IAICourse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreatingCourse, setIsCreatingCourse] = useState(false);
 
   const router = useRouter();
 
@@ -55,9 +57,12 @@ const Page = () => {
       const courseMeta = await generateAICourse(prompt);
 
       setCourse({
-        name: courseMeta.name,
+        title: courseMeta.title,
         totalTimeTaken: courseMeta.totalTimeTaken,
         topics: [],
+        categories: courseMeta.categories,
+        levels: courseMeta.levels,
+        languages: courseMeta.languages,
       });
 
       for (let i = 0; i < courseMeta.topics.length; i++) {
@@ -105,7 +110,9 @@ const Page = () => {
   };
 
   const handleCourseCreation = async () => {
-    if (!course || !signedInUser?.id) return;
+    if (!course || !signedInUser?.id || isCreatingCourse) return;
+
+    setIsCreatingCourse(true);
 
     const courseTopics: ICourseTopic[] = course.topics.map((topic, index) => ({
       id: topic.id,
@@ -129,17 +136,17 @@ const Page = () => {
     }));
 
     const courseData: ICourse = {
-      title: course.name,
+      title: course.title,
       type: 'gn',
       version: 1,
       enabled: true,
       contributors: [],
       enrolledUsers: [],
-      categories: [],
-      levels: [],
-      languages: [],
+      categories: course.categories,
+      levels: course.levels,
+      languages: course.languages,
       description: '',
-      slug: createSlug(course.name),
+      slug: createSlug(course.title),
       topics: courseTopics,
       creator: signedInUser.id,
       tags: [],
@@ -153,10 +160,11 @@ const Page = () => {
     courseData.banner = generateBannerFromCourse(courseData, signedInUser.name);
 
     try {
-      const { data } = await axios.post(`api/course`, courseData);
+      const { data } = await axios.post(`/api/course`, courseData);
 
       if (!data.success) {
         errorToast(data.message);
+        setIsCreatingCourse(false);
         return;
       }
       toast({
@@ -168,6 +176,7 @@ const Page = () => {
     } catch (error) {
       console.log(error);
       errorToast('Something went wrong, Try again later');
+      setIsCreatingCourse(false);
     }
   };
 
@@ -186,17 +195,29 @@ const Page = () => {
           <div className="w-full max-w-4xl mx-auto">
             <div className="flex flex-col">
               <h2 className="pt-8 pb-2 text-5xl text-center font-bold">
-                {course.name}
+                {course.title}
               </h2>
               <div className="flex justify-end my-2 space-x-2">
                 <Button
                   variant="outline"
                   onClick={() => window.location.reload()}
+                  disabled={isCreatingCourse}
                 >
                   Try Another
                 </Button>
-                <Button variant="general" onClick={handleCourseCreation}>
-                  Convert to a Course
+                <Button
+                  variant="general"
+                  onClick={handleCourseCreation}
+                  disabled={isCreatingCourse}
+                >
+                  {isCreatingCourse ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating Course...
+                    </>
+                  ) : (
+                    'Convert to a Course'
+                  )}
                 </Button>
               </div>
               <ul className="space-y-2">

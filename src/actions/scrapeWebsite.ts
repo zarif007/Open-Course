@@ -339,7 +339,6 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unknown error occurred';
-    console.error('Scraping error:', errorMessage);
 
     return {
       success: false,

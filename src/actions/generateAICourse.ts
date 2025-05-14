@@ -6,7 +6,7 @@ import { groq } from '@ai-sdk/groq';
 import { topicGenerationSystemPrompt } from '@/constants/systemPrompts/courseTopicGeneration';
 
 const AICourseSchema = z.object({
-  name: z.string(),
+  title: z.string(),
   totalTimeTaken: z.number(),
   topics: z
     .array(
@@ -17,6 +17,10 @@ const AICourseSchema = z.object({
     )
     .min(12)
     .max(20),
+  categories: z.array(z.string()),
+  levels: z.array(z.string()),
+  languages: z.array(z.string()),
+  level: z.enum(['🌱 Beginner', '🚧 Intermediate', '🚀 Advance']),
 });
 
 const model = groq('llama-3.3-70b-versatile');

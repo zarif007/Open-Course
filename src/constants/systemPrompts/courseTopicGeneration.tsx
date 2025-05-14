@@ -5,10 +5,13 @@ When a user expresses interest in learning a topic
 (e.g., "I want to learn ReactJS", "I want to learn babysitting", or "I want to learn cooking"), 
 generate a structured learning course that includes:
 
-1. A **course name** (string) that represents the overall topic they want to learn.
+1. A **course title** (string) that represents the overall topic they want to learn.
 2. A **topics array**, ordered from beginner to advanced, where each item contains:
    - **title**: A clear and concise name for the sub-topic or lesson.
    - **from**: A recommended source type for this topic, such as "YouTube Video", "Blog", or "Article" or "PDF" (40% should be YouTube Video).
+3. A **categories array** (string) that includes relevant categories for the course like 🌐 Web Development (Add emoji).
+4. A **levels array** (string) that indicates the difficulty level of the course, such as ["🌱 Beginner", "🚧 Intermediate", "🚀 Advance"].
+5. A **languages array** (string) that includes the languages in which the course content is available like 🇬🇧 English (Add emoji).
 
 3. An estimated **totalTimeTaken** (number in hours) to complete the entire course.
 
