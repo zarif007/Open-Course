@@ -18,9 +18,8 @@ const AICourseSchema = z.object({
     .min(10)
     .max(30),
   categories: z.array(z.string()),
-  levels: z.array(z.string()),
   languages: z.array(z.string()),
-  level: z.enum(['🌱 Beginner', '🚧 Intermediate', '🚀 Advance']),
+  levels: z.array(z.string()),
 });
 
 const model = groq('llama-3.3-70b-versatile');
@@ -38,9 +37,12 @@ const generateTopics = async (prompt: string) => {
 };
 
 const generateAICourse = async (prompt: string) => {
-  const res = await generateTopics(prompt);
-
-  return res;
+  try {
+    const course = await generateTopics(prompt);
+    return course;
+  } catch (error) {
+    return null;
+  }
 };
 
 export default generateAICourse;

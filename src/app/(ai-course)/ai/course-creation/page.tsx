@@ -46,6 +46,14 @@ const Page = () => {
     (state) => state.signedInUserReducer.value.signedInUser
   );
 
+  const errorToast = (errMsg: string) => {
+    toast({
+      title: 'Error',
+      type: 'error',
+      message: errMsg,
+    });
+  };
+
   const handleSubmit = async () => {
     if (!prompt.trim() || isLoading) return;
 
@@ -55,6 +63,12 @@ const Page = () => {
 
     try {
       const courseMeta = await generateAICourse(prompt);
+
+      if (!courseMeta) {
+        errorToast('Something went wrong, Try again later');
+        setIsLoading(false);
+        return;
+      }
 
       setCourse({
         title: courseMeta.title,
@@ -90,22 +104,10 @@ const Page = () => {
         }
       }
     } catch (error) {
-      toast({
-        title: 'Something went wrong',
-        type: 'error',
-        message: 'Please try again later',
-      });
+      errorToast('Something went wrong, Try again later');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const errorToast = (errMsg: string) => {
-    toast({
-      title: 'Error',
-      type: 'error',
-      message: errMsg,
-    });
   };
 
   const handleCourseCreation = async () => {
