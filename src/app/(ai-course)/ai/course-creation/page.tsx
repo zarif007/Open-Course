@@ -90,7 +90,6 @@ const Page = () => {
         }
       }
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Something went wrong',
         type: 'error',
@@ -174,7 +173,6 @@ const Page = () => {
       });
       router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
-      console.log(error);
       errorToast('Something went wrong, Try again later');
       setIsCreatingCourse(false);
     }
