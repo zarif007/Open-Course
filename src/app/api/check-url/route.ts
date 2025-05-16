@@ -51,7 +51,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ isEmbeddable });
   } catch (error) {
-    console.error('URL check failed:', error);
     return NextResponse.json({ isEmbeddable: false });
   }
 }

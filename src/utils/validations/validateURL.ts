@@ -1,6 +1,6 @@
 const validateURL = (url: string) => {
   try {
-    let parsedUrl;
+    let parsedUrl: URL;
     try {
       parsedUrl = new URL(url.startsWith('http') ? url : `https://${url}`);
     } catch (e) {

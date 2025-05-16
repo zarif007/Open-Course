@@ -5,7 +5,7 @@ When a user expresses interest in learning a topic
 (e.g., "I want to learn ReactJS", "I want to learn babysitting", or "I want to learn cooking"), 
 generate a structured learning course that includes:
 
-1. A **course title** (string) that represents the overall topic they want to learn.
+1. A **course title** (string) that represents the overall topic they want to learn. Make the title catchy and relevant to the topic.
 2. A **topics array**, ordered from beginner to advanced (15 to 30 topics), where each item contains:
    - **title**: A clear and concise name for the sub-topic or lesson.
    - **from**: A recommended source type for this topic, such as "YouTube Video", "Blog", or "Article" or "PDF" (40% should be YouTube Video).
