@@ -1,28 +1,39 @@
 const validateURL = (url: string) => {
   try {
-    // More flexible URL regex that handles common cases
-    const urlRegex =
-      /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s?#]*)?(\?[^#]*)?(#.*)?$/;
-
-    if (!urlRegex.test(url)) {
-      return false; // Invalid URL format
-    }
-
-    // Parse the URL to validate its structure
-    const parsedUrl = new URL(url.startsWith('http') ? url : `https://${url}`);
-
-    // Check for valid TLD (optional)
-    if (!parsedUrl.hostname.includes('.')) {
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url.startsWith('http') ? url : `https://${url}`);
+    } catch (e) {
       return false;
     }
 
-    // Check for dangerous protocols
     const dangerousProtocols = ['javascript:', 'data:', 'vbscript:'];
-    if (dangerousProtocols.includes(parsedUrl.protocol.toLowerCase())) {
+    if (
+      dangerousProtocols.some(
+        (protocol) => parsedUrl.protocol.toLowerCase() === protocol
+      )
+    ) {
       return false;
     }
 
-    // Check for potential XSS vulnerabilities (more comprehensive)
+    const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const isIpAddress = ipv4Regex.test(parsedUrl.hostname);
+
+    if (isIpAddress) {
+      const ipParts = parsedUrl.hostname.split('.').map(Number);
+      const validIp = ipParts.every((part) => part >= 0 && part <= 255);
+      if (!validIp) {
+        return false;
+      }
+    } else if (
+      !parsedUrl.hostname.includes('.') ||
+      !/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+        parsedUrl.hostname
+      )
+    ) {
+      return false;
+    }
+
     const xssPatterns = [
       /<script/i,
       /javascript:/i,
@@ -36,20 +47,33 @@ const validateURL = (url: string) => {
       return false;
     }
 
-    // Allow URL-encoded characters but check for double encoding
     try {
       const decodedOnce = decodeURIComponent(url);
       const decodedTwice = decodeURIComponent(decodedOnce);
       if (decodedTwice !== decodedOnce) {
-        return false; // Double-encoded URL
+        return false;
       }
     } catch (e) {
-      return false; // Malformed encoding
+      return false;
     }
 
-    return true; // URL is valid
+    if (
+      parsedUrl.search &&
+      xssPatterns.some((pattern) => pattern.test(parsedUrl.search))
+    ) {
+      return false;
+    }
+
+    if (
+      parsedUrl.hash &&
+      xssPatterns.some((pattern) => pattern.test(parsedUrl.hash))
+    ) {
+      return false;
+    }
+
+    return true;
   } catch (e) {
-    return false; // URL parsing failed
+    return false;
   }
 };
 

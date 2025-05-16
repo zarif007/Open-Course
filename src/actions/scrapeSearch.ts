@@ -1,5 +1,7 @@
 'use server';
 
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+
 export async function scrapeFirstSearchResult(
   search: string,
   from: string = ''
@@ -27,13 +29,35 @@ export async function scrapeFirstSearchResult(
 
     const data = await response.json();
 
-    const firstResult = data.organic?.[0]?.link;
-    if (firstResult) {
-      return { url: firstResult };
+    let firstResult = data.organic?.[0]?.link;
+
+    if (!firstResult) {
+      console.log('No search results found from Serper');
+      return null;
     }
 
-    console.log('No search results found from Serper');
-    return null;
+    let i = 0;
+
+    while (i < data.organic.length) {
+      const url = data.organic[i].link;
+
+      const response = await fetch(`${nextApiEndPoint}/check-url`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+      const isEmbeddable = (await response.json()).isEmbeddable;
+
+      if (isEmbeddable) {
+        firstResult = url;
+        break;
+      }
+      i++;
+    }
+
+    return { url: firstResult };
   } catch (error) {
     console.error('Error using Serper API:', error);
     return null;

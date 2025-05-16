@@ -15,7 +15,7 @@ const AICourseSchema = z.object({
         from: z.string(),
       })
     )
-    .min(10)
+    .min(15)
     .max(30),
   categories: z.array(z.string()),
   languages: z.array(z.string()),

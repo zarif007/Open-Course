@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, KeyboardEvent } from 'react';
-import { ArrowUp, Loader2 } from 'lucide-react';
+import { useState, KeyboardEvent, useEffect } from 'react';
+import { ArrowUp, Loader2, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getFavicon } from '@/utils/getFavicon';
 import CourseEmbedLinkFullscreenDialog from '@/components/course-embed-link/CourseEmbedLinkFullscreen.Dialog';
@@ -34,17 +34,47 @@ interface ITopic {
   url: string;
 }
 
+interface LoadingStep {
+  id: number;
+  text: string;
+  status: 'pending' | 'loading' | 'complete';
+}
+
 const Page = () => {
   const [prompt, setPrompt] = useState('');
   const [course, setCourse] = useState<IAICourse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
+  const [loadingSteps, setLoadingSteps] = useState<LoadingStep[]>([
+    { id: 1, text: 'Analyzing your request', status: 'pending' },
+    { id: 2, text: 'Generating course structure', status: 'pending' },
+    { id: 3, text: 'Finding relevant resources', status: 'pending' },
+    { id: 4, text: 'Building your course', status: 'pending' },
+  ]);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const router = useRouter();
 
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
+
+  useEffect(() => {
+    if (isLoading && currentStep < loadingSteps.length) {
+      const timer = setTimeout(() => {
+        setLoadingSteps((steps) =>
+          steps.map((step) =>
+            step.id === currentStep + 1
+              ? { ...step, status: 'loading' }
+              : step.id < currentStep + 1
+                ? { ...step, status: 'complete' }
+                : step
+          )
+        );
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep, isLoading]);
 
   const errorToast = (errMsg: string) => {
     toast({
@@ -54,6 +84,30 @@ const Page = () => {
     });
   };
 
+  const updateStepStatus = (
+    stepId: number,
+    status: 'pending' | 'loading' | 'complete'
+  ) => {
+    setLoadingSteps((steps) =>
+      steps.map((step) => (step.id === stepId ? { ...step, status } : step))
+    );
+  };
+
+  const moveToNextStep = () => {
+    if (currentStep < loadingSteps.length) {
+      // Mark current step as complete
+      updateStepStatus(currentStep + 1, 'complete');
+
+      // Move to next step
+      setCurrentStep((prev) => prev + 1);
+
+      // Mark next step as loading if available
+      if (currentStep + 1 < loadingSteps.length) {
+        updateStepStatus(currentStep + 2, 'loading');
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     if (!prompt.trim() || isLoading) return;
 
@@ -61,7 +115,24 @@ const Page = () => {
     setPrompt('');
     setCourse(null);
 
+    // Reset loading steps
+    setLoadingSteps([
+      { id: 1, text: 'Analyzing your request', status: 'pending' },
+      { id: 2, text: 'Generating course structure', status: 'pending' },
+      { id: 3, text: 'Finding relevant resources', status: 'pending' },
+      { id: 4, text: 'Building your course (0/0)', status: 'pending' },
+    ]);
+    setCurrentStep(0);
+
+    // Start first step
+    updateStepStatus(1, 'loading');
+
     try {
+      // Step 1: Analyze request
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      moveToNextStep();
+
+      // Step 2: Generate course structure
       const courseMeta = await generateAICourse(prompt);
 
       if (!courseMeta) {
@@ -69,6 +140,8 @@ const Page = () => {
         setIsLoading(false);
         return;
       }
+
+      moveToNextStep();
 
       setCourse({
         title: courseMeta.title,
@@ -79,9 +152,36 @@ const Page = () => {
         languages: courseMeta.languages,
       });
 
-      for (let i = 0; i < courseMeta.topics.length; i++) {
+      // Step 3: Find relevant resources
+      moveToNextStep();
+
+      // Step 4: Building course with found resources
+      const totalTopics = courseMeta.topics.length;
+
+      // Update the building step text to include progress
+      setLoadingSteps((steps) =>
+        steps.map((step) =>
+          step.id === 4
+            ? { ...step, text: `Building your course (0/${totalTopics})` }
+            : step
+        )
+      );
+
+      for (let i = 0; i < totalTopics; i++) {
         const topic = courseMeta.topics[i];
         try {
+          // Update progress counter for each topic
+          setLoadingSteps((steps) =>
+            steps.map((step) =>
+              step.id === 4
+                ? {
+                    ...step,
+                    text: `Building your course (${i + 1}/${totalTopics})`,
+                  }
+                : step
+            )
+          );
+
           const result = await scrapeFirstSearchResult(topic.title, topic.from);
           if (result?.url) {
             const newTopic: ITopic = {
@@ -103,6 +203,8 @@ const Page = () => {
           console.error(`Failed to scrape for ${topic.title}`, e);
         }
       }
+
+      moveToNextStep();
     } catch (error) {
       errorToast('Something went wrong, Try again later');
     } finally {
@@ -187,9 +289,52 @@ const Page = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-8 text-gray-600 dark:text-neutral-400"
+            className="text-center py-8 w-full max-w-md mx-auto"
           >
-            Generating course outline...
+            <h3 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
+              Building Your Course
+            </h3>
+
+            <div className="space-y-4">
+              <AnimatePresence mode="popLayout">
+                {loadingSteps.map((step) => (
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{
+                      opacity: step.status !== 'pending' ? 1 : 0.5,
+                      height: 'auto',
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800"
+                  >
+                    <div className="flex-shrink-0">
+                      {step.status === 'complete' ? (
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      ) : step.status === 'loading' ? (
+                        <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
+                      ) : (
+                        <div className="h-5 w-5 rounded-full border-2 border-gray-300 dark:border-neutral-700" />
+                      )}
+                    </div>
+                    <span
+                      className={`text-sm ${
+                        step.status === 'complete'
+                          ? 'text-gray-600 dark:text-neutral-300'
+                          : step.status === 'loading'
+                            ? 'text-gray-900 dark:text-white font-medium'
+                            : 'text-gray-500 dark:text-neutral-500'
+                      }`}
+                    >
+                      {step.text}
+                    </span>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            <p className="text-sm text-gray-500 dark:text-neutral-400 mt-6">
+              This may take a few moments...
+            </p>
           </motion.div>
         ) : course ? (
           <div className="w-full max-w-4xl mx-auto">
