@@ -85,6 +85,7 @@
     "emoji-picker-react": "^4.5.2",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "exa-js": "^1.7.2",
     "flowbite": "^1.8.1",
     "framer-motion": "^10.16.7",
     "groq-sdk": "^0.9.1",

@@ -1,14 +1,10 @@
 'use server';
 
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import Exa from 'exa-js';
 
-export async function scrapeFirstSearchResult(
-  search: string,
-  from: string = ''
-): Promise<{ url: string } | null> {
+const getSearchResultsUsingSerper = async (query: string) => {
   try {
-    let query = search + ' ' + from;
-
     const response = await fetch('https://google.serper.dev/search', {
       method: 'POST',
       headers: {
@@ -62,4 +58,58 @@ export async function scrapeFirstSearchResult(
     console.error('Error using Serper API:', error);
     return null;
   }
+};
+
+const getSearchResultsUsingExa = async (query: string) => {
+  try {
+    const exa = new Exa(process.env.EXA_API_KEY || '');
+
+    const data = await exa.searchAndContents(query, {
+      text: true,
+      type: 'keyword',
+      numResults: 5,
+    });
+
+    let firstResult = data.results?.[0]?.url;
+
+    if (!firstResult) {
+      console.log('No search results found from Exa');
+      return null;
+    }
+
+    let i = 0;
+
+    while (i < data.results.length) {
+      const url = data.results[i].url;
+
+      const response = await fetch(`${nextApiEndPoint}/check-url`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+      const isEmbeddable = (await response.json()).isEmbeddable;
+
+      if (isEmbeddable) {
+        firstResult = url;
+        break;
+      }
+      i++;
+    }
+
+    return { url: firstResult };
+  } catch (error) {
+    console.error('Error using Exa API:', error);
+    return null;
+  }
+};
+
+export async function scrapeFirstSearchResult(
+  search: string,
+  from: string = ''
+): Promise<{ url: string } | null> {
+  let query = search + ' ' + from;
+
+  return await getSearchResultsUsingExa(query);
 }
