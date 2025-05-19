@@ -6,11 +6,7 @@ import { ICourse } from '@/types/course';
 import SelectedTopics from '../course-details/SelectedTopics';
 import { formatSelectedLevels } from '@/utils/formatSelectedLevels';
 import { Button, buttonVariants } from '../ui/Button';
-import {
-  PiChatsDuotone,
-  PiUsersThreeDuotone,
-  PiShootingStarDuotone,
-} from 'react-icons/pi';
+import { PiUsersThreeDuotone, PiRobotDuotone } from 'react-icons/pi';
 import ContentLogos from '../course-content/ContentLogos';
 import { IUser } from '@/types/user';
 import BlurredImage from '../ui/BlurredImage';
@@ -26,12 +22,19 @@ import CourseRating from './Course.Rating';
 
 const CourseCard = ({ course }: { course: ICourse }) => {
   const creator = course.creator as IUser;
-
   const generatedBanner = generateBannerFromCourse(course, creator.name);
 
   return (
     <div className="p-4">
-      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden">
+      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden relative">
+        {/* AI Generated Tag - Displayed when course.isAIGenerated is true */}
+        {course.isAIGenerated && (
+          <div className="absolute top-2 right-1 z-10 bg-rose-500 text-white px-2 py-1 rounded-sm flex items-center space-x-1 shadow-md">
+            <PiRobotDuotone className="w-4 h-4" />
+            <span className="text-xs font-semibold">AI Generated</span>
+          </div>
+        )}
+
         <Link href={`/course-landing/${course.slug}`}>
           <BlurredImage
             src={course.banner === '' ? generatedBanner : course.banner}
@@ -119,8 +122,6 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
-            {/*
-             */}
             <CourseRating courseId={course.id as string} />
             <div className="flex space-x-1 items-center">
               <PiUsersThreeDuotone className="w-6 h-6" />

@@ -256,8 +256,9 @@ const Page = () => {
       status: 'draft',
       checkPoints: [],
       coursePrivacy: 'public',
-      topicPrivacy: 'open',
+      topicPrivacy: 'locked',
       banner: '',
+      isAIGenerated: true,
     };
 
     courseData.banner = generateBannerFromCourse(courseData, signedInUser.name);
@@ -275,6 +276,7 @@ const Page = () => {
         type: 'success',
         message: 'Course Created Successfully',
       });
+      console.log(data.data);
       router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
       errorToast('Something went wrong, Try again later');

@@ -1,13 +1,13 @@
-import { nextApiEndPoint } from "@/utils/apiEndpoints";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { nextApiEndPoint } from '@/utils/apiEndpoints';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const LIMIT = 6;
 
 const getCourses = async (page: number, searchTerm: string) => {
   let url = `${nextApiEndPoint}/courses?page=${page}&limit=${LIMIT}`;
 
-  if (searchTerm !== "") {
+  if (searchTerm !== '') {
     url += searchTerm;
   }
 
@@ -17,7 +17,7 @@ const getCourses = async (page: number, searchTerm: string) => {
 };
 const useGetInfiniteCourses = (searchTerm: string) => {
   return useInfiniteQuery(
-    ["courses"],
+    ['courses'],
     async ({ pageParam = 1 }) => await getCourses(pageParam, searchTerm),
     {
       staleTime: 5 * 60 * 1000,

@@ -25,6 +25,7 @@ export interface ICourse {
   checkPoints: ICheckPoint[] | [];
   coursePrivacy: 'public' | 'private';
   topicPrivacy: 'open' | 'locked';
+  isAIGenerated?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   _v?: number;

@@ -98,6 +98,10 @@ const CourseSchema = new Schema<ICourse, ICourseModel>(
       enum: topicPrivacy,
       default: 'open',
     },
+    isAIGenerated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

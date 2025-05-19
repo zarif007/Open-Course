@@ -67,7 +67,7 @@ const getSearchResultsUsingExa = async (query: string) => {
     const data = await exa.searchAndContents(query, {
       text: true,
       type: 'keyword',
-      numResults: 5,
+      numResults: 3,
     });
 
     let firstResult = data.results?.[0]?.url;
