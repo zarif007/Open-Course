@@ -78,17 +78,17 @@ const CourseTopic = ({
   const router = useRouter();
 
   const version = currentCourseTopic.versions.length - 1;
-  const topic = courseTopic.versions[version];
+  const topic = currentCourseTopic.versions[version];
 
   const isValidTopic = (): boolean => {
     const currentCourseTopic = courseTopic.topicID as number;
     return enrollState.finishedTopics.includes(currentCourseTopic.toString());
   };
 
-  const redirectToCurrentCourseTopic = (courseTopic: ICourseTopic) => {
+  const redirectToCurrentCourseTopic = (currentCourseTopic: ICourseTopic) => {
     if (!isValidTopic() && topicPrivacy !== 'open') return;
-    router.push(`/course/${course.slug}?topicId=${courseTopic.topicID}`);
-    dispatch(setCurrentCourseTopicForView(courseTopic));
+    router.push(`/course/${course.slug}?topicId=${currentCourseTopic.topicID}`);
+    dispatch(setCurrentCourseTopicForView(currentCourseTopic));
   };
 
   const removeTopic = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -98,7 +98,7 @@ const CourseTopic = ({
     const updated = {
       ...course,
       topics: topics.filter(
-        (topic: ICourseTopic) => topic.topicID !== courseTopic.topicID
+        (topic: ICourseTopic) => topic.topicID !== currentCourseTopic.topicID
       ),
     };
 
@@ -111,14 +111,14 @@ const CourseTopic = ({
 
   const handleOnClick = () => {
     mode === 'view'
-      ? redirectToCurrentCourseTopic(courseTopic)
+      ? redirectToCurrentCourseTopic(currentCourseTopic)
       : dispatch(
           mode === 'creation'
-            ? setCurrentCourseTopicForCreation(courseTopic)
-            : setCurrentCourseTopicForUpdate(courseTopic)
+            ? setCurrentCourseTopicForCreation(currentCourseTopic)
+            : setCurrentCourseTopicForUpdate(currentCourseTopic)
         );
 
-    const topicType = courseTopic.versions[version].type;
+    const topicType = currentCourseTopic.versions[version].type;
     dispatch(setSelectedTopicType(topicType));
   };
 
@@ -126,7 +126,7 @@ const CourseTopic = ({
     <section
       onClick={handleOnClick}
       className={`m-2 border-2 ${
-        courseTopic.topicID === currentCourseTopic.topicID
+        currentCourseTopic.topicID === currentCourseTopic.topicID
           ? 'dark:border-rose-500 border-rose-500'
           : 'border-slate-300 dark:border-gray-800'
       } bg-slate-100 dark:bg-[#0a0a0a] px-3 md:px-4 py-2 rounded cursor-pointer
@@ -134,24 +134,26 @@ const CourseTopic = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <TooltipComponent content={courseTopic.versions[version].data.title}>
+          <TooltipComponent
+            content={currentCourseTopic.versions[version].data.title}
+          >
             <Paragraph className="truncate-text-1-line text-start">
               {index + 1}.{' '}
               <span className="font-bold">
-                {courseTopic.versions[version].data.title}
+                {currentCourseTopic.versions[version].data.title}
               </span>{' '}
             </Paragraph>
           </TooltipComponent>
           <div className="flex space-x-2 items-center">
             {favIcon()}
             <Paragraph size="sm" className="truncate-text-1-line font-semibold">
-              {courseTopic.versions[version].data.duration}m
+              {currentCourseTopic.versions[version].data.duration}m
             </Paragraph>
           </div>
         </div>
 
         {mode === 'view' ? (
-          courseTopic.topicID === currentCourseTopic.topicID ? (
+          currentCourseTopic.topicID === currentCourseTopic.topicID ? (
             <TooltipComponent content="Going">
               <FcSportsMode className={styles.icon} />
             </TooltipComponent>

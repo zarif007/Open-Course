@@ -10,7 +10,7 @@ const TopicPreviewDialog = ({ version }: { version: ITopicVersion }) => {
       <DialogTrigger className="flex space-x-1 items-center w-full">
         <MdOutlinePreview className="w-8 h-8 cursor-pointer" />
       </DialogTrigger>
-      <DialogContent className="mx-auto p-0 border-0 h-fit w-[80%] md:w-[50%]">
+      <DialogContent className="mx-auto p-0 border-0 h-fit w-full">
         <div className="p-4">
           <CourseContent content={version.version.data} />
         </div>
