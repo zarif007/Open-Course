@@ -79,11 +79,8 @@ const TopicVersion = () => {
 
       await updateTopic(updatedVersions);
       await updateVersionStage(version._id!, 'accepted');
-
-      console.log('Version accepted and topic updated.');
       refetch();
     } catch (err) {
-      console.error('Error accepting version:', err);
     } finally {
       setIsProcessing(false);
     }
