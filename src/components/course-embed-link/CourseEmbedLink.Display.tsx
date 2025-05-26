@@ -53,7 +53,7 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
@@ -62,7 +62,7 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
         handleFullscreenChange
       );
       document.removeEventListener(
-        'msfullscreenchange',
+        'MSFullscreenChange',
         handleFullscreenChange
       );
     };
