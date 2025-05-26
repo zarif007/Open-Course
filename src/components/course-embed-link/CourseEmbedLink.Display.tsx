@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IEmbedContent } from '@/types/courseTopic';
 import React, { useState, useRef } from 'react';
 import CourseEmbedRawUrl from './CourseEmbedRawUrl';
@@ -6,6 +5,20 @@ import { FiLink } from 'react-icons/fi';
 import { MdOutlineVideoLibrary } from 'react-icons/md';
 import { BiFullscreen, BiExitFullscreen } from 'react-icons/bi';
 import IFrame from './IFrame';
+
+// Extend HTMLElement with vendor-prefixed fullscreen methods
+interface FullscreenHTMLElement extends HTMLElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+}
+
+// Extend Document with vendor-prefixed fullscreen elements and exit methods
+interface FullscreenDocument extends Document {
+  webkitExitFullscreen?: () => Promise<void>;
+  msExitFullscreen?: () => Promise<void>;
+  webkitFullscreenElement?: Element;
+  msFullscreenElement?: Element;
+}
 
 const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
@@ -15,24 +28,27 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
   const contentUrl = content.url;
 
   const handleFullscreen = async () => {
-    if (!containerRef.current) return;
+    const el = containerRef.current as FullscreenHTMLElement | null;
+    const doc = document as FullscreenDocument;
+
+    if (!el) return;
 
     try {
       if (!isFullscreen) {
-        if (containerRef.current.requestFullscreen) {
-          await containerRef.current.requestFullscreen();
-        } else if ((containerRef.current as any).webkitRequestFullscreen) {
-          await (containerRef.current as any).webkitRequestFullscreen();
-        } else if ((containerRef.current as any).msRequestFullscreen) {
-          await (containerRef.current as any).msRequestFullscreen();
+        if (el.requestFullscreen) {
+          await el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          await el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          await el.msRequestFullscreen();
         }
       } else {
-        if (document.exitFullscreen) {
-          await document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-          await (document as any).webkitExitFullscreen();
-        } else if ((document as any).msExitFullscreen) {
-          await (document as any).msExitFullscreen();
+        if (doc.exitFullscreen) {
+          await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          await doc.webkitExitFullscreen();
+        } else if (doc.msExitFullscreen) {
+          await doc.msExitFullscreen();
         }
       }
     } catch (error) {
@@ -40,13 +56,14 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
     }
   };
 
-  // Listen for fullscreen changes
   React.useEffect(() => {
+    const doc = document as FullscreenDocument;
+
     const handleFullscreenChange = () => {
       const isCurrentlyFullscreen = !!(
-        document.fullscreenElement ||
-        (document as any).webkitFullscreenElement ||
-        (document as any).msFullscreenElement
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.msFullscreenElement
       );
       setIsFullscreen(isCurrentlyFullscreen);
     };
@@ -71,7 +88,7 @@ const CourseEmbedLinkDisplay = ({ content }: { content: IEmbedContent }) => {
   return (
     <div
       ref={containerRef}
-      className={`mx-auto w-[100%] ${
+      className={`mx-auto w-full ${
         isFullscreen ? 'h-screen bg-black' : 'h-[45vh] md:h-[80vh]'
       }`}
       id="main"

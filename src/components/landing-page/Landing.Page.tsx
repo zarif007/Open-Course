@@ -23,7 +23,19 @@ const LandingPage = () => {
         <div className="h-full gap-4 flex flex-col justify-center items-center">
           <SocialMediaLogoBar />
           <div className="w-full flex justify-center items-center px-2">
-            <NotifyBar text="🤖 AI Course Creation! Coming Soon ⌛" />
+            <NotifyBar
+              text={
+                <span>
+                  🤖 AI Course Creation! It’s here,&nbsp;
+                  <Link
+                    href="/ai/course-creation"
+                    className="text-blue-500 font-semibold hover:text-blue-600"
+                  >
+                    Create →
+                  </Link>
+                </span>
+              }
+            />
           </div>
           <StarOnGithub />
           <LargeHeading size="lg" className="three-d text-center">
