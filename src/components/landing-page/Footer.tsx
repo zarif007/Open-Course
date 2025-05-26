@@ -8,7 +8,7 @@ const Footer = () => {
         <span className="bg-gradient-to-r from-rose-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
           Made with love for the people
         </span>{' '}
-        — Crafted by Zarif
+        — Developed by Zarif
       </p>
       <div className="flex justify-center gap-6 text-2xl">
         <a

@@ -6,13 +6,11 @@ import { MdOutlineVideoLibrary } from 'react-icons/md';
 import { BiFullscreen, BiExitFullscreen } from 'react-icons/bi';
 import IFrame from './IFrame';
 
-// Extend HTMLElement with vendor-prefixed fullscreen methods
 interface FullscreenHTMLElement extends HTMLElement {
   webkitRequestFullscreen?: () => Promise<void>;
   msRequestFullscreen?: () => Promise<void>;
 }
 
-// Extend Document with vendor-prefixed fullscreen elements and exit methods
 interface FullscreenDocument extends Document {
   webkitExitFullscreen?: () => Promise<void>;
   msExitFullscreen?: () => Promise<void>;

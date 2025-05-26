@@ -11,7 +11,7 @@ import StarOnGithub from './StarOnGithub';
 
 const LandingPage = () => {
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:mb-12 md:mt-12">
+    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:my-0">
       <div className="absolute inset-0 z-0 hidden md:block">
         <GridPattern strokeDasharray={'4 2'} numSquares={15} />
       </div>

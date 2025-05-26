@@ -60,13 +60,13 @@ const GeneralNavbar = () => {
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
-                  'p-2 rounded-md',
+                  'p-3 rounded-md',
                   scrolled
                     ? 'border-b border-gray-200 bg-background/80 backdrop-blur dark:border-gray-800'
                     : 'bg-background'
                 )}
               >
-                <PiList className="h-5 w-5" />
+                <PiList className="h-6 w-6" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-48">
