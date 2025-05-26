@@ -61,7 +61,7 @@ const CourseContentsTabs = () => {
     <Tabs defaultValue={currentTab} className="w-full mx-auto px-2 md:px-6">
       <LargeHeading
         size="sm"
-        className="mt-1 text-start underline decoration-rose-500 decoration-2 bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
+        className="mt-1 text-start bg-slate-300 dark:bg-gray-800 p-3 px-4 rounded"
       >
         {currentCourseTopic?.topicID}.{' '}
         {

@@ -33,10 +33,7 @@ const Profile = async ({ params }: PageParams) => {
         alt="dp"
         className="w-[30%] h-[30%] md:w-[10%] md:h-[10%] rounded-full"
       />
-      <LargeHeading
-        size="sm"
-        className="mt-6 mb-1 underline decoration-rose-500 decoration-4"
-      >
+      <LargeHeading size="sm" className="mt-6 mb-1">
         {user.name}
       </LargeHeading>
       <p className="font-semibold text-md text-slate-300 dark:text-gray-700 mt-1 mb-4">

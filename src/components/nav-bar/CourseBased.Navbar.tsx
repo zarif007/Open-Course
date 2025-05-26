@@ -34,7 +34,7 @@ const CourseBasedNavbar = () => {
         {course.title ? (
           <LargeHeading
             size="sm"
-            className="text-start truncate text-2xl md:text-3xl lg:text-4xl underline decoration-rose-500 decoration-4"
+            className="text-start truncate text-2xl md:text-3xl lg:text-4xl"
           >
             {course.title}
           </LargeHeading>

@@ -14,10 +14,7 @@ const AskPage = ({ ask }: { ask: ICourseAsk }) => {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <LargeHeading
-        size="sm"
-        className="underline decoration-rose-500 decoration-4 text-start"
-      >
+      <LargeHeading size="sm" className="text-start">
         {ask.title}
       </LargeHeading>
       <div className="flex justify-start space-x-2 items-center my-2">

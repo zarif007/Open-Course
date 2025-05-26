@@ -54,10 +54,7 @@ const CourseInvitation = async ({ params }: PageParams) => {
     <div className="w-full max-w-5xl h-full flex flex-col justify-center items-center mx-auto my-16 px-2">
       {invitationData ? (
         <div className="w-full max-w-xl flex flex-col justify-center items-center">
-          <LargeHeading
-            className="my-3 underline decoration-rose-500 decoration-4"
-            size="sm"
-          >
+          <LargeHeading className="my-3" size="sm">
             Invited to join
           </LargeHeading>
           <img

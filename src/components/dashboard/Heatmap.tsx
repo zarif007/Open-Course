@@ -127,10 +127,7 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
 
   return (
     <div>
-      <LargeHeading
-        size="sm"
-        className="my-3 underline decoration-rose-500 decoration-4 mb-3"
-      >
+      <LargeHeading size="sm" className="my-3 mb-3">
         Activities
       </LargeHeading>
 
