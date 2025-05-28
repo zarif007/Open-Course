@@ -17,7 +17,7 @@ const Dashboard = () => {
           Welcome back, {signedInUser?.name?.split(' ')[0]} 👋
         </h1>
         <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-lg">
-          Here's a quick overview of your learning journey.
+          Here is a quick overview of your learning journey.
         </p>
       </div>
 

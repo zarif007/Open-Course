@@ -39,6 +39,7 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
     currentTopic: ICourseTopic;
     completedTopic: number;
   }[] = [];
+
   enrollStates.map((es) => {
     if (es.course.topics.length === es.finishedTopics.length) {
       state.push({
