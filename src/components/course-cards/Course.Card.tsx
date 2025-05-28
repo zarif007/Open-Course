@@ -26,8 +26,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
 
   return (
     <div className="p-4">
-      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden relative">
-        {/* AI Generated Tag - Displayed when course.isAIGenerated is true */}
+      <div className="h-full border-2 border-slate-300 dark:border-gray-800 rounded-md overflow-hidden relative bg-slate-50 dark:bg-gray-950">
         {course.isAIGenerated && (
           <div className="absolute top-2 right-1 z-10 bg-rose-500 text-white px-2 py-1 rounded-sm flex items-center space-x-1 shadow-md">
             <PiRobotDuotone className="w-4 h-4" />

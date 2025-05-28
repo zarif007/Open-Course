@@ -41,9 +41,6 @@ const FinishedCourses = ({ user }: { user: IUser | null }) => {
   });
   return (
     <div className="mx-auto w-full mt-8">
-      <LargeHeading size="sm" className="my-6">
-        Finished Courses
-      </LargeHeading>
       <div className="container px-5 py-8 mx-auto">
         <div className="flex flex-wrap -m-4"></div>
         {isLoading ? (

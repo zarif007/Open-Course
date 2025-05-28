@@ -45,6 +45,8 @@ const AvatarDropdown = () => {
               {signedInUser?.email}
             </div>
           </div>
+
+          {/* Menu Items */}
           <div className="py-1">
             <MenubarItem className="!p-0">
               <Link

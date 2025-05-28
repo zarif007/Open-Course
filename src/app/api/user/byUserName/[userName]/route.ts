@@ -1,7 +1,7 @@
-import { connectToDB } from "@/lib/connectToMongoose";
-import User from "@/lib/models/user.model";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { connectToDB } from '@/lib/connectToMongoose';
+import User from '@/lib/models/user.model';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
 interface PageParams {
   params: {

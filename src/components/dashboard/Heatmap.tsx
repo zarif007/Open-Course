@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import ActivityCalendar, {
   Activity as IActivityHeatmap,
   ColorScale,
@@ -25,7 +25,6 @@ const populateDates = (
   endDate: string
 ): IActivityHeatmap[] => {
   const dates: IActivityHeatmap[] = [];
-
   const start = new Date(startDate);
   const end = new Date(endDate);
   const date = new Date(start);
@@ -43,24 +42,38 @@ const populateDates = (
 };
 
 const Heatmap = ({ user }: { user: IUser | null }) => {
-  const [activities, setActivities] = useState<IActivity[]>([]);
-  const [activitiesForHeatmap, setActivitiesForHeatmap] = useState<
-    IActivityHeatmap[]
-  >([]);
+  const { theme } = useTheme();
   const [selectedDate, setSelectedDate] = useState<{
     date: string;
     activities: Partial<IActivity>[];
   }>();
 
-  const formatActivities = (activities: IActivity[]) => {
-    const updated: IActivityHeatmap[] = populateDates(
-      '2023-01-01',
-      getCurrentTime() ?? '2023-12-31'
+  // Memoize the fetch function to prevent unnecessary recreations
+  const fetchActivities = useCallback(async () => {
+    if (!user?.id) return [];
+    const response = await fetch(`${nextApiEndPoint}/activity/${user.id}`);
+    const { data } = await response.json();
+    return data as IActivity[];
+  }, [user?.id]);
+
+  const { data: activities = [], isLoading } = useQuery({
+    queryKey: ['heat-map-data', user?.id],
+    queryFn: fetchActivities,
+    enabled: !!user?.id,
+    staleTime: 1000 * 60,
+  });
+
+  const activitiesForHeatmap = useMemo(() => {
+    if (!activities.length) return [];
+
+    const updated = populateDates(
+      '2025-01-01',
+      getCurrentTime() ?? '2025-12-31'
     );
 
     const activityMap = new Map<string, IActivityHeatmap>();
 
-    activities.map((activity) => {
+    activities.forEach((activity) => {
       const date = activity.date as string;
       const count = activityMap.get(date)?.count ?? 0;
       activityMap.set(date, {
@@ -74,63 +87,43 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
       updated.push(activity);
     });
 
-    updated.sort(
+    return updated.sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
+  }, [activities]);
 
-    setActivitiesForHeatmap(updated);
-  };
+  const handleSetSelectedDate = useCallback(
+    (date: string) => {
+      const filteredActivities = activities
+        .filter((activity) => (activity.date as string) === date)
+        .map(({ date, link, type, text }) => ({ date, link, type, text }));
 
-  const { isLoading } = useQuery({
-    queryKey: [`heat-map-data-${user?.id}`],
-    enabled: !!user?.id,
-    queryFn: async () => {
-      const { data } = await (
-        await fetch(`${nextApiEndPoint}/activity/${user?.id}`)
-      ).json();
-
-      setActivities(data);
-      formatActivities(data);
+      setSelectedDate({ date, activities: filteredActivities });
     },
-  });
+    [activities]
+  );
 
-  const handleSetSelectedDate = (date: string) => {
-    const updated: Partial<IActivity>[] = [];
+  const colors: ColorScale = useMemo(
+    () => [
+      theme === 'dark' ? '#f1f5f9' : '#020617',
+      '#fda4af',
+      '#f43f5e',
+      '#be123c',
+      '#881337',
+    ],
+    [theme]
+  );
 
-    activities.map((activity) => {
-      if ((activity.date as string) === date)
-        updated.push({
-          date: activity.date,
-          link: activity.link,
-          type: activity.type,
-          text: activity.text,
-        });
-    });
-
-    setSelectedDate({ date, activities: updated });
-  };
-
-  const { theme } = useTheme();
-
-  const colors: ColorScale = [
-    theme === 'dark' ? '#f1f5f9' : '#020617',
-    '#fda4af',
-    '#f43f5e',
-    '#be123c',
-    '#881337',
-  ];
-
-  const explicitTheme: ThemeInput = {
-    light: colors,
-    dark: colors,
-  };
+  const explicitTheme: ThemeInput = useMemo(
+    () => ({
+      light: colors,
+      dark: colors,
+    }),
+    [colors]
+  );
 
   return (
     <div>
-      <LargeHeading size="sm" className="my-3 mb-3">
-        Activities
-      </LargeHeading>
-
       {isLoading ? (
         <HeatmapSkeleton />
       ) : (
@@ -138,9 +131,7 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
           data={activitiesForHeatmap}
           theme={explicitTheme}
           eventHandlers={{
-            onClick: (event) => (activity) => {
-              handleSetSelectedDate(activity.date);
-            },
+            onClick: () => (activity) => handleSetSelectedDate(activity.date),
           }}
           renderBlock={(block, activity) => {
             return React.cloneElement(block, {
@@ -163,27 +154,25 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
             <span className="text-rose-500">{selectedDate.date}</span>
           </p>
 
-          {selectedDate.activities.map((activity, index) => {
-            return (
-              <div
-                key={index}
-                className="my-1 text-sm flex items-center justify-between"
+          {selectedDate.activities.map((activity, index) => (
+            <div
+              key={index}
+              className="my-1 text-sm flex items-center justify-between"
+            >
+              <Link
+                className="text-blue-600 font-semibold"
+                href={activity.link as string}
+                target="_blank"
               >
-                <Link
-                  className="text-blue-600 font-semibold"
-                  href={activity.link as string}
-                  target="_blank"
-                >
-                  {activity.text}
-                </Link>
-                <Points points={activity.type === 'created' ? 10 : 2} />
-              </div>
-            );
-          })}
+                {activity.text}
+              </Link>
+              <Points points={activity.type === 'created' ? 10 : 2} />
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 };
 
-export default Heatmap;
+export default React.memo(Heatmap);

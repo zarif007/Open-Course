@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export default function RootLayout({
   children,
@@ -6,5 +6,5 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // offset navbar height
-  return <section className="py-40 h-full min-h-screen">{children}</section>;
+  return <section className="pb-4 h-full min-h-screen">{children}</section>;
 }
