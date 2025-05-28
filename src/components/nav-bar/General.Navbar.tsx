@@ -60,7 +60,7 @@ const GeneralNavbar = () => {
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
-                  'p-3 rounded-md',
+                  'p-3   rounded-md',
                   scrolled
                     ? 'border-b border-gray-200 bg-background/80 backdrop-blur dark:border-gray-800'
                     : 'bg-background'
