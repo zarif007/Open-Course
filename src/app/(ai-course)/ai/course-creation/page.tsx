@@ -108,7 +108,7 @@ const CheckpointIndicator = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: topicId * 0.1 }}
-      className="relative mb-8"
+      className="relative my-4"
     >
       <div className="relative">
         <div className="flex justify-center">
@@ -145,16 +145,16 @@ const TopicCard = ({ topic }: { topic: ITopic }) => (
           <img
             src={getFavicon(topic.url)}
             alt="favicon"
-            className="w-12 h-12 object-contain rounded-md"
+            className="w-12 h-12 object-contain rounded-md flex-shrink-0"
           />
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {topic.id}. {topic.title}
             </h3>
             <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
               Time to complete: {topic.timeToComplete} minutes
             </p>
-            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words">
+            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-all overflow-wrap-anywhere">
               {topic.url}
             </p>
           </div>

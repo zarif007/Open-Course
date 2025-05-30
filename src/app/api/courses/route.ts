@@ -11,7 +11,6 @@ import User from '@/lib/models/user.model';
 import pick from '@/utils/pick';
 import { SortOrder } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 
 export const GET = async (req: NextRequest) => {
   await connectToDB();
@@ -28,6 +27,7 @@ export const GET = async (req: NextRequest) => {
     );
 
   const andConditions = [];
+
   // Search needs $or for searching in specified fields
   if (searchTerm && searchTerm.length > 0) {
     const constraints = [
@@ -43,10 +43,29 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  // Filters needs $and to full fill all the conditions
-  if (Object.keys(filtersData).length) {
+  // Handle isAIGenerated filter specially
+  const { isAIGenerated, ...otherFilters } = filtersData;
+
+  if (isAIGenerated) {
+    const isAIGeneratedValue = isAIGenerated[0]; // Assuming it's an array from your pick function
+
+    if (isAIGeneratedValue === 'true') {
+      // Only AI-generated courses
+      andConditions.push({
+        isAIGenerated: true,
+      });
+    } else if (isAIGeneratedValue === 'false') {
+      // Non-AI courses (false or field doesn't exist)
+      andConditions.push({
+        $or: [{ isAIGenerated: false }, { isAIGenerated: { $exists: false } }],
+      });
+    }
+  }
+
+  // Filters needs $and to fulfill all the conditions (for other filters)
+  if (Object.keys(otherFilters).length) {
     andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => ({
+      $and: Object.entries(otherFilters).map(([field, value]) => ({
         [field]: {
           $all: value,
         },
@@ -54,11 +73,12 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  // Dynamic  Sort needs  field to  do sorting
+  // Dynamic Sort needs field to do sorting
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
+
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
@@ -78,10 +98,7 @@ export const GET = async (req: NextRequest) => {
     .skip(skip)
     .limit(limit);
 
-  const total = await Course.countDocuments(whereConditions)
-    .sort(sortConditions)
-    .skip(skip)
-    .limit(limit);
+  const total = await Course.countDocuments(whereConditions);
 
   return NextResponse.json({
     meta: {
