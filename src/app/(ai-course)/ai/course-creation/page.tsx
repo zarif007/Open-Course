@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, KeyboardEvent, useEffect } from 'react';
+import { useState, KeyboardEvent, useEffect, useMemo } from 'react';
 import { ArrowUp, Loader2, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getFavicon } from '@/utils/getFavicon';
@@ -17,6 +17,7 @@ import { ICourseTopic } from '@/types/courseTopic';
 import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { ICheckPoint } from '@/types/checkPoint';
 
 interface IAICourse {
   title: string;
@@ -25,6 +26,7 @@ interface IAICourse {
   languages: string[];
   totalTimeTaken: number;
   topics: ITopic[];
+  checkPoints: ICheckPoint[];
 }
 
 interface ITopic {
@@ -40,6 +42,176 @@ interface LoadingStep {
   status: 'pending' | 'loading' | 'complete';
 }
 
+const LoadingIndicator = ({ steps }: { steps: LoadingStep[] }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="text-center py-8 w-full max-w-md mx-auto"
+  >
+    <h3 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
+      Building Your Course
+    </h3>
+    <div className="space-y-4">
+      <AnimatePresence mode="popLayout">
+        {steps.map((step) => (
+          <motion.div
+            key={step.id}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{
+              opacity: step.status !== 'pending' ? 1 : 0.5,
+              height: 'auto',
+            }}
+            className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800"
+          >
+            <div className="flex-shrink-0">
+              {step.status === 'complete' ? (
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              ) : step.status === 'loading' ? (
+                <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
+              ) : (
+                <div className="h-5 w-5 rounded-full border-2 border-gray-300 dark:border-neutral-700" />
+              )}
+            </div>
+            <span
+              className={`text-sm ${
+                step.status === 'complete'
+                  ? 'text-gray-600 dark:text-neutral-300'
+                  : step.status === 'loading'
+                    ? 'text-gray-900 dark:text-white font-medium'
+                    : 'text-gray-500 dark:text-neutral-500'
+              }`}
+            >
+              {step.text}
+            </span>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+    <p className="text-sm text-gray-500 dark:text-neutral-400 mt-6">
+      This may take a few moments...
+    </p>
+  </motion.div>
+);
+
+const CheckpointIndicator = ({
+  topicId,
+  checkPointMap,
+}: {
+  topicId: number;
+  checkPointMap: Map<number, string>;
+}) => {
+  const checkPointName = checkPointMap.get(topicId);
+  if (!checkPointName) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: topicId * 0.1 }}
+      className="relative mb-8"
+    >
+      <div className="relative">
+        <div className="flex justify-center">
+          <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 px-5 py-2.5 rounded-md">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-slate-400 dark:bg-gray-500 rounded-full"></div>
+              <span className="text-sm font-medium text-slate-700 dark:text-gray-300 tracking-wide">
+                {checkPointName}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const TopicCard = ({ topic }: { topic: ITopic }) => (
+  <div className="w-full bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 my-2">
+    <CourseEmbedLinkFullscreenDialog url={topic.url}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: -20 }}
+        transition={{
+          duration: 0.4,
+          delay: topic.id * 0.15,
+          type: 'spring',
+          bounce: 0.3,
+        }}
+        className="w-full p-2 rounded-lg hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
+      >
+        <div className="flex space-x-4 items-start text-start w-full">
+          <img
+            src={getFavicon(topic.url)}
+            alt="favicon"
+            className="w-12 h-12 object-contain rounded-md"
+          />
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {topic.id}. {topic.title}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
+              Time to complete: {topic.timeToComplete} minutes
+            </p>
+            <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words">
+              {topic.url}
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </CourseEmbedLinkFullscreenDialog>
+  </div>
+);
+
+const CoursePromptInput = ({
+  prompt,
+  setPrompt,
+  handleSubmit,
+}: {
+  prompt: string;
+  setPrompt: (value: string) => void;
+  handleSubmit: () => void;
+}) => (
+  <div className="w-full max-w-3xl">
+    <div className="text-center space-y-4 my-4">
+      <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+        What Course do you want to{' '}
+        <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
+          build
+        </span>{' '}
+        today
+      </h1>
+      <p className="text:sm md:text-xl text-muted-foreground">
+        Curate & Create any course with the power of{' '}
+        <span className="font-bold text-[black] dark:text-[white]">AI</span>
+      </p>
+    </div>
+    <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
+      <div className="bg-background rounded-md flex flex-col items-center gap-3">
+        <div className="relative w-full">
+          <Textarea
+            placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
+              if (e.key === 'Enter') handleSubmit();
+            }}
+            className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none placeholder:text-sm md:placeholder:text-lg"
+          />
+          <Button
+            className="absolute right-3 bottom-3 h-12 w-12"
+            variant="default"
+            onClick={handleSubmit}
+          >
+            <ArrowUp className="w-10 h-10" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const Page = () => {
   const [prompt, setPrompt] = useState('');
   const [course, setCourse] = useState<IAICourse | null>(null);
@@ -49,15 +221,21 @@ const Page = () => {
     { id: 1, text: 'Analyzing your request', status: 'pending' },
     { id: 2, text: 'Generating course structure', status: 'pending' },
     { id: 3, text: 'Finding relevant resources', status: 'pending' },
-    { id: 4, text: 'Building your course', status: 'pending' },
+    { id: 4, text: 'Building your course (0/0)', status: 'pending' },
   ]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const router = useRouter();
-
   const signedInUser = useAppSelector(
     (state) => state.signedInUserReducer.value.signedInUser
   );
+
+  const checkPointMap = useMemo(() => {
+    if (!course?.checkPoints) return new Map();
+    const map = new Map<number, string>();
+    course.checkPoints.forEach((cp) => map.set(cp.topicID, cp.name));
+    return map;
+  }, [course?.checkPoints]);
 
   useEffect(() => {
     if (isLoading && currentStep < loadingSteps.length) {
@@ -95,13 +273,8 @@ const Page = () => {
 
   const moveToNextStep = () => {
     if (currentStep < loadingSteps.length) {
-      // Mark current step as complete
       updateStepStatus(currentStep + 1, 'complete');
-
-      // Move to next step
       setCurrentStep((prev) => prev + 1);
-
-      // Mark next step as loading if available
       if (currentStep + 1 < loadingSteps.length) {
         updateStepStatus(currentStep + 2, 'loading');
       }
@@ -115,7 +288,6 @@ const Page = () => {
     setPrompt('');
     setCourse(null);
 
-    // Reset loading steps
     setLoadingSteps([
       { id: 1, text: 'Analyzing your request', status: 'pending' },
       { id: 2, text: 'Generating course structure', status: 'pending' },
@@ -123,18 +295,13 @@ const Page = () => {
       { id: 4, text: 'Building your course (0/0)', status: 'pending' },
     ]);
     setCurrentStep(0);
-
-    // Start first step
     updateStepStatus(1, 'loading');
 
     try {
-      // Step 1: Analyze request
       await new Promise((resolve) => setTimeout(resolve, 800));
       moveToNextStep();
 
-      // Step 2: Generate course structure
       const courseMeta = await generateAICourse(prompt);
-
       if (!courseMeta) {
         errorToast('Something went wrong, Try again later');
         setIsLoading(false);
@@ -142,7 +309,6 @@ const Page = () => {
       }
 
       moveToNextStep();
-
       setCourse({
         title: courseMeta.title,
         totalTimeTaken: courseMeta.totalTimeTaken,
@@ -150,15 +316,12 @@ const Page = () => {
         categories: courseMeta.categories,
         levels: courseMeta.levels,
         languages: courseMeta.languages,
+        checkPoints: courseMeta.checkPoints,
       });
 
-      // Step 3: Find relevant resources
       moveToNextStep();
-
-      // Step 4: Building course with found resources
       const totalTopics = courseMeta.topics.length;
 
-      // Update the building step text to include progress
       setLoadingSteps((steps) =>
         steps.map((step) =>
           step.id === 4
@@ -170,7 +333,6 @@ const Page = () => {
       for (let i = 0; i < totalTopics; i++) {
         const topic = courseMeta.topics[i];
         try {
-          // Update progress counter for each topic
           setLoadingSteps((steps) =>
             steps.map((step) =>
               step.id === 4
@@ -245,6 +407,7 @@ const Page = () => {
       enabled: true,
       contributors: [],
       enrolledUsers: [],
+      checkPoints: course.checkPoints,
       categories: course.categories,
       levels: course.levels,
       languages: course.languages,
@@ -254,7 +417,6 @@ const Page = () => {
       creator: signedInUser.id,
       tags: [],
       status: 'draft',
-      checkPoints: [],
       coursePrivacy: 'public',
       topicPrivacy: 'locked',
       banner: '',
@@ -265,7 +427,6 @@ const Page = () => {
 
     try {
       const { data } = await axios.post(`/api/course`, courseData);
-
       if (!data.success) {
         errorToast(data.message);
         setIsCreatingCourse(false);
@@ -276,7 +437,6 @@ const Page = () => {
         type: 'success',
         message: 'Course Created Successfully',
       });
-      console.log(data.data);
       router.push(`/course-landing/${data.data.slug}`);
     } catch (error) {
       errorToast('Something went wrong, Try again later');
@@ -288,56 +448,7 @@ const Page = () => {
     <div className="min-h-full flex flex-col">
       <main className="flex-1 flex items-center justify-center p-4">
         {isLoading ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-8 w-full max-w-md mx-auto"
-          >
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
-              Building Your Course
-            </h3>
-
-            <div className="space-y-4">
-              <AnimatePresence mode="popLayout">
-                {loadingSteps.map((step) => (
-                  <motion.div
-                    key={step.id}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{
-                      opacity: step.status !== 'pending' ? 1 : 0.5,
-                      height: 'auto',
-                    }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800"
-                  >
-                    <div className="flex-shrink-0">
-                      {step.status === 'complete' ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      ) : step.status === 'loading' ? (
-                        <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
-                      ) : (
-                        <div className="h-5 w-5 rounded-full border-2 border-gray-300 dark:border-neutral-700" />
-                      )}
-                    </div>
-                    <span
-                      className={`text-sm ${
-                        step.status === 'complete'
-                          ? 'text-gray-600 dark:text-neutral-300'
-                          : step.status === 'loading'
-                            ? 'text-gray-900 dark:text-white font-medium'
-                            : 'text-gray-500 dark:text-neutral-500'
-                      }`}
-                    >
-                      {step.text}
-                    </span>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-
-            <p className="text-sm text-gray-500 dark:text-neutral-400 mt-6">
-              This may take a few moments...
-            </p>
-          </motion.div>
+          <LoadingIndicator steps={loadingSteps} />
         ) : course ? (
           <div className="w-full max-w-4xl mx-auto">
             <div className="flex flex-col">
@@ -367,95 +478,27 @@ const Page = () => {
                   )}
                 </Button>
               </div>
-              <ul className="space-y-2">
+              <div className="space-y-0 w-full">
                 <AnimatePresence mode="popLayout">
-                  <div className="flex flex-col space-y-4">
-                    {course.topics.map((topic) => (
-                      <CourseEmbedLinkFullscreenDialog
-                        key={topic.id}
-                        url={topic.url}
-                      >
-                        <motion.li
-                          key={topic.title}
-                          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                          animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                          transition={{
-                            duration: 0.4,
-                            delay: topic.id * 0.15,
-                            type: 'spring',
-                            bounce: 0.3,
-                          }}
-                          className="p-4 rounded-lg bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-colors"
-                        >
-                          <div className="flex space-x-4 items-center text-start">
-                            <img
-                              src={getFavicon(topic.url ?? '')}
-                              className="w-12 h-12"
-                            />
-                            <div>
-                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {topic.id}. {topic.title}
-                              </h3>
-                              <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
-                                Time to complete: {topic.timeToComplete} minutes
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1 break-words break-all">
-                                {topic.url}
-                              </p>
-                            </div>
-                          </div>
-                        </motion.li>
-                      </CourseEmbedLinkFullscreenDialog>
-                    ))}
-                  </div>
+                  {course.topics.map((topic) => (
+                    <div key={topic.id} className="w-full">
+                      <CheckpointIndicator
+                        topicId={topic.id}
+                        checkPointMap={checkPointMap}
+                      />
+                      <TopicCard topic={topic} />
+                    </div>
+                  ))}
                 </AnimatePresence>
-              </ul>
-            </div>
-          </div>
-        ) : (
-          <div className="w-full max-w-3xl">
-            <div className="text-center space-y-4 my-4">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                What Course do you want to{' '}
-                <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
-                  build
-                </span>{' '}
-                today
-              </h1>
-              <p className="text:sm md:text-xl text-muted-foreground">
-                Curate & Create any course with the power of{' '}
-                <span className="font-bold text-[black] dark:text-[white]">
-                  AI
-                </span>
-              </p>
-            </div>
-            <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
-              <div className="bg-background rounded-md flex flex-col items-center gap-3">
-                <div className="relative w-full">
-                  <Textarea
-                    placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
-                      if (e.key === 'Enter') {
-                        handleSubmit();
-                      }
-                    }}
-                    className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none
-               placeholder:text-sm md:placeholder:text-lg"
-                  />
-                  <Button
-                    className="absolute right-3 bottom-3 h-12 w-12"
-                    variant="default"
-                    onClick={handleSubmit}
-                  >
-                    <ArrowUp className="w-10 h-10" />
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
+        ) : (
+          <CoursePromptInput
+            prompt={prompt}
+            setPrompt={setPrompt}
+            handleSubmit={handleSubmit}
+          />
         )}
       </main>
     </div>

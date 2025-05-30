@@ -5,6 +5,7 @@ import CourseLandingSideWidget from '@/components/course-landing-page/CourseLand
 import CourseTopicsAccordion from '@/components/course-landing-page/CourseTopics.Accordion';
 import { Spotlight } from '@/components/ui/animation/Spotlight';
 import LargeHeading from '@/components/ui/LargeHeading';
+import { ICheckPoint } from '@/types/checkPoint';
 import { ICourse } from '@/types/course';
 import { ICourseTopic } from '@/types/courseTopic';
 import { IEnrollState } from '@/types/enrollState';
@@ -77,6 +78,7 @@ const CourseLanding = async ({ params }: PageParams) => {
   // const sortedCourse = sortCourseBasedOnTopicsSortID(course);
 
   const courseTopics = course.topics as ICourseTopic[];
+  const checkPoints = course.checkPoints as ICheckPoint[];
 
   return (
     <div className="max-w-6xl w-full mx-auto">
@@ -88,13 +90,16 @@ const CourseLanding = async ({ params }: PageParams) => {
         <Icon className="absolute h-6 w-6 -bottom-3 -right-3 text-slate-900 dark:text-slate-100" />
         <CourseDetails course={course} />
         <div className="w-full border-b border-slate-300 dark:border-slate-800 my-12" />
-        <div className="flex space-x-2 items-center justify-center mt-8 z-10">
+        <div className="flex space-x-2 items-center justify-center my-8 z-10">
           <LargeHeading size="sm" className="text-center">
             Course Topics ({course.topics.length})
           </LargeHeading>
           <PiStackDuotone className="w-10 h-10" />
         </div>
-        <CourseTopicsAccordion courseTopics={courseTopics} />
+        <CourseTopicsAccordion
+          courseTopics={courseTopics}
+          checkPoints={checkPoints}
+        />
         <div className="w-full border-b border-slate-300 dark:border-slate-800 my-12" />
         <CourseFeedbacks courseId={course.id as string} />
       </div>

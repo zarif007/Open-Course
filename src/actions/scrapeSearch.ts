@@ -111,5 +111,5 @@ export async function scrapeFirstSearchResult(
 ): Promise<{ url: string } | null> {
   let query = search + ' ' + from;
 
-  return await getSearchResultsUsingExa(query);
+  return await getSearchResultsUsingSerper(query);
 }

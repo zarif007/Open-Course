@@ -17,6 +17,13 @@ const AICourseSchema = z.object({
     )
     .min(15)
     .max(30),
+  checkPoints: z.array(
+    z.object({
+      topicID: z.number(),
+      checkPointID: z.number(),
+      name: z.string(),
+    })
+  ),
   categories: z.array(z.string()),
   languages: z.array(z.string()),
   levels: z.array(z.string()),
