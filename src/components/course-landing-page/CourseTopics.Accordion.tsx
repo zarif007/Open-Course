@@ -60,12 +60,9 @@ const CourseTopicsList = ({
       {courseTopics.map((topic, index: number) => {
         const currentVersion = topic.versions[topic.versions.length - 1];
         return (
-          <div>
+          <div key={index}>
             {checkCurrentCheckPoint(topic.topicID)}
-            <div
-              key={index}
-              className="group flex items-center space-x-4 m-2 md:m-4 p-4 border border-slate-300 dark:border-gray-800 transition-all duration-200 bg-slate-100 dark:bg-gray-950"
-            >
+            <div className="group flex items-center space-x-4 m-2 md:m-4 p-4 border border-slate-300 dark:border-gray-800 transition-all duration-200 bg-slate-100 dark:bg-gray-950">
               <div className="flex-shrink-0">{favIcon(topic)}</div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-base font-medium text-slate-900 dark:text-gray-100 line-clamp-2 leading-tight">
