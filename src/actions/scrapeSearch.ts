@@ -106,10 +106,7 @@ const getSearchResultsUsingExa = async (query: string) => {
 };
 
 export async function scrapeFirstSearchResult(
-  search: string,
-  from: string = ''
+  queryStr: string
 ): Promise<{ url: string } | null> {
-  let query = search + ' ' + from;
-
-  return await getSearchResultsUsingSerper(query);
+  return await getSearchResultsUsingSerper(queryStr);
 }

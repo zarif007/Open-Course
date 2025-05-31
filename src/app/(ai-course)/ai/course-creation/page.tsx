@@ -302,6 +302,7 @@ const Page = () => {
       moveToNextStep();
 
       const courseMeta = await generateAICourse(prompt);
+
       if (!courseMeta) {
         errorToast('Something went wrong, Try again later');
         setIsLoading(false);
@@ -344,7 +345,7 @@ const Page = () => {
             )
           );
 
-          const result = await scrapeFirstSearchResult(topic.title, topic.from);
+          const result = await scrapeFirstSearchResult(topic.queryStr);
           if (result?.url) {
             const newTopic: ITopic = {
               id: i + 1,

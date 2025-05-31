@@ -65,6 +65,8 @@ const CourseTopics = ({ mode }: { mode: 'creation' | 'edit' | 'view' }) => {
 
     if (!cps) return;
 
+    console.log(course.checkPoints, course.topics);
+
     cps = [...cps].sort((obj1, obj2) => obj1.topicID - obj2.topicID);
 
     for (let i = 0; i < cps.length; i++) {
