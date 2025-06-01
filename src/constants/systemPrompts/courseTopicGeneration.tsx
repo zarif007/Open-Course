@@ -22,12 +22,12 @@ Return a structured **JSON object** with these fields:
 
 2. **contents** (array of objects):  
    Each object represents a **checkpoint** — a themed milestone grouping related topics.  
-   There should be **7 to 9 checkpoints**, and each should contain **4 to 5 topics**.
+   There should be **5 to 6 checkpoints**, and each should contain **4 to 5 topics**.
 
    Structure:
    \`\`\`ts
    {
-     name: string; // checkpoint name (e.g., "Basics", "Advanced Lighting", "Breathing Techniques")
+     checkpointName: string; // checkpoint name (e.g., "Basics", "Advanced Lighting", "Breathing Techniques")
      topics: [
        {
          title: string;     // A short, clear topic name
@@ -37,7 +37,7 @@ Return a structured **JSON object** with these fields:
    }
    \`\`\`
 
-   ✅ Guidelines for \`name\`:
+   ✅ Guidelines for \`checkpointName\`:
    - Should represent a **logical grouping or learning phase**.
    - Do **not** divide arbitrarily — base this on conceptual flow and content relevance.
 

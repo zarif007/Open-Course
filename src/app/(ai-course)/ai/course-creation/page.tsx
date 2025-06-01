@@ -18,6 +18,7 @@ import generateBannerFromCourse from '@/utils/generateBannerFromCourse';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ICheckPoint } from '@/types/checkPoint';
+import AICourses from '@/components/AI/AICourses';
 
 interface IAICourse {
   title: string;
@@ -41,6 +42,16 @@ interface LoadingStep {
   text: string;
   status: 'pending' | 'loading' | 'complete';
 }
+
+const COURSE_SUGGESTIONS = [
+  'Python for Beginners',
+  'How to Bake a Cake',
+  'Digital Marketing Basics',
+  'Photography for Beginners',
+  'Excel Data Analysis',
+  'Mobile App Development',
+  'Guitar for Beginners',
+];
 
 const LoadingIndicator = ({ steps }: { steps: LoadingStep[] }) => (
   <motion.div
@@ -164,6 +175,41 @@ const TopicCard = ({ topic }: { topic: ITopic }) => (
   </div>
 );
 
+const CourseSuggestions = ({
+  onSuggestionClick,
+}: {
+  onSuggestionClick: (suggestion: string) => void;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    className="hidden md:block w-full max-w-4xl mx-auto mt-6"
+  >
+    <div className="text-center mb-4">
+      <p className="text-sm text-gray-600 dark:text-neutral-400">
+        Try one of these popular courses:
+      </p>
+    </div>
+    <div className="flex flex-wrap gap-2 justify-center">
+      {COURSE_SUGGESTIONS.map((suggestion, index) => (
+        <motion.button
+          key={suggestion}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2, delay: index * 0.05 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onSuggestionClick(suggestion)}
+          className="px-4 py-2 text-sm font-medium rounded-md border border-slate-100 dark:border-gray-950 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-slate-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-neutral-600"
+        >
+          {suggestion}
+        </motion.button>
+      ))}
+    </div>
+  </motion.div>
+);
+
 const CoursePromptInput = ({
   prompt,
   setPrompt,
@@ -172,45 +218,54 @@ const CoursePromptInput = ({
   prompt: string;
   setPrompt: (value: string) => void;
   handleSubmit: () => void;
-}) => (
-  <div className="w-full max-w-3xl">
-    <div className="text-center space-y-4 my-4">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-        What Course do you want to{' '}
-        <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
-          build
-        </span>{' '}
-        today
-      </h1>
-      <p className="text:sm md:text-xl text-muted-foreground">
-        Curate & Create any course with the power of{' '}
-        <span className="font-bold text-[black] dark:text-[white]">AI</span>
-      </p>
-    </div>
-    <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
-      <div className="bg-background rounded-md flex flex-col items-center gap-3">
-        <div className="relative w-full">
-          <Textarea
-            placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
-              if (e.key === 'Enter') handleSubmit();
-            }}
-            className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none placeholder:text-sm md:placeholder:text-lg"
-          />
-          <Button
-            className="absolute right-3 bottom-3 h-12 w-12"
-            variant="default"
-            onClick={handleSubmit}
-          >
-            <ArrowUp className="w-10 h-10" />
-          </Button>
+}) => {
+  const handleSuggestionClick = (suggestion: string) => {
+    setPrompt(suggestion);
+  };
+
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="text-center space-y-4 my-4">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          What Course do you want to{' '}
+          <span className="px-2 rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
+            build
+          </span>{' '}
+          today
+        </h1>
+        <p className="text:sm md:text-xl text-muted-foreground">
+          Curate & Create any course with the power of{' '}
+          <span className="font-bold text-[black] dark:text-[white]">AI</span>
+        </p>
+      </div>
+      <div className="relative p-[2px] rounded-md animate-gradient-border bg-[length:400%_100%] bg-gradient-to-r from-rose-500 via-rose-500 to-blue-500 dark:from-rose-800 dark:via-rose-800 dark:to-blue-800">
+        <div className="bg-background rounded-md flex flex-col items-center gap-3">
+          <div className="relative w-full">
+            <Textarea
+              placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
+                if (e.key === 'Enter') handleSubmit();
+              }}
+              className="min-h-[120px] text-lg shadow-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground flex-1 px-4 py-6 pr-12 resize-none placeholder:text-sm md:placeholder:text-lg"
+            />
+            <Button
+              className="absolute right-3 bottom-3 h-12 w-12"
+              variant="default"
+              onClick={handleSubmit}
+            >
+              <ArrowUp className="w-10 h-10" />
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Course Suggestions */}
+      <CourseSuggestions onSuggestionClick={handleSuggestionClick} />
     </div>
-  </div>
-);
+  );
+};
 
 const Page = () => {
   const [prompt, setPrompt] = useState('');
@@ -446,7 +501,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-full flex flex-col">
+    <div className="min-h-full flex flex-col max-w-full">
       <main className="flex-1 flex items-center justify-center p-4">
         {isLoading ? (
           <LoadingIndicator steps={loadingSteps} />
@@ -495,11 +550,14 @@ const Page = () => {
             </div>
           </div>
         ) : (
-          <CoursePromptInput
-            prompt={prompt}
-            setPrompt={setPrompt}
-            handleSubmit={handleSubmit}
-          />
+          <div>
+            <CoursePromptInput
+              prompt={prompt}
+              setPrompt={setPrompt}
+              handleSubmit={handleSubmit}
+            />
+            <AICourses />
+          </div>
         )}
       </main>
     </div>
