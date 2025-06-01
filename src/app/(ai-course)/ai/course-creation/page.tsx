@@ -219,6 +219,49 @@ const CoursePromptInput = ({
   setPrompt: (value: string) => void;
   handleSubmit: () => void;
 }) => {
+  const [currentPlaceholder, setCurrentPlaceholder] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
+
+  const placeholderExamples = [
+    'Learn React from scratch',
+    'Advanced Python for Data Science',
+    'JavaScript for Beginners',
+    'Digital Marketing Mastery',
+    'Machine Learning Basics',
+    'Web Design with CSS',
+    'Photography Fundamentals',
+  ];
+
+  useEffect(() => {
+    const currentExample = placeholderExamples[currentExampleIndex];
+    const typingSpeed = isDeleting ? 50 : 100;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        if (currentIndex < currentExample.length) {
+          setCurrentPlaceholder(currentExample.slice(0, currentIndex + 1));
+          setCurrentIndex((prev) => prev + 1);
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        if (currentIndex > 0) {
+          setCurrentPlaceholder(currentExample.slice(0, currentIndex - 1));
+          setCurrentIndex((prev) => prev - 1);
+        } else {
+          setIsDeleting(false);
+          setCurrentExampleIndex(
+            (prev) => (prev + 1) % placeholderExamples.length
+          );
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [currentIndex, isDeleting, currentExampleIndex, placeholderExamples]);
+
   const handleSuggestionClick = (suggestion: string) => {
     setPrompt(suggestion);
   };
@@ -242,7 +285,9 @@ const CoursePromptInput = ({
         <div className="bg-background rounded-md flex flex-col items-center gap-3">
           <div className="relative w-full">
             <Textarea
-              placeholder="Example: 'Learn React' or 'Advanced Python for Data Science'"
+              placeholder={`Example: '${currentPlaceholder}${
+                currentPlaceholder ? '|' : ''
+              }'`}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyPress={(e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -261,7 +306,6 @@ const CoursePromptInput = ({
         </div>
       </div>
 
-      {/* Course Suggestions */}
       <CourseSuggestions onSuggestionClick={handleSuggestionClick} />
     </div>
   );
