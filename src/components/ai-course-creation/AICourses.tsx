@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import CourseCard from '../course-cards/Course.Card';
 import CourseCardSkeleton from '../skeletons/CourseCard.Skeleton';
-import LargeHeading from '../ui/LargeHeading';
 
 const LIMIT = 6;
 

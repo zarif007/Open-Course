@@ -60,28 +60,32 @@ const Courses = () => {
 
   return (
     <div className="md:mx-4">
-      <div className="flex justify-between items-center mx-4 mb-4">
+      <div className="flex flex-row items-center justify-between gap-4 mx-4 mb-4">
         <Tabs
           value={isAIGenerated}
           onValueChange={handleTabChange}
-          className="w-[400px]"
+          className="flex-1 min-w-0"
         >
           <TabsList className="h-12 bg-background p-1 rounded-lg border">
             <TabsTrigger
               value="false"
-              className="data-[state=active]:shadow-sm h-10 px-4 py-2 rounded-md transition-all font-semibold"
+              className="data-[state=active]:shadow-sm h-10 px-3 sm:px-4 py-2 rounded-md transition-all font-semibold"
             >
-              Regular Courses
+              <span className="sm:hidden">📚</span>
+              <span className="hidden sm:inline">📚 Regular Courses</span>
             </TabsTrigger>
             <TabsTrigger
               value="true"
-              className="data-[state=active]:shadow-sm h-10 px-4 py-2 rounded-md transition-all font-semibold"
+              className="data-[state=active]:shadow-sm h-10 px-3 sm:px-4 py-2 rounded-md transition-all font-semibold"
             >
-              AI-Generated Courses
+              <span className="sm:hidden">🤖</span>
+              <span className="hidden sm:inline">🤖 AI-Generated</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        <CourseSearchDialog />
+        <div className="flex-shrink-0">
+          <CourseSearchDialog />
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-2">
         {courses?.map((course: ICourse, index: number) => {
