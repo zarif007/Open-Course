@@ -5,13 +5,14 @@ import LargeHeading from '../ui/LargeHeading';
 import TextAppearAnimation from '../ui/TextAppearAnimation';
 import CourseCategoriesRotation from './CourseCategoriesRotation';
 import Link from 'next/link';
-import { buttonVariants } from '../ui/Button';
+import { RocketIcon, GraduationCapIcon } from 'lucide-react';
 import GridPattern from '../ui/animation/GridPattern';
 import StarOnGithub from './StarOnGithub';
+import StatsSummary from './StatsSummary';
 
 const LandingPage = () => {
   return (
-    <main className="relative h-screen flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:my-0">
+    <main className="relative h-screen max-h-full flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:my-24">
       <div className="absolute inset-0 z-0 hidden md:block">
         <GridPattern strokeDasharray={'4 2'} numSquares={15} />
       </div>
@@ -63,24 +64,23 @@ const LandingPage = () => {
             <br />
           </LargeHeading>
           <CourseCategoriesRotation />
-          <div className="flex space-x-4 flex-wrap justify-center items-center">
+          <div className="flex flex-wrap gap-4 justify-center items-center mt-4">
             <Link
               href="/course-creation"
-              className={`${buttonVariants({
-                variant: 'bigButton',
-              })} mt-4 bg-[#0c10ed]`}
+              className="px-6 py-3 rounded-md bg-rose-500 text-white text-lg font-semibold shadow hover:bg-rose-600 transition-colors flex items-center gap-2"
             >
-              <span className="font-semibold">Create</span>
+              <RocketIcon className="w-5 h-5" />
+              Create
             </Link>
             <Link
               href="/courses"
-              className={`${buttonVariants({
-                variant: 'bigButtonOutline',
-              })} mt-4`}
+              className="px-6 py-3 rounded-md border-2 border-rose-500 text-rose-500 text-lg font-semibold hover:bg-rose-50 dark:hover:bg-[#2a2a2a] transition-colors flex items-center gap-2"
             >
-              <span className="font-semibold">Enroll</span>
+              <GraduationCapIcon className="w-5 h-5" />
+              Enroll
             </Link>
           </div>
+          <StatsSummary />
         </div>
       </div>
     </main>

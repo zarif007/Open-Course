@@ -1,75 +1,54 @@
 'use client';
-import Image from 'next/image';
 import React from 'react';
 import { useTheme } from 'next-themes';
 import Paragraph from '../ui/Paragraph';
-import LargeHeading from '../ui/LargeHeading';
 import { Button } from '../ui/Button';
-import { BackgroundBeams } from '../ui/animation/BackgroundBeams';
 import LandingPageFigureBeam from './LandingPageFigure.Beam';
 import HyperText from '../ui/HyperText';
 
+const Highlight = ({ children }: { children: React.ReactNode }) => (
+  <span className="text-rose-500 font-semibold">{children}</span>
+);
+
 const IntroPage = () => {
   const { theme } = useTheme();
+
   return (
-    <main className="relative flex flex-col items-center justify-center overflow-x-hidden mb-12 md:mb-20 mx-auto">
-      {/* <LargeHeading className="underline decoration-rose-500">
-        What is It?
-      </LargeHeading> */}
+    <main className="flex flex-col items-center justify-center max-w-3xl mx-auto px-6 py-12 space-y-10 overflow-x-hidden select-none">
       <HyperText
-        text=" What is It?"
-        className="underline decoration-rose-500"
+        text="What is It?"
+        className="text-3xl font-bold underline underline-offset-4 decoration-rose-500"
       />
 
-      <figure className="max-w-screen-md mx-auto text-center">
-        <svg
-          className="w-10 h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 18 14"
-        >
-          <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
-        </svg>
-        <blockquote className="bg-gray-100 dark:bg-[#0a0a0a]">
-          <Paragraph className="font-bold">
-            A{' '}
-            <span className="bg-rose-500 px-1">community driven platform</span>{' '}
-            where users can{' '}
-            <span className="bg-rose-500 px-1">create courses</span> on a Topic
-            by collecting{' '}
-            <span className="bg-rose-500 px-1">free contents</span> from the
-            internet and arranging them in a{' '}
-            <span className="bg-rose-500 px-1">sequential manner</span> to share
-            with others <span className="bg-rose-500 px-1">for free.</span>
+      <figure className="text-center max-w-3xl">
+        <blockquote>
+          <Paragraph className="text-gray-800 dark:text-gray-200 text-base leading-relaxed">
+            A <Highlight>community driven platform</Highlight> where users can{' '}
+            <Highlight>create courses</Highlight> on a topic by collecting{' '}
+            <Highlight>free contents</Highlight> from the internet and arranging
+            them in a <Highlight>sequential manner</Highlight> to share with
+            others <Highlight>for free.</Highlight>
           </Paragraph>
         </blockquote>
-        <span className="inline-block h-1 w-10 rounded bg-rose-500 "></span>
-        <figcaption className="flex items-center justify-center mt-6 space-x-3">
-          <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-            <cite className="pr-3 font-medium text-gray-900 dark:text-white">
-              Zarif
-            </cite>
-            <cite className="pl-3 text-sm text-gray-500 dark:text-gray-400">
-              Creator
-            </cite>
-          </div>
+        <figcaption className="mt-6 text-sm font-medium text-gray-600 dark:text-gray-400">
+          —{' '}
+          <a
+            href="https://www.linkedin.com/in/md-zarif-ul-huq/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-800 dark:text-gray-300 hover:text-rose-500 dark:hover:text-rose-500 underline underline-offset-2 transition"
+          >
+            Zarif
+          </a>
+          , Creator
         </figcaption>
       </figure>
+
       <LandingPageFigureBeam />
-      {/* <div className="my-4">
-        <Image
-          className=""
-          src={theme === 'dark' ? '/whatisit-dark.png' : '/whatisit-light.png'}
-          alt="banner"
-          width={800}
-          height={800}
-        />
-      </div> */}
 
       <Button
         variant="generalRose"
-        className="bg-rose-500 dark:bg-rose-500 mb-1 hover:bg-rose-500 dark:hover:bg-rose-500 focus:ring-offset-0 focus:ring-0"
+        className="px-10 py-3 rounded-md font-semibold text-white bg-rose-500 hover:bg-rose-600 focus:ring-0 focus:outline-none transition-colors"
       >
         Watch a Video?
       </Button>

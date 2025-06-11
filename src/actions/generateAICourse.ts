@@ -3,8 +3,8 @@
 import { z } from 'zod';
 import { generateObject } from 'ai';
 import { groq } from '@ai-sdk/groq';
-import { openai } from '@ai-sdk/openai';
 import { topicGenerationSystemPrompt } from '@/constants/systemPrompts/courseTopicGeneration';
+import { google } from '@ai-sdk/google';
 
 const AICourseSchema = z.object({
   title: z.string(),
@@ -31,13 +31,12 @@ const AICourseSchema = z.object({
   levels: z.array(z.string()),
 });
 
-const model = openai('o4-mini');
+const model = groq('deepseek-r1-distill-llama-70b');
 
 const generateTopics = async (prompt: string) => {
   const { object } = await generateObject({
     model,
     prompt,
-    temperature: 1,
     system: topicGenerationSystemPrompt,
     output: 'object',
     schema: AICourseSchema,
