@@ -12,7 +12,7 @@ import StatsSummary from './StatsSummary';
 
 const LandingPage = () => {
   return (
-    <main className="relative h-screen max-h-full flex items-center justify-center overflow-x-hidden mb-4 mt-8 md:my-24">
+    <main className="relative h-screen max-h-full flex items-center justify-center overflow-x-hidden mb-4 mt-12 md:my-24">
       <div className="absolute inset-0 z-0 hidden md:block">
         <GridPattern strokeDasharray={'4 2'} numSquares={15} />
       </div>

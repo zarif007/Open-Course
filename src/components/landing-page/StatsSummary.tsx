@@ -73,19 +73,22 @@ const StatsSummary: React.FC = () => {
   ];
 
   return (
-    <div className="mt-8 flex flex-row justify-center items-center gap-6 flex-wrap">
+    <div className="mt-8 flex justify-center items-center gap-2 sm:gap-4 md:gap-6 flex-wrap">
       {stats.map(({ label, value }, idx) => {
         const count = useCountUp(value, 1500, !loading);
 
         return (
           <div
             key={idx}
-            className="w-[180px] h-[120px] bg-white dark:bg-neutral-900 px-6 py-5 rounded-xl shadow border border-neutral-200 dark:border-neutral-800 text-center flex flex-col justify-center"
+            className="w-[120px] sm:w-[150px] md:w-[180px] h-[100px] sm:h-[110px] md:h-[120px] 
+                   bg-white dark:bg-neutral-900 px-4 sm:px-5 md:px-6 py-4 rounded-xl shadow 
+                   border border-neutral-200 dark:border-neutral-800 
+                   text-center flex flex-col justify-center"
           >
-            <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-rose-500 tabular-nums">
+            <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-rose-500 tabular-nums">
               {loading ? 0 : count}
             </div>
-            <div className="mt-2 text-sm sm:text-base md:text-lg font-semibold text-gray-700 dark:text-gray-300">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
               {label}
             </div>
           </div>
