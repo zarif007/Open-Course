@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import SocialMediaLogoBar from './SocialMediaLogo.Bar';
 import NotifyBar from './Notify.Bar';
@@ -9,10 +11,13 @@ import { RocketIcon, GraduationCapIcon } from 'lucide-react';
 import GridPattern from '../ui/animation/GridPattern';
 import StarOnGithub from './StarOnGithub';
 import StatsSummary from './StatsSummary';
+import { Safari } from '../ui/animation/Safari';
+import { useTheme } from 'next-themes';
 
 const LandingPage = () => {
+  const { theme, setTheme } = useTheme();
   return (
-    <main className="relative h-screen max-h-full flex items-center justify-center overflow-x-hidden mb-4 mt-12 md:my-24">
+    <main className="relative h-full flex items-center justify-center overflow-x-hidden mb-4 pt-24 md:pt-24 md:mb-0">
       <div className="absolute inset-0 z-0 hidden md:block">
         <GridPattern strokeDasharray={'4 2'} numSquares={15} />
       </div>
@@ -82,6 +87,15 @@ const LandingPage = () => {
           </div>
           <StatsSummary />
         </div>
+        <Safari
+          imageSrc={
+            theme === 'dark'
+              ? 'https://i.postimg.cc/NMRFTrhh/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
+              : 'https://i.postimg.cc/HWVBGwGW/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
+          }
+          mode="simple"
+          url="https://www.open-course.net/"
+        />
       </div>
     </main>
   );
