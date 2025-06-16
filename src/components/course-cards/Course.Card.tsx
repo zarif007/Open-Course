@@ -62,11 +62,11 @@ const CourseCard = ({ course }: { course: ICourse }) => {
         </div>
 
         <div className="p-6">
-          <div className="flex justify-between items-center">
-            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate">
+          <div className="flex justify-between items-center gap-2">
+            <h2 className="tracking-widest text-xs title-font font-bold text-gray-500 truncate flex-1 min-w-0">
               By <span className="text-rose-500">{creator.name ?? ''}</span>
             </h2>
-            <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1">
+            <p className="text-slate-600 dark:text-gray-600 text-sm font-semibold mb-1 flex-shrink-0">
               {formatDate(
                 getLastUpdatedTopicDate(course.topics as ICourseTopic[])
               )}

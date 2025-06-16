@@ -16,7 +16,7 @@ export function Safari({
   videoSrc,
   url = 'example.com',
   width = 800,
-  height = 600,
+  height = 500,
   mode = 'default',
   className = '',
   ...props
@@ -51,7 +51,7 @@ export function Safari({
   return (
     <div
       ref={componentRef}
-      className={`flex justify-center items-center w-full ${className} my-8 transition-all duration-1000 ease-out ${
+      className={`flex justify-center items-center w-full ${className} transition-all duration-1000 ease-out ${
         isVisible
           ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-8 scale-95'
@@ -63,7 +63,7 @@ export function Safari({
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="max-w-full h-auto"
+        className="max-w-full h-fit"
         style={{ aspectRatio: `${width}/${height}` }}
         {...props}
       >
@@ -180,8 +180,8 @@ export function Safari({
               href={imageSrc}
               x="1"
               y="35"
-              width="798"
-              height="466"
+              width={width - 2}
+              height={height - 36}
               preserveAspectRatio="xMidYMid slice"
               clipPath="url(#roundedBottom)"
             />
@@ -190,8 +190,8 @@ export function Safari({
             <foreignObject
               x="1"
               y="35"
-              width="798"
-              height="466"
+              width={width - 2}
+              height={height - 36}
               preserveAspectRatio="xMidYMid slice"
               clipPath="url(#roundedBottom)"
             >
@@ -218,36 +218,6 @@ export function Safari({
           </clipPath>
         </defs>
       </svg>
-    </div>
-  );
-}
-
-// Demo component to show the Safari component with scroll animation
-export default function SafariDemo() {
-  return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="h-screen flex items-center justify-center">
-        <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200">
-          Scroll down to see the Safari component animate in!
-        </h1>
-      </div>
-
-      <div className="py-20">
-        <Safari
-          url="https://example.com"
-          imageSrc="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
-        />
-      </div>
-
-      <div className="py-20">
-        <Safari url="https://another-example.com" mode="simple" />
-      </div>
-
-      <div className="h-screen flex items-center justify-center">
-        <h2 className="text-2xl text-gray-600 dark:text-gray-400">
-          End of demo
-        </h2>
-      </div>
     </div>
   );
 }

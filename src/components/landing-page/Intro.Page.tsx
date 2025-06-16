@@ -5,6 +5,7 @@ import Paragraph from '../ui/Paragraph';
 import { Button } from '../ui/Button';
 import LandingPageFigureBeam from './LandingPageFigure.Beam';
 import HyperText from '../ui/HyperText';
+import { Safari } from '../ui/animation/Safari';
 
 const Highlight = ({ children }: { children: React.ReactNode }) => (
   <span className="text-rose-500 font-semibold">{children}</span>
@@ -14,7 +15,7 @@ const IntroPage = () => {
   const { theme } = useTheme();
 
   return (
-    <main className="flex flex-col items-center justify-center max-w-3xl mx-auto px-6 py-12 space-y-10 overflow-x-hidden select-none">
+    <main className="flex flex-col items-center justify-center max-w-6xl mx-auto px-6 pb-12 space-y-10 overflow-x-hidden select-none">
       <HyperText
         text="What is It?"
         className="text-3xl font-bold underline underline-offset-4 decoration-rose-500"
@@ -30,7 +31,7 @@ const IntroPage = () => {
             others <Highlight>for free.</Highlight>
           </Paragraph>
         </blockquote>
-        <figcaption className="mt-6 text-sm font-medium text-gray-600 dark:text-gray-400">
+        <figcaption className="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">
           —{' '}
           <a
             href="https://www.linkedin.com/in/md-zarif-ul-huq/"
@@ -45,7 +46,29 @@ const IntroPage = () => {
       </figure>
 
       <LandingPageFigureBeam />
-
+      <Safari
+        imageSrc={
+          theme === 'dark'
+            ? 'https://i.postimg.cc/NMRFTrhh/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
+            : 'https://i.postimg.cc/HWVBGwGW/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
+        }
+        mode="simple"
+        url="https://www.open-course.net/"
+        className="my-0"
+      />
+      <div className="flex flex-wrap space-x-2 mx-auto justify-center items-center space-y-1">
+        {[
+          'Course View',
+          'Course Creation',
+          'AI Ask',
+          'Version',
+          'AI Course Creation',
+        ].map((text, index) => (
+          <Button size="sm" variant="outline">
+            {text}
+          </Button>
+        ))}
+      </div>
       <Button
         variant="generalRose"
         className="px-10 py-3 rounded-md font-semibold text-white bg-rose-500 hover:bg-rose-600 focus:ring-0 focus:outline-none transition-colors"

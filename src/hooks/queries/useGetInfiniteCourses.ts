@@ -17,7 +17,7 @@ const getCourses = async (page: number, searchTerm: string) => {
 };
 const useGetInfiniteCourses = (searchTerm: string) => {
   return useInfiniteQuery(
-    ['courses'],
+    [`courses`, searchTerm],
     async ({ pageParam = 1 }) => await getCourses(pageParam, searchTerm),
     {
       staleTime: 5 * 60 * 1000,
