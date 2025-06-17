@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Paragraph from '../ui/Paragraph';
 import { Button } from '../ui/Button';
@@ -13,6 +13,42 @@ const Highlight = ({ children }: { children: React.ReactNode }) => (
 
 const IntroPage = () => {
   const { theme } = useTheme();
+  const [selectedKey, setSelectedKey] = useState<string>('Course View');
+
+  const imageMap: Record<string, { dark: string; light: string }> = {
+    'Course View': {
+      dark: 'https://i.postimg.cc/NMRFTrhh/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png',
+      light:
+        'https://i.postimg.cc/HWVBGwGW/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png',
+    },
+    'AI Ask': {
+      dark: 'https://i.postimg.cc/GpzWQ3BK/Screenshot-2025-06-17-at-11-48-00-PM.png',
+      light:
+        'https://i.postimg.cc/vTpFVP1d/Screenshot-2025-06-17-at-11-47-17-PM.png',
+    },
+    Profile: {
+      dark: 'https://i.postimg.cc/TYMThwn5/Screenshot-2025-06-17-at-11-50-42-PM.png',
+      light:
+        'https://i.postimg.cc/W4KQKWnq/Screenshot-2025-06-17-at-11-50-49-PM.png',
+    },
+    'AI Course Creation': {
+      dark: 'https://i.postimg.cc/BQM24d1y/Screenshot-2025-06-17-at-11-42-23-PM.png',
+      light:
+        'https://i.postimg.cc/4dk9WGrK/Screenshot-2025-06-17-at-11-42-35-PM.png',
+    },
+  };
+
+  const getImageForSafari = () => {
+    const currentTheme = theme === 'dark' ? 'dark' : 'light';
+    return (
+      imageMap[selectedKey]?.[currentTheme] ||
+      imageMap['Course View'][currentTheme]
+    );
+  };
+
+  const selectImageForSafari = (key: string) => () => {
+    setSelectedKey(key);
+  };
 
   return (
     <main className="flex flex-col items-center justify-center max-w-6xl mx-auto px-6 pb-12 space-y-10 overflow-x-hidden select-none">
@@ -47,27 +83,25 @@ const IntroPage = () => {
 
       <LandingPageFigureBeam />
       <Safari
-        imageSrc={
-          theme === 'dark'
-            ? 'https://i.postimg.cc/NMRFTrhh/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
-            : 'https://i.postimg.cc/HWVBGwGW/screencapture-open-course-net-course-building-a-large-language-model-from-scratch-9d-STy-2025-06-15-2.png'
-        }
+        imageSrc={getImageForSafari()}
         mode="simple"
         url="https://www.open-course.net/"
         className="my-0"
       />
-      <div className="flex flex-wrap space-x-2 mx-auto justify-center items-center space-y-1">
-        {[
-          'Course View',
-          'Course Creation',
-          'AI Ask',
-          'Version',
-          'AI Course Creation',
-        ].map((text, index) => (
-          <Button size="sm" variant="outline">
-            {text}
-          </Button>
-        ))}
+      <div className="flex flex-wrap mx-auto justify-center items-center">
+        {['Course View', 'AI Course Creation', 'AI Ask', 'Profile'].map(
+          (text, index) => (
+            <Button
+              key={index}
+              size="sm"
+              variant="outline"
+              className="m-1"
+              onClick={selectImageForSafari(text)}
+            >
+              {text}
+            </Button>
+          )
+        )}
       </div>
       <Button
         variant="generalRose"
