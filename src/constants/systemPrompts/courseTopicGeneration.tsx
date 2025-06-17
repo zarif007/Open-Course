@@ -22,7 +22,7 @@ Return a structured **JSON object** with these fields:
 
 2. **contents** (array of objects):  
    Each object represents a **checkpoint** — a themed milestone grouping related topics.  
-   There should be **5 to 6 checkpoints**, and each should contain **4 to 5 topics**.
+   There should be **5 to 7 checkpoints**, and each should contain **5 to 7 topics**.
 
    Structure:
    \`\`\`ts

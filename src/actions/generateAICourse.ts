@@ -20,18 +20,18 @@ const AICourseSchema = z.object({
               queryStr: z.string(),
             })
           )
-          .min(4)
-          .max(5),
+          .min(5)
+          .max(7),
       })
     )
     .min(5)
-    .max(6),
+    .max(7),
   categories: z.array(z.string()),
   languages: z.array(z.string()),
   levels: z.array(z.string()),
 });
 
-const model = groq('deepseek-r1-distill-llama-70b');
+const model = groq('llama-3.3-70b-versatile');
 
 const generateTopics = async (prompt: string) => {
   const { object } = await generateObject({
