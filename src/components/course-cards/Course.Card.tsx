@@ -121,7 +121,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <div className="flex justify-end text-gray-500 items-center space-x-2 mt-1">
-            <CourseRating courseId={course.id as string} />
+            <CourseRating courseId={course._id as string} />
             <div className="flex space-x-1 items-center">
               <PiUsersThreeDuotone className="w-6 h-6" />
               <p className="font-semibold text-md">

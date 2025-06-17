@@ -28,7 +28,6 @@ export const GET = async (req: NextRequest) => {
 
   const andConditions = [];
 
-  // Search needs $or for searching in specified fields
   if (searchTerm && searchTerm.length > 0) {
     const constraints = [
       ...courseSearchableFields.map((field) => ({
@@ -43,26 +42,22 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  // Handle isAIGenerated filter specially
   const { isAIGenerated, ...otherFilters } = filtersData;
 
   if (isAIGenerated) {
-    const isAIGeneratedValue = isAIGenerated[0]; // Assuming it's an array from your pick function
+    const isAIGeneratedValue = isAIGenerated[0];
 
     if (isAIGeneratedValue === 'true') {
-      // Only AI-generated courses
       andConditions.push({
         isAIGenerated: true,
       });
     } else if (isAIGeneratedValue === 'false') {
-      // Non-AI courses (false or field doesn't exist)
       andConditions.push({
         $or: [{ isAIGenerated: false }, { isAIGenerated: { $exists: false } }],
       });
     }
   }
 
-  // Filters needs $and to fulfill all the conditions (for other filters)
   if (Object.keys(otherFilters).length) {
     andConditions.push({
       $and: Object.entries(otherFilters).map(([field, value]) => ({
@@ -73,31 +68,89 @@ export const GET = async (req: NextRequest) => {
     });
   }
 
-  // Dynamic Sort needs field to do sorting
-  const sortConditions: { [key: string]: SortOrder } = {};
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const courses = await Course.find(whereConditions)
-    .populate({
-      path: 'topics',
-      model: CourseTopic,
-      select:
-        'updatedAt versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
-    })
-    .populate({
-      path: 'creator',
-      model: User,
-      select: 'name image userName',
-    })
-    .sort(sortConditions)
-    .skip(skip)
-    .limit(limit);
+  const pipeline: any[] = [];
 
+  if (Object.keys(whereConditions).length > 0) {
+    pipeline.push({ $match: whereConditions });
+  }
+
+  pipeline.push({
+    $addFields: {
+      enrolledUsersCount: { $size: { $ifNull: ['$enrolledUsers', []] } },
+    },
+  });
+
+  const sortStage: any = {
+    enrolledUsersCount: -1,
+  };
+
+  if (sortBy && sortOrder) {
+    const mongoSortOrder = sortOrder === 'desc' || sortOrder === -1 ? -1 : 1;
+    sortStage[sortBy] = mongoSortOrder;
+  }
+
+  pipeline.push({
+    $sort: sortStage,
+  });
+
+  pipeline.push({ $skip: skip });
+  pipeline.push({ $limit: limit });
+
+  pipeline.push({
+    $lookup: {
+      from: 'coursetopics',
+      localField: 'topics',
+      foreignField: '_id',
+      as: 'topics',
+      pipeline: [
+        {
+          $project: {
+            updatedAt: 1,
+            'versions.type': 1,
+            'versions.data.title': 1,
+            'versions.data.description': 1,
+            'versions.data.source': 1,
+            'versions.data.duration': 1,
+          },
+        },
+      ],
+    },
+  });
+
+  pipeline.push({
+    $lookup: {
+      from: 'users',
+      localField: 'creator',
+      foreignField: '_id',
+      as: 'creator',
+      pipeline: [
+        {
+          $project: {
+            name: 1,
+            image: 1,
+            userName: 1,
+          },
+        },
+      ],
+    },
+  });
+
+  pipeline.push({
+    $addFields: {
+      creator: { $arrayElemAt: ['$creator', 0] },
+    },
+  });
+
+  pipeline.push({
+    $project: {
+      enrolledUsersCount: 0,
+    },
+  });
+
+  const courses = await Course.aggregate(pipeline);
   const total = await Course.countDocuments(whereConditions);
 
   return NextResponse.json({
