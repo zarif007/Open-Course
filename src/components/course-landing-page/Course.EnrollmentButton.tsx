@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/store';
 import { ICourse } from '@/types/course';
 import { IEnrollState } from '@/types/enrollState';
 import AuthDialog from '../auth/Auth.Dialog';
+import { useEnrollment } from '@/hooks/useEnrollment';
 
 const CourseEnrollmentButton = ({
   course,
@@ -19,62 +20,16 @@ const CourseEnrollmentButton = ({
   course: ICourse;
   enrollState: IEnrollState | null;
 }) => {
-  const router = useRouter();
-
-  const [loadingStatus, setLoadingStatus] = useState<
-    'free' | 'Processing' | 'Redirecting'
-  >('free');
-
-  const [isEnrolled, setIsEnrolled] = useState<string>('loading');
-
-  const { data: session } = useSession();
-
-  const signedInUser = useAppSelector(
-    (state) => state.signedInUserReducer.value.signedInUser
-  );
-
-  useEffect(() => {
-    if (!signedInUser?.id || !enrollState) {
-      setIsEnrolled('no');
-    } else {
-      setIsEnrolled('yes');
-    }
-  }, [course, signedInUser?.id, enrollState]);
-
-  const handleEnrollment = async () => {
-    if (loadingStatus !== 'free' || !signedInUser?.id) return;
-
-    setLoadingStatus('Processing');
-
-    try {
-      const data = {
-        course: course.id,
-        user: signedInUser?.id,
-      };
-
-      await axios.post(`${nextApiEndPoint}/enrollState`, data);
-
-      // window.location.reload();
-      router.push(`/course/${course.slug}?topicId=1`);
-      setLoadingStatus('Redirecting');
-      toast({
-        title: 'Course Enrolled',
-        type: 'success',
-        message: `${course.title} Enrolled Successfully`,
-      });
-    } catch (error) {
-      toast({
-        title: 'error',
-        type: 'error',
-        message: `Try again later`,
-      });
-      setLoadingStatus('free');
-    }
-  };
+  const {
+    loadingStatus,
+    isEnrolled,
+    session,
+    handleEnrollment,
+    navigateToCourse,
+  } = useEnrollment(course, enrollState);
 
   const handleBackToCourse = () => {
-    router.push(`/course/${course.slug}`);
-    setLoadingStatus('Redirecting');
+    navigateToCourse(1);
   };
 
   const buttonText =

@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { generateObject } from 'ai';
 import { groq } from '@ai-sdk/groq';
 import { topicGenerationSystemPrompt } from '@/constants/systemPrompts/courseTopicGeneration';
-import { google } from '@ai-sdk/google';
 
 const AICourseSchema = z.object({
   title: z.string(),

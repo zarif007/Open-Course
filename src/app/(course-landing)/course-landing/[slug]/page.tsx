@@ -96,10 +96,7 @@ const CourseLanding = async ({ params }: PageParams) => {
           </LargeHeading>
           <PiStackDuotone className="w-10 h-10" />
         </div>
-        <CourseTopicsAccordion
-          courseTopics={courseTopics}
-          checkPoints={checkPoints}
-        />
+        <CourseTopicsAccordion course={course} enrollState={enrollState} />
         <div className="w-full border-b border-slate-300 dark:border-slate-800 my-12" />
         <CourseFeedbacks courseId={course.id as string} />
       </div>
