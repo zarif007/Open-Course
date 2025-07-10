@@ -9,7 +9,6 @@ import ActivityCalendar, {
 } from 'react-activity-calendar';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
-import LargeHeading from '../ui/LargeHeading';
 import { useTheme } from 'next-themes';
 import { useQuery } from '@tanstack/react-query';
 import { nextApiEndPoint } from '@/utils/apiEndpoints';
@@ -19,6 +18,13 @@ import Link from 'next/link';
 import Points from '../ui/Points';
 import HeatmapSkeleton from '../skeletons/Heatmap.Skeleton';
 import { IUser } from '@/types/user';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
 
 const populateDates = (
   startDate: string,
@@ -47,8 +53,8 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
     date: string;
     activities: Partial<IActivity>[];
   }>();
+  const [selectedYear, setSelectedYear] = useState<string>('current');
 
-  // Memoize the fetch function to prevent unnecessary recreations
   const fetchActivities = useCallback(async () => {
     if (!user?.id) return [];
     const response = await fetch(`${nextApiEndPoint}/activity/${user.id}`);
@@ -63,34 +69,73 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
     staleTime: 1000 * 60,
   });
 
-  const activitiesForHeatmap = useMemo(() => {
-    if (!activities.length) return [];
+  const availableYears = useMemo(() => {
+    const years = new Set<string>();
+    activities.forEach((activity) => {
+      const year = new Date(activity.date as string).getFullYear().toString();
+      years.add(year);
+    });
 
-    const updated = populateDates(
-      '2025-01-01',
-      getCurrentTime() ?? '2025-12-31'
-    );
+    const currentYear = new Date().getFullYear().toString();
+    years.add(currentYear);
+
+    return [
+      'current',
+      ...Array.from(years).sort((a, b) => parseInt(b) - parseInt(a)),
+    ];
+  }, [activities]);
+
+  const getDateRange = useCallback((year: string) => {
+    const currentDate =
+      getCurrentTime() ?? new Date().toISOString().slice(0, 10);
+
+    if (year === 'current') {
+      const endDate = currentDate;
+      const startDate = endDate.replace(/^(\d{4})/, (match, year) =>
+        String(parseInt(year) - 1)
+      );
+      return { startDate, endDate };
+    } else {
+      return {
+        startDate: `${year}-01-01`,
+        endDate: `${year}-12-31`,
+      };
+    }
+  }, []);
+
+  const activitiesForHeatmap = useMemo(() => {
+    const { startDate, endDate } = getDateRange(selectedYear);
+    const updated = populateDates(startDate, endDate);
 
     const activityMap = new Map<string, IActivityHeatmap>();
 
+    updated.forEach((item) => {
+      activityMap.set(item.date, item);
+    });
+
     activities.forEach((activity) => {
       const date = activity.date as string;
-      const count = activityMap.get(date)?.count ?? 0;
-      activityMap.set(date, {
-        date: date,
-        count: count + 1,
-        level: Math.min(count + 1, 4) as Level,
-      });
+      const activityDate = new Date(date);
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      if (activityDate >= start && activityDate <= end) {
+        const existing = activityMap.get(date);
+        if (existing) {
+          const newCount = existing.count + 1;
+          activityMap.set(date, {
+            date: date,
+            count: newCount,
+            level: Math.min(newCount, 4) as Level,
+          });
+        }
+      }
     });
 
-    activityMap.forEach((activity) => {
-      updated.push(activity);
-    });
-
-    return updated.sort(
+    return Array.from(activityMap.values()).sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
-  }, [activities]);
+  }, [activities, selectedYear, getDateRange]);
 
   const handleSetSelectedDate = useCallback(
     (date: string) => {
@@ -123,24 +168,48 @@ const Heatmap = ({ user }: { user: IUser | null }) => {
   );
 
   return (
-    <div>
-      {isLoading ? (
-        <HeatmapSkeleton />
-      ) : (
-        <ActivityCalendar
-          data={activitiesForHeatmap}
-          theme={explicitTheme}
-          eventHandlers={{
-            onClick: () => (activity) => handleSetSelectedDate(activity.date),
-          }}
-          renderBlock={(block, activity) => {
-            return React.cloneElement(block, {
-              'data-tooltip-id': 'react-tooltip',
-              'data-tooltip-html': `${activity.count} activities on ${activity.date}`,
-            });
-          }}
-        />
-      )}
+    <div className="w-full">
+      <div className="mb-4 flex justify-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-900 text-sm hover:bg-gray-50 dark:hover:bg-gray-700">
+            {selectedYear === 'current' ? 'Last 12 months' : selectedYear}
+            <ChevronDown className="h-4 w-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {availableYears.map((year) => (
+              <DropdownMenuItem
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                className={
+                  selectedYear === year ? 'bg-gray-100 dark:bg-gray-900' : ''
+                }
+              >
+                {year === 'current' ? 'Last 12 months' : year}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="w-full overflow-x-auto flex justify-center items-center">
+        {isLoading ? (
+          <HeatmapSkeleton />
+        ) : (
+          <ActivityCalendar
+            data={activitiesForHeatmap}
+            theme={explicitTheme}
+            eventHandlers={{
+              onClick: () => (activity) => handleSetSelectedDate(activity.date),
+            }}
+            renderBlock={(block, activity) => {
+              return React.cloneElement(block, {
+                'data-tooltip-id': 'react-tooltip',
+                'data-tooltip-html': `${activity.count} activities on ${activity.date}`,
+              });
+            }}
+          />
+        )}
+      </div>
 
       <ReactTooltip id="react-tooltip" />
 

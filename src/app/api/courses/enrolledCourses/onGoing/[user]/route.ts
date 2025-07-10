@@ -38,12 +38,6 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
         select:
           'versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
       })
-      .populate({
-        path: 'course',
-        model: Course,
-        select:
-          'versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
-      })
       .limit(10)
       .lean();
 
@@ -51,18 +45,24 @@ export const GET = async (req: NextRequest, { params }: IParams) => {
       return NextResponse.json({ data: [] });
     }
 
-    const activeStates = enrollStates
-      .filter(
-        (es) =>
-          es.course?.topics?.length &&
-          es.finishedTopics?.length >= 0 &&
-          es.course.topics.length > es.finishedTopics.length
-      )
-      .map((es) => ({
-        course: es.course,
-        currentTopic: es.currentTopic,
-        completedTopic: es.finishedTopics.length,
-      }));
+    const activeStates = [];
+    for (const es of enrollStates) {
+      const course = await Course.findById(es.course).lean();
+
+      if (
+        course &&
+        !Array.isArray(course) &&
+        course?.topics?.length &&
+        es.finishedTopics?.length >= 0 &&
+        course.topics.length > es.finishedTopics.length
+      ) {
+        activeStates.push({
+          course: course,
+          currentTopic: es.currentTopic,
+          completedTopic: es.finishedTopics.length,
+        });
+      }
+    }
 
     return NextResponse.json({ data: activeStates });
   } catch (error) {

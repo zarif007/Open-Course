@@ -11,15 +11,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/Popover';
-import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/redux/store';
 import { IEnrollState } from '@/types/enrollState';
 import { ICourse } from '@/types/course';
-import axios from 'axios';
-import { nextApiEndPoint } from '@/utils/apiEndpoints';
-import { toast } from '../ui/Toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/Button';

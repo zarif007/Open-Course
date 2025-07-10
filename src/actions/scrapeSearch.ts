@@ -108,5 +108,5 @@ const getSearchResultsUsingExa = async (query: string) => {
 export async function scrapeFirstSearchResult(
   queryStr: string
 ): Promise<{ url: string } | null> {
-  return await getSearchResultsUsingSerper(queryStr);
+  return await getSearchResultsUsingExa(queryStr);
 }

@@ -57,14 +57,14 @@ const AvatarDropdown = () => {
               </Link>
             </MenubarItem>
 
-            <MenubarItem className="!p-0">
+            {/* <MenubarItem className="!p-0">
               <Link
                 href="/dashboard"
                 className="flex items-center px-3 py-2 text-gray-950 dark:text-slate-100 hover:bg-slate-200 hover:dark:bg-gray-800 transition-colors duration-150 w-full text-sm font-semibold"
               >
                 Dashboard
               </Link>
-            </MenubarItem>
+            </MenubarItem> */}
 
             <MenubarSeparator className="my-1 bg-slate-200 dark:bg-gray-800" />
 

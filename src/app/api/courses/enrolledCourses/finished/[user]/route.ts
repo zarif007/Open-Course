@@ -13,44 +13,57 @@ interface IParams {
 }
 
 export const GET = async (req: NextRequest, { params }: IParams) => {
-  await connectToDB();
+  try {
+    await connectToDB();
 
-  const enrollStates = await EnrollState.find({ user: params.user })
-    .populate({
-      path: 'currentTopic',
-      model: CourseTopic,
-      select:
-        'versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
-    })
-    .populate({
-      path: 'course',
-      model: Course,
-    })
-    .limit(10);
+    const enrollStates = await EnrollState.find({ user: params.user })
+      .populate({
+        path: 'currentTopic',
+        model: CourseTopic,
+        select:
+          'versions.type versions.data.title versions.data.description versions.data.source versions.data.duration',
+      })
+      .limit(10);
 
-  if (!enrollStates) {
-    return NextResponse.json({
-      data: [],
-    });
-  }
-
-  const state: {
-    course: ICourse;
-    currentTopic: ICourseTopic;
-    completedTopic: number;
-  }[] = [];
-
-  enrollStates.map((es) => {
-    if (es.course.topics.length === es.finishedTopics.length) {
-      state.push({
-        course: es.course,
-        currentTopic: es.currentTopic,
-        completedTopic: es.finishedTopics.length,
+    if (!enrollStates || enrollStates.length === 0) {
+      return NextResponse.json({
+        data: [],
       });
     }
-  });
 
-  return NextResponse.json({
-    data: state,
-  });
+    const state: {
+      course: ICourse;
+      currentTopic: ICourseTopic;
+      completedTopic: number;
+    }[] = [];
+
+    for (const es of enrollStates) {
+      const courseResult = await Course.findById(es.course).lean();
+      const course = Array.isArray(courseResult)
+        ? courseResult[0]
+        : courseResult;
+
+      if (
+        course &&
+        course.topics &&
+        course.topics.length === es.finishedTopics.length
+      ) {
+        state.push({
+          course: course as ICourse,
+          currentTopic: es.currentTopic,
+          completedTopic: es.finishedTopics.length,
+        });
+      }
+    }
+
+    return NextResponse.json({
+      data: state,
+    });
+  } catch (error) {
+    console.error('Error fetching enroll states:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 };

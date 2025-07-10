@@ -2,6 +2,7 @@
 
 import FinishedCourses from '@/components/dashboard/FinishedCourses';
 import Heatmap from '@/components/dashboard/Heatmap';
+import OngoingCourses from '@/components/dashboard/OngoingCourses';
 import CreatedCourses from '@/components/profile/CreatedCourses';
 import LargeHeading from '@/components/ui/LargeHeading';
 import Points from '@/components/ui/Points';
@@ -173,6 +174,18 @@ const Profile = async ({ params }: PageParams) => {
                 </p>
               </div>
               <CreatedCourses creatorId={user.id as string} />
+            </div>
+
+            <div className="rounded-xl border border-neutral-200 dark:border-neutral-800">
+              <div className="p-5 border-b border-neutral-200 dark:border-neutral-800">
+                <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                  Ongoing Courses
+                </h3>
+                <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-1">
+                  Your about to be accomplishments
+                </p>
+              </div>
+              <OngoingCourses user={user} />
             </div>
 
             <div className="rounded-xl border border-neutral-200 dark:border-neutral-800">

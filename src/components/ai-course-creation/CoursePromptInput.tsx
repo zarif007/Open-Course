@@ -76,7 +76,7 @@ const CoursePromptInput = ({
           today
         </h1>
         <p className="text:sm md:text-xl text-muted-foreground">
-          Curate & Create any course with the power of{' '}
+          Create & Share any course with the power of{' '}
           <span className="font-bold text-[black] dark:text-[white]">AI</span>
         </p>
       </div>
